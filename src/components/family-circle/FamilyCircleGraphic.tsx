@@ -1,142 +1,99 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNodePositioning } from '@/hooks/use-node-position';
-import { useIsMobile } from '@/hooks/use-mobile';
-import FamilyCircleCenter from './FamilyCircleCenter';
-import FamilyMemberNode from './FamilyMemberNode';
-import CircleConnections from './CircleConnections';
 import { motion } from 'framer-motion';
-import { FamilyMember, familyMembers } from '@/data/familyData';
+import FamilyMemberNode from './FamilyMemberNode';
+import FamilyCircleCenter from './FamilyCircleCenter';
+import CircleConnections from './CircleConnections';
+import { familyMembers, FamilyMember } from '@/data/familyData';
+import useMobile from '@/hooks/use-mobile';
 
 interface FamilyCircleGraphicProps {
   onSelectMember: (member: FamilyMember | null) => void;
+  memberImages?: Record<string, string | null>;
 }
 
-const FamilyCircleGraphic: React.FC<FamilyCircleGraphicProps> = ({ onSelectMember }) => {
+const FamilyCircleGraphic: React.FC<FamilyCircleGraphicProps> = ({ 
+  onSelectMember,
+  memberImages = {} 
+}) => {
   const [activeMember, setActiveMember] = useState<string | null>(null);
-  const [animationComplete, setAnimationComplete] = useState(false);
-  const [rotationAngle, setRotationAngle] = useState(0);
-  const isMobile = useIsMobile();
+  const [circleRadius, setCircleRadius] = useState<number>(180);
+  const isMobile = useMobile();
   
-  const { 
-    containerRef, 
-    width, 
-    height, 
-    nodeWidth, 
-    nodeIconSize, 
-    iconSize, 
-    textWidth, 
-    centerSize 
-  } = useNodePositioning();
-
-  // Calculate orbit radius for the family members circle
-  const orbitRadius = Math.min(width, height) * (isMobile ? 0.35 : 0.38);
-
-  // Set animation complete after initial load
+  // Adjust dimensions based on mobile or desktop
+  const nodeWidth = isMobile ? 85 : 120;
+  const nodeIconSize = isMobile ? 40 : 60;
+  const iconSize = isMobile ? 20 : 28;
+  const textWidth = isMobile ? 'w-20' : 'w-28';
+  
+  // Adjust circle radius based on screen size
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationComplete(true);
-    }, isMobile ? 600 : 1000);
+    const calculateRadius = () => {
+      if (isMobile) {
+        setCircleRadius(140);
+      } else {
+        const containerWidth = document.getElementById('family-circle-container')?.offsetWidth || 400;
+        setCircleRadius(Math.min(180, containerWidth / 2 - nodeWidth / 2 - 20));
+      }
+    };
     
-    return () => clearTimeout(timer);
-  }, [isMobile]);
-
-  // Continuous rotation effect
-  useEffect(() => {
-    if (!animationComplete) return;
+    calculateRadius();
+    window.addEventListener('resize', calculateRadius);
     
-    const rotationSpeed = 0.006; // degrees per millisecond (slow rotation)
-    const rotationInterval = 20; // update every 20ms for smooth animation
-    
-    const rotationTimer = setInterval(() => {
-      setRotationAngle(angle => (angle + rotationSpeed * rotationInterval) % 360);
-    }, rotationInterval);
-    
-    return () => clearInterval(rotationTimer);
-  }, [animationComplete]);
-
-  // Calculate node positions based on angle and rotation
-  const getNodePosition = (initialAngle: number) => {
-    const angle = (initialAngle + rotationAngle) % 360;
+    return () => {
+      window.removeEventListener('resize', calculateRadius);
+    };
+  }, [isMobile, nodeWidth]);
+  
+  // Handle click on a family member node
+  const handleNodeClick = (memberId: string) => {
+    const clickedMember = familyMembers.find(m => m.id === memberId);
+    setActiveMember(prevActive => prevActive === memberId ? null : memberId);
+    onSelectMember(clickedMember || null);
+  };
+  
+  // Calculate positions for family members in a circle
+  const getNodePosition = (angle: number) => {
     const radians = (angle * Math.PI) / 180;
-    
-    // Use trigonometry to position nodes in a perfect circle
     return {
-      x: width / 2 + Math.sin(radians) * orbitRadius,
-      y: height / 2 - Math.cos(radians) * orbitRadius
+      x: circleRadius * Math.cos(radians),
+      y: circleRadius * Math.sin(radians)
     };
   };
   
-  // Handle member selection
-  const handleMemberClick = (memberId: string) => {
-    const member = familyMembers.find(m => m.id === memberId) || null;
-    setActiveMember(memberId);
-    onSelectMember(member);
-  };
-
-  const containerHeight = isMobile ? 550 : 600;
-
   return (
-    <motion.div 
-      ref={containerRef} 
-      className="w-full relative overflow-hidden"
-      style={{ 
-        height: containerHeight,
-        opacity: 0,
-        animationDelay: '200ms',
-        animationFillMode: 'forwards'
-      }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-50"></div>
+    <div id="family-circle-container" className="relative w-full h-[500px] flex items-center justify-center">
+      {/* Center of Family Circle */}
+      <FamilyCircleCenter />
       
-      {/* Center circle with your photo */}
-      <FamilyCircleCenter
-        centerSize={centerSize} 
-        width={width} 
-        height={height}
+      {/* Connecting lines */}
+      <CircleConnections 
+        members={familyMembers}
+        getPosition={getNodePosition}
+        activeNodeId={activeMember}
       />
       
-      {/* Family member connections */}
-      <svg className="absolute top-0 left-0 w-full h-full">
-        <CircleConnections
-          members={familyMembers}
-          centerX={width / 2}
-          centerY={height / 2}
-          orbitRadius={orbitRadius}
-          activeMember={activeMember}
-          animationComplete={animationComplete}
-          width={width}
-          isMobile={isMobile}
-        />
-      </svg>
-      
-      {/* Rotating Family Members */}
-      <div className="absolute top-0 left-0 w-full h-full">
-        {familyMembers.map((member, index) => {
-          // Calculate position on the orbit with equal spacing
-          const position = getNodePosition(member.initialAngle);
-          
-          return (
-            <FamilyMemberNode
-              key={member.id}
-              member={member}
-              position={position}
-              nodeWidth={nodeWidth}
-              nodeIconSize={nodeIconSize}
-              iconSize={iconSize}
-              textWidth={textWidth}
-              activeMember={activeMember}
-              onNodeClick={handleMemberClick}
-              index={index}
-              isMobile={isMobile}
-            />
-          );
-        })}
-      </div>
-    </motion.div>
+      {/* Family Member Nodes */}
+      {familyMembers.map((member, index) => {
+        const position = getNodePosition(member.initialAngle);
+        return (
+          <FamilyMemberNode
+            key={member.id}
+            member={member}
+            position={position}
+            nodeWidth={nodeWidth}
+            nodeIconSize={nodeIconSize}
+            iconSize={iconSize}
+            textWidth={textWidth}
+            activeMember={activeMember}
+            onNodeClick={handleNodeClick}
+            index={index}
+            isMobile={isMobile}
+            photoUrl={memberImages[member.id] || member.photoUrl}
+          />
+        );
+      })}
+    </div>
   );
 };
 

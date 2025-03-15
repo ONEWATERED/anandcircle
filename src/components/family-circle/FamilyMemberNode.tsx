@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import type { FamilyMember } from '@/data/familyData';
 import { FlipCard } from '@/components/ui/card';
 import FamilyMemberCardBack from './FamilyMemberCardBack';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 interface FamilyMemberNodeProps {
   member: FamilyMember;
@@ -16,6 +17,7 @@ interface FamilyMemberNodeProps {
   onNodeClick: (memberId: string) => void;
   index: number;
   isMobile: boolean;
+  photoUrl?: string | null;
 }
 
 const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
@@ -29,6 +31,7 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
   onNodeClick,
   index,
   isMobile,
+  photoUrl,
 }) => {
   const isActive = activeMember === member.id;
   const Icon = member.icon;
@@ -50,9 +53,9 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
       className="w-full h-full flex flex-col items-center justify-center"
       animate={{ scale: isActive ? 1.15 : 1 }}
     >
-      {/* Circle with icon */}
+      {/* Circle with icon or image */}
       <motion.div
-        className="relative rounded-full flex items-center justify-center shadow-md mb-3"
+        className="relative rounded-full flex items-center justify-center shadow-md mb-3 overflow-hidden"
         style={{
           width: nodeIconSize,
           height: nodeIconSize,
@@ -61,7 +64,16 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
         }}
         whileHover={{ scale: 1.1 }}
       >
-        <Icon size={iconSize} className="text-white" />
+        {photoUrl ? (
+          <Avatar className="h-full w-full border-0">
+            <AvatarImage src={photoUrl} alt={member.name} className="object-cover" />
+            <AvatarFallback style={{ backgroundColor: member.color }}>
+              <Icon size={iconSize} className="text-white" />
+            </AvatarFallback>
+          </Avatar>
+        ) : (
+          <Icon size={iconSize} className="text-white" />
+        )}
       </motion.div>
       
       {/* Member name */}
@@ -82,7 +94,7 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
   
   // Back content of the flip card - member details and social links
   const backContent = (
-    <FamilyMemberCardBack member={member} nodeIconSize={nodeIconSize} />
+    <FamilyMemberCardBack member={member} nodeIconSize={nodeIconSize} photoUrl={photoUrl} />
   );
   
   return (

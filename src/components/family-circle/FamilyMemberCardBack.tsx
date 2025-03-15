@@ -8,9 +8,14 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 interface FamilyMemberCardBackProps {
   member: FamilyMember;
   nodeIconSize: number;
+  photoUrl?: string | null;
 }
 
-const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({ member, nodeIconSize }) => {
+const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({ 
+  member, 
+  nodeIconSize,
+  photoUrl 
+}) => {
   const Icon = member.icon;
   
   return (
@@ -23,7 +28,7 @@ const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({ member, nod
     >
       <div className="flex items-center justify-center mb-2">
         <Avatar className="h-10 w-10 border-2" style={{ borderColor: member.color }}>
-          <AvatarImage src={member.photoUrl} alt={member.name} />
+          <AvatarImage src={photoUrl || member.photoUrl} alt={member.name} />
           <AvatarFallback style={{ backgroundColor: member.color }}>
             <Icon size={16} className="text-white" />
           </AvatarFallback>
