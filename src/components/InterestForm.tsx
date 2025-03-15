@@ -1,11 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { 
@@ -29,15 +30,24 @@ const formSchema = z.object({
     message: "Please enter a valid email address.",
   }),
   phone: z.string().optional(),
+  message: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
+
+// Define interest submission type
+interface InterestSubmission extends FormValues {
+  id: string;
+  date: string;
+  type: 'avatar' | 'profile';
+}
 
 const InterestForm = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [activeSheet, setActiveSheet] = useState<'none' | 'avatar' | 'profile'>('none');
+  const [savedInterests, setSavedInterests] = useState<InterestSubmission[]>([]);
   
   // Initialize form with react-hook-form
   const form = useForm<FormValues>({
@@ -46,18 +56,42 @@ const InterestForm = () => {
       name: "",
       email: "",
       phone: "",
+      message: "",
     },
   });
+  
+  // Load saved interests from localStorage on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem('interestSubmissions');
+    if (savedData) {
+      setSavedInterests(JSON.parse(savedData));
+    }
+  }, []);
   
   // Handle form submission
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     
     try {
-      // Simulate submission
+      // Simulate submission delay for UX
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      console.log("Form submitted:", data, "for", activeSheet);
+      // Create new interest submission with unique ID
+      const newSubmission: InterestSubmission = {
+        ...data,
+        id: Date.now().toString(),
+        date: new Date().toISOString(),
+        type: activeSheet
+      };
+      
+      // Update state with new submission
+      const updatedInterests = [...savedInterests, newSubmission];
+      setSavedInterests(updatedInterests);
+      
+      // Save to localStorage
+      localStorage.setItem('interestSubmissions', JSON.stringify(updatedInterests));
+      
+      console.log("Interest submitted:", newSubmission);
       setIsSubmitted(true);
       
       toast({
@@ -242,6 +276,25 @@ const InterestForm = () => {
                   )}
                 />
                 
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Additional Information (Optional)</FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="Tell us about your goals or any specific requirements"
+                          className="resize-none"
+                          rows={3}
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
                 <div className="mt-2 text-xs text-muted-foreground">
                   <p className="flex items-center">
                     <Droplet className="mr-1 text-cyan-500" size={14} />
@@ -349,6 +402,25 @@ const InterestForm = () => {
                       <FormLabel>Phone (Optional)</FormLabel>
                       <FormControl>
                         <Input placeholder="Your phone number" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Additional Information (Optional)</FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="Tell us about your professional goals or requirements"
+                          className="resize-none"
+                          rows={3}
+                          {...field} 
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
