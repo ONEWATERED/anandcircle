@@ -14,7 +14,7 @@ interface DomainNodeProps {
   onNodeHover: (id: string | null) => void;
   index: number;
   isMobile: boolean;
-  rotateCorrection?: boolean;
+  rotationEnabled: boolean;
 }
 
 const DomainNode: React.FC<DomainNodeProps> = ({
@@ -28,7 +28,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   onNodeHover,
   index,
   isMobile,
-  rotateCorrection = false
+  rotationEnabled
 }) => {
   const Icon = domain.icon;
   const isActive = activeNode === domain.id;
@@ -50,7 +50,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   return (
     <motion.div
       key={domain.id}
-      className="absolute flex flex-col items-center"
+      className="absolute flex flex-col items-center justify-center"
       data-domain-node="true"
       style={{ 
         top: position.y, 
@@ -58,12 +58,14 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         width: nodeWidth,
         height: nodeWidth,
         marginLeft: -nodeWidth/2,
-        marginTop: -nodeWidth/2
+        marginTop: -nodeWidth/2,
+        // The text should always stay upright even as the node rotates around the circle
+        transform: rotationEnabled ? 'rotate(0deg)' : 'none'
       }}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ 
         scale: 1, 
-        opacity: 1
+        opacity: 1,
       }}
       transition={{ 
         delay: nodeDelay, 

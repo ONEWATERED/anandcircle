@@ -5,7 +5,9 @@ import { DomainData } from '@/data/domainData';
 
 interface DomainConnectionsProps {
   domains: DomainData[];
-  getNodePosition: (angle: number, radius: number) => { x: number; y: number };
+  centerX: number;
+  centerY: number;
+  orbitRadius: number;
   activeNode: string | null;
   animationComplete: boolean;
   width: number;
@@ -14,7 +16,9 @@ interface DomainConnectionsProps {
 
 const DomainConnections: React.FC<DomainConnectionsProps> = ({
   domains,
-  getNodePosition,
+  centerX,
+  centerY,
+  orbitRadius,
   activeNode,
   animationComplete,
   width,
@@ -26,19 +30,25 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
   
   // Faster animations on mobile for better UX
   const animationDuration = isMobile ? 0.8 : 1.2;
+
+  // Calculate position from angle
+  const getPosition = (angle: number) => {
+    const radians = (angle * Math.PI) / 180;
+    return {
+      x: centerX + Math.sin(radians) * orbitRadius,
+      y: centerY - Math.cos(radians) * orbitRadius
+    };
+  };
   
-  // Connect each node to the center (ANAND Circle)
+  // Connect each node to the center
   domains.forEach((domain, i) => {
-    const source = getNodePosition(domain.initialAngle, 1); // Use the angle and a radius of 1
-    const dest = getNodePosition(0, 0); // Center point
-    
-    const key = `${domain.id}-center`;
+    const position = getPosition(domain.initialAngle);
     const isActive = activeNode === domain.id;
     
     connections.push(
       <motion.path
-        key={key}
-        d={`M ${source.x} ${source.y} L ${dest.x} ${dest.y}`}
+        key={`${domain.id}-center`}
+        d={`M ${position.x} ${position.y} L ${centerX} ${centerY}`}
         stroke={isActive ? "rgba(99, 102, 241, 0.9)" : "rgba(209, 213, 219, 0.5)"}
         strokeWidth={isActive ? (isMobile ? 2 : 3) : (isMobile ? 1 : 1.5)}
         strokeDasharray={isMobile ? "3,4" : "5,5"}
@@ -64,16 +74,15 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
       const domain = domains[i];
       const nextDomain = domains[(i + 1) % domains.length];
       
-      const source = getNodePosition(domain.initialAngle, 1);
-      const dest = getNodePosition(nextDomain.initialAngle, 1);
+      const pos1 = getPosition(domain.initialAngle);
+      const pos2 = getPosition(nextDomain.initialAngle);
       
-      const key = `${domain.id}-${nextDomain.id}`;
       const isActive = activeNode === domain.id || activeNode === nextDomain.id;
       
       connections.push(
         <motion.path
-          key={key}
-          d={`M ${source.x} ${source.y} L ${dest.x} ${dest.y}`}
+          key={`${domain.id}-${nextDomain.id}`}
+          d={`M ${pos1.x} ${pos1.y} L ${pos2.x} ${pos2.y}`}
           stroke={isActive ? "rgba(99, 102, 241, 0.7)" : "rgba(209, 213, 219, 0.3)"}
           strokeWidth={isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.75 : 1)}
           strokeDasharray={isMobile ? "2,3" : "3,4"}
@@ -87,43 +96,6 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
           transition={{ 
             duration: animationDuration, 
             delay: 0.4 + (i * 0.08),
-            ease: "easeInOut"
-          }}
-        />
-      );
-    }
-  }
-
-  // On desktop, add diagonal connections to create a complete web
-  if (!isMobile && width >= 768) {
-    // Connect non-adjacent nodes to form diagonals of the pentagon
-    for (let i = 0; i < domains.length; i++) {
-      const domain = domains[i];
-      const skipNext = (i + 2) % domains.length; // Skip adjacent, connect to next-but-one
-      
-      const source = getNodePosition(domain.initialAngle, 1);
-      const dest = getNodePosition(domains[skipNext].initialAngle, 1);
-      
-      const key = `${domain.id}-${domains[skipNext].id}`;
-      const isActive = activeNode === domain.id || activeNode === domains[skipNext].id;
-      
-      connections.push(
-        <motion.path
-          key={key}
-          d={`M ${source.x} ${source.y} L ${dest.x} ${dest.y}`}
-          stroke={isActive ? "rgba(99, 102, 241, 0.6)" : "rgba(209, 213, 219, 0.25)"}
-          strokeWidth={isActive ? 1.5 : 0.75}
-          strokeDasharray="4,5"
-          fill="none"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ 
-            pathLength: 1, 
-            opacity: isActive ? 0.7 : 0.3,
-            strokeWidth: isActive ? 1.5 : 0.75
-          }}
-          transition={{ 
-            duration: animationDuration, 
-            delay: 0.6 + (i * 0.1),
             ease: "easeInOut"
           }}
         />

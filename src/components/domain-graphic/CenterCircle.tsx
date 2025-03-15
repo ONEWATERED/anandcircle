@@ -1,89 +1,77 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface CenterCircleProps {
   centerSize: number;
   width: number;
+  height: number;
 }
 
-const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width }) => {
-  // Determine font sizes based on available space
-  const titleFontSize = width < 350 ? 'text-xs' : width < 500 ? 'text-sm' : 'text-base md:text-xl';
-  const subtitleFontSize = width < 350 ? 'text-2xs' : width < 500 ? 'text-xs' : 'text-sm md:text-base';
-
-  // Adjust pulse ring size for better appearance
-  const pulseRingSize = centerSize + (width < 350 ? 10 : width < 768 ? 15 : 25);
-  
-  // Add a second larger pulse ring for enhanced visual effect
-  const outerPulseRingSize = pulseRingSize + (width < 350 ? 10 : width < 768 ? 15 : 25);
-
+const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width, height }) => {
   return (
-    <>
-      {/* The Circle for HARDEEP ANAND - perfectly centered */}
-      <motion.div 
-        className="absolute z-10 rounded-full bg-gradient-to-r from-primary/90 to-accent/90 flex items-center justify-center text-white shadow-lg"
-        style={{ 
-          top: '50%', 
-          left: '50%', 
-          width: centerSize, 
-          height: centerSize,
-          transform: 'translate(-50%, -50%)'
+    <motion.div
+      className="absolute flex flex-col items-center justify-center z-10"
+      style={{
+        top: height / 2,
+        left: width / 2,
+        width: centerSize * 2.5,
+        height: centerSize * 2.5,
+        marginLeft: -(centerSize * 2.5) / 2,
+        marginTop: -(centerSize * 2.5) / 2,
+      }}
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.6, type: "spring", delay: 0.2 }}
+    >
+      <motion.div
+        className="rounded-full flex flex-col items-center justify-center bg-gradient-to-br from-primary to-accent shadow-lg p-4"
+        style={{
+          width: centerSize * 2.5,
+          height: centerSize * 2.5,
         }}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.1, duration: 0.6, type: "spring" }}
-        whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(99, 102, 241, 0.6)' }}
+        whileHover={{ scale: 1.03 }}
+        transition={{ duration: 0.2 }}
       >
-        <div className="text-center">
-          <div className={`${titleFontSize} font-bold tracking-tight`}>HARDEEP</div>
-          <div className={`${subtitleFontSize} font-medium mt-0.5`}>ANAND</div>
+        <div className="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center text-white text-3xl font-bold mb-2">
+          <Users size={32} />
         </div>
+        
+        <motion.h3 
+          className="text-white font-bold text-center mb-1 text-sm md:text-lg"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          Join The HARDEEP ANAND Circle
+        </motion.h3>
+        
+        <motion.p 
+          className="text-white/80 text-center mb-3 text-3xs md:text-xs max-w-[90%] mx-auto"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          Connect with professionals across all domains
+        </motion.p>
+        
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <Button 
+            size="sm" 
+            variant="secondary" 
+            className="text-2xs md:text-xs font-semibold"
+          >
+            Join Now
+          </Button>
+        </motion.div>
       </motion.div>
-      
-      {/* Inner pulsing ring - perfectly centered */}
-      <motion.div
-        className="absolute rounded-full border-2 border-primary/30"
-        style={{ 
-          top: '50%', 
-          left: '50%', 
-          width: pulseRingSize, 
-          height: pulseRingSize,
-          transform: 'translate(-50%, -50%)'
-        }}
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.3, 0.5, 0.3]
-        }}
-        transition={{
-          duration: 2.5,
-          repeat: Infinity,
-          repeatType: "loop"
-        }}
-      />
-      
-      {/* Outer pulsing ring - perfectly centered */}
-      <motion.div
-        className="absolute rounded-full border border-primary/20"
-        style={{ 
-          top: '50%', 
-          left: '50%', 
-          width: outerPulseRingSize, 
-          height: outerPulseRingSize,
-          transform: 'translate(-50%, -50%)'
-        }}
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.2, 0.4, 0.2]
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          repeatType: "loop",
-          delay: 0.5
-        }}
-      />
-    </>
+    </motion.div>
   );
 };
 
