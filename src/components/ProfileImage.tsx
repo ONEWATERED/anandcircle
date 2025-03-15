@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 import { getProfileImage } from '@/utils/imageLoader';
 
 const ProfileImage = () => {
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
 
   useEffect(() => {
-    // Load profile image on component mount
+    // Load profile image from localStorage if available (for user customization)
     const savedImage = getProfileImage();
     if (savedImage) {
       setProfileImage(savedImage);

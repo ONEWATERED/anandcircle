@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -9,21 +10,40 @@ import { getProfileImage, saveProfileImage, isValidImageUrl } from '@/utils/imag
 
 const Dashboard = () => {
   const [profileImageUrl, setProfileImageUrl] = useState<string>('');
-  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [previewUrl, setPreviewUrl] = useState<string>('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
   
-  // Simulate saving to localStorage for demo purposes
+  // Load current profile image on component mount
+  useEffect(() => {
+    const savedImage = getProfileImage();
+    if (savedImage) {
+      setPreviewUrl(savedImage);
+    }
+  }, []);
+  
+  // Save to localStorage for demo purposes
   const handleSaveImage = () => {
     if (profileImageUrl) {
-      localStorage.setItem('profileImageUrl', profileImageUrl);
+      saveProfileImage(profileImageUrl);
+      setPreviewUrl(profileImageUrl);
       toast.success('Profile image updated successfully!');
     } else {
       toast.error('Please enter a valid image URL');
     }
   };
   
+  const handleResetToDefault = () => {
+    const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+    saveProfileImage(defaultImage);
+    setPreviewUrl(defaultImage);
+    setProfileImageUrl('');
+    toast.success('Profile image reset to default');
+  };
+  
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfileImageUrl(e.target.value);
-    setPreviewUrl(e.target.value);
+    if (e.target.value) {
+      setPreviewUrl(e.target.value);
+    }
   };
 
   return (
@@ -71,10 +91,17 @@ const Dashboard = () => {
                   <div className="flex gap-2 pt-2">
                     <Button 
                       onClick={handleSaveImage}
-                      className="w-full"
+                      className="flex-1"
                     >
                       <Save className="mr-2 h-4 w-4" />
                       Save Image
+                    </Button>
+                    <Button 
+                      onClick={handleResetToDefault}
+                      variant="outline"
+                      className="flex-1"
+                    >
+                      Reset to Default
                     </Button>
                   </div>
                 </div>
