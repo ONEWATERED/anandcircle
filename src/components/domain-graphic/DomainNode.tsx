@@ -53,8 +53,8 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   const nodeDelay = isMobile ? 0.2 + (index * 0.05) : 0.3 + (index * 0.1);
 
   // Calculate additional height for text to prevent overlap with center circle
-  // Increased height multiplier to provide more vertical space
-  const nodeHeight = nodeWidth * (shouldSplitTitle ? 2.2 : 2);
+  // Increased height multiplier even more for mobile to ensure text is fully visible
+  const nodeHeight = nodeWidth * (shouldSplitTitle ? 2.2 : (isMobile ? 2.5 : 2.2));
 
   return (
     <motion.div
@@ -87,7 +87,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     >
       {/* Circle with icon - centered horizontally */}
       <motion.div 
-        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-3"
+        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-2"
         style={{ 
           backgroundColor: domain.color,
           border: `2px solid ${isActive ? 'white' : 'transparent'}`,
@@ -130,7 +130,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         
         {isActive && (
           <motion.div 
-            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-2 z-10 bg-black/80 p-1.5 rounded-md backdrop-blur-sm text-white`}
+            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-1 z-10 bg-black/90 p-1.5 rounded-md backdrop-blur-sm text-white`}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
