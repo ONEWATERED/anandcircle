@@ -62,7 +62,7 @@ const images = [
 const AIGalleryShowcase = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', skipSnaps: false },
-    [Autoplay({ delay: 4000, stopOnInteract: true })]
+    [Autoplay({ delay: 4000, stopOnInteraction: true })]
   );
 
   return (

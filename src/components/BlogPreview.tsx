@@ -46,7 +46,7 @@ const blogs = [
 const BlogPreview = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', skipSnaps: false },
-    [Autoplay({ delay: 5000, stopOnInteract: true })]
+    [Autoplay({ delay: 5000, stopOnInteraction: true })]
   );
 
   return (

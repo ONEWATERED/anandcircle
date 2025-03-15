@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Download, Lock, Play, FileText, Users, ExternalLink } from 'lucide-react';
+import { Download, Lock, Play, FileText, Users, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { 
   Dialog,
@@ -67,7 +67,7 @@ const HealthResources = () => {
   const [publications, setPublications] = useState<Publication[]>([]);
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', skipSnaps: false },
-    [Autoplay({ delay: 5000, stopOnInteract: true })]
+    [Autoplay({ delay: 5000, stopOnInteraction: true })]
   );
   
   // In a real application, you would fetch publications from an API

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { GraduationCap, Users, Code, Lightbulb, MessageSquare, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -69,7 +70,7 @@ const courses = [
 const CourseShowcase = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', skipSnaps: false },
-    [Autoplay({ delay: 4000, stopOnInteract: true })]
+    [Autoplay({ delay: 4000, stopOnInteraction: true })]
   );
 
   return (
