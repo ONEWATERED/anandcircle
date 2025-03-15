@@ -20,7 +20,7 @@ const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width }) => {
 
   return (
     <>
-      {/* The Circle for ANAND */}
+      {/* The Circle for HARDEEP ANAND */}
       <motion.div 
         className="absolute z-10 rounded-full bg-gradient-to-r from-primary/90 to-accent/90 flex items-center justify-center text-white shadow-lg"
         style={{ 
