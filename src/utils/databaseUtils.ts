@@ -5,8 +5,16 @@ import { supabase } from "@/integrations/supabase/client";
 // Check database connection
 export const checkDatabaseConnection = async () => {
   try {
+    // Try a simple query to verify connection
     const { data, error } = await supabase.from('profiles').select('count').limit(1);
-    return !error;
+    
+    if (error) {
+      console.error("Database connection check failed:", error);
+      return false;
+    }
+    
+    console.log("Successfully connected to database");
+    return true;
   } catch (error) {
     console.error("Database connection check failed:", error);
     return false;
@@ -39,7 +47,11 @@ export const saveSocialLinks = async (links: {
         
       if (error) {
         console.error("Error saving social links to Supabase:", error);
+      } else {
+        console.log("Social links saved to Supabase");
       }
+    } else {
+      console.log("User not authenticated, saving to localStorage only");
     }
     
     // Always save to localStorage as fallback
@@ -50,6 +62,16 @@ export const saveSocialLinks = async (links: {
     return true;
   } catch (error) {
     console.error("Error saving social links:", error);
+    
+    // Try localStorage as final fallback
+    try {
+      Object.entries(links).forEach(([key, value]) => {
+        localStorage.setItem(`${key}Url`, value);
+      });
+    } catch (e) {
+      console.error("Failed to save to localStorage:", e);
+    }
+    
     return false;
   }
 };

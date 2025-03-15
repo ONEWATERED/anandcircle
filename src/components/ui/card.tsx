@@ -84,10 +84,12 @@ interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
   flipOnHover?: boolean;
   flipOnClick?: boolean;
   height?: string;
+  width?: string;
+  className?: string;
 }
 
 const FlipCard = React.forwardRef<HTMLDivElement, FlipCardProps>(
-  ({ className, frontContent, backContent, flipOnHover = false, flipOnClick = true, height = "100%", ...props }, ref) => {
+  ({ frontContent, backContent, flipOnHover = false, flipOnClick = true, height = "100%", width = "100%", className, ...props }, ref) => {
     const [isFlipped, setIsFlipped] = React.useState(false);
     
     const handleClick = () => {
@@ -95,16 +97,43 @@ const FlipCard = React.forwardRef<HTMLDivElement, FlipCardProps>(
         setIsFlipped(!isFlipped);
       }
     };
+
+    // Add necessary global styles for 3D transforms
+    React.useEffect(() => {
+      const styleId = 'flip-card-styles';
+      if (!document.getElementById(styleId)) {
+        const styleElement = document.createElement('style');
+        styleElement.id = styleId;
+        styleElement.textContent = `
+          .perspective-1000 {
+            perspective: 1000px;
+          }
+          .transform-style-3d {
+            transform-style: preserve-3d;
+          }
+          .backface-hidden {
+            backface-visibility: hidden;
+          }
+          .rotate-y-180 {
+            transform: rotateY(180deg);
+          }
+          .hover-flip:hover .transform-style-3d {
+            transform: rotateY(180deg);
+          }
+        `;
+        document.head.appendChild(styleElement);
+      }
+    }, []);
     
     return (
       <div
         ref={ref}
         className={cn(
-          "perspective-1000 w-full relative cursor-pointer",
+          "perspective-1000 relative cursor-pointer",
           flipOnHover && "hover-flip",
           className
         )}
-        style={{ height }}
+        style={{ height, width }}
         onClick={handleClick}
         {...props}
       >

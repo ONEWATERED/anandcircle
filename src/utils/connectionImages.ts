@@ -13,6 +13,7 @@ export const getConnectionImage = async (personId: string): Promise<string | nul
     
     if (error) {
       console.error("Error fetching connection image:", error);
+      // Don't return early, try localStorage fallback
     }
     
     if (data && Array.isArray(data) && data.length > 0 && data[0]?.image_path) {
@@ -30,7 +31,14 @@ export const getConnectionImage = async (personId: string): Promise<string | nul
     return null;
   } catch (error) {
     console.error("Error getting connection image:", error);
-    return null;
+    
+    // Final fallback to localStorage
+    try {
+      const key = `connection_image_${personId}`;
+      return localStorage.getItem(key);
+    } catch (e) {
+      return null;
+    }
   }
 };
 
@@ -50,8 +58,25 @@ export const uploadConnectionImage = async (imageFile: File, personId: string): 
       const folder = `connections/${personId}`;
       const filePath = `${folder}/${fileName}`;
       
-      // Upload to Supabase Storage
+      // Upload to connection_images bucket
       const bucket = 'connection_images';
+      
+      // Check if the bucket exists, if not create it
+      const { data: buckets } = await supabase.storage.listBuckets();
+      const bucketExists = buckets?.some(b => b.name === bucket);
+      
+      if (!bucketExists) {
+        console.log("Creating new storage bucket:", bucket);
+        const { error: createError } = await supabase.storage.createBucket(bucket, {
+          public: true,
+          fileSizeLimit: 5242880 // 5MB
+        });
+        
+        if (createError) {
+          console.error("Error creating bucket:", createError);
+          return dataUrl; // Fallback to data URL
+        }
+      }
       
       // Upload file to appropriate bucket
       const { data, error } = await supabase.storage
@@ -90,6 +115,8 @@ export const uploadConnectionImage = async (imageFile: File, personId: string): 
       return publicUrl;
     } catch (error) {
       console.error("Failed to upload to Supabase, using data URL instead:", error);
+      // Fallback to localStorage
+      localStorage.setItem(`connection_image_${personId}`, dataUrl);
       return dataUrl;
     }
   } catch (error) {

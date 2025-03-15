@@ -41,8 +41,25 @@ export const uploadImageToStorage = async (imageFile: File, personId?: string): 
       
       const filePath = `${folder}/${fileName}`;
       
-      // Upload to Supabase Storage
+      // Upload to connection_images bucket
       const bucket = 'connection_images';
+      
+      // Check if the bucket exists, if not create it
+      const { data: buckets } = await supabase.storage.listBuckets();
+      const bucketExists = buckets?.some(b => b.name === bucket);
+      
+      if (!bucketExists) {
+        console.log("Creating new storage bucket:", bucket);
+        const { error: createError } = await supabase.storage.createBucket(bucket, {
+          public: true,
+          fileSizeLimit: 5242880 // 5MB
+        });
+        
+        if (createError) {
+          console.error("Error creating bucket:", createError);
+          return dataUrl; // Fallback to data URL
+        }
+      }
       
       // Upload file to appropriate bucket
       const { data, error } = await supabase.storage
