@@ -26,15 +26,15 @@ const Story = () => {
             
             <div className="prose prose-lg max-w-none">
               <p className="text-muted-foreground opacity-0 animate-fade-up" style={{ animationDelay: '100ms' }}>
-                From immigrant student to government executive, my journey has been shaped by the intersection of diverse experiences. As a Public Works Director with regulatory oversight of an $8.5 billion portfolio, I've had the unique opportunity to blend deep domain expertise with technological innovation.
+                From immigrant student to government executive, my journey has been shaped by the intersection of technological innovation and domain expertise. As a Public Works Director with regulatory oversight of an $8.5 billion portfolio, I've developed a unique approach that integrates AI-driven solutions with deep sector knowledge.
               </p>
               
               <p className="text-muted-foreground opacity-0 animate-fade-up" style={{ animationDelay: '200ms' }}>
-                My approach has always been to find connections between seemingly disparate fields—technology, public service, health, and community building. This integrative perspective has allowed me to implement transformative solutions that address complex challenges in novel ways.
+                My career has been defined by finding connections between seemingly disparate fields—technology, public infrastructure, health systems, and water management. This integrative perspective has allowed me to implement transformative solutions that address complex challenges through a comprehensive "One Water" approach.
               </p>
               
               <p className="text-muted-foreground opacity-0 animate-fade-up" style={{ animationDelay: '300ms' }}>
-                Throughout my career, I've remained committed to leveraging data and technology to enhance public services, improve health outcomes, and build stronger communities. It's this commitment that continues to drive my work as an innovator and executive leader.
+                Throughout my executive leadership roles, I've leveraged data and AI to enhance operational efficiency, improve health outcomes, and advance water infrastructure resilience. This commitment to innovation continues to drive my work at the intersection of technology and essential services.
               </p>
             </div>
             
@@ -43,7 +43,7 @@ const Story = () => {
                 href="#passions" 
                 className="inline-flex items-center justify-center h-11 px-6 font-medium text-white transition duration-200 rounded-lg bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90 shadow-md"
               >
-                Explore My Passions
+                Explore My Domains
               </a>
             </div>
           </div>
