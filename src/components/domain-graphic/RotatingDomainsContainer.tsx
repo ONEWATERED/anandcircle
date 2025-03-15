@@ -31,8 +31,8 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     centerSize 
   } = useNodePositioning();
 
-  // Orbit radius calculation - increase percentage for better spacing
-  const orbitRadius = Math.min(width, height) * 0.42; // Increased from 0.38 to 0.42
+  // Orbit radius calculation - increase percentage even more for better spacing
+  const orbitRadius = Math.min(width, height) * 0.46; // Increased from 0.42 to 0.46
 
   // Set animation complete after initial load
   useEffect(() => {
@@ -72,11 +72,11 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
   // Calculate container height
   const containerHeight = (() => {
     if (isMobile) {
-      if (width < 350) return 280;
-      if (width < 500) return 320;
-      return 380;
+      if (width < 350) return 300;
+      if (width < 500) return 350;
+      return 400;
     }
-    return 550;
+    return 580;
   })();
 
   return (

@@ -52,19 +52,20 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   // Optimize transition delays for faster initial loading on mobile
   const nodeDelay = isMobile ? 0.2 + (index * 0.05) : 0.3 + (index * 0.1);
 
-  // Calculate additional height for text to prevent overlap
-  const nodeHeight = nodeWidth * (shouldSplitTitle ? 1.8 : 1.6);
+  // Calculate additional height for text to prevent overlap with center circle
+  // Increased height multiplier to provide more vertical space
+  const nodeHeight = nodeWidth * (shouldSplitTitle ? 2.2 : 2);
 
   return (
     <motion.div
       key={domain.id}
-      className="absolute flex flex-col items-center justify-center"
+      className="absolute flex flex-col items-center justify-start"
       data-domain-node="true"
       style={{ 
         top: position.y, 
         left: position.x, 
         width: nodeWidth,
-        height: nodeHeight, // Adjusted height to fit multiple text lines
+        height: nodeHeight,
         marginLeft: -nodeWidth/2,
         marginTop: -nodeWidth/2,
         // The text should always stay upright even as the node rotates around the circle
@@ -84,13 +85,16 @@ const DomainNode: React.FC<DomainNodeProps> = ({
       onMouseLeave={!isMobile ? () => onNodeHover(null) : undefined}
       onTouchStart={isMobile ? handleInteraction : undefined}
     >
+      {/* Circle with icon - centered horizontally */}
       <motion.div 
-        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-2"
+        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-3"
         style={{ 
           backgroundColor: domain.color,
           border: `2px solid ${isActive ? 'white' : 'transparent'}`,
           width: nodeIconSize,
           height: nodeIconSize,
+          marginLeft: 'auto',
+          marginRight: 'auto'
         }}
         whileHover={{ scale: 1.1 }}
         animate={{ 
@@ -100,8 +104,10 @@ const DomainNode: React.FC<DomainNodeProps> = ({
       >
         <Icon size={iconSize} color="white" />
       </motion.div>
+
+      {/* Text area - perfectly centered under the icon */}
       <motion.div 
-        className={`text-center ${textWidth} mx-auto`}
+        className={`text-center ${textWidth} mx-auto mt-1`}
         initial={{ opacity: 0 }}
         animate={{ 
           opacity: 1,
@@ -112,19 +118,19 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         {shouldSplitTitle ? (
           // Split title into two lines for desktop
           <div className={`font-semibold text-xs md:text-sm`}>
-            <div className="truncate">{titleWords.slice(0, Math.ceil(titleWords.length / 2)).join(' ')}</div>
-            <div className="truncate">{titleWords.slice(Math.ceil(titleWords.length / 2)).join(' ')}</div>
+            <div className="truncate text-center">{titleWords.slice(0, Math.ceil(titleWords.length / 2)).join(' ')}</div>
+            <div className="truncate text-center">{titleWords.slice(Math.ceil(titleWords.length / 2)).join(' ')}</div>
           </div>
         ) : (
           // Single line for mobile or short titles
-          <div className={`font-semibold ${width < 350 ? 'text-3xs' : width < 500 ? 'text-2xs' : 'text-xs'} md:text-sm truncate`}>
+          <div className={`font-semibold ${width < 350 ? 'text-3xs' : width < 500 ? 'text-2xs' : 'text-xs'} md:text-sm truncate text-center`}>
             {domain.title}
           </div>
         )}
         
         {isActive && (
           <motion.div 
-            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-0.5 z-10 bg-black/70 p-1 rounded-md backdrop-blur-sm text-white`}
+            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-2 z-10 bg-black/80 p-1.5 rounded-md backdrop-blur-sm text-white`}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
