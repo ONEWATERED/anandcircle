@@ -5,7 +5,7 @@ import { DomainData } from '@/data/domainData';
 
 interface DomainConnectionsProps {
   domains: DomainData[];
-  getNodePosition: (x: number, y: number) => { x: number; y: number };
+  getNodePosition: (angle: number, radius: number) => { x: number; y: number };
   activeNode: string | null;
   animationComplete: boolean;
   width: number;
@@ -29,7 +29,7 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
   
   // Connect each node to the center (ANAND Circle)
   domains.forEach((domain, i) => {
-    const source = getNodePosition(domain.x, domain.y);
+    const source = getNodePosition(domain.initialAngle, 1); // Use the angle and a radius of 1
     const dest = getNodePosition(0, 0); // Center point
     
     const key = `${domain.id}-center`;
@@ -64,8 +64,8 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
       const domain = domains[i];
       const nextDomain = domains[(i + 1) % domains.length];
       
-      const source = getNodePosition(domain.x, domain.y);
-      const dest = getNodePosition(nextDomain.x, nextDomain.y);
+      const source = getNodePosition(domain.initialAngle, 1);
+      const dest = getNodePosition(nextDomain.initialAngle, 1);
       
       const key = `${domain.id}-${nextDomain.id}`;
       const isActive = activeNode === domain.id || activeNode === nextDomain.id;
@@ -101,8 +101,8 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
       const domain = domains[i];
       const skipNext = (i + 2) % domains.length; // Skip adjacent, connect to next-but-one
       
-      const source = getNodePosition(domain.x, domain.y);
-      const dest = getNodePosition(domains[skipNext].x, domains[skipNext].y);
+      const source = getNodePosition(domain.initialAngle, 1);
+      const dest = getNodePosition(domains[skipNext].initialAngle, 1);
       
       const key = `${domain.id}-${domains[skipNext].id}`;
       const isActive = activeNode === domain.id || activeNode === domains[skipNext].id;

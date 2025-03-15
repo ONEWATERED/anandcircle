@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { DomainData } from '@/data/domainData';
@@ -57,16 +58,12 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         width: nodeWidth,
         height: nodeWidth,
         marginLeft: -nodeWidth/2,
-        marginTop: -nodeWidth/2,
-        ...(rotateCorrection ? { 
-          transform: `rotate(-${domain.initialAngle}deg)` 
-        } : {})
+        marginTop: -nodeWidth/2
       }}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ 
         scale: 1, 
-        opacity: 1,
-        rotate: rotateCorrection ? -domain.initialAngle : 0
+        opacity: 1
       }}
       transition={{ 
         delay: nodeDelay, 

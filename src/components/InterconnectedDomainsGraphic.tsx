@@ -1,16 +1,16 @@
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useAnimationControls } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { domains } from '@/data/domainData';
 import { useNodePositioning } from '@/hooks/use-node-position';
 import DomainNode from './domain-graphic/DomainNode';
 import CenterCircle from './domain-graphic/CenterCircle';
 import BackgroundParticles from './domain-graphic/BackgroundParticles';
+import DomainConnections from './domain-graphic/DomainConnections';
 
 const InterconnectedDomainsGraphic = () => {
   const [activeNode, setActiveNode] = useState<string | null>(null);
   const [animationComplete, setAnimationComplete] = useState(false);
-  const rotationRef = useRef<number>(0);
   
   const {
     containerRef,
@@ -78,17 +78,8 @@ const InterconnectedDomainsGraphic = () => {
       {/* The ANAND Circle in the center */}
       <CenterCircle centerSize={centerSize} width={width} />
       
-      {/* Rotating Domain Nodes */}
-      <motion.div 
-        className="absolute top-0 left-0 w-full h-full"
-        animate={{ rotate: 360 }}
-        transition={{ 
-          duration: 60, 
-          repeat: Infinity, 
-          ease: "linear" 
-        }}
-        style={{ transformOrigin: 'center center' }}
-      >
+      {/* Static Domain Nodes */}
+      <div className="absolute top-0 left-0 w-full h-full">
         {domains.map((domain, index) => {
           // Calculate position on the orbit
           const position = getNodePosition(domain.initialAngle, orbitRadius);
@@ -106,11 +97,23 @@ const InterconnectedDomainsGraphic = () => {
               onNodeHover={setActiveNode}
               index={index}
               isMobile={isMobile}
-              rotateCorrection={true}
+              rotateCorrection={false}
             />
           );
         })}
-      </motion.div>
+      </div>
+      
+      {/* Domain connections */}
+      <svg className="absolute top-0 left-0 w-full h-full">
+        <DomainConnections
+          domains={domains}
+          getNodePosition={(angle, radius) => getNodePosition(angle, radius * orbitRadius)}
+          activeNode={activeNode}
+          animationComplete={animationComplete}
+          width={width}
+          isMobile={isMobile}
+        />
+      </svg>
       
       {/* Background particles */}
       <BackgroundParticles isMobile={isMobile} />
