@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Heart, 
   Users, 
@@ -425,59 +427,73 @@ const FollowingSection = () => {
             </TabsList>
             
             <TabsContent value="all" className="mt-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {nonFamilyMembers.map(person => (
-                  <PersonCard key={person.id} person={person} />
-                ))}
-              </div>
+              <ScrollArea className="h-[500px] w-full pr-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {nonFamilyMembers.map(person => (
+                    <PersonCard key={person.id} person={person} />
+                  ))}
+                </div>
+              </ScrollArea>
             </TabsContent>
             
             <TabsContent value="politics" className="mt-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {nonFamilyMembers.filter(p => p.category === 'politics').map(person => (
-                  <PersonCard key={person.id} person={person} />
-                ))}
-              </div>
+              <ScrollArea className="h-[500px] w-full pr-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {nonFamilyMembers.filter(p => p.category === 'politics').map(person => (
+                    <PersonCard key={person.id} person={person} />
+                  ))}
+                </div>
+              </ScrollArea>
             </TabsContent>
             
             <TabsContent value="business" className="mt-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {nonFamilyMembers.filter(p => p.category === 'business').map(person => (
-                  <PersonCard key={person.id} person={person} />
-                ))}
-              </div>
+              <ScrollArea className="h-[500px] w-full pr-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {nonFamilyMembers.filter(p => p.category === 'business').map(person => (
+                    <PersonCard key={person.id} person={person} />
+                  ))}
+                </div>
+              </ScrollArea>
             </TabsContent>
             
             <TabsContent value="health" className="mt-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {nonFamilyMembers.filter(p => p.category === 'health').map(person => (
-                  <PersonCard key={person.id} person={person} />
-                ))}
-              </div>
+              <ScrollArea className="h-[500px] w-full pr-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {nonFamilyMembers.filter(p => p.category === 'health').map(person => (
+                    <PersonCard key={person.id} person={person} />
+                  ))}
+                </div>
+              </ScrollArea>
             </TabsContent>
             
             <TabsContent value="learning" className="mt-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {nonFamilyMembers.filter(p => p.category === 'learning').map(person => (
-                  <PersonCard key={person.id} person={person} />
-                ))}
-              </div>
+              <ScrollArea className="h-[500px] w-full pr-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {nonFamilyMembers.filter(p => p.category === 'learning').map(person => (
+                    <PersonCard key={person.id} person={person} />
+                  ))}
+                </div>
+              </ScrollArea>
             </TabsContent>
 
             <TabsContent value="unprofessional" className="mt-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {nonFamilyMembers.filter(p => p.category === 'unprofessional').map(person => (
-                  <PersonCard key={person.id} person={person} />
-                ))}
-              </div>
+              <ScrollArea className="h-[500px] w-full pr-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {nonFamilyMembers.filter(p => p.category === 'unprofessional').map(person => (
+                    <PersonCard key={person.id} person={person} />
+                  ))}
+                </div>
+              </ScrollArea>
             </TabsContent>
 
             <TabsContent value="recommended" className="mt-0">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                {nonFamilyMembers.filter(p => p.category === 'recommended').map(person => (
-                  <PersonCard key={person.id} person={person} />
-                ))}
-              </div>
+              <ScrollArea className="h-[500px] w-full pr-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {nonFamilyMembers.filter(p => p.category === 'recommended').map(person => (
+                    <PersonCard key={person.id} person={person} />
+                  ))}
+                </div>
+              </ScrollArea>
             </TabsContent>
           </Tabs>
         </div>
