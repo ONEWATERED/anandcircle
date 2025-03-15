@@ -118,7 +118,6 @@ const Navbar = () => {
                   variant="outline" 
                   size="default" 
                   className="w-full justify-center" 
-                  onClick={() => setMobileMenuOpen(false)}
                 />
               </div>
               
