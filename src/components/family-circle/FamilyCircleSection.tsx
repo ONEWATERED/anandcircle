@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 import FamilyCircleGraphic from './FamilyCircleGraphic';
 import { FamilyMember } from '@/data/familyData';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -34,48 +33,14 @@ const FamilyCircleSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            The wonderful people who make life meaningful every day
+            The wonderful people who make life meaningful every day.
+            <span className="block text-xs mt-2 text-slate-500">Click on a family member to see more information</span>
           </motion.p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 items-center">
-          <div className="w-full lg:w-3/4">
+          <div className="w-full">
             <FamilyCircleGraphic onSelectMember={setSelectedMember} />
-          </div>
-          
-          <div className="w-full lg:w-1/4">
-            {selectedMember ? (
-              <motion.div 
-                className="bg-white p-6 rounded-xl shadow-md"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                key={selectedMember.id}
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <Avatar className="h-16 w-16 border-2" style={{ borderColor: selectedMember.color }}>
-                    <AvatarImage src={selectedMember.photoUrl} alt={selectedMember.name} />
-                    <AvatarFallback>
-                      {getAvatarIcon(selectedMember.role)}
-                    </AvatarFallback>
-                  </Avatar>
-                  
-                  <div>
-                    <h3 className="font-bold text-xl text-slate-900">{selectedMember.name}</h3>
-                    <p className="text-sm text-slate-500">{selectedMember.role}</p>
-                  </div>
-                </div>
-                
-                <p className="text-slate-700 mb-0">{selectedMember.bio}</p>
-              </motion.div>
-            ) : (
-              <motion.div 
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl border border-slate-100 text-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <p className="text-slate-500 italic">Select a family member to view their bio</p>
-              </motion.div>
-            )}
           </div>
         </div>
       </div>

@@ -1,7 +1,9 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import type { FamilyMember } from '@/data/familyData';
+import { FlipCard } from '@/components/ui/card';
+import FamilyMemberCardBack from './FamilyMemberCardBack';
 
 interface FamilyMemberNodeProps {
   member: FamilyMember;
@@ -30,32 +32,22 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
 }) => {
   const isActive = activeMember === member.id;
   const Icon = member.icon;
+  const [isFlipped, setIsFlipped] = useState(false);
   
   // Staggered animation delay based on index
   const animationDelay = 0.6 + (index * 0.1);
   
-  return (
+  // Handle click on node
+  const handleClick = () => {
+    setIsFlipped(!isFlipped);
+    onNodeClick(member.id);
+  };
+  
+  // Front content of the flip card
+  const frontContent = (
     <motion.div
-      className="absolute flex flex-col items-center cursor-pointer select-none"
-      style={{
-        top: position.y,
-        left: position.x,
-        width: nodeWidth,
-        marginLeft: -nodeWidth / 2,
-        marginTop: -nodeWidth / 2,
-      }}
-      onClick={() => onNodeClick(member.id)}
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ 
-        scale: 1, 
-        opacity: 1,
-      }}
-      transition={{ 
-        duration: 0.5, 
-        delay: animationDelay, 
-        type: "spring"
-      }}
-      whileHover={{ scale: 1.15 }}
+      className="w-full h-full flex flex-col items-center justify-center"
+      animate={{ scale: isActive ? 1.15 : 1 }}
     >
       {/* Circle with icon */}
       <motion.div
@@ -67,19 +59,12 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
           border: isActive ? '3px solid white' : '2px solid rgba(255,255,255,0.7)',
         }}
         whileHover={{ scale: 1.1 }}
-        animate={{ 
-          scale: isActive ? 1.15 : 1,
-          backgroundColor: isActive ? member.color : `${member.color}CC`
-        }}
       >
         <Icon size={iconSize} className="text-white" />
       </motion.div>
       
       {/* Member name */}
-      <motion.div 
-        className={`text-center flex flex-col items-center ${textWidth}`}
-        animate={{ scale: isActive ? 1.1 : 1 }}
-      >
+      <motion.div className={`text-center flex flex-col items-center ${textWidth}`}>
         <span 
           className={`font-medium text-center mb-0.5 ${isMobile ? 'text-xs' : 'text-sm'} ${isActive ? 'text-slate-800' : 'text-slate-700'}`}
         >
@@ -91,6 +76,47 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
           {member.role}
         </span>
       </motion.div>
+    </motion.div>
+  );
+  
+  // Back content of the flip card - member details and social links
+  const backContent = (
+    <FamilyMemberCardBack member={member} nodeIconSize={nodeIconSize} />
+  );
+  
+  return (
+    <motion.div
+      className="absolute select-none"
+      style={{
+        top: position.y,
+        left: position.x,
+        width: nodeWidth,
+        height: nodeWidth * 1.5,
+        marginLeft: -nodeWidth / 2,
+        marginTop: -(nodeWidth * 1.5) / 2,
+        zIndex: isFlipped ? 20 : 10,
+      }}
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ 
+        scale: 1, 
+        opacity: 1,
+      }}
+      transition={{ 
+        duration: 0.5, 
+        delay: animationDelay, 
+        type: "spring"
+      }}
+    >
+      <FlipCard
+        frontContent={frontContent}
+        backContent={backContent}
+        flipOnHover={false}
+        flipOnClick={true}
+        width="100%"
+        height="100%"
+        className={`cursor-pointer ${isFlipped ? 'z-20' : 'z-10'}`}
+        onClick={handleClick}
+      />
     </motion.div>
   );
 };
