@@ -9,6 +9,12 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import PublicationsDashboard from "./pages/PublicationsDashboard";
 import ConnectionsDashboard from "./pages/ConnectionsDashboard";
+import AdminAuth from "./pages/AdminAuth";
+import AdminLayout from "./layouts/AdminLayout";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminFamilyMembers from "./pages/AdminFamilyMembers";
+import AdminImages from "./pages/AdminImages";
+import AdminSettings from "./pages/AdminSettings";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +27,13 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin/login" element={<AdminAuth />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="family-members" element={<AdminFamilyMembers />} />
+            <Route path="images" element={<AdminImages />} />
+            <Route path="settings" element={<AdminSettings />} />
+          </Route>
           <Route path="/admin/publications" element={<PublicationsDashboard />} />
           <Route path="/connections" element={<ConnectionsDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
