@@ -43,7 +43,7 @@ const people: Person[] = [
     role: 'Son', 
     image: '/placeholder.svg', 
     special: true, 
-    relationship: 'Learning from his fresh perspective every day' 
+    relationship: 'Loves me and makes me proud every day. Working on some magic in the web3 space, even though I had my reservations about him dropping out of med school. Now I believe in his vision and I\'m glad I let him pursue his passion rather than mine. He was the inspiration behind me to actually learn and connect Blockchain to the work I do.' 
   },
   { 
     id: 'simi', 
@@ -176,7 +176,11 @@ const PersonCard = ({ person }: { person: Person }) => {
             <h4 className="font-medium text-base mt-1 mb-0.5">{person.name}</h4>
             <p className="text-xs text-muted-foreground">{person.role}</p>
             
-            {person.relationship && (
+            {person.relationship && person.id === 'rohit' ? (
+              <p className="text-xs italic mt-2 text-primary/80 max-w-[220px] mx-auto">
+                {person.relationship}
+              </p>
+            ) : person.relationship && (
               <p className="text-xs italic mt-2 text-primary/80">{person.relationship}</p>
             )}
           </div>
