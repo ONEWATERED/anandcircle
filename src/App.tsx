@@ -33,9 +33,9 @@ const App = () => (
             <Route path="family-members" element={<AdminFamilyMembers />} />
             <Route path="images" element={<AdminImages />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="publications" element={<PublicationsDashboard />} />
+            <Route path="connections" element={<ConnectionsDashboard />} />
           </Route>
-          <Route path="/admin/publications" element={<PublicationsDashboard />} />
-          <Route path="/connections" element={<ConnectionsDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

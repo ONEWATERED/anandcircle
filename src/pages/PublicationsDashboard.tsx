@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Publication } from '@/types/publications';
 import { Image, FileText, Trash, Plus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 // Mock data - in a real app, this would come from a database
 const mockPublications: Publication[] = [
@@ -62,7 +60,6 @@ const PublicationsDashboard = () => {
     pdfUrl: '',
     hasVideo: false
   });
-  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -98,10 +95,8 @@ const PublicationsDashboard = () => {
     setPublications(publications.filter(pub => pub.id !== id));
   };
 
-  // In a real application, these functions would call APIs to handle file uploads
   const handleThumbnailUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log('Thumbnail upload:', e.target.files?.[0]);
-    // Simulate setting a URL after upload
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -118,7 +113,6 @@ const PublicationsDashboard = () => {
 
   const handlePdfUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log('PDF upload:', e.target.files?.[0]);
-    // Simulate setting a URL after upload
     if (e.target.files && e.target.files[0]) {
       setNewPublication({
         ...newPublication,
@@ -128,10 +122,9 @@ const PublicationsDashboard = () => {
   };
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Publications Dashboard</h1>
-        <Button onClick={() => navigate('/')} variant="outline">Back to Home</Button>
       </div>
 
       <Tabs defaultValue="manage" className="w-full">

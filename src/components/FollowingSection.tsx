@@ -504,7 +504,7 @@ const FollowingSection = () => {
           
           {isAdmin && (
             <div className="mt-4 flex justify-center opacity-0 animate-fade-up" style={{ animationDelay: '200ms' }}>
-              <Link to="/connections">
+              <Link to="/admin/connections">
                 <Button variant="outline" className="gap-2">
                   <Pencil className="h-4 w-4" />
                   Manage Connections
@@ -671,3 +671,4 @@ const FollowingSection = () => {
 };
 
 export default FollowingSection;
+

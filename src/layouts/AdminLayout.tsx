@@ -9,7 +9,9 @@ import {
   LogOut, 
   Database, 
   Home,
-  Settings
+  Settings,
+  FileText,
+  Network
 } from 'lucide-react';
 
 export default function AdminLayout() {
@@ -79,6 +81,34 @@ export default function AdminLayout() {
             >
               <Image size={18} />
               <span>Images</span>
+            </NavLink>
+            
+            <NavLink 
+              to="/admin/publications" 
+              className={({ isActive }) => 
+                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
+                  isActive 
+                    ? "bg-primary text-primary-foreground" 
+                    : "hover:bg-accent hover:text-accent-foreground"
+                }`
+              }
+            >
+              <FileText size={18} />
+              <span>Publications</span>
+            </NavLink>
+
+            <NavLink 
+              to="/admin/connections" 
+              className={({ isActive }) => 
+                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
+                  isActive 
+                    ? "bg-primary text-primary-foreground" 
+                    : "hover:bg-accent hover:text-accent-foreground"
+                }`
+              }
+            >
+              <Network size={18} />
+              <span>Connections</span>
             </NavLink>
             
             <NavLink 
