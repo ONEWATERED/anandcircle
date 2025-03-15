@@ -11,7 +11,7 @@ export interface DomainData {
   initialAngle: number; // We'll use angles for rotation (0-360 degrees)
 }
 
-// Domain definitions with the five domains positioned evenly around a circle
+// Position domains evenly spaced around a perfect circle (72 degrees apart)
 export const domains: DomainData[] = [
   {
     id: 'family',

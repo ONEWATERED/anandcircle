@@ -31,9 +31,9 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     centerSize 
   } = useNodePositioning();
 
-  // Increased orbit radius to create more space between inner and outer circles
-  // Bigger gap for better visibility, especially on mobile
-  const orbitRadius = Math.min(width, height) * (isMobile ? 0.42 : 0.45);
+  // Calculate orbit radius for a perfect circle
+  // Increased orbit radius to create more space between center and nodes
+  const orbitRadius = Math.min(width, height) * (isMobile ? 0.35 : 0.38);
 
   // Set animation complete after initial load
   useEffect(() => {
@@ -48,7 +48,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
   useEffect(() => {
     if (!animationComplete) return;
     
-    const rotationSpeed = 0.01; // degrees per millisecond (slow rotation)
+    const rotationSpeed = 0.008; // degrees per millisecond (slow rotation)
     const rotationInterval = 20; // update every 20ms for smooth animation
     
     const rotationTimer = setInterval(() => {
@@ -70,7 +70,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     };
   };
 
-  // Increase container height to provide more space for text
+  // Increase container height to provide more space
   const containerHeight = (() => {
     if (isMobile) {
       if (width < 350) return 500; // Even more height for very small devices
@@ -113,7 +113,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
       {/* Rotating Domain Nodes */}
       <div className="absolute top-0 left-0 w-full h-full">
         {domains.map((domain, index) => {
-          // Calculate position on the orbit
+          // Calculate position on the orbit with equal spacing
           const position = getNodePosition(domain.initialAngle);
           
           return (
