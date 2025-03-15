@@ -94,23 +94,41 @@ const ProfileImage = () => {
 
   return (
     <div className="relative">
-      {/* Main image container with glass effect */}
-      <div className="glass-card p-2 rounded-2xl shadow-xl overflow-hidden relative z-10">
-        <div className="aspect-[3/4] rounded-xl overflow-hidden">
+      {/* Main image container with soft blend effect */}
+      <div className="relative z-10">
+        <div className="aspect-[3/4] overflow-hidden">
           {isLoading ? (
             <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center animate-pulse">
               <p className="text-gray-400 text-sm">Loading...</p>
             </div>
           ) : profileImage ? (
-            <img 
-              src={profileImage} 
-              alt="Hardeep Anand" 
-              className="w-full h-full object-cover"
-              onError={() => {
-                console.log("Image failed to load, falling back to default");
-                setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
-              }}
-            />
+            <div className="relative">
+              {/* Blurred background for soft edges */}
+              <div 
+                className="absolute inset-0 -m-4 scale-110 blur-xl opacity-50"
+                style={{ 
+                  backgroundImage: `url(${profileImage})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }}
+              ></div>
+              
+              {/* Gradient overlay for better blending */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-gray-50 via-transparent to-gray-50 opacity-70"></div>
+              
+              {/* Main image with glass effect */}
+              <div className="glass-card relative p-2 rounded-2xl shadow-xl overflow-hidden">
+                <img 
+                  src={profileImage} 
+                  alt="Hardeep Anand" 
+                  className="w-full h-full object-cover rounded-xl z-10"
+                  onError={() => {
+                    console.log("Image failed to load, falling back to default");
+                    setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+                  }}
+                />
+              </div>
+            </div>
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
               <p className="text-gray-400 text-sm">Professional photo here</p>
@@ -184,39 +202,36 @@ const ProfileImage = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Decorative elements */}
-      <div className="absolute -top-3 -right-3 w-24 h-24 bg-gradient-to-r from-blue-500/30 to-cyan-400/30 rounded-full blur-xl z-0"></div>
-      <div className="absolute -bottom-3 -left-3 w-24 h-24 bg-gradient-to-r from-purple-500/30 to-pink-400/30 rounded-full blur-xl z-0"></div>
+      {/* Decorative elements with more blur for better blending */}
+      <div className="absolute -top-5 -right-5 w-32 h-32 bg-gradient-to-r from-blue-500/20 to-cyan-400/20 rounded-full blur-2xl z-0"></div>
+      <div className="absolute -bottom-5 -left-5 w-32 h-32 bg-gradient-to-r from-purple-500/20 to-pink-400/20 rounded-full blur-2xl z-0"></div>
       
-      {/* Professional tag */}
-      <div className="absolute -bottom-4 right-8 glass-card p-2 rounded-full shadow-lg z-20">
-        <div className="flex items-center space-x-2 px-3">
-          <div className="w-2 h-2 rounded-full bg-gradient-to-r from-indigo-500 to-blue-500"></div>
-          <span className="text-sm font-medium text-gray-700">Executive & Innovator</span>
-        </div>
-      </div>
-
-      {/* Social Media Links */}
-      <div className="absolute -left-3 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 z-20">
+      {/* Social Media Links - Redesigned to be more prominent */}
+      <div className="absolute -left-4 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 z-20">
         <a href={socialLinks.linkedIn} target="_blank" rel="noopener noreferrer" 
-           className="glass-card p-2 rounded-full hover:bg-primary/10 transition-colors" aria-label="LinkedIn">
-          <Linkedin size={18} className="text-primary" />
+           className="glass-card p-2.5 rounded-full hover:bg-primary/10 transition-colors flex items-center justify-center shadow-md hover:shadow-lg" 
+           aria-label="LinkedIn">
+          <Linkedin size={22} className="text-primary" />
         </a>
         <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer"
-           className="glass-card p-2 rounded-full hover:bg-blue-400/10 transition-colors" aria-label="Twitter">
-          <Twitter size={18} className="text-blue-400" />
+           className="glass-card p-2.5 rounded-full hover:bg-blue-400/10 transition-colors flex items-center justify-center shadow-md hover:shadow-lg" 
+           aria-label="Twitter">
+          <Twitter size={22} className="text-blue-400" />
         </a>
         <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer"
-           className="glass-card p-2 rounded-full hover:bg-red-500/10 transition-colors" aria-label="YouTube">
-          <Youtube size={18} className="text-red-500" />
+           className="glass-card p-2.5 rounded-full hover:bg-red-500/10 transition-colors flex items-center justify-center shadow-md hover:shadow-lg" 
+           aria-label="YouTube">
+          <Youtube size={22} className="text-red-500" />
         </a>
         <a href={socialLinks.spotify} target="_blank" rel="noopener noreferrer"
-           className="glass-card p-2 rounded-full hover:bg-green-500/10 transition-colors" aria-label="Spotify">
-          <Music size={18} className="text-green-500" />
+           className="glass-card p-2.5 rounded-full hover:bg-green-500/10 transition-colors flex items-center justify-center shadow-md hover:shadow-lg" 
+           aria-label="Spotify">
+          <Music size={22} className="text-green-500" />
         </a>
         <Link to={socialLinks.anandCircle}
-              className="glass-card p-2 rounded-full hover:bg-accent/10 transition-colors" aria-label="ANAND Circle">
-          <Users size={18} className="text-accent" />
+              className="glass-card p-2.5 rounded-full hover:bg-accent/10 transition-colors flex items-center justify-center shadow-md hover:shadow-lg" 
+              aria-label="ANAND Circle">
+          <Users size={22} className="text-accent" />
         </Link>
       </div>
     </div>
