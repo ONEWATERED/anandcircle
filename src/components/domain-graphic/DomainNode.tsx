@@ -110,13 +110,13 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         }}
         transition={{ delay: nodeDelay + 0.1 }}
       >
-        <div className={`font-semibold ${width < 350 ? 'text-xs' : 'text-sm'} md:text-sm text-center bg-black/50 rounded-md px-1 py-0.5 text-white`}>
+        <div className={`font-semibold ${width < 350 ? 'text-xs' : 'text-sm'} md:text-sm text-center text-white`}>
           {domain.title}
         </div>
         
         {isActive && (
           <motion.div 
-            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-2 z-10 bg-black/90 p-1.5 rounded-md backdrop-blur-sm text-white`}
+            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-white mt-2 z-10 backdrop-blur-sm`}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
