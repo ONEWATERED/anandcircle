@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { DomainData } from '@/data/domainData';
@@ -14,6 +13,7 @@ interface DomainNodeProps {
   onNodeHover: (id: string | null) => void;
   index: number;
   isMobile: boolean;
+  rotateCorrection?: boolean;
 }
 
 const DomainNode: React.FC<DomainNodeProps> = ({
@@ -27,6 +27,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   onNodeHover,
   index,
   isMobile,
+  rotateCorrection = false
 }) => {
   const Icon = domain.icon;
   const isActive = activeNode === domain.id;
@@ -57,9 +58,16 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         height: nodeWidth,
         marginLeft: -nodeWidth/2,
         marginTop: -nodeWidth/2,
+        ...(rotateCorrection ? { 
+          transform: `rotate(-${domain.initialAngle}deg)` 
+        } : {})
       }}
       initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
+      animate={{ 
+        scale: 1, 
+        opacity: 1,
+        rotate: rotateCorrection ? -domain.initialAngle : 0
+      }}
       transition={{ 
         delay: nodeDelay, 
         duration: 0.5, 
