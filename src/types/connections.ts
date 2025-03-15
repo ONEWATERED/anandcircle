@@ -7,7 +7,7 @@ export interface SocialLink {
 export interface Person {
   id: string;
   name: string;
-  category: 'family' | 'politics' | 'business' | 'health' | 'learning';
+  category: 'family' | 'politics' | 'business' | 'health' | 'learning' | 'unprofessional' | 'recommended';
   role: string;
   image?: string;
   special?: boolean;

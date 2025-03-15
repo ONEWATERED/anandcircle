@@ -16,7 +16,9 @@ import {
   Twitter,
   ExternalLink,
   Linkedin,
-  Pencil
+  Pencil,
+  Star,
+  ThumbsUp
 } from 'lucide-react';
 import { Person, SocialLink } from '@/types/connections';
 import { Link } from 'react-router-dom';
@@ -95,6 +97,89 @@ export const people: Person[] = [
   
   // Learning
   { id: 'sal', name: 'Sal Khan', category: 'learning', role: 'Khan Academy Founder', image: '/placeholder.svg' },
+
+  // Unprofessional Entrepreneurs (new category)
+  { 
+    id: 'garyv', 
+    name: 'Gary Vaynerchuk', 
+    category: 'unprofessional', 
+    role: 'Hustler & Social Media Maven', 
+    image: '/placeholder.svg',
+    relationship: 'Straight-talking entrepreneur who cuts through the BS',
+    socialLinks: [
+      { platform: 'instagram', url: 'https://instagram.com/garyvee' },
+      { platform: 'twitter', url: 'https://twitter.com/garyvee' }
+    ],
+    linkedInUrl: 'https://linkedin.com/in/garyvaynerchuk'
+  },
+  { 
+    id: 'mreaves', 
+    name: 'Myron Eaves', 
+    category: 'unprofessional', 
+    role: 'Fresh & Fit Podcast Host', 
+    image: '/placeholder.svg',
+    relationship: 'Controversial but honest voice in the dating space',
+    socialLinks: [
+      { platform: 'youtube', url: 'https://youtube.com/freshandfit' }
+    ]
+  },
+  { 
+    id: 'cmiller', 
+    name: 'Chris Miller', 
+    category: 'unprofessional', 
+    role: 'Dropshipping Guru', 
+    image: '/placeholder.svg',
+    relationship: 'Started from nothing, built a 7-figure business without a college degree',
+    socialLinks: [
+      { platform: 'instagram', url: 'https://instagram.com/chrismiller' }
+    ]
+  },
+
+  // Recommended People (new category)
+  { 
+    id: 'jrogan', 
+    name: 'Joe Rogan', 
+    category: 'recommended', 
+    role: 'Podcast Host & Commentator', 
+    image: '/placeholder.svg',
+    relationship: 'Best long-form interviewer, brings out authentic discussions',
+    socialLinks: [
+      { platform: 'youtube', url: 'https://youtube.com/joerogan' },
+      { platform: 'twitter', url: 'https://twitter.com/joerogan' }
+    ]
+  },
+  { 
+    id: 'jpeterson', 
+    name: 'Jordan Peterson', 
+    category: 'recommended', 
+    role: 'Clinical Psychologist & Author', 
+    image: '/placeholder.svg',
+    relationship: 'Profound thinker on meaning and personal responsibility',
+    linkedInUrl: 'https://linkedin.com/in/jordan-peterson'
+  },
+  { 
+    id: 'mmalhotra', 
+    name: 'Mukesh Malhotra', 
+    category: 'recommended', 
+    role: 'Spiritual Teacher', 
+    image: '/placeholder.svg',
+    relationship: 'Hidden gem for those seeking inner peace and balanced living',
+    socialLinks: [
+      { platform: 'youtube', url: 'https://youtube.com/spiritualawakening' }
+    ]
+  },
+  { 
+    id: 'sjoshi', 
+    name: 'Sadhna Joshi', 
+    category: 'recommended', 
+    role: 'Holistic Health Expert', 
+    image: '/placeholder.svg',
+    relationship: 'Combines ancient wisdom with modern science for total wellbeing',
+    socialLinks: [
+      { platform: 'instagram', url: 'https://instagram.com/sadhnajoshi' }
+    ],
+    linkedInUrl: 'https://linkedin.com/in/sadhna-joshi'
+  }
 ];
 
 const getCategoryIcon = (category: string) => {
@@ -109,6 +194,10 @@ const getCategoryIcon = (category: string) => {
       return <Activity className="h-4 w-4" />;
     case 'learning':
       return <GraduationCap className="h-4 w-4" />;
+    case 'unprofessional':
+      return <Star className="h-4 w-4" />;
+    case 'recommended':
+      return <ThumbsUp className="h-4 w-4" />;
     default:
       return <Users className="h-4 w-4" />;
   }
@@ -313,7 +402,7 @@ const FollowingSection = () => {
           </div>
           
           <Tabs defaultValue="all" className="w-full">
-            <TabsList className="w-full max-w-lg grid grid-cols-5 h-auto mb-8 mx-auto bg-background/70 backdrop-blur-sm">
+            <TabsList className="w-full max-w-lg grid grid-cols-7 h-auto mb-8 mx-auto bg-background/70 backdrop-blur-sm">
               <TabsTrigger value="all" className="text-xs py-2 h-auto">All</TabsTrigger>
               <TabsTrigger value="politics" className="text-xs py-2 h-auto flex gap-1 items-center">
                 <Flag className="h-3 w-3" /> Politics
@@ -326,6 +415,12 @@ const FollowingSection = () => {
               </TabsTrigger>
               <TabsTrigger value="learning" className="text-xs py-2 h-auto flex gap-1 items-center">
                 <GraduationCap className="h-3 w-3" /> Learning
+              </TabsTrigger>
+              <TabsTrigger value="unprofessional" className="text-xs py-2 h-auto flex gap-1 items-center">
+                <Star className="h-3 w-3" /> Edgy
+              </TabsTrigger>
+              <TabsTrigger value="recommended" className="text-xs py-2 h-auto flex gap-1 items-center">
+                <ThumbsUp className="h-3 w-4" /> Recommended
               </TabsTrigger>
             </TabsList>
             
@@ -364,6 +459,22 @@ const FollowingSection = () => {
             <TabsContent value="learning" className="mt-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                 {nonFamilyMembers.filter(p => p.category === 'learning').map(person => (
+                  <PersonCard key={person.id} person={person} />
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="unprofessional" className="mt-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                {nonFamilyMembers.filter(p => p.category === 'unprofessional').map(person => (
+                  <PersonCard key={person.id} person={person} />
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="recommended" className="mt-0">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                {nonFamilyMembers.filter(p => p.category === 'recommended').map(person => (
                   <PersonCard key={person.id} person={person} />
                 ))}
               </div>
