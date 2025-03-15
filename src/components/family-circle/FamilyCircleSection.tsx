@@ -2,12 +2,17 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import FamilyCircleGraphic from './FamilyCircleGraphic';
-import { FamilyMember } from '@/data/familyData';
+import { FamilyMember, familyMembers } from '@/data/familyData';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Users, Heart, Dog } from 'lucide-react';
 
 const FamilyCircleSection = () => {
   const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(null);
+
+  // Handler to display member details when selected
+  const handleSelectMember = (member: FamilyMember | null) => {
+    setSelectedMember(member);
+  };
 
   const getAvatarIcon = (role: string) => {
     if (role.toLowerCase().includes('pet')) return <Dog size={24} />;
@@ -34,13 +39,13 @@ const FamilyCircleSection = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
           >
             The wonderful people who make life meaningful every day.
-            <span className="block text-xs mt-2 text-slate-500">Click on a family member to see more information</span>
+            <span className="block text-xs mt-2 text-slate-500">Click on a family member to see their details</span>
           </motion.p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 items-center">
           <div className="w-full">
-            <FamilyCircleGraphic onSelectMember={setSelectedMember} />
+            <FamilyCircleGraphic onSelectMember={handleSelectMember} />
           </div>
         </div>
       </div>

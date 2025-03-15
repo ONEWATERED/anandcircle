@@ -1,4 +1,3 @@
-
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -77,28 +76,34 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-// Add FlipCard component
 interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
   frontContent: React.ReactNode;
   backContent: React.ReactNode;
   flipOnHover?: boolean;
   flipOnClick?: boolean;
+  isFlipped?: boolean;
   height?: string;
   width?: string;
   className?: string;
+  onClick?: () => void;
 }
 
 const FlipCard = React.forwardRef<HTMLDivElement, FlipCardProps>(
-  ({ frontContent, backContent, flipOnHover = false, flipOnClick = true, height = "100%", width = "100%", className, ...props }, ref) => {
-    const [isFlipped, setIsFlipped] = React.useState(false);
+  ({ frontContent, backContent, flipOnHover = false, flipOnClick = true, isFlipped, height = "100%", width = "100%", className, onClick, ...props }, ref) => {
+    const [internalIsFlipped, setInternalIsFlipped] = React.useState(false);
     
-    const handleClick = () => {
-      if (flipOnClick) {
-        setIsFlipped(!isFlipped);
+    const flipped = isFlipped !== undefined ? isFlipped : internalIsFlipped;
+    
+    const handleClick = (e: React.MouseEvent) => {
+      e.stopPropagation();
+      
+      if (onClick) {
+        onClick();
+      } else if (flipOnClick) {
+        setInternalIsFlipped(!internalIsFlipped);
       }
     };
 
-    // Add necessary global styles for 3D transforms
     React.useEffect(() => {
       const styleId = 'flip-card-styles';
       if (!document.getElementById(styleId)) {
@@ -140,7 +145,7 @@ const FlipCard = React.forwardRef<HTMLDivElement, FlipCardProps>(
         <div
           className={cn(
             "w-full h-full transition-transform duration-500 transform-style-3d",
-            isFlipped ? "rotate-y-180" : ""
+            flipped ? "rotate-y-180" : ""
           )}
         >
           <div className="absolute w-full h-full backface-hidden">

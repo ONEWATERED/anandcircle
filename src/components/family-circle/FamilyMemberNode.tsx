@@ -39,6 +39,7 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
   
   // Handle click on node
   const handleClick = () => {
+    console.log('Card clicked!', member.name);
     setIsFlipped(!isFlipped);
     onNodeClick(member.id);
   };
@@ -86,7 +87,7 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
   
   return (
     <motion.div
-      className="absolute select-none"
+      className="absolute select-none cursor-pointer"
       style={{
         top: position.y,
         left: position.x,
@@ -112,10 +113,11 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
         backContent={backContent}
         flipOnHover={false}
         flipOnClick={true}
+        isFlipped={isFlipped}
+        onClick={handleClick}
         width="100%"
         height="100%"
-        className={`cursor-pointer ${isFlipped ? 'z-20' : 'z-10'}`}
-        onClick={handleClick}
+        className={`${isFlipped ? 'z-20' : 'z-10'}`}
       />
     </motion.div>
   );
