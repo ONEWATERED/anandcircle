@@ -45,7 +45,7 @@ const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width, height }
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          Join The HARDEEP ANAND Circle
+          Join The Circle
         </motion.h3>
         
         <motion.p 
