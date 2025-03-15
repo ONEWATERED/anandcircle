@@ -3,7 +3,7 @@
 
 // Get profile image URL from localStorage
 export const getProfileImage = (): string | null => {
-  return localStorage.getItem('profileImageUrl');
+  return localStorage.getItem('profileImageUrl') || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
 };
 
 // Save profile image URL to localStorage
