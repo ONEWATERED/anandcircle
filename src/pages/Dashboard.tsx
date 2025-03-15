@@ -1,12 +1,12 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from 'sonner';
-import { Upload, Camera, Save, Check, Users, FileText, ExternalLink, Download } from 'lucide-react';
-import { getProfileImage, saveProfileImage, isValidImageUrl } from '@/utils/imageLoader';
+import { Upload, Camera, Save, Check, Users, FileText, ExternalLink, Download, Image as ImageIcon } from 'lucide-react';
+import { getProfileImage, saveProfileImage, isValidImageUrl, fileToDataUrl } from '@/utils/imageLoader';
 import { 
   Card,
   CardHeader,
@@ -20,6 +20,8 @@ const Dashboard = () => {
   const [profileImageUrl, setProfileImageUrl] = useState<string>('');
   const [previewUrl, setPreviewUrl] = useState<string>('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
   const [resumeUrl, setResumeUrl] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   
   // Load current profile image on component mount
   useEffect(() => {
@@ -58,6 +60,37 @@ const Dashboard = () => {
     setProfileImageUrl(e.target.value);
     if (e.target.value) {
       setPreviewUrl(e.target.value);
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    
+    const file = files[0];
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please upload an image file');
+      return;
+    }
+    
+    try {
+      setIsUploading(true);
+      const dataUrl = await fileToDataUrl(file);
+      setPreviewUrl(dataUrl);
+      saveProfileImage(dataUrl);
+      setProfileImageUrl('');
+      toast.success('Profile image uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error('Failed to upload image. Please try again.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const triggerFileUpload = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -105,6 +138,35 @@ const Dashboard = () => {
                     <span className="text-sm text-muted-foreground">Image Preview</span>
                   </div>
                   
+                  {/* Hidden file input */}
+                  <input 
+                    type="file" 
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                  />
+                  
+                  {/* Upload button */}
+                  <Button 
+                    onClick={triggerFileUpload}
+                    className="w-full"
+                    disabled={isUploading}
+                    variant="outline"
+                  >
+                    <Upload className="mr-2 h-4 w-4" />
+                    {isUploading ? 'Uploading...' : 'Upload Image'}
+                  </Button>
+                  
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-muted" />
+                    </div>
+                    <div className="relative flex justify-center text-xs">
+                      <span className="bg-background px-2 text-muted-foreground">Or enter URL</span>
+                    </div>
+                  </div>
+                  
                   <div className="space-y-2">
                     <label htmlFor="imageUrl" className="text-sm font-medium">
                       Image URL
@@ -124,9 +186,10 @@ const Dashboard = () => {
                     <Button 
                       onClick={handleSaveImage}
                       className="flex-1"
+                      disabled={!profileImageUrl}
                     >
                       <Save className="mr-2 h-4 w-4" />
-                      Save Image
+                      Save Image URL
                     </Button>
                     <Button 
                       onClick={handleResetToDefault}

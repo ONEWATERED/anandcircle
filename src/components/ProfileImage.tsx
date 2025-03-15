@@ -22,7 +22,7 @@ const ProfileImage = () => {
   const [showAvatarDialog, setShowAvatarDialog] = useState(false);
 
   useEffect(() => {
-    // Load profile image from localStorage if available (for user customization)
+    // Load profile image from localStorage if available
     const savedImage = getProfileImage();
     if (savedImage) {
       setProfileImage(savedImage);
