@@ -42,6 +42,9 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     }
   };
 
+  // Optimize transition delays for faster initial loading on mobile
+  const nodeDelay = isMobile ? 0.2 + (index * 0.05) : 0.3 + (index * 0.1);
+
   return (
     <motion.div
       key={domain.id}
@@ -58,8 +61,8 @@ const DomainNode: React.FC<DomainNodeProps> = ({
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ 
-        delay: 0.3 + (index * 0.1), 
-        duration: 0.6, 
+        delay: nodeDelay, 
+        duration: 0.5, 
         type: "spring" 
       }}
       onMouseEnter={!isMobile ? () => onNodeHover(domain.id) : undefined}
@@ -67,7 +70,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
       onTouchStart={isMobile ? handleInteraction : undefined}
     >
       <motion.div 
-        className="cursor-pointer rounded-full flex items-center justify-center shadow-lg mb-2 transition-transform"
+        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-1"
         style={{ 
           backgroundColor: domain.color,
           border: `2px solid ${isActive ? 'white' : 'transparent'}`,
@@ -77,7 +80,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         whileHover={{ scale: 1.1 }}
         animate={{ 
           scale: isActive ? 1.1 : 1,
-          boxShadow: isActive ? '0 0 15px rgba(255,255,255,0.5)' : '0 4px 6px rgba(0,0,0,0.1)'
+          boxShadow: isActive ? '0 0 10px rgba(255,255,255,0.3)' : '0 2px 4px rgba(0,0,0,0.1)'
         }}
       >
         <Icon size={iconSize} color="white" />
@@ -89,19 +92,19 @@ const DomainNode: React.FC<DomainNodeProps> = ({
           opacity: 1,
           scale: isActive ? 1.05 : 1
         }}
-        transition={{ delay: 0.5 + (index * 0.1) }}
+        transition={{ delay: nodeDelay + 0.1 }}
       >
-        <div className={`font-semibold ${width < 350 ? 'text-2xs' : 'text-xs'} md:text-sm`}>
+        <div className={`font-semibold ${width < 350 ? 'text-3xs' : width < 500 ? 'text-2xs' : 'text-xs'} md:text-sm truncate`}>
           {domain.title}
         </div>
         {isActive && (
           <motion.div 
-            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-1`}
+            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-0.5`}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {domain.description}
+            {width < 350 ? domain.description.substring(0, 25) + "..." : domain.description.substring(0, 40) + "..."}
           </motion.div>
         )}
       </motion.div>

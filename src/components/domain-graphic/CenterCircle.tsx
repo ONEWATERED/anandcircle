@@ -9,8 +9,11 @@ interface CenterCircleProps {
 
 const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width }) => {
   // Determine font sizes based on available space
-  const titleFontSize = width < 350 ? 'text-xs' : width < 500 ? 'text-sm' : 'text-sm md:text-xl';
-  const subtitleFontSize = width < 350 ? 'text-[0.6rem]' : width < 500 ? 'text-xs' : 'text-xs md:text-sm';
+  const titleFontSize = width < 350 ? 'text-2xs' : width < 500 ? 'text-xs' : 'text-sm md:text-xl';
+  const subtitleFontSize = width < 350 ? 'text-3xs' : width < 500 ? 'text-2xs' : 'text-xs md:text-sm';
+
+  // Adjust pulse ring size for better mobile appearance
+  const pulseRingSize = centerSize + (width < 350 ? 6 : width < 768 ? 8 : 20);
 
   return (
     <>
@@ -26,12 +29,12 @@ const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width }) => {
         }}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.8, type: "spring" }}
-        whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)' }}
+        transition={{ delay: 0.1, duration: 0.6, type: "spring" }}
+        whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(99, 102, 241, 0.5)' }}
       >
         <div className="text-center">
           <div className={`${titleFontSize} font-bold tracking-tight`}>HARDEEP</div>
-          <div className={`${subtitleFontSize} font-medium mt-1`}>ANAND Circle</div>
+          <div className={`${subtitleFontSize} font-medium mt-0.5`}>ANAND Circle</div>
         </div>
       </motion.div>
       
@@ -41,8 +44,8 @@ const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width }) => {
         style={{ 
           top: '50%', 
           left: '50%', 
-          width: centerSize + (width < 768 ? 10 : 20), 
-          height: centerSize + (width < 768 ? 10 : 20),
+          width: pulseRingSize, 
+          height: pulseRingSize,
           transform: 'translate(-50%, -50%)'
         }}
         animate={{

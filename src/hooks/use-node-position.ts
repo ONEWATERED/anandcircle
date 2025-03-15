@@ -34,19 +34,16 @@ export function useNodePositioning() {
     const centerX = width / 2;
     const centerY = height / 2;
     
-    // Dynamic scaling factor based on screen size
-    const scale = Math.min(width, height) / (isMobile ? 500 : 800);
-    
     // Adaptive radius based on container dimensions and device type
     let radius;
     if (isMobile) {
       // Smaller radius for mobile with progressive scaling based on screen width
       if (width < 350) {
-        radius = Math.min(width, height) * 0.22;
+        radius = Math.min(width, height) * 0.18; // Even smaller for very small screens
       } else if (width < 500) {
-        radius = Math.min(width, height) * 0.25;
+        radius = Math.min(width, height) * 0.22; // Smaller for small screens
       } else {
-        radius = Math.min(width, height) * 0.28;
+        radius = Math.min(width, height) * 0.26; // Adjusted for medium screens
       }
     } else {
       // Larger radius for desktop
@@ -55,8 +52,8 @@ export function useNodePositioning() {
     
     // Ensure nodes don't get too close to the edges on small screens
     const maxRadius = Math.min(
-      centerX - (isMobile ? 30 : 50),  // Keep margin from left/right edges
-      centerY - (isMobile ? 30 : 50)   // Keep margin from top/bottom edges
+      centerX - (isMobile ? 40 : 50),  // More margin from left/right edges on mobile
+      centerY - (isMobile ? 40 : 50)   // More margin from top/bottom edges on mobile
     );
     
     radius = Math.min(radius, maxRadius);
@@ -72,53 +69,53 @@ export function useNodePositioning() {
     // Responsive sizing based on screen size
     const getCenterSize = () => {
       if (isMobile) {
-        if (width < 350) return 60;  // Extra small screens
-        if (width < 500) return 80;  // Small screens
-        return 90;                   // Medium screens
+        if (width < 350) return 50;  // Even smaller for very small screens
+        if (width < 500) return 65;  // Smaller for small screens
+        return 75;                   // Medium screens
       }
       return 120;                    // Desktop
     };
     
     const getNodeSize = () => {
       if (isMobile) {
-        if (width < 350) return 12;  // Extra small screens
-        return 14;                   // Other mobile screens
+        if (width < 350) return 10;  // Smaller for very small screens
+        return 12;                   // Other mobile screens
       }
       return 16;                     // Desktop
     };
     
     const getIconSize = () => {
       if (isMobile) {
-        if (width < 350) return 18;  // Extra small screens
-        if (width < 500) return 22;  // Small screens
-        return 24;                   // Medium screens
+        if (width < 350) return 16;  // Smaller for very small screens
+        if (width < 500) return 20;  // Smaller for small screens
+        return 22;                   // Medium screens
       }
       return 30;                     // Desktop
     };
     
     const getNodeWidth = () => {
       if (isMobile) {
-        if (width < 350) return 60;  // Extra small screens
-        if (width < 500) return 70;  // Small screens
-        return 80;                   // Medium screens
+        if (width < 350) return 42;  // Smaller for very small screens
+        if (width < 500) return 55;  // Smaller for small screens
+        return 65;                   // Medium screens
       }
       return 100;                    // Desktop
     };
     
     const getNodeIconSize = () => {
       if (isMobile) {
-        if (width < 350) return 36;  // Extra small screens - made even smaller
-        if (width < 500) return 44;  // Small screens - made slightly smaller
-        return 50;                   // Medium screens
+        if (width < 350) return 28;  // Smaller for very small screens
+        if (width < 500) return 36;  // Smaller for small screens
+        return 44;                   // Medium screens
       }
       return 64;                     // Desktop
     };
     
     const getTextWidth = () => {
       if (isMobile) {
-        if (width < 350) return 'w-14'; // Even narrower for very small screens
-        if (width < 400) return 'w-16'; // Narrower for small screens
-        return 'w-20';
+        if (width < 350) return 'w-12'; // Narrower for very small screens
+        if (width < 400) return 'w-14'; // Narrower for small screens
+        return 'w-16';
       }
       return 'w-32';
     };
@@ -126,9 +123,9 @@ export function useNodePositioning() {
     // Calculate the container height based on screen size
     const getContainerHeight = () => {
       if (isMobile) {
-        if (width < 350) return 280;  // Even smaller for very small screens
-        if (width < 500) return 320;  // Smaller for small screens
-        return 380;                   // Mobile
+        if (width < 350) return 240;  // Smaller for very small screens
+        if (width < 500) return 280;  // Smaller for small screens
+        return 320;                   // Mobile
       }
       return 500;                     // Desktop
     };

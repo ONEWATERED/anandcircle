@@ -26,15 +26,15 @@ const InterconnectedDomainsGraphic = () => {
     isMobile,
   } = useNodePositioning();
 
-  // Main component animation sequence
+  // Main component animation sequence - faster on mobile
   useEffect(() => {
     // Allow time for initial animations before showing connections
     const timer = setTimeout(() => {
       setAnimationComplete(true);
-    }, 1000);
+    }, isMobile ? 600 : 1000);
     
     return () => clearTimeout(timer);
-  }, []);
+  }, [isMobile]);
 
   // Mobile touch handling - clear active node when tapping elsewhere
   useEffect(() => {
