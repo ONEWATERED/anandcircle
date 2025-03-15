@@ -33,20 +33,20 @@ const ProfileImage = () => {
     const loadUserData = async () => {
       setIsLoading(true);
       try {
-        // Load profile image
-        const savedImage = await getProfileImage();
-        console.log("Loaded profile image:", savedImage);
-        if (savedImage) {
-          setProfileImage(savedImage);
+        // Load profile data including image and social links
+        const userData = await getUserProfileData();
+        
+        // Set profile image
+        if (userData.imageUrl) {
+          setProfileImage(userData.imageUrl);
         } else {
           // Fallback to default image
           setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
         }
         
-        // Load social links
-        const userData = await getUserProfileData();
-        if (userData && userData.socialLinks) {
-          setSocialLinks(userData.socialLinks as SocialLinks);
+        // Set social links if available
+        if (userData.socialLinks) {
+          setSocialLinks(userData.socialLinks);
         }
       } catch (error) {
         console.error("Error loading profile image:", error);

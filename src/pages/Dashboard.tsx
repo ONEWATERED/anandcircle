@@ -9,7 +9,6 @@ import {
   getProfileImage, 
   saveProfileImage, 
   isValidImageUrl, 
-  fileToDataUrl, 
   getUserProfileData, 
   saveSocialLinks, 
   uploadImageToDatabase,
@@ -75,7 +74,7 @@ const Dashboard = () => {
           setResumeUrl(savedResumeUrl);
         }
 
-        // Load social links
+        // Load profile data and social links
         const userData = await getUserProfileData();
         if (userData && userData.socialLinks) {
           socialLinksForm.reset({
@@ -144,9 +143,13 @@ const Dashboard = () => {
       setIsUploading(true);
       
       const imageUrl = await uploadImageToDatabase(file);
-      setPreviewUrl(imageUrl);
-      setProfileImageUrl('');
-      toast.success('Profile image uploaded successfully!');
+      if (imageUrl) {
+        setPreviewUrl(imageUrl);
+        setProfileImageUrl('');
+        toast.success('Profile image uploaded successfully!');
+      } else {
+        throw new Error('Failed to get image URL');
+      }
     } catch (error) {
       console.error('Error uploading image:', error);
       toast.error('Failed to upload image. Please try again.');
