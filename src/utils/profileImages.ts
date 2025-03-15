@@ -3,6 +3,19 @@
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
+// Define the profile data interface
+export interface ProfileData {
+  imageUrl?: string;
+  bio?: string;
+  socialLinks?: {
+    linkedIn: string;
+    twitter: string;
+    youtube: string;
+    spotify: string;
+    anandCircle: string;
+  };
+}
+
 // Get profile image URL from Supabase or localStorage fallback
 export const getProfileImage = async (): Promise<string | null> => {
   try {
@@ -54,9 +67,12 @@ export const getProfileImage = async (): Promise<string | null> => {
 };
 
 // Added this function to satisfy import in ProfileImage component
-export const getUserProfileData = async () => {
+export const getUserProfileData = async (): Promise<ProfileData> => {
   // Get the profile image URL
   const imageUrl = await getProfileImage();
+  
+  // Get bio from localStorage
+  const bio = localStorage.getItem('userBio') || '';
   
   // Get social links from localStorage as default values
   let socialLinks = {
@@ -110,7 +126,7 @@ export const getUserProfileData = async () => {
     console.error("Error fetching social links from Supabase:", error);
   }
   
-  return { imageUrl, socialLinks };
+  return { imageUrl, bio, socialLinks };
 };
 
 // Save profile image URL to Supabase and localStorage fallback

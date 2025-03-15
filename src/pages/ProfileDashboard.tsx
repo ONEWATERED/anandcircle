@@ -10,23 +10,9 @@ import { useToast } from '@/components/ui/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Camera, Loader2, User } from 'lucide-react';
 import { uploadImageToStorage } from '@/utils/fileUtils';
-import { saveProfileImage } from '@/utils/profileImages';
-import { getUserProfileData } from '@/utils/imageLoader';
+import { saveProfileImage, getUserProfileData, ProfileData } from '@/utils/profileImages';
 import { saveSocialLinks } from '@/utils/databaseUtils';
 import AdminLayout from '@/layouts/AdminLayout';
-
-// Define the type for profile data
-interface ProfileData {
-  bio?: string;
-  imageUrl?: string;
-  socialLinks?: {
-    linkedIn: string;
-    twitter: string;
-    youtube: string;
-    spotify: string;
-    anandCircle: string;
-  };
-}
 
 const ProfileDashboard = () => {
   const { toast } = useToast();
@@ -51,7 +37,7 @@ const ProfileDashboard = () => {
         console.log('Loaded user data:', userData);
         
         if (userData) {
-          // Set bio if available - need to handle with optional chaining
+          // Set bio if available
           if (userData.bio) {
             setBio(userData.bio);
           }

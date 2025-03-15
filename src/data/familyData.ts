@@ -1,3 +1,4 @@
+
 import { Users, Heart, Dog } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
@@ -15,6 +16,7 @@ export interface FamilyMember {
     instagram?: string;
     linkedin?: string;
     facebook?: string;
+    youtube?: string; // Added youtube as an allowed property
   };
 }
 
