@@ -39,7 +39,7 @@ type FormValues = z.infer<typeof formSchema>;
 interface InterestSubmission extends FormValues {
   id: string;
   date: string;
-  type: 'avatar' | 'profile';
+  type: 'avatar' | 'profile' | 'none'; // Fixed to include 'none' as a valid type
 }
 
 const InterestForm = () => {
