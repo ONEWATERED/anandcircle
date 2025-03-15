@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import FamilyCircleGraphic from './FamilyCircleGraphic';
 import { FamilyMember, familyMembers } from '@/data/familyData';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Users, Heart, Dog } from 'lucide-react';
 
 const FamilyCircleSection = () => {
@@ -11,6 +10,7 @@ const FamilyCircleSection = () => {
 
   // Handler to display member details when selected
   const handleSelectMember = (member: FamilyMember | null) => {
+    console.log("Selected member:", member?.name);
     setSelectedMember(member);
   };
 

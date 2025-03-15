@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -89,13 +90,15 @@ interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const FlipCard = React.forwardRef<HTMLDivElement, FlipCardProps>(
-  ({ frontContent, backContent, flipOnHover = false, flipOnClick = true, isFlipped, height = "100%", width = "100%", className, onClick, ...props }, ref) => {
+  ({ frontContent, backContent, flipOnHover = false, flipOnClick = true, isFlipped = false, height = "100%", width = "100%", className, onClick, ...props }, ref) => {
     const [internalIsFlipped, setInternalIsFlipped] = React.useState(false);
     
+    // Use the external isFlipped prop if provided, otherwise use internal state
     const flipped = isFlipped !== undefined ? isFlipped : internalIsFlipped;
     
     const handleClick = (e: React.MouseEvent) => {
       e.stopPropagation();
+      console.log("FlipCard clicked, current flipped state:", flipped);
       
       if (onClick) {
         onClick();
@@ -104,6 +107,7 @@ const FlipCard = React.forwardRef<HTMLDivElement, FlipCardProps>(
       }
     };
 
+    // Add custom CSS for the flip card animation
     React.useEffect(() => {
       const styleId = 'flip-card-styles';
       if (!document.getElementById(styleId)) {
@@ -148,10 +152,10 @@ const FlipCard = React.forwardRef<HTMLDivElement, FlipCardProps>(
             flipped ? "rotate-y-180" : ""
           )}
         >
-          <div className="absolute w-full h-full backface-hidden">
+          <div className="absolute w-full h-full backface-hidden rounded-xl">
             {frontContent}
           </div>
-          <div className="absolute w-full h-full backface-hidden rotate-y-180">
+          <div className="absolute w-full h-full backface-hidden rotate-y-180 rounded-xl">
             {backContent}
           </div>
         </div>

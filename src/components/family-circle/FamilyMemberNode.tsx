@@ -39,7 +39,7 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
   
   // Handle click on node
   const handleClick = () => {
-    console.log('Card clicked!', member.name);
+    console.log('Card clicked!', member.name, 'Current flip state:', isFlipped);
     setIsFlipped(!isFlipped);
     onNodeClick(member.id);
   };
