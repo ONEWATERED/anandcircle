@@ -31,8 +31,8 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     centerSize 
   } = useNodePositioning();
 
-  // Orbit radius calculation - use a consistent percentage of the smaller dimension
-  const orbitRadius = Math.min(width, height) * 0.38;
+  // Orbit radius calculation - increase percentage for better spacing
+  const orbitRadius = Math.min(width, height) * 0.42; // Increased from 0.38 to 0.42
 
   // Set animation complete after initial load
   useEffect(() => {

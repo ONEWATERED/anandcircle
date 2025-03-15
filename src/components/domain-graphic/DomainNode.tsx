@@ -34,6 +34,11 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   const isActive = activeNode === domain.id;
   const width = window.innerWidth;
 
+  // Determine if the title should be split into two lines
+  // For titles with more than one word
+  const titleWords = domain.title.split(' ');
+  const shouldSplitTitle = titleWords.length > 1 && !isMobile;
+
   const handleInteraction = () => {
     if (isMobile) {
       // For mobile, toggle active state
@@ -47,6 +52,9 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   // Optimize transition delays for faster initial loading on mobile
   const nodeDelay = isMobile ? 0.2 + (index * 0.05) : 0.3 + (index * 0.1);
 
+  // Calculate additional height for text to prevent overlap
+  const nodeHeight = nodeWidth * (shouldSplitTitle ? 1.8 : 1.6);
+
   return (
     <motion.div
       key={domain.id}
@@ -56,7 +64,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         top: position.y, 
         left: position.x, 
         width: nodeWidth,
-        height: nodeWidth * 1.5, // Increased height to accommodate more text
+        height: nodeHeight, // Adjusted height to fit multiple text lines
         marginLeft: -nodeWidth/2,
         marginTop: -nodeWidth/2,
         // The text should always stay upright even as the node rotates around the circle
@@ -101,12 +109,22 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         }}
         transition={{ delay: nodeDelay + 0.1 }}
       >
-        <div className={`font-semibold ${width < 350 ? 'text-3xs' : width < 500 ? 'text-2xs' : 'text-xs'} md:text-sm truncate`}>
-          {domain.title}
-        </div>
+        {shouldSplitTitle ? (
+          // Split title into two lines for desktop
+          <div className={`font-semibold text-xs md:text-sm`}>
+            <div className="truncate">{titleWords.slice(0, Math.ceil(titleWords.length / 2)).join(' ')}</div>
+            <div className="truncate">{titleWords.slice(Math.ceil(titleWords.length / 2)).join(' ')}</div>
+          </div>
+        ) : (
+          // Single line for mobile or short titles
+          <div className={`font-semibold ${width < 350 ? 'text-3xs' : width < 500 ? 'text-2xs' : 'text-xs'} md:text-sm truncate`}>
+            {domain.title}
+          </div>
+        )}
+        
         {isActive && (
           <motion.div 
-            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-0.5 z-10 bg-black/50 p-1 rounded-md backdrop-blur-sm text-white`}
+            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-0.5 z-10 bg-black/70 p-1 rounded-md backdrop-blur-sm text-white`}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
