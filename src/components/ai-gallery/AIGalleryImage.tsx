@@ -3,6 +3,7 @@ import React from 'react';
 import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { LucideIcon } from 'lucide-react';
 
 interface AIGalleryImageProps {
   image: {
@@ -11,11 +12,13 @@ interface AIGalleryImageProps {
     description: string;
     category: string;
     url: string;
-    icon: React.ReactNode;
+    icon: LucideIcon;
   };
 }
 
 const AIGalleryImage = ({ image }: AIGalleryImageProps) => {
+  const Icon = image.icon;
+  
   return (
     <div className="flex-[0_0_90%] md:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0 pl-4">
       <Card className="neo-glass overflow-hidden border-0 transition-all duration-300 hover:shadow-xl h-full">
@@ -26,7 +29,7 @@ const AIGalleryImage = ({ image }: AIGalleryImageProps) => {
             className="object-cover w-full h-full transition-transform duration-500 hover:scale-110"
           />
           <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-black/60 text-white text-xs font-medium flex items-center">
-            {image.icon}
+            <Icon className="h-4 w-4" />
             <span className="ml-1">{image.category}</span>
           </div>
         </div>
