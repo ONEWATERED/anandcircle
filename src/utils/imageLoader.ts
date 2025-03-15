@@ -81,14 +81,19 @@ export const uploadImageToStorage = async (imageFile: File): Promise<string | nu
   try {
     const { data: { session } } = await supabase.auth.getSession();
     
-    if (!session?.user) {
-      throw new Error("User not authenticated");
-    }
-    
-    // Create a unique file name
+    // Generate a unique file name
     const fileExt = imageFile.name.split('.').pop();
     const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = `${session.user.id}/${fileName}`;
+    const filePath = session?.user ? `${session.user.id}/${fileName}` : `anonymous/${fileName}`;
+    
+    // Create a storage bucket if it doesn't exist (this happens server-side)
+    const { data: bucketData, error: bucketError } = await supabase.storage.getBucket('connection_images');
+    
+    if (bucketError && bucketError.message.includes('does not exist')) {
+      // Bucket doesn't exist, but we'll try to upload anyway
+      // The backend might have RLS policies that allow creation
+      console.log("Bucket doesn't exist, attempting upload anyway");
+    }
     
     // Upload to Supabase Storage
     const { data, error } = await supabase.storage
@@ -99,7 +104,10 @@ export const uploadImageToStorage = async (imageFile: File): Promise<string | nu
       });
     
     if (error) {
-      throw error;
+      console.error("Error uploading to Supabase Storage:", error);
+      
+      // Fallback to data URL for users without Supabase auth
+      return await fileToDataUrl(imageFile);
     }
     
     // Get the public URL
@@ -107,13 +115,24 @@ export const uploadImageToStorage = async (imageFile: File): Promise<string | nu
       .from('profile_images')
       .getPublicUrl(data.path);
     
-    // Save this URL to the profile
-    await saveProfileImage(publicUrl);
+    console.log("Image uploaded to Supabase Storage:", publicUrl);
+    
+    // Save this URL to the profile if user is authenticated
+    if (session?.user) {
+      await saveProfileImage(publicUrl);
+    }
     
     return publicUrl;
   } catch (error) {
     console.error("Error uploading image to Supabase Storage:", error);
-    return null;
+    
+    // Fallback to data URL
+    try {
+      return await fileToDataUrl(imageFile);
+    } catch (err) {
+      console.error("Error creating data URL:", err);
+      return null;
+    }
   }
 };
 
@@ -158,7 +177,7 @@ export const fileToDataUrl = (file: File): Promise<string> => {
   });
 };
 
-// Create a function to handle database uploads
+// Handle uploading image to either Supabase or localStorage
 export const uploadImageToDatabase = async (imageFile: File): Promise<string> => {
   try {
     // First try to upload to Supabase Storage
@@ -295,7 +314,7 @@ export const saveSocialLinks = async (links: {
       for (const [platform, url] of Object.entries(links)) {
         if (!url) continue;
         
-        // Fix: Use correct format for the upsert operation
+        // Use correct format for the onConflict parameter
         const { error } = await supabase
           .from('social_links')
           .upsert({
@@ -304,7 +323,7 @@ export const saveSocialLinks = async (links: {
             url,
             updated_at: new Date().toISOString()
           }, {
-            onConflict: 'user_id,platform'  // Fix: Use a comma-separated string instead of an array
+            onConflict: 'user_id,platform'
           });
         
         if (error) {
