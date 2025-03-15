@@ -1,28 +1,42 @@
 
-// Module for connection images management
+// Module for handling connection (family/people) images
 import { supabase } from "@/integrations/supabase/client";
-import { fileToDataUrl } from "./fileUtils";
 
-// Get connection image from Supabase or localStorage
+/**
+ * Retrieves a connection image from Supabase or localStorage
+ * @param personId The ID of the person whose image we're fetching
+ * @returns URL of the image or null if not found
+ */
 export const getConnectionImage = async (personId: string): Promise<string | null> => {
   try {
-    // Try to fetch image using RPC function
-    const { data, error } = await supabase.rpc('get_connection_image', {
-      p_person_id: personId as any
-    });
+    console.log(`Getting connection image for person: ${personId}`);
+    
+    // Try to get from Supabase connection_images first
+    const { data, error } = await supabase
+      .rpc('get_connection_image', { p_person_id: personId });
     
     if (error) {
-      console.error("Error fetching connection image:", error);
-      // Don't return early, try localStorage fallback
+      console.error("Error fetching connection image from Supabase:", error);
+      // If Supabase fails, try localStorage
+      const localImage = localStorage.getItem(`connection_image_${personId}`);
+      console.log(`Retrieved image from localStorage for ${personId}:`, localImage ? "Found" : "Not found");
+      return localImage;
     }
     
-    if (data && Array.isArray(data) && data.length > 0 && data[0]?.image_path) {
-      return data[0].image_path;
+    // Check if we got a valid image path from Supabase
+    if (data && data.length > 0 && data[0].image_path) {
+      const imagePath = data[0].image_path;
+      console.log(`Retrieved connection image from Supabase for ${personId}:`, imagePath);
+      
+      // Update localStorage for offline access
+      localStorage.setItem(`connection_image_${personId}`, imagePath);
+      
+      return imagePath;
     }
     
-    // Fallback to localStorage
-    const key = `connection_image_${personId}`;
-    const localImage = localStorage.getItem(key);
+    // If not in Supabase, try localStorage
+    const localImage = localStorage.getItem(`connection_image_${personId}`);
+    console.log(`Fallback to localStorage for ${personId}:`, localImage ? "Found" : "Not found");
     
     if (localImage) {
       return localImage;
@@ -30,97 +44,50 @@ export const getConnectionImage = async (personId: string): Promise<string | nul
     
     return null;
   } catch (error) {
-    console.error("Error getting connection image:", error);
+    console.error(`Error getting connection image for ${personId}:`, error);
     
     // Final fallback to localStorage
     try {
-      const key = `connection_image_${personId}`;
-      return localStorage.getItem(key);
+      const localImage = localStorage.getItem(`connection_image_${personId}`);
+      return localImage;
     } catch (e) {
       return null;
     }
   }
 };
 
-// Upload an image specifically for a connection
-export const uploadConnectionImage = async (imageFile: File, personId: string): Promise<string | null> => {
+/**
+ * Saves a connection image URL to Supabase and localStorage
+ * @param personId The ID of the person whose image we're saving
+ * @param url The image URL to save
+ */
+export const saveConnectionImage = async (personId: string, url: string): Promise<void> => {
   try {
-    // Always start by converting file to data URL for fallback
-    const dataUrl = await fileToDataUrl(imageFile);
+    console.log(`Saving connection image for ${personId}:`, url);
     
-    // Attempt to upload to Supabase Storage if available
-    try {
-      // Generate a unique file name
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      
-      // Create a folder structure for connections
-      const folder = `connections/${personId}`;
-      const filePath = `${folder}/${fileName}`;
-      
-      // Upload to connection_images bucket
-      const bucket = 'connection_images';
-      
-      // Check if the bucket exists, if not create it
-      const { data: buckets } = await supabase.storage.listBuckets();
-      const bucketExists = buckets?.some(b => b.name === bucket);
-      
-      if (!bucketExists) {
-        console.log("Creating new storage bucket:", bucket);
-        const { error: createError } = await supabase.storage.createBucket(bucket, {
-          public: true,
-          fileSizeLimit: 5242880 // 5MB
-        });
-        
-        if (createError) {
-          console.error("Error creating bucket:", createError);
-          return dataUrl; // Fallback to data URL
-        }
-      }
-      
-      // Upload file to appropriate bucket
-      const { data, error } = await supabase.storage
-        .from(bucket)
-        .upload(filePath, imageFile, {
-          cacheControl: '3600',
-          upsert: true
-        });
-      
-      if (error) {
-        console.error(`Error uploading to ${bucket}:`, error);
-        // Fall back to data URL since Supabase upload failed
-        return dataUrl;
-      }
-      
-      // Get the public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from(bucket)
-        .getPublicUrl(data.path);
-      
-      // Store the connection in a separate table using a custom SQL procedure
-      const { error: insError } = await supabase.rpc('store_connection_image', {
-        p_person_id: personId as any,
-        p_image_path: publicUrl as any
+    // Save to Supabase
+    const { error } = await supabase
+      .rpc('store_connection_image', { 
+        p_person_id: personId,
+        p_image_path: url
       });
-      
-      if (insError) {
-        console.error("Error storing connection image:", insError);
-      }
-      
-      console.log("Connection image uploaded to Supabase Storage:", publicUrl);
-      
-      // Also save to localStorage as backup
-      localStorage.setItem(`connection_image_${personId}`, publicUrl);
-      
-      return publicUrl;
-    } catch (error) {
-      console.error("Failed to upload to Supabase, using data URL instead:", error);
-      // Fallback to localStorage
-      localStorage.setItem(`connection_image_${personId}`, dataUrl);
-      return dataUrl;
+    
+    if (error) {
+      console.error(`Error saving connection image to Supabase for ${personId}:`, error);
+    } else {
+      console.log(`Connection image saved to Supabase for ${personId}`);
     }
+    
+    // Always save to localStorage as fallback
+    localStorage.setItem(`connection_image_${personId}`, url);
   } catch (error) {
-    console.error("Error in uploadConnectionImage:", error);
-    return null;
+    console.error(`Error saving connection image for ${personId}:`, error);
+    
+    // Try localStorage as final fallback
+    try {
+      localStorage.setItem(`connection_image_${personId}`, url);
+    } catch (e) {
+      console.error("Failed to save to localStorage:", e);
+    }
   }
 };

@@ -27,8 +27,9 @@ import {
 import { Person, SocialLink } from '@/types/connections';
 import { Link } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
-import { getConnectionImage } from '@/utils/imageLoader';
+import { getConnectionImage } from '@/utils/connectionImages';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { checkDatabaseConnection } from '@/utils/databaseUtils';
 
 export const people: Person[] = [
   // Family
@@ -242,11 +243,24 @@ const FamilyMemberCard = ({ person }: { person: Person }) => {
   const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const loadSupabaseImage = async () => {
+    const loadConnectionImage = async () => {
       try {
-        const supabaseImage = await getConnectionImage(person.id);
-        if (supabaseImage) {
-          setImageUrl(supabaseImage);
+        setIsImageLoading(true);
+        // Try to load from Supabase connection_images table
+        const fetchedImageUrl = await getConnectionImage(person.id);
+        
+        if (fetchedImageUrl) {
+          console.log(`Loaded image for ${person.name} from Supabase:`, fetchedImageUrl);
+          setImageUrl(fetchedImageUrl);
+        } else {
+          // Fallback to localStorage
+          const localImage = localStorage.getItem(`connection_image_${person.id}`);
+          if (localImage) {
+            console.log(`Loaded image for ${person.name} from localStorage`);
+            setImageUrl(localImage);
+          } else {
+            console.log(`Using default image for ${person.name}`);
+          }
         }
       } catch (error) {
         console.error(`Error loading image for ${person.name}:`, error);
@@ -255,7 +269,7 @@ const FamilyMemberCard = ({ person }: { person: Person }) => {
       }
     };
 
-    loadSupabaseImage();
+    loadConnectionImage();
   }, [person.id, person.name]);
 
   // Create front content of the card
@@ -363,12 +377,24 @@ const PersonCard = ({ person }: { person: Person }) => {
   const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const loadSupabaseImage = async () => {
+    const loadConnectionImage = async () => {
       try {
-        // Try to get the image from Supabase first
-        const supabaseImage = await getConnectionImage(person.id);
-        if (supabaseImage) {
-          setImageUrl(supabaseImage);
+        setIsImageLoading(true);
+        // Try to load from Supabase connection_images table
+        const fetchedImageUrl = await getConnectionImage(person.id);
+        
+        if (fetchedImageUrl) {
+          console.log(`Loaded image for ${person.name} from Supabase:`, fetchedImageUrl);
+          setImageUrl(fetchedImageUrl);
+        } else {
+          // Fallback to localStorage
+          const localImage = localStorage.getItem(`connection_image_${person.id}`);
+          if (localImage) {
+            console.log(`Loaded image for ${person.name} from localStorage`);
+            setImageUrl(localImage);
+          } else {
+            console.log(`Using default image for ${person.name}`);
+          }
         }
       } catch (error) {
         console.error(`Error loading image for ${person.name}:`, error);
@@ -377,7 +403,7 @@ const PersonCard = ({ person }: { person: Person }) => {
       }
     };
 
-    loadSupabaseImage();
+    loadConnectionImage();
   }, [person.id, person.name]);
 
   // Create front content
@@ -493,11 +519,33 @@ const PersonCard = ({ person }: { person: Person }) => {
 const FollowingSection = () => {
   const [displayPeople, setDisplayPeople] = useState<Person[]>(people);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [connectionError, setConnectionError] = useState<boolean>(false);
+  
+  useEffect(() => {
+    const checkUserRole = async () => {
+      try {
+        // Check if user is authenticated
+        const { data: { session } } = await supabase.auth.getSession();
+        // For simplicity, anyone logged in can manage connections
+        // In a real app, you'd check for specific admin roles
+        setIsAdmin(!!session?.user);
+      } catch (error) {
+        console.error("Error checking user role:", error);
+      }
+    };
+    
+    checkUserRole();
+  }, []);
   
   useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
       try {
+        // Check database connection
+        const isConnected = await checkDatabaseConnection();
+        setConnectionError(!isConnected);
+        
         // First check local storage
         const savedPeople = localStorage.getItem('connections');
         
@@ -505,20 +553,7 @@ const FollowingSection = () => {
           try {
             const parsedPeople = JSON.parse(savedPeople);
             if (Array.isArray(parsedPeople) && parsedPeople.length > 0) {
-              // Update images from Supabase if available
-              const updatedPeople = await Promise.all(
-                parsedPeople.map(async (person) => {
-                  try {
-                    const supabaseImage = await getConnectionImage(person.id);
-                    return supabaseImage ? { ...person, image: supabaseImage } : person;
-                  } catch (error) {
-                    console.error(`Error fetching image for ${person.name}:`, error);
-                    return person;
-                  }
-                })
-              );
-              
-              setDisplayPeople(updatedPeople);
+              setDisplayPeople(parsedPeople);
             }
           } catch (error) {
             console.error('Error parsing connections data:', error);
@@ -556,20 +591,32 @@ const FollowingSection = () => {
             The people who shape my thinking, inspire my work, and hold a special place in my heart.
           </p>
           
-          <div className="mt-4 flex justify-center opacity-0 animate-fade-up" style={{ animationDelay: '200ms' }}>
-            <Link to="/connections">
-              <Button variant="outline" className="gap-2">
-                <Pencil className="h-4 w-4" />
-                Manage Connections
-              </Button>
-            </Link>
-          </div>
+          {isAdmin && (
+            <div className="mt-4 flex justify-center opacity-0 animate-fade-up" style={{ animationDelay: '200ms' }}>
+              <Link to="/connections">
+                <Button variant="outline" className="gap-2">
+                  <Pencil className="h-4 w-4" />
+                  Manage Connections
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
         
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-12">
             <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
             <p className="text-muted-foreground">Loading your connections...</p>
+          </div>
+        ) : connectionError ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="mb-4 p-4 rounded-full bg-amber-100">
+              <ExternalLink className="h-8 w-8 text-amber-600" />
+            </div>
+            <p className="text-lg font-medium mb-2">Connection issue detected</p>
+            <p className="text-muted-foreground max-w-md">
+              We're having trouble connecting to the database. Showing cached data instead.
+            </p>
           </div>
         ) : (
           <>
