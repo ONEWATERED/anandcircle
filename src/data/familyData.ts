@@ -1,4 +1,3 @@
-
 import { Users, Heart, Dog } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 

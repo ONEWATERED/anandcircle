@@ -51,7 +51,7 @@ const ProfileDashboard = () => {
         console.log('Loaded user data:', userData);
         
         if (userData) {
-          // Set bio if available
+          // Set bio if available - need to handle with optional chaining
           if (userData.bio) {
             setBio(userData.bio);
           }
