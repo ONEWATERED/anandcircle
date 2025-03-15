@@ -290,10 +290,11 @@ export const saveSocialLinks = async (links: {
         console.error("Error ensuring profile exists:", profileError);
       }
       
-      // Now save each social link
+      // Now save each social link individually
       for (const [platform, url] of Object.entries(links)) {
         if (!url) continue;
         
+        // Fix: Use correct format for the upsert operation
         const { error } = await supabase
           .from('social_links')
           .upsert({
