@@ -20,7 +20,7 @@ const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width }) => {
 
   return (
     <>
-      {/* The Circle for HARDEEP ANAND - centered with transform */}
+      {/* The Circle for HARDEEP ANAND - perfectly centered */}
       <motion.div 
         className="absolute z-10 rounded-full bg-gradient-to-r from-primary/90 to-accent/90 flex items-center justify-center text-white shadow-lg"
         style={{ 
@@ -41,7 +41,7 @@ const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width }) => {
         </div>
       </motion.div>
       
-      {/* Inner pulsing ring - centered with transform */}
+      {/* Inner pulsing ring - perfectly centered */}
       <motion.div
         className="absolute rounded-full border-2 border-primary/30"
         style={{ 
@@ -62,7 +62,7 @@ const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width }) => {
         }}
       />
       
-      {/* Outer pulsing ring - centered with transform */}
+      {/* Outer pulsing ring - perfectly centered */}
       <motion.div
         className="absolute rounded-full border border-primary/20"
         style={{ 
