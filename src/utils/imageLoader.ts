@@ -3,12 +3,30 @@
 
 // Get profile image URL from localStorage
 export const getProfileImage = (): string | null => {
-  return localStorage.getItem('profileImageUrl') || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+  try {
+    const profileImage = localStorage.getItem('profileImageUrl');
+    console.log("Retrieved profile image from storage:", profileImage);
+    
+    if (profileImage) {
+      return profileImage;
+    }
+    
+    // Return default image if none is found in localStorage
+    return '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+  } catch (error) {
+    console.error("Error getting profile image:", error);
+    return '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+  }
 };
 
 // Save profile image URL to localStorage
 export const saveProfileImage = (url: string): void => {
-  localStorage.setItem('profileImageUrl', url);
+  try {
+    console.log("Saving profile image:", url);
+    localStorage.setItem('profileImageUrl', url);
+  } catch (error) {
+    console.error("Error saving profile image:", error);
+  }
 };
 
 // Clear profile image from localStorage

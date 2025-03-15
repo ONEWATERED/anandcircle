@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Linkedin, Twitter, Users, Youtube, Music, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -16,17 +15,35 @@ import {
 import { Button } from "@/components/ui/button";
 
 const ProfileImage = () => {
-  const [profileImage, setProfileImage] = useState<string | null>('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isAvatarPulsing, setIsAvatarPulsing] = useState(true);
   const [showAvatarHint, setShowAvatarHint] = useState(false);
   const [showAvatarDialog, setShowAvatarDialog] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Load profile image from localStorage if available
-    const savedImage = getProfileImage();
-    if (savedImage) {
-      setProfileImage(savedImage);
-    }
+    const loadProfileImage = async () => {
+      setIsLoading(true);
+      try {
+        const savedImage = getProfileImage();
+        console.log("Loaded profile image:", savedImage);
+        if (savedImage) {
+          setProfileImage(savedImage);
+        } else {
+          // Fallback to default image
+          setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+        }
+      } catch (error) {
+        console.error("Error loading profile image:", error);
+        // Fallback to default image on error
+        setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProfileImage();
 
     // Set interval for the avatar animation
     const pulseInterval = setInterval(() => {
@@ -57,11 +74,19 @@ const ProfileImage = () => {
       {/* Main image container with glass effect */}
       <div className="glass-card p-2 rounded-2xl shadow-xl overflow-hidden relative z-10">
         <div className="aspect-[3/4] rounded-xl overflow-hidden">
-          {profileImage ? (
+          {isLoading ? (
+            <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center animate-pulse">
+              <p className="text-gray-400 text-sm">Loading...</p>
+            </div>
+          ) : profileImage ? (
             <img 
               src={profileImage} 
               alt="Hardeep Anand" 
               className="w-full h-full object-cover"
+              onError={() => {
+                console.log("Image failed to load, falling back to default");
+                setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+              }}
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
