@@ -1,6 +1,7 @@
 
 import React from 'react';
 import ProfileImage from './ProfileImage';
+import ResumeButton from './ResumeButton';
 
 const Story = () => {
   return (
@@ -38,13 +39,19 @@ const Story = () => {
               </p>
             </div>
             
-            <div className="pt-4 opacity-0 animate-fade-up" style={{ animationDelay: '400ms' }}>
+            <div className="pt-4 flex flex-wrap gap-4 opacity-0 animate-fade-up" style={{ animationDelay: '400ms' }}>
               <a 
                 href="#passions" 
                 className="inline-flex items-center justify-center h-11 px-6 font-medium text-white transition duration-200 rounded-lg bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90 shadow-md"
               >
                 Explore My Domains
               </a>
+              
+              {/* Resume Button */}
+              <ResumeButton 
+                variant="outline" 
+                size="lg"
+              />
             </div>
           </div>
           

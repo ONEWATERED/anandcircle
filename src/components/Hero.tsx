@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
+import ResumeButton from './ResumeButton';
 
 const Hero = () => {
   return (
@@ -54,6 +55,13 @@ const Hero = () => {
             >
               Explore My Work
             </a>
+            
+            {/* Resume Button */}
+            <ResumeButton 
+              variant="outline" 
+              size="lg"
+              className="h-12 px-6 rounded-full bg-white/10 backdrop-blur-lg hover:bg-white/20 border border-white/10 shadow-lg text-white"
+            />
           </div>
         </div>
       </div>

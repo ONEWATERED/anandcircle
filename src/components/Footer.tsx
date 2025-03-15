@@ -1,6 +1,8 @@
 
 import React from 'react';
 import OneWaterPromo from './OneWaterPromo';
+import ResumeButton from './ResumeButton';
+import { FileText } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -15,6 +17,9 @@ const Footer = () => {
               <p className="text-muted-foreground mb-4">
                 Executive, innovator, and mentor focused on the intersection of technology, health, and community.
               </p>
+              
+              {/* Resume Button */}
+              <ResumeButton variant="outline" />
             </div>
             
             {/* Quick Links */}
@@ -35,6 +40,12 @@ const Footer = () => {
                 </li>
                 <li>
                   <a href="#interest-form" className="text-muted-foreground hover:text-primary transition-colors">Create Your Own</a>
+                </li>
+                <li>
+                  <a href="#" className="flex items-center text-muted-foreground hover:text-primary transition-colors">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Resume/CV
+                  </a>
                 </li>
               </ul>
             </div>

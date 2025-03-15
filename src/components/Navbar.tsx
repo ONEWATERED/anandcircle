@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Menu, X, Linkedin, Twitter, Youtube, Music } from 'lucide-react';
+import { Menu, X, Linkedin, Twitter, Youtube, Music, FileText } from 'lucide-react';
+import ResumeButton from './ResumeButton';
 
 const navLinks = [
   { name: 'Home', href: '#home' },
@@ -70,6 +71,13 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
+            
+            {/* Resume Button */}
+            <ResumeButton 
+              variant="ghost" 
+              showIcon={true} 
+              className="text-sm font-medium text-foreground/80 hover:text-primary"
+            />
           </div>
           
           {/* Mobile menu button */}
@@ -103,6 +111,16 @@ const Navbar = () => {
                   {link.name}
                 </a>
               ))}
+              
+              {/* Resume Button for Mobile */}
+              <div className="px-3 py-2">
+                <ResumeButton 
+                  variant="outline" 
+                  size="default" 
+                  className="w-full justify-center" 
+                  onClick={() => setMobileMenuOpen(false)}
+                />
+              </div>
               
               {/* Social Media Icons for Mobile */}
               <div className="flex items-center space-x-4 px-3 py-3 border-t border-gray-200/30 mt-2">
