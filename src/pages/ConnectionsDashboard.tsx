@@ -37,11 +37,12 @@ import {
   Save,
   CheckCircle,
   Linkedin,
-  UploadCloud
+  UploadCloud,
+  Loader2
 } from 'lucide-react';
 import { Person, SocialLink } from '@/types/connections';
 import { supabase } from "@/integrations/supabase/client";
-import { uploadImageToStorage, fileToDataUrl } from '@/utils/imageLoader';
+import { uploadImageToStorage, fileToDataUrl, getConnectionImage } from '@/utils/imageLoader';
 
 const ConnectionsDashboard = () => {
   const [people, setPeople] = useState<Person[]>([]);
@@ -74,6 +75,7 @@ const ConnectionsDashboard = () => {
         let savedPeople: Person[] = [];
         
         try {
+          // Try to get data from localStorage first
           const peopleData = localStorage.getItem('connections');
           if (peopleData) {
             savedPeople = JSON.parse(peopleData);
@@ -84,7 +86,30 @@ const ConnectionsDashboard = () => {
         }
         
         if (savedPeople && savedPeople.length > 0) {
-          setPeople(savedPeople);
+          // Update each person's image with the one from Supabase if available
+          const updatedPeople = await Promise.all(
+            savedPeople.map(async (person) => {
+              try {
+                const supabaseImage = await getConnectionImage(person.id);
+                if (supabaseImage) {
+                  return { ...person, image: supabaseImage };
+                }
+              } catch (error) {
+                console.error(`Error fetching image for ${person.name}:`, error);
+              }
+              return person;
+            })
+          );
+          
+          setPeople(updatedPeople);
+          
+          // Update localStorage with the updated image URLs
+          try {
+            localStorage.setItem('connections', JSON.stringify(updatedPeople));
+          } catch (storageError) {
+            console.error("Failed to save to localStorage:", storageError);
+            toast.error("Couldn't save connection data to browser storage");
+          }
         } else {
           // Fetch from hardcoded data in FollowingSection.tsx when no data exists yet
           const FollowingSectionModule = await import('@/components/FollowingSection');
@@ -166,26 +191,17 @@ const ConnectionsDashboard = () => {
     setUploading(true);
     
     try {
-      // First convert to data URL as fallback
-      const dataUrl = await fileToDataUrl(file);
+      // Get the personId for the current form
+      const personId = form.getValues().id;
       
-      // Try to upload to Supabase first
-      try {
-        // Upload image to Supabase Storage
-        const imageUrl = await uploadImageToStorage(file);
-        if (imageUrl) {
-          setValue('image', imageUrl);
-          toast.success('Image uploaded successfully');
-        } else {
-          // Fallback to data URL if Supabase upload fails
-          setValue('image', dataUrl);
-          toast.success('Image saved locally');
-        }
-      } catch (uploadError) {
-        console.error('Error uploading to Supabase:', uploadError);
-        // Use data URL as fallback
-        setValue('image', dataUrl);
-        toast.success('Image saved locally');
+      // Upload to Supabase with personId for proper organization
+      const imageUrl = await uploadImageToStorage(file, personId);
+      
+      if (imageUrl) {
+        setValue('image', imageUrl);
+        toast.success('Image uploaded successfully');
+      } else {
+        toast.error('Failed to upload image');
       }
     } catch (error) {
       console.error('Error processing image:', error);
@@ -195,17 +211,63 @@ const ConnectionsDashboard = () => {
     }
   };
   
-  const onSubmit = (data: Person) => {
+  const onSubmit = async (data: Person) => {
     if (selectedPerson) {
       // Update existing person
       setPeople(prevPeople => 
         prevPeople.map(p => p.id === selectedPerson.id ? data : p)
       );
+      
+      // If the image has changed, save it to Supabase
+      if (data.image && data.image !== selectedPerson.image && data.image !== '/placeholder.svg') {
+        try {
+          // Save the connection between person and image
+          const { error } = await supabase
+            .from('connection_images')
+            .upsert({
+              person_id: data.id,
+              image_path: data.image,
+              updated_at: new Date().toISOString()
+            }, {
+              onConflict: 'person_id'
+            });
+          
+          if (error) {
+            console.error("Error saving connection image relationship:", error);
+          }
+        } catch (error) {
+          console.error("Error saving image reference:", error);
+        }
+      }
+      
       toast.success('Person updated successfully');
       setIsDialogOpen(false);
     } else {
       // Add new person
       setPeople(prevPeople => [...prevPeople, data]);
+      
+      // If the image is set, save it to Supabase
+      if (data.image && data.image !== '/placeholder.svg') {
+        try {
+          // Save the connection between person and image
+          const { error } = await supabase
+            .from('connection_images')
+            .upsert({
+              person_id: data.id,
+              image_path: data.image,
+              updated_at: new Date().toISOString()
+            }, {
+              onConflict: 'person_id'
+            });
+          
+          if (error) {
+            console.error("Error saving connection image relationship:", error);
+          }
+        } catch (error) {
+          console.error("Error saving image reference:", error);
+        }
+      }
+      
       toast.success('Person added successfully');
       setIsDrawerOpen(false);
     }
@@ -250,134 +312,141 @@ const ConnectionsDashboard = () => {
               </Button>
             </div>
             
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid grid-cols-6 mb-8">
-                <TabsTrigger value="all" className="text-sm">All</TabsTrigger>
-                <TabsTrigger value="family" className="text-sm flex items-center gap-1">
-                  <Heart className="h-3 w-3" /> Family
-                </TabsTrigger>
-                <TabsTrigger value="politics" className="text-sm flex items-center gap-1">
-                  <Flag className="h-3 w-3" /> Politics
-                </TabsTrigger>
-                <TabsTrigger value="business" className="text-sm flex items-center gap-1">
-                  <Briefcase className="h-3 w-3" /> Business
-                </TabsTrigger>
-                <TabsTrigger value="health" className="text-sm flex items-center gap-1">
-                  <Activity className="h-3 w-3" /> Health
-                </TabsTrigger>
-                <TabsTrigger value="learning" className="text-sm flex items-center gap-1">
-                  <GraduationCap className="h-3 w-3" /> Learning
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value={activeTab} className="mt-0">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredPeople.map(person => (
-                    <Card key={person.id} className={`overflow-hidden hover:shadow-md transition-all ${
-                      person.special ? 'border-primary/20 bg-primary/5 hover:border-primary/30' : ''
-                    }`}>
-                      <CardHeader className="p-4 pb-0 flex flex-row justify-between items-start">
-                        <div>
-                          <CardTitle className="text-base">{person.name}</CardTitle>
-                          <CardDescription>{person.role}</CardDescription>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            onClick={() => handleOpenEditDialog(person)}
-                            className="h-8 w-8"
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            onClick={() => handleDeletePerson(person.id)}
-                            className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="p-4 flex flex-col items-center">
-                        <Avatar className="h-24 w-24 mb-4 border-2 border-primary/20">
-                          <AvatarImage src={person.image} alt={person.name} />
-                          <AvatarFallback className="bg-muted">
-                            {person.name.split(' ').map(n => n[0]).join('')}
-                          </AvatarFallback>
-                        </Avatar>
-                        
-                        {person.relationship && (
-                          <p className="text-sm italic text-primary/80 text-center">
-                            "{person.relationship}"
-                          </p>
-                        )}
-                        
-                        <div className="mt-3 flex gap-2">
-                          {person.category && (
-                            <div className="badge bg-primary/10 text-primary text-xs py-1 px-2 rounded-full flex items-center gap-1">
-                              {getCategoryIcon(person.category)}
-                              <span className="capitalize">{person.category}</span>
-                            </div>
+            {loading ? (
+              <div className="flex flex-col items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+                <p className="text-muted-foreground">Loading connections...</p>
+              </div>
+            ) : (
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid grid-cols-6 mb-8">
+                  <TabsTrigger value="all" className="text-sm">All</TabsTrigger>
+                  <TabsTrigger value="family" className="text-sm flex items-center gap-1">
+                    <Heart className="h-3 w-3" /> Family
+                  </TabsTrigger>
+                  <TabsTrigger value="politics" className="text-sm flex items-center gap-1">
+                    <Flag className="h-3 w-3" /> Politics
+                  </TabsTrigger>
+                  <TabsTrigger value="business" className="text-sm flex items-center gap-1">
+                    <Briefcase className="h-3 w-3" /> Business
+                  </TabsTrigger>
+                  <TabsTrigger value="health" className="text-sm flex items-center gap-1">
+                    <Activity className="h-3 w-3" /> Health
+                  </TabsTrigger>
+                  <TabsTrigger value="learning" className="text-sm flex items-center gap-1">
+                    <GraduationCap className="h-3 w-3" /> Learning
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value={activeTab} className="mt-0">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredPeople.map(person => (
+                      <Card key={person.id} className={`overflow-hidden hover:shadow-md transition-all ${
+                        person.special ? 'border-primary/20 bg-primary/5 hover:border-primary/30' : ''
+                      }`}>
+                        <CardHeader className="p-4 pb-0 flex flex-row justify-between items-start">
+                          <div>
+                            <CardTitle className="text-base">{person.name}</CardTitle>
+                            <CardDescription>{person.role}</CardDescription>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={() => handleOpenEditDialog(person)}
+                              className="h-8 w-8"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              onClick={() => handleDeletePerson(person.id)}
+                              className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="p-4 flex flex-col items-center">
+                          <Avatar className="h-24 w-24 mb-4 border-2 border-primary/20">
+                            <AvatarImage src={person.image} alt={person.name} />
+                            <AvatarFallback className="bg-muted">
+                              {person.name.split(' ').map(n => n[0]).join('')}
+                            </AvatarFallback>
+                          </Avatar>
+                          
+                          {person.relationship && (
+                            <p className="text-sm italic text-primary/80 text-center">
+                              "{person.relationship}"
+                            </p>
                           )}
-                          {person.special && (
-                            <div className="badge bg-rose-100 text-rose-700 text-xs py-1 px-2 rounded-full flex items-center gap-1">
-                              <Heart className="h-3 w-3 fill-rose-500" />
-                              <span>Special</span>
-                            </div>
-                          )}
-                        </div>
-                        
-                        {person.socialLinks && person.socialLinks.length > 0 && (
-                          <div className="flex space-x-3 mt-3">
-                            {person.socialLinks.map((link, index) => {
-                              let icon;
-                              switch (link.platform) {
-                                case 'instagram':
-                                  icon = <Instagram className="h-4 w-4" />;
-                                  break;
-                                case 'youtube':
-                                  icon = <Youtube className="h-4 w-4" />;
-                                  break;
-                                case 'twitter':
-                                  icon = <Twitter className="h-4 w-4" />;
-                                  break;
-                                default:
-                                  icon = <ExternalLink className="h-4 w-4" />;
-                              }
-                              return (
+                          
+                          <div className="mt-3 flex gap-2">
+                            {person.category && (
+                              <div className="badge bg-primary/10 text-primary text-xs py-1 px-2 rounded-full flex items-center gap-1">
+                                {getCategoryIcon(person.category)}
+                                <span className="capitalize">{person.category}</span>
+                              </div>
+                            )}
+                            {person.special && (
+                              <div className="badge bg-rose-100 text-rose-700 text-xs py-1 px-2 rounded-full flex items-center gap-1">
+                                <Heart className="h-3 w-3 fill-rose-500" />
+                                <span>Special</span>
+                              </div>
+                            )}
+                          </div>
+                          
+                          {person.socialLinks && person.socialLinks.length > 0 && (
+                            <div className="flex space-x-3 mt-3">
+                              {person.socialLinks.map((link, index) => {
+                                let icon;
+                                switch (link.platform) {
+                                  case 'instagram':
+                                    icon = <Instagram className="h-4 w-4" />;
+                                    break;
+                                  case 'youtube':
+                                    icon = <Youtube className="h-4 w-4" />;
+                                    break;
+                                  case 'twitter':
+                                    icon = <Twitter className="h-4 w-4" />;
+                                    break;
+                                  default:
+                                    icon = <ExternalLink className="h-4 w-4" />;
+                                }
+                                return (
+                                  <a 
+                                    key={index} 
+                                    href={link.url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className="text-muted-foreground hover:text-primary transition-colors"
+                                    aria-label={`${link.platform} profile`}
+                                  >
+                                    {icon}
+                                  </a>
+                                );
+                              })}
+                              {person.linkedInUrl && (
                                 <a 
-                                  key={index} 
-                                  href={link.url} 
+                                  href={person.linkedInUrl} 
                                   target="_blank" 
                                   rel="noopener noreferrer" 
                                   className="text-muted-foreground hover:text-primary transition-colors"
-                                  aria-label={`${link.platform} profile`}
+                                  aria-label="LinkedIn profile"
                                 >
-                                  {icon}
+                                  <Linkedin className="h-4 w-4" />
                                 </a>
-                              );
-                            })}
-                            {person.linkedInUrl && (
-                              <a 
-                                href={person.linkedInUrl} 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                className="text-muted-foreground hover:text-primary transition-colors"
-                                aria-label="LinkedIn profile"
-                              >
-                                <Linkedin className="h-4 w-4" />
-                              </a>
-                            )}
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-            </Tabs>
+                              )}
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </TabsContent>
+              </Tabs>
+            )}
           </div>
         </div>
       </section>
@@ -442,6 +511,8 @@ const ConnectionsDashboard = () => {
                           <option value="business">Business</option>
                           <option value="health">Health</option>
                           <option value="learning">Learning</option>
+                          <option value="unprofessional">Unprofessional</option>
+                          <option value="recommended">Recommended</option>
                         </select>
                       </FormControl>
                       <FormMessage />
@@ -473,7 +544,7 @@ const ConnectionsDashboard = () => {
                               onChange={(e) => handleImageUpload(e, form.setValue)}
                               disabled={uploading}
                             />
-                            {uploading && <p className="text-xs text-muted-foreground">Uploading...</p>}
+                            {uploading && <p className="text-xs text-muted-foreground flex items-center"><Loader2 className="h-3 w-3 animate-spin mr-1" /> Uploading...</p>}
                           </div>
                         </FormControl>
                         <FormDescription>
@@ -554,7 +625,7 @@ const ConnectionsDashboard = () => {
                   Cancel
                 </Button>
                 <Button type="submit" disabled={uploading}>
-                  <Save className="h-4 w-4 mr-2" />
+                  {uploading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
                   Save Changes
                 </Button>
               </DialogFooter>
@@ -621,6 +692,8 @@ const ConnectionsDashboard = () => {
                             <option value="business">Business</option>
                             <option value="health">Health</option>
                             <option value="learning">Learning</option>
+                            <option value="unprofessional">Unprofessional</option>
+                            <option value="recommended">Recommended</option>
                           </select>
                         </FormControl>
                         <FormMessage />
@@ -660,7 +733,7 @@ const ConnectionsDashboard = () => {
                                 onChange={(e) => handleImageUpload(e, form.setValue)}
                                 disabled={uploading}
                               />
-                              {uploading && <p className="text-xs text-muted-foreground">Uploading...</p>}
+                              {uploading && <p className="text-xs text-muted-foreground flex items-center"><Loader2 className="h-3 w-3 animate-spin mr-1" /> Uploading...</p>}
                             </div>
                           </FormControl>
                           <FormDescription>
@@ -738,7 +811,7 @@ const ConnectionsDashboard = () => {
                 
                 <DrawerFooter className="pt-2">
                   <Button type="submit" className="w-full" disabled={uploading}>
-                    <Plus className="h-4 w-4 mr-2" />
+                    {uploading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Plus className="h-4 w-4 mr-2" />}
                     Add Connection
                   </Button>
                 </DrawerFooter>

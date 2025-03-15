@@ -19,11 +19,13 @@ import {
   Linkedin,
   Pencil,
   Star,
-  ThumbsUp
+  ThumbsUp,
+  Loader2
 } from 'lucide-react';
 import { Person, SocialLink } from '@/types/connections';
 import { Link } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
+import { getConnectionImage } from '@/utils/imageLoader';
 
 export const people: Person[] = [
   // Family
@@ -233,6 +235,27 @@ const SocialIcon = ({ platform, url }: SocialLink) => {
 };
 
 const PersonCard = ({ person }: { person: Person }) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(person.image || '/placeholder.svg');
+  const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const loadSupabaseImage = async () => {
+      try {
+        // Try to get the image from Supabase first
+        const supabaseImage = await getConnectionImage(person.id);
+        if (supabaseImage) {
+          setImageUrl(supabaseImage);
+        }
+      } catch (error) {
+        console.error(`Error loading image for ${person.name}:`, error);
+      } finally {
+        setIsImageLoading(false);
+      }
+    };
+
+    loadSupabaseImage();
+  }, [person.id, person.name]);
+
   return (
     <Card className={`overflow-hidden transition-all duration-300 h-full hover:shadow-md group ${
       person.special ? 'border-primary/20 bg-primary/5 hover:border-primary/30' : ''
@@ -243,10 +266,18 @@ const PersonCard = ({ person }: { person: Person }) => {
             <Avatar className={`h-20 w-20 transition-all duration-300 group-hover:scale-105 ${
               person.special ? 'border-2 border-primary/50 group-hover:border-primary' : ''
             }`}>
-              <AvatarImage src={person.image} alt={person.name} />
-              <AvatarFallback className="bg-muted">
-                {person.name.split(' ').map(n => n[0]).join('')}
-              </AvatarFallback>
+              {isImageLoading ? (
+                <div className="h-full w-full flex items-center justify-center bg-muted">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary/50" />
+                </div>
+              ) : (
+                <>
+                  <AvatarImage src={imageUrl || '/placeholder.svg'} alt={person.name} />
+                  <AvatarFallback className="bg-muted">
+                    {person.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </>
+              )}
             </Avatar>
             {person.special && (
               <div className="absolute -bottom-1 -right-1 bg-primary rounded-full p-0.5 shadow-md border border-white">
@@ -296,19 +327,49 @@ const PersonCard = ({ person }: { person: Person }) => {
 
 const FollowingSection = () => {
   const [displayPeople, setDisplayPeople] = useState<Person[]>(people);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   
   useEffect(() => {
-    const savedPeople = localStorage.getItem('connections');
-    if (savedPeople) {
+    const loadData = async () => {
+      setIsLoading(true);
       try {
-        const parsedPeople = JSON.parse(savedPeople);
-        if (Array.isArray(parsedPeople) && parsedPeople.length > 0) {
-          setDisplayPeople(parsedPeople);
+        // First check local storage
+        const savedPeople = localStorage.getItem('connections');
+        
+        if (savedPeople) {
+          try {
+            const parsedPeople = JSON.parse(savedPeople);
+            if (Array.isArray(parsedPeople) && parsedPeople.length > 0) {
+              // Update images from Supabase if available
+              const updatedPeople = await Promise.all(
+                parsedPeople.map(async (person) => {
+                  try {
+                    const supabaseImage = await getConnectionImage(person.id);
+                    return supabaseImage ? { ...person, image: supabaseImage } : person;
+                  } catch (error) {
+                    console.error(`Error fetching image for ${person.name}:`, error);
+                    return person;
+                  }
+                })
+              );
+              
+              setDisplayPeople(updatedPeople);
+            }
+          } catch (error) {
+            console.error('Error parsing connections data:', error);
+          }
+        } else {
+          // If nothing in localStorage, use default people data
+          setDisplayPeople(people);
         }
       } catch (error) {
-        console.error('Error parsing connections data:', error);
+        console.error('Error loading connections data:', error);
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
+    
+    loadData();
   }, []);
   
   const familyMembers = displayPeople.filter(p => p.category === 'family');
@@ -358,145 +419,154 @@ const FollowingSection = () => {
           </div>
         </div>
         
-        <div className="mb-14 opacity-0 animate-fade-up" style={{ animationDelay: '300ms' }}>
-          <div className="flex items-center justify-center mb-6">
-            <div className="h-px w-12 bg-primary/30"></div>
-            <h3 className="text-xl font-semibold px-4 flex items-center gap-2">
-              <Heart size={20} className="text-rose-500" fill="#FDA4AF" />
-              <span>Family Circle</span>
-            </h3>
-            <div className="h-px w-12 bg-primary/30"></div>
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+            <p className="text-muted-foreground">Loading your connections...</p>
           </div>
-          
-          {wifeRow.length > 0 && (
-            <div className="grid grid-cols-1 max-w-xs mx-auto gap-6 mb-6">
-              {wifeRow.map(person => (
-                <PersonCard key={person.id} person={person} />
-              ))}
+        ) : (
+          <>
+            <div className="mb-14 opacity-0 animate-fade-up" style={{ animationDelay: '300ms' }}>
+              <div className="flex items-center justify-center mb-6">
+                <div className="h-px w-12 bg-primary/30"></div>
+                <h3 className="text-xl font-semibold px-4 flex items-center gap-2">
+                  <Heart size={20} className="text-rose-500" fill="#FDA4AF" />
+                  <span>Family Circle</span>
+                </h3>
+                <div className="h-px w-12 bg-primary/30"></div>
+              </div>
+              
+              {wifeRow.length > 0 && (
+                <div className="grid grid-cols-1 max-w-xs mx-auto gap-6 mb-6">
+                  {wifeRow.map(person => (
+                    <PersonCard key={person.id} person={person} />
+                  ))}
+                </div>
+              )}
+              
+              {kidsRow.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 max-w-xl mx-auto gap-6 mb-6">
+                  {kidsRow.map(person => (
+                    <PersonCard key={person.id} person={person} />
+                  ))}
+                </div>
+              )}
+              
+              {parentsRow.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 max-w-xl mx-auto gap-6">
+                  {parentsRow.map(person => (
+                    <PersonCard key={person.id} person={person} />
+                  ))}
+                </div>
+              )}
             </div>
-          )}
-          
-          {kidsRow.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 max-w-xl mx-auto gap-6 mb-6">
-              {kidsRow.map(person => (
-                <PersonCard key={person.id} person={person} />
-              ))}
-            </div>
-          )}
-          
-          {parentsRow.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 max-w-xl mx-auto gap-6">
-              {parentsRow.map(person => (
-                <PersonCard key={person.id} person={person} />
-              ))}
-            </div>
-          )}
-        </div>
-        
-        <div className="opacity-0 animate-fade-up" style={{ animationDelay: '400ms' }}>
-          <div className="flex items-center justify-center mb-6">
-            <div className="h-px w-12 bg-primary/30"></div>
-            <h3 className="text-xl font-semibold px-4 flex items-center gap-2">
-              <Users size={20} className="text-primary" />
-              <span>Thought Leaders & Inspirations</span>
-            </h3>
-            <div className="h-px w-12 bg-primary/30"></div>
-          </div>
-          
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="w-full max-w-lg grid grid-cols-7 h-auto mb-8 mx-auto bg-background/70 backdrop-blur-sm">
-              <TabsTrigger value="all" className="text-xs py-2 h-auto">All</TabsTrigger>
-              <TabsTrigger value="politics" className="text-xs py-2 h-auto flex gap-1 items-center">
-                <Flag className="h-3 w-3" /> Politics
-              </TabsTrigger>
-              <TabsTrigger value="business" className="text-xs py-2 h-auto flex gap-1 items-center">
-                <Briefcase className="h-3 w-3" /> Business
-              </TabsTrigger>
-              <TabsTrigger value="health" className="text-xs py-2 h-auto flex gap-1 items-center">
-                <Activity className="h-3 w-3" /> Health
-              </TabsTrigger>
-              <TabsTrigger value="learning" className="text-xs py-2 h-auto flex gap-1 items-center">
-                <GraduationCap className="h-3 w-3" /> Learning
-              </TabsTrigger>
-              <TabsTrigger value="unprofessional" className="text-xs py-2 h-auto flex gap-1 items-center">
-                <Star className="h-3 w-3" /> Edgy
-              </TabsTrigger>
-              <TabsTrigger value="recommended" className="text-xs py-2 h-auto flex gap-1 items-center">
-                <ThumbsUp className="h-3 w-4" /> Recommended
-              </TabsTrigger>
-            </TabsList>
             
-            <TabsContent value="all" className="mt-0">
-              <ScrollArea className="h-[500px] w-full pr-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {nonFamilyMembers.map(person => (
-                    <PersonCard key={person.id} person={person} />
-                  ))}
-                </div>
-              </ScrollArea>
-            </TabsContent>
-            
-            <TabsContent value="politics" className="mt-0">
-              <ScrollArea className="h-[500px] w-full pr-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {nonFamilyMembers.filter(p => p.category === 'politics').map(person => (
-                    <PersonCard key={person.id} person={person} />
-                  ))}
-                </div>
-              </ScrollArea>
-            </TabsContent>
-            
-            <TabsContent value="business" className="mt-0">
-              <ScrollArea className="h-[500px] w-full pr-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {nonFamilyMembers.filter(p => p.category === 'business').map(person => (
-                    <PersonCard key={person.id} person={person} />
-                  ))}
-                </div>
-              </ScrollArea>
-            </TabsContent>
-            
-            <TabsContent value="health" className="mt-0">
-              <ScrollArea className="h-[500px] w-full pr-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {nonFamilyMembers.filter(p => p.category === 'health').map(person => (
-                    <PersonCard key={person.id} person={person} />
-                  ))}
-                </div>
-              </ScrollArea>
-            </TabsContent>
-            
-            <TabsContent value="learning" className="mt-0">
-              <ScrollArea className="h-[500px] w-full pr-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {nonFamilyMembers.filter(p => p.category === 'learning').map(person => (
-                    <PersonCard key={person.id} person={person} />
-                  ))}
-                </div>
-              </ScrollArea>
-            </TabsContent>
+            <div className="opacity-0 animate-fade-up" style={{ animationDelay: '400ms' }}>
+              <div className="flex items-center justify-center mb-6">
+                <div className="h-px w-12 bg-primary/30"></div>
+                <h3 className="text-xl font-semibold px-4 flex items-center gap-2">
+                  <Users size={20} className="text-primary" />
+                  <span>Thought Leaders & Inspirations</span>
+                </h3>
+                <div className="h-px w-12 bg-primary/30"></div>
+              </div>
+              
+              <Tabs defaultValue="all" className="w-full">
+                <TabsList className="w-full max-w-lg grid grid-cols-7 h-auto mb-8 mx-auto bg-background/70 backdrop-blur-sm">
+                  <TabsTrigger value="all" className="text-xs py-2 h-auto">All</TabsTrigger>
+                  <TabsTrigger value="politics" className="text-xs py-2 h-auto flex gap-1 items-center">
+                    <Flag className="h-3 w-3" /> Politics
+                  </TabsTrigger>
+                  <TabsTrigger value="business" className="text-xs py-2 h-auto flex gap-1 items-center">
+                    <Briefcase className="h-3 w-3" /> Business
+                  </TabsTrigger>
+                  <TabsTrigger value="health" className="text-xs py-2 h-auto flex gap-1 items-center">
+                    <Activity className="h-3 w-3" /> Health
+                  </TabsTrigger>
+                  <TabsTrigger value="learning" className="text-xs py-2 h-auto flex gap-1 items-center">
+                    <GraduationCap className="h-3 w-3" /> Learning
+                  </TabsTrigger>
+                  <TabsTrigger value="unprofessional" className="text-xs py-2 h-auto flex gap-1 items-center">
+                    <Star className="h-3 w-3" /> Edgy
+                  </TabsTrigger>
+                  <TabsTrigger value="recommended" className="text-xs py-2 h-auto flex gap-1 items-center">
+                    <ThumbsUp className="h-3 w-4" /> Recommended
+                  </TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="all" className="mt-0">
+                  <ScrollArea className="h-[500px] w-full pr-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                      {nonFamilyMembers.map(person => (
+                        <PersonCard key={person.id} person={person} />
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </TabsContent>
+                
+                <TabsContent value="politics" className="mt-0">
+                  <ScrollArea className="h-[500px] w-full pr-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                      {nonFamilyMembers.filter(p => p.category === 'politics').map(person => (
+                        <PersonCard key={person.id} person={person} />
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </TabsContent>
+                
+                <TabsContent value="business" className="mt-0">
+                  <ScrollArea className="h-[500px] w-full pr-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                      {nonFamilyMembers.filter(p => p.category === 'business').map(person => (
+                        <PersonCard key={person.id} person={person} />
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </TabsContent>
+                
+                <TabsContent value="health" className="mt-0">
+                  <ScrollArea className="h-[500px] w-full pr-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                      {nonFamilyMembers.filter(p => p.category === 'health').map(person => (
+                        <PersonCard key={person.id} person={person} />
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </TabsContent>
+                
+                <TabsContent value="learning" className="mt-0">
+                  <ScrollArea className="h-[500px] w-full pr-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                      {nonFamilyMembers.filter(p => p.category === 'learning').map(person => (
+                        <PersonCard key={person.id} person={person} />
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </TabsContent>
 
-            <TabsContent value="unprofessional" className="mt-0">
-              <ScrollArea className="h-[500px] w-full pr-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {nonFamilyMembers.filter(p => p.category === 'unprofessional').map(person => (
-                    <PersonCard key={person.id} person={person} />
-                  ))}
-                </div>
-              </ScrollArea>
-            </TabsContent>
+                <TabsContent value="unprofessional" className="mt-0">
+                  <ScrollArea className="h-[500px] w-full pr-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                      {nonFamilyMembers.filter(p => p.category === 'unprofessional').map(person => (
+                        <PersonCard key={person.id} person={person} />
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </TabsContent>
 
-            <TabsContent value="recommended" className="mt-0">
-              <ScrollArea className="h-[500px] w-full pr-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                  {nonFamilyMembers.filter(p => p.category === 'recommended').map(person => (
-                    <PersonCard key={person.id} person={person} />
-                  ))}
-                </div>
-              </ScrollArea>
-            </TabsContent>
-          </Tabs>
-        </div>
+                <TabsContent value="recommended" className="mt-0">
+                  <ScrollArea className="h-[500px] w-full pr-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                      {nonFamilyMembers.filter(p => p.category === 'recommended').map(person => (
+                        <PersonCard key={person.id} person={person} />
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </TabsContent>
+              </Tabs>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
