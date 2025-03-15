@@ -40,7 +40,7 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
     };
   };
   
-  // Connect each node to the center
+  // Connect each node to the center with a thinner, more subtle connection
   domains.forEach((domain, i) => {
     const position = getPosition(domain.initialAngle);
     const isActive = activeNode === domain.id;
@@ -49,15 +49,15 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
       <motion.path
         key={`${domain.id}-center`}
         d={`M ${position.x} ${position.y} L ${centerX} ${centerY}`}
-        stroke={isActive ? "rgba(99, 102, 241, 0.9)" : "rgba(209, 213, 219, 0.5)"}
-        strokeWidth={isActive ? (isMobile ? 2 : 3) : (isMobile ? 1 : 1.5)}
+        stroke={isActive ? "rgba(99, 102, 241, 0.9)" : "rgba(209, 213, 219, 0.4)"}
+        strokeWidth={isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.75 : 1)}
         strokeDasharray={isMobile ? "3,4" : "5,5"}
         fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
         animate={{ 
           pathLength: 1, 
-          opacity: isActive ? 0.9 : (isMobile ? 0.6 : 0.7),
-          strokeWidth: isActive ? (isMobile ? 2 : 3) : (isMobile ? 1 : 1.5)
+          opacity: isActive ? 0.9 : (isMobile ? 0.5 : 0.6),
+          strokeWidth: isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.75 : 1)
         }}
         transition={{ 
           duration: animationDuration, 
@@ -68,40 +68,39 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
     );
   });
 
-  // Connect between adjacent nodes in a pentagon shape
-  if (!isMobile || width >= 350) {
-    for (let i = 0; i < domains.length; i++) {
-      const domain = domains[i];
-      const nextDomain = domains[(i + 1) % domains.length];
-      
-      const pos1 = getPosition(domain.initialAngle);
-      const pos2 = getPosition(nextDomain.initialAngle);
-      
-      const isActive = activeNode === domain.id || activeNode === nextDomain.id;
-      
-      connections.push(
-        <motion.path
-          key={`${domain.id}-${nextDomain.id}`}
-          d={`M ${pos1.x} ${pos1.y} L ${pos2.x} ${pos2.y}`}
-          stroke={isActive ? "rgba(99, 102, 241, 0.7)" : "rgba(209, 213, 219, 0.3)"}
-          strokeWidth={isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.75 : 1)}
-          strokeDasharray={isMobile ? "2,3" : "3,4"}
-          fill="none"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ 
-            pathLength: 1, 
-            opacity: isActive ? 0.8 : 0.4,
-            strokeWidth: isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.75 : 1)
-          }}
-          transition={{ 
-            duration: animationDuration, 
-            delay: 0.4 + (i * 0.08),
-            ease: "easeInOut"
-          }}
-        />
-      );
-    }
-  }
+  // Connect between adjacent nodes in a circular fashion
+  // Emphasize the outer circle more prominently than center connections
+  domains.forEach((domain, i) => {
+    const nextIndex = (i + 1) % domains.length;
+    const nextDomain = domains[nextIndex];
+    
+    const position = getPosition(domain.initialAngle);
+    const nextPosition = getPosition(nextDomain.initialAngle);
+    
+    const isActive = activeNode === domain.id || activeNode === nextDomain.id;
+    
+    connections.push(
+      <motion.path
+        key={`${domain.id}-to-${nextDomain.id}`}
+        d={`M ${position.x} ${position.y} L ${nextPosition.x} ${nextPosition.y}`}
+        stroke={isActive ? "rgba(99, 102, 241, 0.9)" : "rgba(209, 213, 219, 0.7)"}
+        strokeWidth={isActive ? (isMobile ? 2 : 2.5) : (isMobile ? 1 : 1.5)}
+        strokeDasharray={isMobile ? "2,3" : "3,4"}
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ 
+          pathLength: 1, 
+          opacity: isActive ? 0.9 : 0.7,
+          strokeWidth: isActive ? (isMobile ? 2 : 2.5) : (isMobile ? 1 : 1.5)
+        }}
+        transition={{ 
+          duration: animationDuration, 
+          delay: 0.3 + (i * 0.07),
+          ease: "easeInOut"
+        }}
+      />
+    );
+  });
 
   return <>{connections}</>;
 };

@@ -49,7 +49,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
 
   // Calculate additional height for text to prevent overlap with center circle
   // Increased height multiplier for better visibility
-  const nodeHeight = nodeWidth * (isMobile ? 3 : 2.5);
+  const nodeHeight = nodeWidth * (isMobile ? 3.2 : 2.8);
 
   return (
     <motion.div
@@ -82,7 +82,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     >
       {/* Circle with icon - centered horizontally */}
       <motion.div 
-        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-3"
+        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-4"
         style={{ 
           backgroundColor: domain.color,
           border: `2px solid ${isActive ? 'white' : 'transparent'}`,
@@ -102,7 +102,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
 
       {/* Text area - perfectly centered under the icon with improved visibility */}
       <motion.div 
-        className={`text-center ${textWidth} mx-auto mt-2`}
+        className={`text-center ${textWidth} mx-auto`}
         initial={{ opacity: 0 }}
         animate={{ 
           opacity: 1,
@@ -110,13 +110,15 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         }}
         transition={{ delay: nodeDelay + 0.1 }}
       >
-        <div className={`font-semibold ${width < 350 ? 'text-xs' : 'text-sm'} md:text-sm text-center text-white`}>
+        <div className={`font-semibold ${width < 350 ? 'text-xs' : 'text-sm'} md:text-sm text-center text-white`}
+             style={{ textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>
           {domain.title}
         </div>
         
         {isActive && (
           <motion.div 
             className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-white mt-2 z-10 backdrop-blur-sm`}
+            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
