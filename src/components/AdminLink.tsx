@@ -13,36 +13,37 @@ export default function AdminLink() {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Only track lowercase a-z keys
       if (e.key.length === 1 && /[a-z]/.test(e.key)) {
-        setKeySequence(prev => {
-          const newSequence = [...prev, e.key].slice(-targetSequence.length);
+        const newSequence = [...keySequence, e.key].slice(-targetSequence.length);
+        setKeySequence(newSequence);
+        
+        // Check if sequence matches target
+        const sequenceMatches = newSequence.length === targetSequence.length && 
+          newSequence.every((key, i) => key === targetSequence[i]);
           
-          // Check if sequence matches target
-          const sequenceMatches = newSequence.length === targetSequence.length && 
-            newSequence.every((key, i) => key === targetSequence[i]);
-            
-          if (sequenceMatches) {
-            setShowLink(true);
-          }
-          
-          return newSequence;
-        });
+        if (sequenceMatches) {
+          console.log('Admin sequence detected!');
+          setShowLink(true);
+        }
       }
     };
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [keySequence]); // Add keySequence as a dependency
   
   // Also check if user is already logged in
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const { data } = await fetch('/.netlify/functions/check-auth');
+        const response = await fetch('/.netlify/functions/check-auth');
+        const data = await response.json();
+        
         if (data?.authenticated) {
           setShowLink(true);
         }
       } catch (error) {
         // Silently fail - we don't want to reveal admin link
+        console.error('Auth check error (hidden from user):', error);
       }
     };
     
