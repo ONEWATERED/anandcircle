@@ -34,16 +34,25 @@ export const saveSocialLinks = async (links: {
     const { data: { session } } = await supabase.auth.getSession();
     
     if (session?.user) {
-      // Try to save to Supabase if user is authenticated
+      // Prepare the social links for insertion
+      const socialLinksToInsert = [
+        { user_id: session.user.id, platform: 'linkedin', url: links.linkedIn },
+        { user_id: session.user.id, platform: 'twitter', url: links.twitter },
+        { user_id: session.user.id, platform: 'youtube', url: links.youtube },
+        { user_id: session.user.id, platform: 'spotify', url: links.spotify },
+        { user_id: session.user.id, platform: 'anandcircle', url: links.anandCircle }
+      ];
+      
+      // Delete existing links for this user
+      await supabase
+        .from('social_links')
+        .delete()
+        .eq('user_id', session.user.id);
+      
+      // Insert new links
       const { error } = await supabase
-        .from('profiles')
-        .upsert({
-          id: session.user.id,
-          social_links: links,
-          updated_at: new Date().toISOString()
-        }, {
-          onConflict: 'id'
-        });
+        .from('social_links')
+        .insert(socialLinksToInsert);
         
       if (error) {
         console.error("Error saving social links to Supabase:", error);

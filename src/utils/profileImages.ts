@@ -58,7 +58,7 @@ export const getUserProfileData = async () => {
   // Get the profile image URL
   const imageUrl = await getProfileImage();
   
-  // Get social links from localStorage or from Supabase if authenticated
+  // Get social links from localStorage as default values
   let socialLinks = {
     linkedIn: localStorage.getItem('linkedInUrl') || 'https://linkedin.com/in/hardeepanand',
     twitter: localStorage.getItem('twitterUrl') || 'https://twitter.com/hardeepanand',
@@ -72,16 +72,37 @@ export const getUserProfileData = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     
     if (session?.user) {
-      const { data: profile, error } = await supabase
-        .from('profiles')
-        .select('social_links')
-        .eq('id', session.user.id)
-        .single();
+      // Instead of looking for social_links in the profiles table,
+      // We'll query the social_links table to get the user's social links
+      const { data: socialLinksData, error } = await supabase
+        .from('social_links')
+        .select('platform, url')
+        .eq('user_id', session.user.id);
       
-      if (!error && profile?.social_links) {
+      if (!error && socialLinksData && socialLinksData.length > 0) {
+        // Convert the array of social links to our expected format
+        const socialLinksMap: Record<string, string> = {};
+        
+        socialLinksData.forEach(link => {
+          // Map platform names to our expected keys
+          const platformMap: Record<string, keyof typeof socialLinks> = {
+            'linkedin': 'linkedIn',
+            'twitter': 'twitter',
+            'youtube': 'youtube',
+            'spotify': 'spotify',
+            'anandcircle': 'anandCircle'
+          };
+          
+          const key = platformMap[link.platform.toLowerCase()] || link.platform.toLowerCase();
+          if (key in socialLinks) {
+            socialLinksMap[key] = link.url;
+          }
+        });
+        
+        // Update our socialLinks object with the values from the database
         socialLinks = {
           ...socialLinks,
-          ...profile.social_links
+          ...socialLinksMap
         };
       }
     }
