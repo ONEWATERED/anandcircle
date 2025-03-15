@@ -15,8 +15,8 @@ const FamilyCircleCenter: React.FC<FamilyCircleCenterProps> = ({ centerSize, wid
     <motion.div
       className="absolute flex flex-col items-center justify-center z-10"
       style={{
-        top: height / 2,
-        left: width / 2,
+        top: '50%',
+        left: '50%',
         width: centerSize * 2.2,
         height: centerSize * 2.2,
         marginLeft: -(centerSize * 2.2) / 2,

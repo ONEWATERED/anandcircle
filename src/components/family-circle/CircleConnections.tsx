@@ -108,7 +108,21 @@ const CircleConnections: React.FC<CircleConnectionsProps> = ({
     );
   });
 
-  return <>{connections}</>;
+  return (
+    <svg 
+      width="100%" 
+      height="100%" 
+      style={{ 
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        pointerEvents: 'none',
+        zIndex: 1
+      }}
+    >
+      {connections}
+    </svg>
+  );
 };
 
 // Helper function to create a curved arc path between two points

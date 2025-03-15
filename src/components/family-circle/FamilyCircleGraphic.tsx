@@ -5,7 +5,7 @@ import FamilyMemberNode from './FamilyMemberNode';
 import FamilyCircleCenter from './FamilyCircleCenter';
 import CircleConnections from './CircleConnections';
 import { familyMembers, FamilyMember } from '@/data/familyData';
-import useMobile from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface FamilyCircleGraphicProps {
   onSelectMember: (member: FamilyMember | null) => void;
@@ -18,13 +18,15 @@ const FamilyCircleGraphic: React.FC<FamilyCircleGraphicProps> = ({
 }) => {
   const [activeMember, setActiveMember] = useState<string | null>(null);
   const [circleRadius, setCircleRadius] = useState<number>(180);
-  const isMobile = useMobile();
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const isMobile = useIsMobile();
   
   // Adjust dimensions based on mobile or desktop
   const nodeWidth = isMobile ? 85 : 120;
   const nodeIconSize = isMobile ? 40 : 60;
   const iconSize = isMobile ? 20 : 28;
   const textWidth = isMobile ? 'w-20' : 'w-28';
+  const centerSize = isMobile ? 70 : 100;
   
   // Adjust circle radius based on screen size
   useEffect(() => {
@@ -37,11 +39,29 @@ const FamilyCircleGraphic: React.FC<FamilyCircleGraphicProps> = ({
       }
     };
     
+    const updateDimensions = () => {
+      const container = document.getElementById('family-circle-container');
+      if (container) {
+        setDimensions({
+          width: container.offsetWidth,
+          height: container.offsetHeight
+        });
+      }
+    };
+    
     calculateRadius();
-    window.addEventListener('resize', calculateRadius);
+    updateDimensions();
+    
+    window.addEventListener('resize', () => {
+      calculateRadius();
+      updateDimensions();
+    });
     
     return () => {
-      window.removeEventListener('resize', calculateRadius);
+      window.removeEventListener('resize', () => {
+        calculateRadius();
+        updateDimensions();
+      });
     };
   }, [isMobile, nodeWidth]);
   
@@ -64,13 +84,22 @@ const FamilyCircleGraphic: React.FC<FamilyCircleGraphicProps> = ({
   return (
     <div id="family-circle-container" className="relative w-full h-[500px] flex items-center justify-center">
       {/* Center of Family Circle */}
-      <FamilyCircleCenter />
+      <FamilyCircleCenter 
+        centerSize={centerSize} 
+        width={dimensions.width} 
+        height={dimensions.height} 
+      />
       
       {/* Connecting lines */}
       <CircleConnections 
         members={familyMembers}
-        getPosition={getNodePosition}
-        activeNodeId={activeMember}
+        centerX={dimensions.width / 2}
+        centerY={dimensions.height / 2}
+        orbitRadius={circleRadius}
+        activeMember={activeMember}
+        animationComplete={dimensions.width > 0}
+        width={dimensions.width}
+        isMobile={isMobile}
       />
       
       {/* Family Member Nodes */}
