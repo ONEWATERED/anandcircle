@@ -32,8 +32,8 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
   } = useNodePositioning();
 
   // Increased orbit radius to create more space between inner and outer circles
-  // This creates a more distinct separation between center and outer nodes
-  const orbitRadius = Math.min(width, height) * (isMobile ? 0.36 : 0.42);
+  // Bigger gap for better visibility, especially on mobile
+  const orbitRadius = Math.min(width, height) * (isMobile ? 0.42 : 0.45);
 
   // Set animation complete after initial load
   useEffect(() => {
@@ -73,9 +73,9 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
   // Increase container height to provide more space for text
   const containerHeight = (() => {
     if (isMobile) {
-      if (width < 350) return 440;
-      if (width < 500) return 460;
-      return 500;
+      if (width < 350) return 500; // Even more height for very small devices
+      if (width < 500) return 520; // More height for small devices
+      return 550; // More space for text on mobile
     }
     return 600;
   })();

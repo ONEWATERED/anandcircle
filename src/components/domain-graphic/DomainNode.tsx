@@ -49,7 +49,19 @@ const DomainNode: React.FC<DomainNodeProps> = ({
 
   // Calculate additional height for text to prevent overlap with center circle
   // Increased height multiplier for better visibility
-  const nodeHeight = nodeWidth * (isMobile ? 3.2 : 2.8);
+  const nodeHeight = nodeWidth * (isMobile ? 3.8 : 3.2);
+
+  // Determine text color based on domain - make it vibrant and futuristic
+  const getTextColor = () => {
+    switch(domain.id) {
+      case 'family': return '#ff47c7'; // vibrant pink
+      case 'health': return '#33C3F0'; // bright blue
+      case 'water': return '#0EA5E9'; // ocean blue 
+      case 'ai': return '#8B5CF6'; // vivid purple
+      case 'mentoring': return '#F97316'; // bright orange
+      default: return '#9b87f5'; // default purple
+    }
+  };
 
   return (
     <motion.div
@@ -110,15 +122,23 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         }}
         transition={{ delay: nodeDelay + 0.1 }}
       >
-        <div className={`font-semibold ${width < 350 ? 'text-xs' : 'text-sm'} md:text-sm text-center text-white`}
-             style={{ textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>
+        <div 
+          className={`font-bold ${width < 350 ? 'text-xs' : 'text-sm'} md:text-sm text-center`}
+          style={{ 
+            color: getTextColor(),
+            textShadow: '0 1px 3px rgba(0,0,0,0.9)'
+          }}
+        >
           {domain.title}
         </div>
         
         {isActive && (
           <motion.div 
-            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-white mt-2 z-10 backdrop-blur-sm`}
-            style={{ textShadow: '0 1px 3px rgba(0,0,0,0.8)' }}
+            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs mt-2 z-10`}
+            style={{ 
+              color: getTextColor(),
+              textShadow: '0 1px 3px rgba(0,0,0,0.9)'
+            }}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
