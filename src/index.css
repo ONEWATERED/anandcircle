@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
@@ -118,7 +117,7 @@
   
   .glow::after {
     content: '';
-    @apply absolute inset-0 rounded-inherit -z-10 opacity-70 blur-xl;
+    @apply absolute inset-0 rounded-md -z-10 opacity-70 blur-xl;
     background: inherit;
   }
   
@@ -129,7 +128,7 @@
   
   .neon-border::before {
     content: '';
-    @apply absolute inset-0 -z-10 rounded-inherit;
+    @apply absolute inset-0 -z-10 rounded-md;
     padding: 1px;
     background: linear-gradient(to right, theme('colors.primary'), theme('colors.secondary'));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
