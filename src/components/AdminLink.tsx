@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Lock } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function AdminLink() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -10,23 +11,35 @@ export default function AdminLink() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('/.netlify/functions/check-auth');
-        const data = await response.json();
+        const { data } = await supabase.auth.getSession();
         
-        if (data?.authenticated) {
+        if (data.session) {
+          console.log("User is authenticated:", data.session.user.id);
           setIsAuthenticated(true);
+        } else {
+          console.log("No active session found");
         }
       } catch (error) {
-        console.error('Auth check error (hidden from user):', error);
+        console.error('Auth check error:', error);
       }
     };
     
     checkAuth();
+    
+    // Set up listener for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log("Auth state changed:", event);
+      setIsAuthenticated(!!session);
+    });
+    
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
   
   return (
     <Link 
-      to="/admin/login" 
+      to={isAuthenticated ? "/admin/dashboard" : "/admin/login"} 
       className="text-xs text-gray-400 hover:text-gray-600 inline-flex items-center gap-1"
       aria-label="Admin login"
     >
