@@ -12,7 +12,7 @@ export interface DomainData {
   y: number;
 }
 
-// Domain definitions with the five domains
+// Domain definitions with the five domains - positions updated for perfect symmetry
 export const domains: DomainData[] = [
   {
     id: 'family',
@@ -20,8 +20,8 @@ export const domains: DomainData[] = [
     icon: Users,
     color: 'rgb(244, 114, 182)', // rose-500
     description: 'Strong families as the cornerstone of society',
-    x: -0.8, // Position coordinates for layout
-    y: -0.5,
+    x: 0, // Top position (12 o'clock)
+    y: -1,
   },
   {
     id: 'health',
@@ -29,26 +29,8 @@ export const domains: DomainData[] = [
     icon: HeartPulse,
     color: 'rgb(59, 130, 246)', // blue-500
     description: 'Data-driven approaches to optimize wellness',
-    x: 0.8,
-    y: -0.5,
-  },
-  {
-    id: 'water',
-    title: 'One Water',
-    icon: Droplet,
-    color: 'rgb(6, 182, 212)', // cyan-500
-    description: 'Integrating technology with environmental sustainability',
-    x: 0,
-    y: 0.9,
-  },
-  {
-    id: 'ai',
-    title: 'AI & Data Innovation',
-    icon: Brain,
-    color: 'rgb(16, 185, 129)', // emerald-500
-    description: 'Transforming organizations through innovative technology',
-    x: -0.8,
-    y: 0.5,
+    x: 0.951, // Right-top (2 o'clock)
+    y: -0.309,
   },
   {
     id: 'mentoring',
@@ -56,7 +38,25 @@ export const domains: DomainData[] = [
     icon: GraduationCap,
     color: 'rgb(168, 85, 247)', // purple-500
     description: 'Unlocking potential through guidance and development',
-    x: 0.8,
-    y: 0.5,
+    x: 0.588, // Right-bottom (4 o'clock)
+    y: 0.809,
+  },
+  {
+    id: 'water',
+    title: 'One Water',
+    icon: Droplet,
+    color: 'rgb(6, 182, 212)', // cyan-500
+    description: 'Integrating technology with environmental sustainability',
+    x: -0.588, // Left-bottom (8 o'clock)
+    y: 0.809,
+  },
+  {
+    id: 'ai',
+    title: 'AI & Data Innovation',
+    icon: Brain,
+    color: 'rgb(16, 185, 129)', // emerald-500
+    description: 'Transforming organizations through innovative technology',
+    x: -0.951, // Left-top (10 o'clock)
+    y: -0.309,
   },
 ];

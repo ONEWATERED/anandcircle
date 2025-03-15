@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from 'react';
 import { useIsMobile } from './use-mobile';
 
@@ -34,26 +33,27 @@ export function useNodePositioning() {
     const centerX = width / 2;
     const centerY = height / 2;
     
-    // Adaptive radius based on container dimensions and device type
+    // Perfect circle radius based on container dimensions
+    // We use the same radius for all nodes to create perfect symmetry
     let radius;
     if (isMobile) {
-      // Smaller radius for mobile with progressive scaling based on screen width
+      // Consistent radius for mobile, scaled based on screen size
       if (width < 350) {
-        radius = Math.min(width, height) * 0.18; // Even smaller for very small screens
+        radius = Math.min(width, height) * 0.28; // Small screens
       } else if (width < 500) {
-        radius = Math.min(width, height) * 0.22; // Smaller for small screens
+        radius = Math.min(width, height) * 0.32; // Medium screens
       } else {
-        radius = Math.min(width, height) * 0.26; // Adjusted for medium screens
+        radius = Math.min(width, height) * 0.36; // Larger mobile screens
       }
     } else {
-      // Larger radius for desktop
-      radius = Math.min(width, height) * 0.35;
+      // Larger radius for desktop (more space between nodes)
+      radius = Math.min(width, height) * 0.4;
     }
     
-    // Ensure nodes don't get too close to the edges on small screens
+    // Ensure nodes don't get too close to the edges
     const maxRadius = Math.min(
-      centerX - (isMobile ? 40 : 50),  // More margin from left/right edges on mobile
-      centerY - (isMobile ? 40 : 50)   // More margin from top/bottom edges on mobile
+      centerX - (isMobile ? 40 : 60),
+      centerY - (isMobile ? 40 : 60)
     );
     
     radius = Math.min(radius, maxRadius);
@@ -69,11 +69,11 @@ export function useNodePositioning() {
     // Responsive sizing based on screen size
     const getCenterSize = () => {
       if (isMobile) {
-        if (width < 350) return 50;  // Even smaller for very small screens
-        if (width < 500) return 65;  // Smaller for small screens
-        return 75;                   // Medium screens
+        if (width < 350) return 60;  // Small screens
+        if (width < 500) return 70;  // Medium screens
+        return 80;                    // Larger mobile screens
       }
-      return 120;                    // Desktop
+      return 120;                     // Desktop
     };
     
     const getNodeSize = () => {
@@ -120,14 +120,15 @@ export function useNodePositioning() {
       return 'w-32';
     };
     
-    // Calculate the container height based on screen size
+    // Calculate a consistent container height for better symmetry
     const getContainerHeight = () => {
+      // Make height closer to width for better circle proportions
       if (isMobile) {
-        if (width < 350) return 240;  // Smaller for very small screens
-        if (width < 500) return 280;  // Smaller for small screens
-        return 320;                   // Mobile
+        if (width < 350) return 280;  // Small screens
+        if (width < 500) return 320;  // Medium screens
+        return 380;                   // Larger mobile screens
       }
-      return 500;                     // Desktop
+      return 550;                     // Desktop
     };
 
     return {
