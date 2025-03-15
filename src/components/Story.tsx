@@ -26,15 +26,15 @@ const Story = () => {
             
             <div className="prose prose-lg max-w-none">
               <p className="text-muted-foreground opacity-0 animate-fade-up" style={{ animationDelay: '100ms' }}>
-                From immigrant student to government executive, my journey has been shaped by the intersection of technological innovation and domain expertise. As a Public Works Director with regulatory oversight of an $8.5 billion portfolio, I've developed a unique approach that integrates AI-driven solutions with deep sector knowledge.
+                From immigrant student to government executive, my journey has been shaped by strong family values and the intersection of technological innovation with domain expertise. As a Public Works Director with regulatory oversight of an $8.5 billion portfolio, I've developed a unique approach that integrates AI-driven solutions with deep sector knowledge.
               </p>
               
               <p className="text-muted-foreground opacity-0 animate-fade-up" style={{ animationDelay: '200ms' }}>
-                My career has been defined by finding connections between seemingly disparate fields—technology, public infrastructure, health systems, and water management. This integrative perspective has allowed me to implement transformative solutions that address complex challenges through a comprehensive "One Water" approach.
+                My career has been defined by finding connections between seemingly disparate fields—family structures, health systems, water management, technology, and executive leadership. This integrative perspective has allowed me to implement transformative solutions that address complex challenges through a comprehensive approach.
               </p>
               
               <p className="text-muted-foreground opacity-0 animate-fade-up" style={{ animationDelay: '300ms' }}>
-                Throughout my executive leadership roles, I've leveraged data and AI to enhance operational efficiency, improve health outcomes, and advance water infrastructure resilience. This commitment to innovation continues to drive my work at the intersection of technology and essential services.
+                Throughout my executive leadership roles, I've leveraged data and AI to enhance operational efficiency, improve health outcomes, and advance water infrastructure resilience. This commitment to innovation continues to drive my work at the intersection of technology and essential services, all while maintaining a focus on strengthening family values.
               </p>
             </div>
             
