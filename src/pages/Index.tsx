@@ -6,6 +6,8 @@ import Story from '@/components/Story';
 import PassionSection from '@/components/PassionSection';
 import BlogPreview from '@/components/BlogPreview';
 import HealthResources from '@/components/HealthResources';
+import DigitalCloneConnect from '@/components/DigitalCloneConnect';
+import InterestForm from '@/components/InterestForm';
 
 const Index = () => {
   return (
@@ -13,6 +15,8 @@ const Index = () => {
       <Hero />
       <Story />
       <PassionSection />
+      <DigitalCloneConnect />
+      <InterestForm />
       <HealthResources />
       <BlogPreview />
     </MainLayout>
