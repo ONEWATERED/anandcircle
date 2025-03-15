@@ -101,6 +101,10 @@ export default {
 				'fade-right': {
 					'0%': { opacity: '0', transform: 'translateX(-20px)' },
 					'100%': { opacity: '1', transform: 'translateX(0)' }
+				},
+				'flip': {
+					'0%': { transform: 'rotateY(0deg)' },
+					'100%': { transform: 'rotateY(180deg)' }
 				}
 			},
 			animation: {
@@ -110,9 +114,32 @@ export default {
 				'fade-up': 'fade-up 0.7s ease-out forwards',
 				'fade-down': 'fade-down 0.7s ease-out forwards',
 				'fade-left': 'fade-left 0.7s ease-out forwards',
-				'fade-right': 'fade-right 0.7s ease-out forwards'
+				'fade-right': 'fade-right 0.7s ease-out forwards',
+				'flip': 'flip 0.5s ease-out forwards'
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addUtilities }) {
+			const newUtilities = {
+				'.perspective-1000': {
+					perspective: '1000px',
+				},
+				'.transform-style-3d': {
+					transformStyle: 'preserve-3d',
+				},
+				'.backface-hidden': {
+					backfaceVisibility: 'hidden',
+				},
+				'.rotate-y-180': {
+					transform: 'rotateY(180deg)',
+				},
+				'.hover-flip:hover .transform-style-3d': {
+					transform: 'rotateY(180deg)',
+				},
+			};
+			addUtilities(newUtilities);
+		},
+	],
 } satisfies Config;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, FlipCard } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,12 +21,14 @@ import {
   Star,
   ThumbsUp,
   Loader2,
-  ChevronRight
+  ChevronRight,
+  Info
 } from 'lucide-react';
 import { Person, SocialLink } from '@/types/connections';
 import { Link } from 'react-router-dom';
 import { supabase } from "@/integrations/supabase/client";
 import { getConnectionImage } from '@/utils/imageLoader';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export const people: Person[] = [
   // Family
@@ -256,63 +258,102 @@ const FamilyMemberCard = ({ person }: { person: Person }) => {
     loadSupabaseImage();
   }, [person.id, person.name]);
 
+  // Create front content of the card
+  const frontContent = (
+    <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-md border-primary/10 bg-background/70 backdrop-blur-sm group-hover:border-primary/20">
+      <CardContent className="p-4">
+        <div className="flex flex-col items-center text-center gap-3">
+          <div className="relative">
+            <Avatar className="h-20 w-20 border-2 border-primary/20 transition-all duration-300 group-hover:border-primary">
+              {isImageLoading ? (
+                <div className="h-full w-full flex items-center justify-center bg-muted">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary/50" />
+                </div>
+              ) : (
+                <>
+                  <AvatarImage src={imageUrl || '/placeholder.svg'} alt={person.name} />
+                  <AvatarFallback className="bg-muted">
+                    {person.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </>
+              )}
+            </Avatar>
+            <div className="absolute -bottom-1 -right-1 bg-primary rounded-full p-0.5 shadow-md border border-white">
+              <Heart size={12} className="text-white" fill="white" />
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="font-medium text-base mb-0.5">{person.name}</h4>
+            <p className="text-xs text-muted-foreground">{person.role}</p>
+          </div>
+          
+          <div className="flex space-x-3 mt-1">
+            {person.socialLinks && person.socialLinks.map((link, index) => (
+              <SocialIcon key={index} platform={link.platform} url={link.url} />
+            ))}
+            {person.linkedInUrl && (
+              <a 
+                href={person.linkedInUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Linkedin className="h-4 w-4" />
+              </a>
+            )}
+          </div>
+          
+          {person.relationship && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full">
+                    <Info className="h-4 w-4" />
+                    <span className="sr-only">View relationship</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" align="center" className="max-w-[180px]">
+                  <p className="text-xs">Click to see relationship</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  // Create back content with the relationship info
+  const backContent = (
+    <Card className="h-full overflow-hidden border-primary/30 bg-primary/10 backdrop-blur-md shadow-md">
+      <CardContent className="p-4 flex items-center justify-center">
+        <div className="text-center">
+          <h4 className="font-medium text-base mb-2 text-primary">{person.name}</h4>
+          <p className="text-sm text-primary/90 italic">
+            {person.relationship}
+          </p>
+          <div className="absolute bottom-3 left-0 right-0 text-center">
+            <p className="text-xs text-muted-foreground">Tap to flip back</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   return (
     <div className="group relative">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl blur-lg opacity-0 group-hover:opacity-80 transition-opacity duration-300 -z-10"></div>
-      <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-md border-primary/10 bg-background/70 backdrop-blur-sm">
-        <CardContent className="p-4">
-          <div className="flex flex-col items-center text-center gap-3">
-            <div className="relative">
-              <Avatar className="h-20 w-20 border-2 border-primary/20 transition-all duration-300 group-hover:border-primary">
-                {isImageLoading ? (
-                  <div className="h-full w-full flex items-center justify-center bg-muted">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary/50" />
-                  </div>
-                ) : (
-                  <>
-                    <AvatarImage src={imageUrl || '/placeholder.svg'} alt={person.name} />
-                    <AvatarFallback className="bg-muted">
-                      {person.name.split(' ').map(n => n[0]).join('')}
-                    </AvatarFallback>
-                  </>
-                )}
-              </Avatar>
-              <div className="absolute -bottom-1 -right-1 bg-primary rounded-full p-0.5 shadow-md border border-white">
-                <Heart size={12} className="text-white" fill="white" />
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="font-medium text-base mb-0.5">{person.name}</h4>
-              <p className="text-xs text-muted-foreground">{person.role}</p>
-              
-              {person.relationship && person.id === 'rohit' ? (
-                <p className="text-xs italic mt-2 text-primary/80 max-w-[220px] mx-auto line-clamp-3">
-                  {person.relationship}
-                </p>
-              ) : person.relationship && (
-                <p className="text-xs italic mt-2 text-primary/80 line-clamp-2">{person.relationship}</p>
-              )}
-            </div>
-            
-            <div className="flex space-x-3 mt-1">
-              {person.socialLinks && person.socialLinks.map((link, index) => (
-                <SocialIcon key={index} platform={link.platform} url={link.url} />
-              ))}
-              {person.linkedInUrl && (
-                <a 
-                  href={person.linkedInUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <Linkedin className="h-4 w-4" />
-                </a>
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {person.relationship ? (
+        <FlipCard 
+          frontContent={frontContent}
+          backContent={backContent}
+          height="100%"
+          className="h-full"
+        />
+      ) : (
+        frontContent
+      )}
     </div>
   );
 };
@@ -339,14 +380,15 @@ const PersonCard = ({ person }: { person: Person }) => {
     loadSupabaseImage();
   }, [person.id, person.name]);
 
-  return (
-    <Card className={`overflow-hidden transition-all duration-300 h-full hover:shadow-md group ${
-      person.special ? 'border-primary/20 bg-primary/5 hover:border-primary/30' : ''
+  // Create front content
+  const frontContent = (
+    <Card className={`h-full overflow-hidden transition-all duration-300 hover:shadow-md ${
+      person.special ? 'border-primary/20 bg-primary/5' : ''
     }`}>
       <CardContent className="p-4">
         <div className="flex flex-col items-center text-center gap-3">
           <div className={`relative ${person.special ? 'mt-4' : 'mt-2'}`}>
-            <Avatar className={`h-20 w-20 transition-all duration-300 group-hover:scale-105 ${
+            <Avatar className={`h-20 w-20 transition-all duration-300 ${
               person.special ? 'border-2 border-primary/50 group-hover:border-primary' : ''
             }`}>
               {isImageLoading ? (
@@ -372,14 +414,6 @@ const PersonCard = ({ person }: { person: Person }) => {
           <div>
             <h4 className="font-medium text-base mt-1 mb-0.5">{person.name}</h4>
             <p className="text-xs text-muted-foreground">{person.role}</p>
-            
-            {person.relationship && person.id === 'rohit' ? (
-              <p className="text-xs italic mt-2 text-primary/80 max-w-[220px] mx-auto">
-                {person.relationship}
-              </p>
-            ) : person.relationship && (
-              <p className="text-xs italic mt-2 text-primary/80">{person.relationship}</p>
-            )}
           </div>
           
           <div className="flex space-x-3 mt-1">
@@ -402,9 +436,57 @@ const PersonCard = ({ person }: { person: Person }) => {
             {getCategoryIcon(person.category)}
             <span className="capitalize">{person.category}</span>
           </Badge>
+          
+          {person.relationship && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full mt-1">
+                    <Info className="h-4 w-4" />
+                    <span className="sr-only">View relationship</span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" align="center" className="max-w-[180px]">
+                  <p className="text-xs">Click to see relationship</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </div>
       </CardContent>
     </Card>
+  );
+
+  // Create back content
+  const backContent = (
+    <Card className="h-full overflow-hidden border-primary/30 bg-primary/10 backdrop-blur-md shadow-md">
+      <CardContent className="p-4 flex items-center justify-center">
+        <div className="text-center">
+          <h4 className="font-medium text-base mb-2 text-primary">{person.name}</h4>
+          <p className="text-sm text-primary/90 italic">
+            {person.relationship}
+          </p>
+          <div className="absolute bottom-3 left-0 right-0 text-center">
+            <p className="text-xs text-muted-foreground">Tap to flip back</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  return (
+    <div className="group h-full">
+      {person.relationship ? (
+        <FlipCard 
+          frontContent={frontContent}
+          backContent={backContent}
+          height="100%"
+          className="h-full"
+        />
+      ) : (
+        frontContent
+      )}
+    </div>
   );
 };
 

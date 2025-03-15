@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
@@ -76,4 +77,62 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+// Add FlipCard component
+interface FlipCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  frontContent: React.ReactNode;
+  backContent: React.ReactNode;
+  flipOnHover?: boolean;
+  flipOnClick?: boolean;
+  height?: string;
+}
+
+const FlipCard = React.forwardRef<HTMLDivElement, FlipCardProps>(
+  ({ className, frontContent, backContent, flipOnHover = false, flipOnClick = true, height = "100%", ...props }, ref) => {
+    const [isFlipped, setIsFlipped] = React.useState(false);
+    
+    const handleClick = () => {
+      if (flipOnClick) {
+        setIsFlipped(!isFlipped);
+      }
+    };
+    
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "perspective-1000 w-full relative cursor-pointer",
+          flipOnHover && "hover-flip",
+          className
+        )}
+        style={{ height }}
+        onClick={handleClick}
+        {...props}
+      >
+        <div
+          className={cn(
+            "w-full h-full transition-transform duration-500 transform-style-3d",
+            isFlipped ? "rotate-y-180" : ""
+          )}
+        >
+          <div className="absolute w-full h-full backface-hidden">
+            {frontContent}
+          </div>
+          <div className="absolute w-full h-full backface-hidden rotate-y-180">
+            {backContent}
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+FlipCard.displayName = "FlipCard";
+
+export { 
+  Card, 
+  CardHeader, 
+  CardFooter, 
+  CardTitle, 
+  CardDescription, 
+  CardContent,
+  FlipCard 
+}
