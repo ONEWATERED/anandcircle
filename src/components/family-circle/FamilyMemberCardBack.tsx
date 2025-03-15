@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Twitter, Instagram, Linkedin, Facebook } from 'lucide-react';
 import type { FamilyMember } from '@/data/familyData';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { getConnectionImage } from '@/utils/imageLoader';
 
 interface FamilyMemberCardBackProps {
   member: FamilyMember;
@@ -17,6 +17,27 @@ const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({
   photoUrl 
 }) => {
   const Icon = member.icon;
+  const [memberPhotoUrl, setMemberPhotoUrl] = React.useState<string | null>(photoUrl || member.photoUrl || null);
+
+  React.useEffect(() => {
+    const loadMemberPhoto = async () => {
+      try {
+        if (photoUrl || member.photoUrl) {
+          setMemberPhotoUrl(photoUrl || member.photoUrl);
+          return;
+        }
+        
+        const image = await getConnectionImage(member.id);
+        if (image) {
+          setMemberPhotoUrl(image);
+        }
+      } catch (error) {
+        console.error(`Error loading photo for ${member.name}:`, error);
+      }
+    };
+    
+    loadMemberPhoto();
+  }, [member.id, photoUrl, member.photoUrl]);
   
   return (
     <motion.div 
@@ -28,7 +49,7 @@ const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({
     >
       <div className="flex items-center justify-center mb-2">
         <Avatar className="h-10 w-10 border-2" style={{ borderColor: member.color }}>
-          <AvatarImage src={photoUrl || member.photoUrl} alt={member.name} className="object-cover aspect-square" />
+          <AvatarImage src={memberPhotoUrl || undefined} alt={member.name} className="object-cover aspect-square" />
           <AvatarFallback style={{ backgroundColor: member.color }}>
             <Icon size={16} className="text-white" />
           </AvatarFallback>

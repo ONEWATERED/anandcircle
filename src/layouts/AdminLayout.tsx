@@ -9,7 +9,8 @@ import {
   Home,
   Settings,
   FileText,
-  Network
+  Network,
+  User
 } from 'lucide-react';
 
 export default function AdminLayout() {
@@ -65,6 +66,20 @@ export default function AdminLayout() {
             >
               <Users size={18} />
               <span>Family Members</span>
+            </NavLink>
+            
+            <NavLink 
+              to="/admin/profile" 
+              className={({ isActive }) => 
+                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
+                  isActive 
+                    ? "bg-primary text-primary-foreground" 
+                    : "hover:bg-accent hover:text-accent-foreground"
+                }`
+              }
+            >
+              <User size={18} />
+              <span>My Profile</span>
             </NavLink>
             
             <NavLink 

@@ -14,6 +14,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminFamilyMembers from "./pages/AdminFamilyMembers";
 import AdminSettings from "./pages/AdminSettings";
+import ProfileDashboard from "./pages/ProfileDashboard";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="settings" element={<AdminSettings />} />
             <Route path="publications" element={<PublicationsDashboard />} />
             <Route path="connections" element={<ConnectionsDashboard />} />
+            <Route path="profile" element={<ProfileDashboard />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
