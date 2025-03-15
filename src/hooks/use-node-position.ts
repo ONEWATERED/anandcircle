@@ -34,13 +34,13 @@ export function useNodePositioning() {
     const centerX = width / 2;
     const centerY = height / 2;
     
-    // Improved mobile responsiveness with better scaling factors
+    // Dynamic scaling factor based on screen size
     const scale = Math.min(width, height) / (isMobile ? 500 : 800);
     
     // Adaptive radius based on container dimensions and device type
     let radius;
     if (isMobile) {
-      // Smaller radius for mobile with progressive scaling
+      // Smaller radius for mobile with progressive scaling based on screen width
       if (width < 350) {
         radius = Math.min(width, height) * 0.22;
       } else if (width < 500) {
@@ -55,8 +55,8 @@ export function useNodePositioning() {
     
     // Ensure nodes don't get too close to the edges on small screens
     const maxRadius = Math.min(
-      centerX - 50,  // Keep 50px from left/right edges
-      centerY - 50   // Keep 50px from top/bottom edges
+      centerX - (isMobile ? 30 : 50),  // Keep margin from left/right edges
+      centerY - (isMobile ? 30 : 50)   // Keep margin from top/bottom edges
     );
     
     radius = Math.min(radius, maxRadius);
@@ -107,16 +107,17 @@ export function useNodePositioning() {
     
     const getNodeIconSize = () => {
       if (isMobile) {
-        if (width < 350) return 40;  // Extra small screens
-        if (width < 500) return 48;  // Small screens
-        return 52;                   // Medium screens
+        if (width < 350) return 36;  // Extra small screens - made even smaller
+        if (width < 500) return 44;  // Small screens - made slightly smaller
+        return 50;                   // Medium screens
       }
       return 64;                     // Desktop
     };
     
     const getTextWidth = () => {
       if (isMobile) {
-        if (width < 350) return 'w-16';
+        if (width < 350) return 'w-14'; // Even narrower for very small screens
+        if (width < 400) return 'w-16'; // Narrower for small screens
         return 'w-20';
       }
       return 'w-32';
@@ -125,11 +126,11 @@ export function useNodePositioning() {
     // Calculate the container height based on screen size
     const getContainerHeight = () => {
       if (isMobile) {
-        if (width < 350) return 300;
-        if (width < 500) return 350;
-        return 400;
+        if (width < 350) return 280;  // Even smaller for very small screens
+        if (width < 500) return 320;  // Smaller for small screens
+        return 380;                   // Mobile
       }
-      return 500;
+      return 500;                     // Desktop
     };
 
     return {

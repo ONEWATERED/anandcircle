@@ -13,6 +13,7 @@ interface DomainNodeProps {
   activeNode: string | null;
   onNodeHover: (id: string | null) => void;
   index: number;
+  isMobile: boolean;
 }
 
 const DomainNode: React.FC<DomainNodeProps> = ({
@@ -25,15 +26,27 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   activeNode,
   onNodeHover,
   index,
+  isMobile,
 }) => {
   const Icon = domain.icon;
   const isActive = activeNode === domain.id;
   const width = window.innerWidth;
 
+  const handleInteraction = () => {
+    if (isMobile) {
+      // For mobile, toggle active state
+      onNodeHover(domain.id === activeNode ? null : domain.id);
+    } else {
+      // For desktop, just set active on hover
+      onNodeHover(domain.id);
+    }
+  };
+
   return (
     <motion.div
       key={domain.id}
       className="absolute flex flex-col items-center"
+      data-domain-node="true"
       style={{ 
         top: position.y, 
         left: position.x, 
@@ -49,9 +62,9 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         duration: 0.6, 
         type: "spring" 
       }}
-      onMouseEnter={() => onNodeHover(domain.id)}
-      onMouseLeave={() => onNodeHover(null)}
-      onTouchStart={() => onNodeHover(domain.id === activeNode ? null : domain.id)}
+      onMouseEnter={!isMobile ? () => onNodeHover(domain.id) : undefined}
+      onMouseLeave={!isMobile ? () => onNodeHover(null) : undefined}
+      onTouchStart={isMobile ? handleInteraction : undefined}
     >
       <motion.div 
         className="cursor-pointer rounded-full flex items-center justify-center shadow-lg mb-2 transition-transform"

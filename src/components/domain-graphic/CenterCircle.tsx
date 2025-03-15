@@ -8,6 +8,10 @@ interface CenterCircleProps {
 }
 
 const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width }) => {
+  // Determine font sizes based on available space
+  const titleFontSize = width < 350 ? 'text-xs' : width < 500 ? 'text-sm' : 'text-sm md:text-xl';
+  const subtitleFontSize = width < 350 ? 'text-[0.6rem]' : width < 500 ? 'text-xs' : 'text-xs md:text-sm';
+
   return (
     <>
       {/* The Circle for ANAND */}
@@ -26,8 +30,8 @@ const CenterCircle: React.FC<CenterCircleProps> = ({ centerSize, width }) => {
         whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)' }}
       >
         <div className="text-center">
-          <div className={`${width < 350 ? 'text-xs' : 'text-sm'} md:text-xl font-bold tracking-tight`}>HARDEEP</div>
-          <div className={`${width < 350 ? 'text-2xs' : 'text-xs'} font-medium mt-1`}>ANAND Circle</div>
+          <div className={`${titleFontSize} font-bold tracking-tight`}>HARDEEP</div>
+          <div className={`${subtitleFontSize} font-medium mt-1`}>ANAND Circle</div>
         </div>
       </motion.div>
       
