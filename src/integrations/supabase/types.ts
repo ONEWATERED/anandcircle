@@ -94,7 +94,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_connection_image: {
+        Args: {
+          p_person_id: string
+        }
+        Returns: {
+          image_path: string
+        }[]
+      }
+      store_connection_image: {
+        Args: {
+          p_person_id: string
+          p_image_path: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
