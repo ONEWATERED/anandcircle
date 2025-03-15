@@ -14,4 +14,5 @@ export interface Person {
   relationship?: string;
   socialLinks?: SocialLink[];
   linkedInUrl?: string;
+  order?: number; // Added order property for explicit family ordering
 }

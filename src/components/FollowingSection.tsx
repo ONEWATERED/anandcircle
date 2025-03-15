@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,7 +16,7 @@ import {
   Twitter,
   ExternalLink,
   Linkedin,
-  Pencil  // Changed from Edit to Pencil since Edit doesn't exist in lucide-react
+  Pencil
 } from 'lucide-react';
 import { Person, SocialLink } from '@/types/connections';
 import { Link } from 'react-router-dom';
@@ -25,13 +24,24 @@ import { Link } from 'react-router-dom';
 export const people: Person[] = [
   // Family
   { 
+    id: 'preeti', 
+    name: 'Preeti Anand', 
+    category: 'family', 
+    role: 'Wife', 
+    image: '/placeholder.svg', 
+    special: true, 
+    relationship: 'My life partner and greatest supporter',
+    order: 1 // Wife at the top
+  },
+  { 
     id: 'rohit', 
     name: 'Rohit Anand', 
     category: 'family', 
     role: 'Son', 
     image: '/placeholder.svg', 
     special: true, 
-    relationship: 'Loves me and makes me proud every day. Working on some magic in the web3 space, even though I had my reservations about him dropping out of med school. Now I believe in his vision and I\'m glad I let him pursue his passion rather than mine. He was the inspiration behind me to actually learn and connect Blockchain to the work I do.' 
+    relationship: 'Loves me and makes me proud every day. Working on some magic in the web3 space, even though I had my reservations about him dropping out of med school. Now I believe in his vision and I\'m glad I let him pursue his passion rather than mine. He was the inspiration behind me to actually learn and connect Blockchain to the work I do.',
+    order: 2 // Kid in second row
   },
   { 
     id: 'simi', 
@@ -45,16 +55,8 @@ export const people: Person[] = [
       { platform: 'instagram', url: 'https://instagram.com/simianand' },
       { platform: 'youtube', url: 'https://youtube.com/simianand' },
       { platform: 'twitter', url: 'https://twitter.com/simianand' }
-    ] 
-  },
-  { 
-    id: 'preeti', 
-    name: 'Preeti Anand', 
-    category: 'family', 
-    role: 'Wife', 
-    image: '/placeholder.svg', 
-    special: true, 
-    relationship: 'My life partner and greatest supporter' 
+    ],
+    order: 2 // Kid in second row
   },
   { 
     id: 'dad', 
@@ -63,7 +65,8 @@ export const people: Person[] = [
     role: 'Late Father', 
     image: '/placeholder.svg', 
     special: true, 
-    relationship: 'Instilled core values at an early age' 
+    relationship: 'Instilled core values at an early age',
+    order: 3 // Parent in third row
   },
   { 
     id: 'mom', 
@@ -72,7 +75,8 @@ export const people: Person[] = [
     role: 'Mother', 
     image: '/placeholder.svg', 
     special: true, 
-    relationship: 'Shaped who I am today' 
+    relationship: 'Shaped who I am today',
+    order: 3 // Parent in third row
   },
   
   // Politics
@@ -219,6 +223,10 @@ const FollowingSection = () => {
   const familyMembers = displayPeople.filter(p => p.category === 'family');
   const nonFamilyMembers = displayPeople.filter(p => p.category !== 'family');
   
+  const wifeRow = familyMembers.filter(p => p.order === 1);
+  const kidsRow = familyMembers.filter(p => p.order === 2);
+  const parentsRow = familyMembers.filter(p => p.order === 3);
+  
   return (
     <section className="py-16 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-gray-50 to-transparent"></div>
@@ -269,11 +277,29 @@ const FollowingSection = () => {
             <div className="h-px w-12 bg-primary/30"></div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {familyMembers.map(person => (
-              <PersonCard key={person.id} person={person} />
-            ))}
-          </div>
+          {wifeRow.length > 0 && (
+            <div className="grid grid-cols-1 max-w-xs mx-auto gap-6 mb-6">
+              {wifeRow.map(person => (
+                <PersonCard key={person.id} person={person} />
+              ))}
+            </div>
+          )}
+          
+          {kidsRow.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 max-w-xl mx-auto gap-6 mb-6">
+              {kidsRow.map(person => (
+                <PersonCard key={person.id} person={person} />
+              ))}
+            </div>
+          )}
+          
+          {parentsRow.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 max-w-xl mx-auto gap-6">
+              {parentsRow.map(person => (
+                <PersonCard key={person.id} person={person} />
+              ))}
+            </div>
+          )}
         </div>
         
         <div className="opacity-0 animate-fade-up" style={{ animationDelay: '400ms' }}>
