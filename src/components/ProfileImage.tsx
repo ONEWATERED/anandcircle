@@ -1,7 +1,8 @@
+
 import React, { useEffect, useState } from 'react';
 import { Linkedin, Twitter, Users, Youtube, Music, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getProfileImage } from '@/utils/imageLoader';
+import { getProfileImage, getUserProfileData } from '@/utils/imageLoader';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -14,25 +15,47 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
+interface SocialLinks {
+  linkedIn: string;
+  twitter: string;
+  youtube: string;
+  spotify: string;
+  anandCircle: string;
+}
+
 const ProfileImage = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isAvatarPulsing, setIsAvatarPulsing] = useState(true);
   const [showAvatarHint, setShowAvatarHint] = useState(false);
   const [showAvatarDialog, setShowAvatarDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [socialLinks, setSocialLinks] = useState<SocialLinks>({
+    linkedIn: 'https://linkedin.com/in/hardeepanand',
+    twitter: 'https://twitter.com/hardeepanand',
+    youtube: 'https://youtube.com/@hardeepanand',
+    spotify: 'https://open.spotify.com/user/hardeepanand',
+    anandCircle: '#anand-circle'
+  });
 
   useEffect(() => {
-    // Load profile image from localStorage if available
-    const loadProfileImage = async () => {
+    // Load profile image and social links
+    const loadUserData = async () => {
       setIsLoading(true);
       try {
-        const savedImage = getProfileImage();
+        // Load profile image
+        const savedImage = await getProfileImage();
         console.log("Loaded profile image:", savedImage);
         if (savedImage) {
           setProfileImage(savedImage);
         } else {
           // Fallback to default image
           setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+        }
+        
+        // Load social links
+        const userData = await getUserProfileData();
+        if (userData && userData.socialLinks) {
+          setSocialLinks(userData.socialLinks as SocialLinks);
         }
       } catch (error) {
         console.error("Error loading profile image:", error);
@@ -43,7 +66,7 @@ const ProfileImage = () => {
       }
     };
 
-    loadProfileImage();
+    loadUserData();
 
     // Set interval for the avatar animation
     const pulseInterval = setInterval(() => {
@@ -175,23 +198,23 @@ const ProfileImage = () => {
 
       {/* Social Media Links */}
       <div className="absolute -left-3 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 z-20">
-        <a href="https://linkedin.com/in/hardeepanand" target="_blank" rel="noopener noreferrer" 
+        <a href={socialLinks.linkedIn} target="_blank" rel="noopener noreferrer" 
            className="glass-card p-2 rounded-full hover:bg-primary/10 transition-colors" aria-label="LinkedIn">
           <Linkedin size={18} className="text-primary" />
         </a>
-        <a href="https://twitter.com/hardeepanand" target="_blank" rel="noopener noreferrer"
+        <a href={socialLinks.twitter} target="_blank" rel="noopener noreferrer"
            className="glass-card p-2 rounded-full hover:bg-blue-400/10 transition-colors" aria-label="Twitter">
           <Twitter size={18} className="text-blue-400" />
         </a>
-        <a href="https://youtube.com/@hardeepanand" target="_blank" rel="noopener noreferrer"
+        <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer"
            className="glass-card p-2 rounded-full hover:bg-red-500/10 transition-colors" aria-label="YouTube">
           <Youtube size={18} className="text-red-500" />
         </a>
-        <a href="https://open.spotify.com/user/hardeepanand" target="_blank" rel="noopener noreferrer"
+        <a href={socialLinks.spotify} target="_blank" rel="noopener noreferrer"
            className="glass-card p-2 rounded-full hover:bg-green-500/10 transition-colors" aria-label="Spotify">
           <Music size={18} className="text-green-500" />
         </a>
-        <Link to="#anand-circle"
+        <Link to={socialLinks.anandCircle}
               className="glass-card p-2 rounded-full hover:bg-accent/10 transition-colors" aria-label="ANAND Circle">
           <Users size={18} className="text-accent" />
         </Link>

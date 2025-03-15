@@ -1,12 +1,19 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from 'sonner';
-import { Upload, Camera, Save, Check, Users, FileText, ExternalLink, Download, Image as ImageIcon } from 'lucide-react';
-import { getProfileImage, saveProfileImage, isValidImageUrl, fileToDataUrl } from '@/utils/imageLoader';
+import { Upload, Camera, Save, Check, Users, FileText, ExternalLink, Download, Image as ImageIcon, Linkedin, Twitter, Youtube, Music } from 'lucide-react';
+import { 
+  getProfileImage, 
+  saveProfileImage, 
+  isValidImageUrl, 
+  fileToDataUrl, 
+  getUserProfileData, 
+  saveSocialLinks, 
+  uploadImageToDatabase 
+} from '@/utils/imageLoader';
 import { 
   Card,
   CardHeader,
@@ -15,6 +22,16 @@ import {
   CardContent,
   CardFooter
 } from '@/components/ui/card';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from '@/components/ui/form';
+import { useForm } from "react-hook-form";
+
+interface SocialLinksFormValues {
+  linkedInUrl: string;
+  twitterUrl: string;
+  youtubeUrl: string;
+  spotifyUrl: string;
+  anandCircleUrl: string;
+}
 
 const Dashboard = () => {
   const [profileImageUrl, setProfileImageUrl] = useState<string>('');
@@ -22,38 +39,76 @@ const Dashboard = () => {
   const [resumeUrl, setResumeUrl] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [isDatabaseConnected, setIsDatabaseConnected] = useState<boolean>(false);
+
+  const socialLinksForm = useForm<SocialLinksFormValues>({
+    defaultValues: {
+      linkedInUrl: 'https://linkedin.com/in/hardeepanand',
+      twitterUrl: 'https://twitter.com/hardeepanand',
+      youtubeUrl: 'https://youtube.com/@hardeepanand',
+      spotifyUrl: 'https://open.spotify.com/user/hardeepanand',
+      anandCircleUrl: '#anand-circle',
+    }
+  });
   
-  // Load current profile image on component mount
   useEffect(() => {
-    const savedImage = getProfileImage();
-    if (savedImage) {
-      setPreviewUrl(savedImage);
-    }
-    
-    // Load resume URL from localStorage if available
-    const savedResumeUrl = localStorage.getItem('resumeUrl');
-    if (savedResumeUrl) {
-      setResumeUrl(savedResumeUrl);
-    }
+    const loadUserData = async () => {
+      try {
+        const savedImage = await getProfileImage();
+        if (savedImage) {
+          setPreviewUrl(savedImage);
+        }
+        
+        const savedResumeUrl = localStorage.getItem('resumeUrl');
+        if (savedResumeUrl) {
+          setResumeUrl(savedResumeUrl);
+        }
+
+        const userData = await getUserProfileData();
+        if (userData && userData.socialLinks) {
+          socialLinksForm.reset({
+            linkedInUrl: userData.socialLinks.linkedIn,
+            twitterUrl: userData.socialLinks.twitter,
+            youtubeUrl: userData.socialLinks.youtube,
+            spotifyUrl: userData.socialLinks.spotify,
+            anandCircleUrl: userData.socialLinks.anandCircle,
+          });
+        }
+
+        setIsDatabaseConnected(false);
+      } catch (error) {
+        console.error("Error loading user data:", error);
+        toast.error("Failed to load user data");
+      }
+    };
+
+    loadUserData();
   }, []);
   
-  // Save to localStorage for demo purposes
-  const handleSaveImage = () => {
+  const handleSaveImage = async () => {
     if (profileImageUrl) {
-      saveProfileImage(profileImageUrl);
-      setPreviewUrl(profileImageUrl);
-      toast.success('Profile image updated successfully!');
+      try {
+        await saveProfileImage(profileImageUrl);
+        setPreviewUrl(profileImageUrl);
+        toast.success('Profile image updated successfully!');
+      } catch (error) {
+        toast.error('Failed to save profile image');
+      }
     } else {
       toast.error('Please enter a valid image URL');
     }
   };
   
-  const handleResetToDefault = () => {
+  const handleResetToDefault = async () => {
     const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
-    saveProfileImage(defaultImage);
-    setPreviewUrl(defaultImage);
-    setProfileImageUrl('');
-    toast.success('Profile image reset to default');
+    try {
+      await saveProfileImage(defaultImage);
+      setPreviewUrl(defaultImage);
+      setProfileImageUrl('');
+      toast.success('Profile image reset to default');
+    } catch (error) {
+      toast.error('Failed to reset profile image');
+    }
   };
   
   const handleImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,9 +130,9 @@ const Dashboard = () => {
     
     try {
       setIsUploading(true);
-      const dataUrl = await fileToDataUrl(file);
-      setPreviewUrl(dataUrl);
-      saveProfileImage(dataUrl);
+      
+      const imageUrl = await uploadImageToDatabase(file);
+      setPreviewUrl(imageUrl);
       setProfileImageUrl('');
       toast.success('Profile image uploaded successfully!');
     } catch (error) {
@@ -111,6 +166,33 @@ const Dashboard = () => {
     }
   };
 
+  const onSocialLinksSubmit = async (data: SocialLinksFormValues) => {
+    try {
+      await saveSocialLinks({
+        linkedIn: data.linkedInUrl,
+        twitter: data.twitterUrl,
+        youtube: data.youtubeUrl,
+        spotify: data.spotifyUrl,
+        anandCircle: data.anandCircleUrl
+      });
+      
+      toast.success('Social links updated successfully!');
+    } catch (error) {
+      toast.error('Failed to update social links');
+    }
+  };
+
+  const handleSocialLinkChange = async () => {
+    const data = socialLinksForm.getValues();
+    await saveSocialLinks({
+      linkedIn: data.linkedInUrl,
+      twitter: data.twitterUrl,
+      youtube: data.youtubeUrl,
+      spotify: data.spotifyUrl,
+      anandCircle: data.anandCircleUrl
+    });
+  };
+
   return (
     <MainLayout>
       <section className="py-20">
@@ -119,10 +201,17 @@ const Dashboard = () => {
             <div className="text-center mb-12">
               <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">Dashboard</h1>
               <p className="text-muted-foreground">Manage your profile content</p>
+              {!isDatabaseConnected && (
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
+                  <p className="text-yellow-700 text-sm">
+                    <strong>Note:</strong> You are currently using local storage for saving data. 
+                    To enable database functionality, please connect a database in the project settings.
+                  </p>
+                </div>
+              )}
             </div>
             
             <div className="grid md:grid-cols-2 gap-8">
-              {/* Image Management Section */}
               <div className="glass-card p-6 rounded-xl">
                 <h2 className="text-xl font-display font-semibold mb-4 flex items-center">
                   <Camera className="mr-2" size={20} />
@@ -138,7 +227,6 @@ const Dashboard = () => {
                     <span className="text-sm text-muted-foreground">Image Preview</span>
                   </div>
                   
-                  {/* Hidden file input */}
                   <input 
                     type="file" 
                     ref={fileInputRef}
@@ -147,7 +235,6 @@ const Dashboard = () => {
                     onChange={handleFileUpload}
                   />
                   
-                  {/* Upload button */}
                   <Button 
                     onClick={triggerFileUpload}
                     className="w-full"
@@ -202,42 +289,123 @@ const Dashboard = () => {
                 </div>
               </div>
               
-              {/* Content Management Section */}
               <div className="glass-card p-6 rounded-xl">
-                <h2 className="text-xl font-display font-semibold mb-4">Social Links</h2>
+                <h2 className="text-xl font-display font-semibold mb-4 flex items-center">
+                  <Users className="mr-2" size={20} />
+                  Social Links
+                </h2>
                 
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <label htmlFor="linkedinUrl" className="text-sm font-medium">
-                      LinkedIn URL
-                    </label>
-                    <Input
-                      id="linkedinUrl"
-                      placeholder="https://linkedin.com/in/yourprofile"
-                      defaultValue="https://linkedin.com/in/hardeepanand"
+                <Form {...socialLinksForm}>
+                  <form onChange={handleSocialLinkChange} onSubmit={socialLinksForm.handleSubmit(onSocialLinksSubmit)} className="space-y-4">
+                    <FormField
+                      control={socialLinksForm.control}
+                      name="linkedInUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center">
+                            <Linkedin className="mr-2" size={16} />
+                            LinkedIn URL
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="https://linkedin.com/in/yourprofile"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="twitterUrl" className="text-sm font-medium">
-                      Twitter URL
-                    </label>
-                    <Input
-                      id="twitterUrl"
-                      placeholder="https://twitter.com/yourhandle"
-                      defaultValue="https://twitter.com/hardeepanand"
+                    
+                    <FormField
+                      control={socialLinksForm.control}
+                      name="twitterUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center">
+                            <Twitter className="mr-2" size={16} />
+                            Twitter URL
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="https://twitter.com/yourhandle"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
                     />
-                  </div>
-                  
-                  <div className="flex items-center mt-6 text-sm text-muted-foreground">
-                    <Check className="text-green-500 mr-2" size={16} />
-                    <span>Changes are automatically saved</span>
-                  </div>
-                </div>
+                    
+                    <FormField
+                      control={socialLinksForm.control}
+                      name="youtubeUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center">
+                            <Youtube className="mr-2" size={16} />
+                            YouTube URL
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="https://youtube.com/@youraccount"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={socialLinksForm.control}
+                      name="spotifyUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center">
+                            <Music className="mr-2" size={16} />
+                            Spotify URL
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="https://open.spotify.com/user/youraccount"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={socialLinksForm.control}
+                      name="anandCircleUrl"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="flex items-center">
+                            <Users className="mr-2" size={16} />
+                            ANAND Circle URL
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="#anand-circle"
+                              {...field}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <Button type="submit" className="mt-4">
+                      <Save className="mr-2 h-4 w-4" />
+                      Save All Social Links
+                    </Button>
+                    
+                    <div className="flex items-center mt-2 text-sm text-muted-foreground">
+                      <Check className="text-green-500 mr-2" size={16} />
+                      <span>Changes are automatically saved</span>
+                    </div>
+                  </form>
+                </Form>
               </div>
             </div>
             
-            {/* Resume Section */}
             <Card className="my-8 border-0 bg-gradient-to-br from-primary/10 to-accent/10 shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -288,33 +456,44 @@ const Dashboard = () => {
               )}
             </Card>
             
-            {/* ANAND Circle Management */}
-            <div className="glass-card p-6 rounded-xl mt-8">
-              <h2 className="text-xl font-display font-semibold mb-4 flex items-center">
-                <Users className="mr-2" size={20} />
-                HARDEEP ANAND Circle Settings
-              </h2>
-              
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label htmlFor="circleUrl" className="text-sm font-medium">
-                    ANAND Circle URL
-                  </label>
-                  <Input
-                    id="circleUrl"
-                    placeholder="https://anandcircle.com"
-                    defaultValue="#anand-circle"
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Enter the URL for your ANAND Circle community
-                  </p>
+            <Card className="mb-8 bg-white border border-gray-200 shadow-sm">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                  </svg>
+                  Database Integration
+                </CardTitle>
+                <CardDescription>
+                  Manage your database connection for storing profile data
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex items-center">
+                    <div className={`h-3 w-3 rounded-full mr-3 ${isDatabaseConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                    <span className="font-medium">Database Status:</span>
+                  </div>
+                  <span className={isDatabaseConnected ? 'text-green-600' : 'text-red-600'}>
+                    {isDatabaseConnected ? 'Connected' : 'Not Connected'}
+                  </span>
                 </div>
                 
-                <Button className="mt-4">
-                  Save Settings
+                <div className="text-sm text-muted-foreground">
+                  {isDatabaseConnected ? (
+                    <p>Your profile data is being saved to the database.</p>
+                  ) : (
+                    <p>Currently using localStorage as a temporary solution. To enable persistent storage, connect a database.</p>
+                  )}
+                </div>
+                
+                <Button className="w-full" variant="outline">
+                  {isDatabaseConnected ? 'Database Settings' : 'Connect Database'}
                 </Button>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
