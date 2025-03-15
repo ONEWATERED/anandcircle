@@ -28,6 +28,9 @@ import { getConnectionImage, saveConnectionImage } from '@/utils/connectionImage
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+// Define the category type to match the Person type
+type PersonCategory = 'family' | 'politics' | 'business' | 'health' | 'learning' | 'unprofessional' | 'recommended';
+
 const ConnectionsDashboard = () => {
   const { isAuthenticated, isLoading: authLoading } = useAdminAuth('/admin/login');
   const [connections, setConnections] = useState<Person[]>([]);
@@ -36,7 +39,7 @@ const ConnectionsDashboard = () => {
   const [newConnection, setNewConnection] = useState<Partial<Person>>({
     name: '',
     role: '',
-    category: 'business',
+    category: 'business' as PersonCategory,
     relationship: '',
     special: false
   });
@@ -132,7 +135,7 @@ const ConnectionsDashboard = () => {
       id,
       name: newConnection.name,
       role: newConnection.role,
-      category: newConnection.category as string,
+      category: newConnection.category as PersonCategory,
       image: newConnection.image || '/placeholder.svg',
       special: newConnection.special || false,
       relationship: newConnection.relationship || '',
@@ -148,7 +151,7 @@ const ConnectionsDashboard = () => {
     setNewConnection({
       name: '',
       role: '',
-      category: 'business',
+      category: 'business' as PersonCategory,
       relationship: '',
       special: false
     });
@@ -355,7 +358,7 @@ const ConnectionsDashboard = () => {
                         <Label htmlFor={`edit-category-${connection.id}`}>Category</Label>
                         <Select 
                           value={editingConnection.category}
-                          onValueChange={(value) => setEditingConnection({
+                          onValueChange={(value: PersonCategory) => setEditingConnection({
                             ...editingConnection,
                             category: value
                           })}
@@ -539,8 +542,8 @@ const ConnectionsDashboard = () => {
               <div className="space-y-2">
                 <Label htmlFor="new-category">Category</Label>
                 <Select 
-                  value={newConnection.category as string}
-                  onValueChange={(value) => setNewConnection({
+                  value={newConnection.category as PersonCategory}
+                  onValueChange={(value: PersonCategory) => setNewConnection({
                     ...newConnection,
                     category: value
                   })}
