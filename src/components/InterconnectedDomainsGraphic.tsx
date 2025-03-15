@@ -87,11 +87,32 @@ const InterconnectedDomainsGraphic = () => {
     const centerX = width / 2;
     const centerY = height / 2;
     
-    // Make radius more responsive - smaller on mobile and vary based on container size
-    const minRadius = Math.min(width, height);
-    const radius = isMobile 
-      ? minRadius * (width < 350 ? 0.25 : 0.28) // Even smaller radius for very small screens
-      : minRadius * 0.35;
+    // Improved mobile responsiveness with better scaling factors
+    const scale = Math.min(width, height) / (isMobile ? 500 : 800);
+    
+    // Adaptive radius based on container dimensions and device type
+    let radius;
+    if (isMobile) {
+      // Smaller radius for mobile with progressive scaling
+      if (width < 350) {
+        radius = Math.min(width, height) * 0.22;
+      } else if (width < 500) {
+        radius = Math.min(width, height) * 0.25;
+      } else {
+        radius = Math.min(width, height) * 0.28;
+      }
+    } else {
+      // Larger radius for desktop
+      radius = Math.min(width, height) * 0.35;
+    }
+    
+    // Ensure nodes don't get too close to the edges on small screens
+    const maxRadius = Math.min(
+      centerX - 50,  // Keep 50px from left/right edges
+      centerY - 50   // Keep 50px from top/bottom edges
+    );
+    
+    radius = Math.min(radius, maxRadius);
     
     return {
       x: centerX + x * radius,
@@ -136,14 +157,51 @@ const InterconnectedDomainsGraphic = () => {
       );
     });
 
-    // Connect nodes to each other in a web pattern
-    domains.forEach((domain, i) => {
-      domains.slice(i + 1).forEach((target, j) => {
-        const source = getNodePosition(domain.x, domain.y);
-        const dest = getNodePosition(target.x, target.y);
+    // Make connections between nodes more selective on mobile
+    if (!isMobile) {
+      // Connect all nodes on desktop for a full web
+      domains.forEach((domain, i) => {
+        domains.slice(i + 1).forEach((target, j) => {
+          const source = getNodePosition(domain.x, domain.y);
+          const dest = getNodePosition(target.x, target.y);
+          
+          const key = `${domain.id}-${target.id}`;
+          const isActive = activeNode === domain.id || activeNode === target.id;
+          
+          connections.push(
+            <motion.path
+              key={key}
+              d={`M ${source.x} ${source.y} L ${dest.x} ${dest.y}`}
+              stroke={isActive ? "rgba(99, 102, 241, 0.8)" : "rgba(209, 213, 219, 0.3)"}
+              strokeWidth={isActive ? 2 : 1}
+              strokeDasharray="3,3"
+              fill="none"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ 
+                pathLength: 1, 
+                opacity: isActive ? 1 : 0.5,
+                strokeWidth: isActive ? 2 : 1
+              }}
+              transition={{ 
+                duration: 1.5, 
+                delay: 0.7 + (i * 0.1) + (j * 0.1),
+                ease: "easeInOut"
+              }}
+            />
+          );
+        });
+      });
+    } else {
+      // On mobile, only connect adjacent nodes to reduce visual clutter
+      for (let i = 0; i < domains.length; i++) {
+        const domain = domains[i];
+        const nextDomain = domains[(i + 1) % domains.length];
         
-        const key = `${domain.id}-${target.id}`;
-        const isActive = activeNode === domain.id || activeNode === target.id;
+        const source = getNodePosition(domain.x, domain.y);
+        const dest = getNodePosition(nextDomain.x, nextDomain.y);
+        
+        const key = `${domain.id}-${nextDomain.id}`;
+        const isActive = activeNode === domain.id || activeNode === nextDomain.id;
         
         connections.push(
           <motion.path
@@ -161,13 +219,13 @@ const InterconnectedDomainsGraphic = () => {
             }}
             transition={{ 
               duration: 1.5, 
-              delay: 0.7 + (i * 0.1) + (j * 0.1),
+              delay: 0.7 + (i * 0.1),
               ease: "easeInOut"
             }}
           />
         );
-      });
-    });
+      }
+    }
 
     return connections;
   };
@@ -182,19 +240,73 @@ const InterconnectedDomainsGraphic = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Define node sizes based on mobile state
-  const centerSize = isMobile ? (width < 350 ? 80 : 100) : 120;
-  const nodeSize = isMobile ? 14 : 16;
-  const iconSize = isMobile ? (width < 350 ? 20 : 24) : 30;
-  const textWidth = isMobile ? 'w-20' : 'w-32';
-  const nodeWidth = isMobile ? (width < 350 ? 70 : 80) : 100;
-  const nodeIconSize = isMobile ? (width < 350 ? 48 : 56) : 64;
+  // Responsive sizing based on screen size
+  const getCenterSize = () => {
+    if (isMobile) {
+      if (width < 350) return 60;  // Extra small screens
+      if (width < 500) return 80;  // Small screens
+      return 90;                   // Medium screens
+    }
+    return 120;                    // Desktop
+  };
+  
+  const getNodeSize = () => {
+    if (isMobile) {
+      if (width < 350) return 12;  // Extra small screens
+      return 14;                   // Other mobile screens
+    }
+    return 16;                     // Desktop
+  };
+  
+  const getIconSize = () => {
+    if (isMobile) {
+      if (width < 350) return 18;  // Extra small screens
+      if (width < 500) return 22;  // Small screens
+      return 24;                   // Medium screens
+    }
+    return 30;                     // Desktop
+  };
+  
+  const getNodeWidth = () => {
+    if (isMobile) {
+      if (width < 350) return 60;  // Extra small screens
+      if (width < 500) return 70;  // Small screens
+      return 80;                   // Medium screens
+    }
+    return 100;                    // Desktop
+  };
+  
+  const getNodeIconSize = () => {
+    if (isMobile) {
+      if (width < 350) return 40;  // Extra small screens
+      if (width < 500) return 48;  // Small screens
+      return 52;                   // Medium screens
+    }
+    return 64;                     // Desktop
+  };
+  
+  // Get calculated sizes
+  const centerSize = getCenterSize();
+  const nodeSize = getNodeSize();
+  const iconSize = getIconSize();
+  const textWidth = isMobile ? (width < 350 ? 'w-16' : 'w-20') : 'w-32';
+  const nodeWidth = getNodeWidth();
+  const nodeIconSize = getNodeIconSize();
+  
+  // Calculate the container height based on screen size
+  const containerHeight = isMobile 
+    ? (width < 350 ? 300 : (width < 500 ? 350 : 400)) 
+    : 500;
 
   return (
     <div 
       ref={containerRef} 
-      className="w-full h-[400px] md:h-[500px] relative opacity-0 animate-fade-up"
-      style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}
+      className="w-full relative opacity-0 animate-fade-up"
+      style={{ 
+        height: containerHeight,
+        animationDelay: '200ms', 
+        animationFillMode: 'forwards' 
+      }}
     >
       {/* SVG for connections */}
       <svg className="absolute inset-0 w-full h-full z-0 pointer-events-none">
@@ -217,8 +329,8 @@ const InterconnectedDomainsGraphic = () => {
         whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)' }}
       >
         <div className="text-center">
-          <div className="text-sm md:text-xl font-bold tracking-tight">HARDEEP</div>
-          <div className="text-xs font-medium mt-1">ANAND Circle</div>
+          <div className={`${width < 350 ? 'text-xs' : 'text-sm'} md:text-xl font-bold tracking-tight`}>HARDEEP</div>
+          <div className={`${width < 350 ? 'text-2xs' : 'text-xs'} font-medium mt-1`}>ANAND Circle</div>
         </div>
       </motion.div>
       
@@ -275,10 +387,12 @@ const InterconnectedDomainsGraphic = () => {
               }}
               transition={{ delay: 0.5 + (index * 0.1) }}
             >
-              <div className="font-semibold text-xs md:text-sm">{domain.title}</div>
+              <div className={`font-semibold ${width < 350 ? 'text-2xs' : 'text-xs'} md:text-sm`}>
+                {domain.title}
+              </div>
               {activeNode === domain.id && (
                 <motion.div 
-                  className="text-2xs md:text-xs text-muted-foreground mt-1"
+                  className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-1`}
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
@@ -291,20 +405,20 @@ const InterconnectedDomainsGraphic = () => {
         );
       })}
       
-      {/* Floating particles effect */}
-      {[...Array(10)].map((_, i) => (
+      {/* Reduced number of particles on mobile */}
+      {[...Array(isMobile ? 5 : 10)].map((_, i) => (
         <motion.div
           key={`particle-${i}`}
           className="absolute rounded-full bg-primary/10"
           style={{
-            width: Math.random() * 10 + 5,
-            height: Math.random() * 10 + 5,
+            width: Math.random() * (isMobile ? 6 : 10) + 3,
+            height: Math.random() * (isMobile ? 6 : 10) + 3,
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`
           }}
           animate={{
-            x: [0, Math.random() * 50 - 25],
-            y: [0, Math.random() * 50 - 25],
+            x: [0, Math.random() * (isMobile ? 30 : 50) - (isMobile ? 15 : 25)],
+            y: [0, Math.random() * (isMobile ? 30 : 50) - (isMobile ? 15 : 25)],
             opacity: [0.7, 0.1, 0.7],
             scale: [1, 1.5, 1]
           }}
@@ -316,14 +430,14 @@ const InterconnectedDomainsGraphic = () => {
         />
       ))}
       
-      {/* Pulsing ring around center */}
+      {/* Pulsing ring around center - smaller on mobile */}
       <motion.div
         className="absolute rounded-full border-2 border-primary/20"
         style={{ 
           top: '50%', 
           left: '50%', 
-          width: centerSize + 20, 
-          height: centerSize + 20,
+          width: centerSize + (isMobile ? 10 : 20), 
+          height: centerSize + (isMobile ? 10 : 20),
           transform: 'translate(-50%, -50%)'
         }}
         animate={{
