@@ -5,9 +5,7 @@ import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { Button } from '@/components/ui/button';
 import { 
   Users, 
-  Image, 
   LogOut, 
-  Database, 
   Home,
   Settings,
   FileText,
@@ -67,20 +65,6 @@ export default function AdminLayout() {
             >
               <Users size={18} />
               <span>Family Members</span>
-            </NavLink>
-            
-            <NavLink 
-              to="/admin/images" 
-              className={({ isActive }) => 
-                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
-                  isActive 
-                    ? "bg-primary text-primary-foreground" 
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }`
-              }
-            >
-              <Image size={18} />
-              <span>Images</span>
             </NavLink>
             
             <NavLink 

@@ -13,7 +13,6 @@ import AdminAuth from "./pages/AdminAuth";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminFamilyMembers from "./pages/AdminFamilyMembers";
-import AdminImages from "./pages/AdminImages";
 import AdminSettings from "./pages/AdminSettings";
 
 const queryClient = new QueryClient();
@@ -31,7 +30,6 @@ const App = () => (
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="family-members" element={<AdminFamilyMembers />} />
-            <Route path="images" element={<AdminImages />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="publications" element={<PublicationsDashboard />} />
             <Route path="connections" element={<ConnectionsDashboard />} />

@@ -24,6 +24,14 @@ const ConnectionList: React.FC<ConnectionListProps> = ({
   onDelete,
   onImageUpload
 }) => {
+  if (connections.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-40 border rounded-lg bg-slate-50 text-slate-500">
+        <p>No connections found. Add new connections to get started.</p>
+      </div>
+    );
+  }
+  
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {connections.map(connection => (
