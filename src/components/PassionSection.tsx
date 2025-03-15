@@ -1,6 +1,7 @@
 
 import React from 'react';
 import PassionCard from './PassionCard';
+import InterconnectedDomainsGraphic from './InterconnectedDomainsGraphic';
 import { Button } from '@/components/ui/button';
 import { Users, ArrowRight, Zap } from 'lucide-react';
 
@@ -34,9 +35,9 @@ const passions = [
     colorAccent: "bg-emerald-500"
   },
   {
-    title: "Executive Leadership",
-    description: "Throughout my career as a high-level executive, I've developed frameworks for navigating complex organizational challenges. I connect professionals with strategic insights drawn from my experience managing $8.5B portfolios and leading cross-functional teams.",
-    cta: "Leadership Opportunities",
+    title: "Workforce Development",
+    description: "I focus on coaching, mentoring, and training professionals to unlock their potential. My frameworks provide actionable strategies for growth, drawing from experience managing cross-functional teams and developing talent in complex environments.",
+    cta: "Development Resources",
     ctaLink: "#",
     colorAccent: "bg-purple-500"
   }
@@ -56,6 +57,12 @@ const PassionSection = () => {
           </p>
         </div>
         
+        {/* Interactive Animated Graphic */}
+        <div className="mb-20">
+          <InterconnectedDomainsGraphic />
+        </div>
+        
+        {/* Domain Cards */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
           {passions.map((passion, index) => (
             <PassionCard
@@ -88,7 +95,7 @@ const PassionSection = () => {
               
               <p className="text-lg text-center text-muted-foreground mb-8 max-w-3xl mx-auto">
                 Connect with an exclusive community where we integrate insights across family values, health innovation, 
-                water sustainability, AI advancement, and executive leadership. The ANAND Circle brings together professionals 
+                water sustainability, AI advancement, and workforce development. The ANAND Circle brings together professionals 
                 and thought leaders committed to creating meaningful impact at these critical intersections.
               </p>
               
