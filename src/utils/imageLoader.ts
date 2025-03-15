@@ -1,3 +1,4 @@
+
 // This utility handles loading and saving profile images 
 import { supabase } from "@/integrations/supabase/client";
 
@@ -303,7 +304,7 @@ export const saveSocialLinks = async (links: {
             url,
             updated_at: new Date().toISOString()
           }, {
-            onConflict: ['user_id', 'platform']
+            onConflict: 'user_id,platform'  // Fix: Use a comma-separated string instead of an array
           });
         
         if (error) {
