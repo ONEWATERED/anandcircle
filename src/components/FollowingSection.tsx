@@ -32,7 +32,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { checkDatabaseConnection } from '@/utils/databaseUtils';
 
 export const people: Person[] = [
-  // Family
+  // Family - Keep all 4 family members as requested
   { 
     id: 'preeti', 
     name: 'Preeti Anand', 
@@ -69,125 +69,27 @@ export const people: Person[] = [
     order: 2 // Kid in second row
   },
   { 
-    id: 'dad', 
-    name: 'My Father', 
+    id: 'spark', 
+    name: 'Spark', 
     category: 'family', 
-    role: 'Late Father', 
+    role: 'Pet Dog', 
     image: '/placeholder.svg', 
     special: true, 
-    relationship: 'Instilled core values at an early age',
-    order: 3 // Parent in third row
-  },
-  { 
-    id: 'mom', 
-    name: 'My Mother', 
-    category: 'family', 
-    role: 'Mother', 
-    image: '/placeholder.svg', 
-    special: true, 
-    relationship: 'Shaped who I am today',
-    order: 3 // Parent in third row
+    relationship: 'Our loyal companion',
+    order: 3 // Pet in third row
   },
   
-  // Politics
+  // Politics - Only keep Candace as requested
   { id: 'candace', name: 'Candace Owens', category: 'politics', role: 'Political Commentator', image: '/placeholder.svg' },
-  { id: 'trump', name: 'Donald Trump', category: 'politics', role: 'President', image: '/placeholder.svg' },
   
-  // Business
-  { id: 'naval', name: 'Naval Ravikant', category: 'business', role: 'Entrepreneur & Investor', image: '/placeholder.svg' },
+  // Business - Only keep Patrick as requested
   { id: 'patrick', name: 'Patrick McDavid', category: 'business', role: 'Entrepreneur', image: '/placeholder.svg' },
-  { id: 'andrew', name: 'Andrew Tate', category: 'business', role: 'Entrepreneur', image: '/placeholder.svg' },
-  { id: 'shama', name: 'Shama Paul Chaudhary', category: 'business', role: 'Entrepreneur', image: '/placeholder.svg' },
   
-  // Health
+  // Health - Only keep Dr. Huberman and Joe Dispenza as requested
   { id: 'joe', name: 'Joe Dispenza', category: 'health', role: 'Author & Researcher', image: '/placeholder.svg' },
   { id: 'huberman', name: 'Dr. Andrew Huberman', category: 'health', role: 'Neuroscientist', image: '/placeholder.svg' },
-  
-  // Learning
-  { id: 'sal', name: 'Sal Khan', category: 'learning', role: 'Khan Academy Founder', image: '/placeholder.svg' },
 
-  // Unprofessional Entrepreneurs (new category)
-  { 
-    id: 'garyv', 
-    name: 'Gary Vaynerchuk', 
-    category: 'unprofessional', 
-    role: 'Hustler & Social Media Maven', 
-    image: '/placeholder.svg',
-    relationship: 'Straight-talking entrepreneur who cuts through the BS',
-    socialLinks: [
-      { platform: 'instagram', url: 'https://instagram.com/garyvee' },
-      { platform: 'twitter', url: 'https://twitter.com/garyvee' }
-    ],
-    linkedInUrl: 'https://linkedin.com/in/garyvaynerchuk'
-  },
-  { 
-    id: 'mreaves', 
-    name: 'Myron Eaves', 
-    category: 'unprofessional', 
-    role: 'Fresh & Fit Podcast Host', 
-    image: '/placeholder.svg',
-    relationship: 'Controversial but honest voice in the dating space',
-    socialLinks: [
-      { platform: 'youtube', url: 'https://youtube.com/freshandfit' }
-    ]
-  },
-  { 
-    id: 'cmiller', 
-    name: 'Chris Miller', 
-    category: 'unprofessional', 
-    role: 'Dropshipping Guru', 
-    image: '/placeholder.svg',
-    relationship: 'Started from nothing, built a 7-figure business without a college degree',
-    socialLinks: [
-      { platform: 'instagram', url: 'https://instagram.com/chrismiller' }
-    ]
-  },
-
-  // Recommended People (new category)
-  { 
-    id: 'jrogan', 
-    name: 'Joe Rogan', 
-    category: 'recommended', 
-    role: 'Podcast Host & Commentator', 
-    image: '/placeholder.svg',
-    relationship: 'Best long-form interviewer, brings out authentic discussions',
-    socialLinks: [
-      { platform: 'youtube', url: 'https://youtube.com/joerogan' },
-      { platform: 'twitter', url: 'https://twitter.com/joerogan' }
-    ]
-  },
-  { 
-    id: 'jpeterson', 
-    name: 'Jordan Peterson', 
-    category: 'recommended', 
-    role: 'Clinical Psychologist & Author', 
-    image: '/placeholder.svg',
-    relationship: 'Profound thinker on meaning and personal responsibility',
-    linkedInUrl: 'https://linkedin.com/in/jordan-peterson'
-  },
-  { 
-    id: 'mmalhotra', 
-    name: 'Mukesh Malhotra', 
-    category: 'recommended', 
-    role: 'Spiritual Teacher', 
-    image: '/placeholder.svg',
-    relationship: 'Hidden gem for those seeking inner peace and balanced living',
-    socialLinks: [
-      { platform: 'youtube', url: 'https://youtube.com/spiritualawakening' }
-    ]
-  },
-  { 
-    id: 'sjoshi', 
-    name: 'Sadhna Joshi', 
-    category: 'recommended', 
-    role: 'Holistic Health Expert', 
-    image: '/placeholder.svg',
-    relationship: 'Combines ancient wisdom with modern science for total wellbeing',
-    socialLinks: [
-      { platform: 'instagram', url: 'https://instagram.com/sadhnajoshi' }
-    ],
-    linkedInUrl: 'https://linkedin.com/in/sadhna-joshi'
-  }
+  // Remove all remaining people in other categories
 ];
 
 const getCategoryIcon = (category: string) => {
@@ -570,7 +472,7 @@ const FollowingSection = () => {
               </div>
               
               <Tabs defaultValue="all" className="w-full">
-                <TabsList className="w-full max-w-lg grid grid-cols-7 h-auto mb-8 mx-auto bg-background/70 backdrop-blur-sm">
+                <TabsList className="w-full max-w-lg grid grid-cols-4 h-auto mb-8 mx-auto bg-background/70 backdrop-blur-sm">
                   <TabsTrigger value="all" className="text-xs py-2 h-auto">All</TabsTrigger>
                   <TabsTrigger value="politics" className="text-xs py-2 h-auto flex gap-1 items-center">
                     <Flag className="h-3 w-3" /> Politics
@@ -580,15 +482,6 @@ const FollowingSection = () => {
                   </TabsTrigger>
                   <TabsTrigger value="health" className="text-xs py-2 h-auto flex gap-1 items-center">
                     <Activity className="h-3 w-3" /> Health
-                  </TabsTrigger>
-                  <TabsTrigger value="learning" className="text-xs py-2 h-auto flex gap-1 items-center">
-                    <GraduationCap className="h-3 w-3" /> Learning
-                  </TabsTrigger>
-                  <TabsTrigger value="unprofessional" className="text-xs py-2 h-auto flex gap-1 items-center">
-                    <Star className="h-3 w-3" /> Edgy
-                  </TabsTrigger>
-                  <TabsTrigger value="recommended" className="text-xs py-2 h-auto flex gap-1 items-center">
-                    <ThumbsUp className="h-3 w-4" /> Recommended
                   </TabsTrigger>
                 </TabsList>
                 
@@ -631,36 +524,6 @@ const FollowingSection = () => {
                     </div>
                   </ScrollArea>
                 </TabsContent>
-                
-                <TabsContent value="learning" className="mt-0">
-                  <ScrollArea className="h-[500px] w-full pr-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                      {nonFamilyMembers.filter(p => p.category === 'learning').map(person => (
-                        <PersonCard key={person.id} person={person} />
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
-
-                <TabsContent value="unprofessional" className="mt-0">
-                  <ScrollArea className="h-[500px] w-full pr-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                      {nonFamilyMembers.filter(p => p.category === 'unprofessional').map(person => (
-                        <PersonCard key={person.id} person={person} />
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
-
-                <TabsContent value="recommended" className="mt-0">
-                  <ScrollArea className="h-[500px] w-full pr-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                      {nonFamilyMembers.filter(p => p.category === 'recommended').map(person => (
-                        <PersonCard key={person.id} person={person} />
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
               </Tabs>
             </div>
           </>
@@ -671,4 +534,3 @@ const FollowingSection = () => {
 };
 
 export default FollowingSection;
-

@@ -1,3 +1,4 @@
+
 import { Users, Heart, Dog } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
@@ -21,42 +22,45 @@ export interface FamilyMember {
 // Keep only the four family members, positioned evenly around the circle
 export const familyMembers: FamilyMember[] = [
   {
-    id: 'spouse',
-    name: 'Sarah',
-    role: 'Spouse',
+    id: 'preeti',
+    name: 'Preeti Anand',
+    role: 'Wife',
     icon: Heart,
     color: "rgb(244, 114, 182)", // rose-500
-    bio: "Sarah is a pediatrician with a passion for children's healthcare. She loves hiking and photography in her free time.",
+    bio: "My life partner and greatest supporter",
     initialAngle: 0, // Top position (12 o'clock)
     socialLinks: {
-      twitter: "https://twitter.com/sarah",
-      instagram: "https://instagram.com/sarah",
-      linkedin: "https://linkedin.com/in/sarah"
+      twitter: "https://twitter.com/preeti",
+      instagram: "https://instagram.com/preeti",
+      linkedin: "https://linkedin.com/in/preeti"
     }
   },
   {
-    id: 'son',
-    name: 'Alex',
+    id: 'rohit',
+    name: 'Rohit Anand',
     role: 'Son',
     icon: Users,
     color: "rgb(59, 130, 246)", // blue-500
-    bio: "Alex is 14 years old and loves playing soccer. He's also interested in computer programming and video games.",
+    bio: "Loves me and makes me proud every day. Working on some magic in the web3 space, even though I had my reservations about him dropping out of med school. Now I believe in his vision and I'm glad I let him pursue his passion rather than mine. He was the inspiration behind me to actually learn and connect Blockchain to the work I do.",
     initialAngle: 90, // Right position (3 o'clock)
     socialLinks: {
-      instagram: "https://instagram.com/alex",
-      facebook: "https://facebook.com/alex"
+      instagram: "https://instagram.com/rohit",
+      twitter: "https://twitter.com/rohit",
+      linkedin: "https://linkedin.com/in/rohit"
     }
   },
   {
-    id: 'daughter',
-    name: 'Emma',
+    id: 'simi',
+    name: 'Simi Anand',
     role: 'Daughter',
     icon: Users,
     color: "rgb(168, 85, 247)", // purple-500
-    bio: "Emma is 10 years old and enjoys art, reading, and playing the piano. She wants to be a veterinarian when she grows up.",
+    bio: "Teaching me new ways to see the world",
     initialAngle: 180, // Bottom position (6 o'clock)
     socialLinks: {
-      instagram: "https://instagram.com/emma"
+      instagram: "https://instagram.com/simianand",
+      twitter: "https://twitter.com/simianand",
+      youtube: "https://youtube.com/simianand"
     }
   },
   {
@@ -65,7 +69,7 @@ export const familyMembers: FamilyMember[] = [
     role: 'Pet Dog',
     icon: Dog,
     color: "rgb(16, 185, 129)", // emerald-500
-    bio: "Spark is a 3-year-old Golden Retriever who loves catching frisbees, swimming, and going on family hikes. He's extremely playful and protective of the family.",
+    bio: "Our loyal companion",
     initialAngle: 270, // Left position (9 o'clock)
     socialLinks: {
       instagram: "https://instagram.com/spark_dog"
