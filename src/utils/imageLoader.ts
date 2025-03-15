@@ -12,7 +12,7 @@ export {
 export {
   // From connectionImages.ts
   getConnectionImage,
-  uploadConnectionImage,
+  saveConnectionImage,
 } from './connectionImages';
 
 export {
