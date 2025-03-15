@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,7 +16,8 @@ import {
   Youtube, 
   Twitter,
   ExternalLink,
-  Linkedin
+  Linkedin,
+  Pencil  // Changed from Edit to Pencil since Edit doesn't exist in lucide-react
 } from 'lucide-react';
 import { Person, SocialLink } from '@/types/connections';
 import { Link } from 'react-router-dom';
@@ -236,7 +238,7 @@ const FollowingSection = () => {
           <div className="mt-4 flex justify-center opacity-0 animate-fade-up" style={{ animationDelay: '200ms' }}>
             <Link to="/connections">
               <Button variant="outline" className="gap-2">
-                <Edit className="h-4 w-4" />
+                <Pencil className="h-4 w-4" />
                 Manage Connections
               </Button>
             </Link>
@@ -348,4 +350,3 @@ const FollowingSection = () => {
 };
 
 export default FollowingSection;
-
