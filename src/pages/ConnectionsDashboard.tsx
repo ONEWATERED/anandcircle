@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import { useForm } from 'react-hook-form';
@@ -67,7 +66,6 @@ const ConnectionsDashboard = () => {
     }
   });
   
-  // Load data from localStorage on component mount
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -75,18 +73,15 @@ const ConnectionsDashboard = () => {
         let savedPeople: Person[] = [];
         
         try {
-          // Try to get data from localStorage first
           const peopleData = localStorage.getItem('connections');
           if (peopleData) {
             savedPeople = JSON.parse(peopleData);
           }
         } catch (e) {
           console.error("Error parsing localStorage data:", e);
-          // Continue with empty array if localStorage parsing fails
         }
         
         if (savedPeople && savedPeople.length > 0) {
-          // Update each person's image with the one from Supabase if available
           const updatedPeople = await Promise.all(
             savedPeople.map(async (person) => {
               try {
@@ -103,7 +98,6 @@ const ConnectionsDashboard = () => {
           
           setPeople(updatedPeople);
           
-          // Update localStorage with the updated image URLs
           try {
             localStorage.setItem('connections', JSON.stringify(updatedPeople));
           } catch (storageError) {
@@ -111,7 +105,6 @@ const ConnectionsDashboard = () => {
             toast.error("Couldn't save connection data to browser storage");
           }
         } else {
-          // Fetch from hardcoded data in FollowingSection.tsx when no data exists yet
           const FollowingSectionModule = await import('@/components/FollowingSection');
           const initialPeople = FollowingSectionModule.people;
           
@@ -136,7 +129,6 @@ const ConnectionsDashboard = () => {
     loadData();
   }, []);
   
-  // Save data to localStorage whenever people changes
   useEffect(() => {
     const saveData = async () => {
       if (!loading && people.length > 0) {
@@ -191,14 +183,13 @@ const ConnectionsDashboard = () => {
     setUploading(true);
     
     try {
-      // Get the personId for the current form
       const personId = form.getValues().id;
       
-      // Upload to Supabase with personId for proper organization
       const imageUrl = await uploadImageToStorage(file, personId);
       
       if (imageUrl) {
         setValue('image', imageUrl);
+        localStorage.setItem(`connection_image_${personId}`, imageUrl);
         toast.success('Image uploaded successfully');
       } else {
         toast.error('Failed to upload image');
@@ -213,59 +204,21 @@ const ConnectionsDashboard = () => {
   
   const onSubmit = async (data: Person) => {
     if (selectedPerson) {
-      // Update existing person
       setPeople(prevPeople => 
         prevPeople.map(p => p.id === selectedPerson.id ? data : p)
       );
       
-      // If the image has changed, save it to Supabase
       if (data.image && data.image !== selectedPerson.image && data.image !== '/placeholder.svg') {
-        try {
-          // Save the connection between person and image
-          const { error } = await supabase
-            .from('connection_images')
-            .upsert({
-              person_id: data.id,
-              image_path: data.image,
-              updated_at: new Date().toISOString()
-            }, {
-              onConflict: 'person_id'
-            });
-          
-          if (error) {
-            console.error("Error saving connection image relationship:", error);
-          }
-        } catch (error) {
-          console.error("Error saving image reference:", error);
-        }
+        localStorage.setItem(`connection_image_${data.id}`, data.image);
       }
       
       toast.success('Person updated successfully');
       setIsDialogOpen(false);
     } else {
-      // Add new person
       setPeople(prevPeople => [...prevPeople, data]);
       
-      // If the image is set, save it to Supabase
       if (data.image && data.image !== '/placeholder.svg') {
-        try {
-          // Save the connection between person and image
-          const { error } = await supabase
-            .from('connection_images')
-            .upsert({
-              person_id: data.id,
-              image_path: data.image,
-              updated_at: new Date().toISOString()
-            }, {
-              onConflict: 'person_id'
-            });
-          
-          if (error) {
-            console.error("Error saving connection image relationship:", error);
-          }
-        } catch (error) {
-          console.error("Error saving image reference:", error);
-        }
+        localStorage.setItem(`connection_image_${data.id}`, data.image);
       }
       
       toast.success('Person added successfully');
@@ -451,7 +404,6 @@ const ConnectionsDashboard = () => {
         </div>
       </section>
       
-      {/* Edit Person Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
@@ -634,7 +586,6 @@ const ConnectionsDashboard = () => {
         </DialogContent>
       </Dialog>
       
-      {/* Add New Person Drawer */}
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
         <DrawerContent>
           <DrawerHeader className="text-left">
