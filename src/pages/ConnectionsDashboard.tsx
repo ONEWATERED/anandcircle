@@ -41,7 +41,7 @@ import {
 } from 'lucide-react';
 import { Person, SocialLink } from '@/types/connections';
 import { supabase } from "@/integrations/supabase/client";
-import { uploadImageToStorage } from '@/utils/imageLoader';
+import { uploadImageToStorage, fileToDataUrl } from '@/utils/imageLoader';
 
 const ConnectionsDashboard = () => {
   const [people, setPeople] = useState<Person[]>([]);
@@ -68,39 +68,65 @@ const ConnectionsDashboard = () => {
   
   // Load data from localStorage on component mount
   useEffect(() => {
-    setLoading(true);
-    try {
-      const savedPeople = localStorage.getItem('connections');
-      if (savedPeople) {
-        setPeople(JSON.parse(savedPeople));
-      } else {
-        // Fetch from hardcoded data in FollowingSection.tsx when no data exists yet
-        import('@/components/FollowingSection').then((module) => {
-          // This assumes that the people array is exported from FollowingSection
-          const { people: initialPeople } = module;
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        let savedPeople: Person[] = [];
+        
+        try {
+          const peopleData = localStorage.getItem('connections');
+          if (peopleData) {
+            savedPeople = JSON.parse(peopleData);
+          }
+        } catch (e) {
+          console.error("Error parsing localStorage data:", e);
+          // Continue with empty array if localStorage parsing fails
+        }
+        
+        if (savedPeople && savedPeople.length > 0) {
+          setPeople(savedPeople);
+        } else {
+          // Fetch from hardcoded data in FollowingSection.tsx when no data exists yet
+          const FollowingSectionModule = await import('@/components/FollowingSection');
+          const initialPeople = FollowingSectionModule.people;
+          
           if (initialPeople && Array.isArray(initialPeople)) {
             setPeople(initialPeople);
-            localStorage.setItem('connections', JSON.stringify(initialPeople));
+            try {
+              localStorage.setItem('connections', JSON.stringify(initialPeople));
+            } catch (storageError) {
+              console.error("Failed to save to localStorage:", storageError);
+              toast.error("Couldn't save connection data to browser storage");
+            }
           }
-        }).catch(error => {
-          console.error('Failed to import FollowingSection data:', error);
-          // Fallback to empty array
-          setPeople([]);
-        });
+        }
+      } catch (error) {
+        console.error('Error loading connections data:', error);
+        toast.error('Failed to load connections data');
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error loading connections data:', error);
-      toast.error('Failed to load connections data');
-    } finally {
-      setLoading(false);
-    }
+    };
+    
+    loadData();
   }, []);
   
   // Save data to localStorage whenever people changes
   useEffect(() => {
-    if (!loading && people.length > 0) {
-      localStorage.setItem('connections', JSON.stringify(people));
-    }
+    const saveData = async () => {
+      if (!loading && people.length > 0) {
+        try {
+          localStorage.setItem('connections', JSON.stringify(people));
+        } catch (error) {
+          console.error("Error saving to localStorage:", error);
+          if (error instanceof DOMException && (error.name === 'QuotaExceededError' || error.name === 'NS_ERROR_DOM_QUOTA_REACHED')) {
+            toast.error("Storage limit exceeded. Try removing some connections or images.");
+          }
+        }
+      }
+    };
+    
+    saveData();
   }, [people, loading]);
   
   const handleOpenEditDialog = (person: Person) => {
@@ -140,16 +166,29 @@ const ConnectionsDashboard = () => {
     setUploading(true);
     
     try {
-      // Upload image to Supabase Storage and get the URL
-      const imageUrl = await uploadImageToStorage(file);
-      if (imageUrl) {
-        setValue('image', imageUrl);
-        toast.success('Image uploaded successfully');
-      } else {
-        toast.error('Failed to upload image');
+      // First convert to data URL as fallback
+      const dataUrl = await fileToDataUrl(file);
+      
+      // Try to upload to Supabase first
+      try {
+        // Upload image to Supabase Storage
+        const imageUrl = await uploadImageToStorage(file);
+        if (imageUrl) {
+          setValue('image', imageUrl);
+          toast.success('Image uploaded successfully');
+        } else {
+          // Fallback to data URL if Supabase upload fails
+          setValue('image', dataUrl);
+          toast.success('Image saved locally');
+        }
+      } catch (uploadError) {
+        console.error('Error uploading to Supabase:', uploadError);
+        // Use data URL as fallback
+        setValue('image', dataUrl);
+        toast.success('Image saved locally');
       }
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error('Error processing image:', error);
       toast.error('Error uploading image');
     } finally {
       setUploading(false);

@@ -1,6 +1,7 @@
 
 // This utility handles loading and saving profile images 
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 // Get profile image URL from Supabase or localStorage fallback
 export const getProfileImage = async (): Promise<string | null> => {
@@ -79,60 +80,46 @@ export const saveProfileImage = async (url: string): Promise<void> => {
 // Upload an image file to Supabase Storage
 export const uploadImageToStorage = async (imageFile: File): Promise<string | null> => {
   try {
-    const { data: { session } } = await supabase.auth.getSession();
+    // Always start by converting file to data URL for fallback
+    const dataUrl = await fileToDataUrl(imageFile);
     
-    // Generate a unique file name
-    const fileExt = imageFile.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = session?.user ? `${session.user.id}/${fileName}` : `anonymous/${fileName}`;
-    
-    // Create a storage bucket if it doesn't exist (this happens server-side)
-    const { data: bucketData, error: bucketError } = await supabase.storage.getBucket('connection_images');
-    
-    if (bucketError && bucketError.message.includes('does not exist')) {
-      // Bucket doesn't exist, but we'll try to upload anyway
-      // The backend might have RLS policies that allow creation
-      console.log("Bucket doesn't exist, attempting upload anyway");
-    }
-    
-    // Upload to Supabase Storage
-    const { data, error } = await supabase.storage
-      .from('profile_images')
-      .upload(filePath, imageFile, {
-        cacheControl: '3600',
-        upsert: true
-      });
-    
-    if (error) {
-      console.error("Error uploading to Supabase Storage:", error);
-      
-      // Fallback to data URL for users without Supabase auth
-      return await fileToDataUrl(imageFile);
-    }
-    
-    // Get the public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('profile_images')
-      .getPublicUrl(data.path);
-    
-    console.log("Image uploaded to Supabase Storage:", publicUrl);
-    
-    // Save this URL to the profile if user is authenticated
-    if (session?.user) {
-      await saveProfileImage(publicUrl);
-    }
-    
-    return publicUrl;
-  } catch (error) {
-    console.error("Error uploading image to Supabase Storage:", error);
-    
-    // Fallback to data URL
+    // Attempt to upload to Supabase Storage if available
     try {
-      return await fileToDataUrl(imageFile);
-    } catch (err) {
-      console.error("Error creating data URL:", err);
-      return null;
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      // Generate a unique file name
+      const fileExt = imageFile.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = session?.user ? `${session.user.id}/${fileName}` : `anonymous/${fileName}`;
+      
+      // Upload to Supabase Storage
+      const { data, error } = await supabase.storage
+        .from('profile_images')
+        .upload(filePath, imageFile, {
+          cacheControl: '3600',
+          upsert: true
+        });
+      
+      if (error) {
+        console.error("Error uploading to Supabase Storage:", error);
+        // Fall back to data URL since Supabase upload failed
+        return dataUrl;
+      }
+      
+      // Get the public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('profile_images')
+        .getPublicUrl(data.path);
+      
+      console.log("Image uploaded to Supabase Storage:", publicUrl);
+      return publicUrl;
+    } catch (error) {
+      console.error("Failed to upload to Supabase, using data URL instead:", error);
+      return dataUrl;
     }
+  } catch (error) {
+    console.error("Error in uploadImageToStorage:", error);
+    return null;
   }
 };
 
@@ -180,16 +167,17 @@ export const fileToDataUrl = (file: File): Promise<string> => {
 // Handle uploading image to either Supabase or localStorage
 export const uploadImageToDatabase = async (imageFile: File): Promise<string> => {
   try {
-    // First try to upload to Supabase Storage
+    // Convert file to data URL (always do this as a fallback)
+    const dataUrl = await fileToDataUrl(imageFile);
+    
+    // Try to upload to Supabase Storage first
     const storageUrl = await uploadImageToStorage(imageFile);
     
-    if (storageUrl) {
+    if (storageUrl && !storageUrl.startsWith('data:')) {
       return storageUrl;
     }
     
-    // Fallback to data URL if storage upload fails
-    const dataUrl = await fileToDataUrl(imageFile);
-    await saveProfileImage(dataUrl);
+    // Return data URL if storage upload fails or returns a data URL
     return dataUrl;
   } catch (error) {
     console.error("Error uploading image to database:", error);
