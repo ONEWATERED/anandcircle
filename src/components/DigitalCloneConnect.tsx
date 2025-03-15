@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   Users, 
@@ -7,9 +7,11 @@ import {
   Droplet, 
   Brain, 
   GraduationCap,
-  ExternalLink
+  ExternalLink,
+  X
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 
 // Domain-specific chat topics
 const domainTopics = [
@@ -56,31 +58,36 @@ const domainTopics = [
 ];
 
 const DigitalCloneConnect = () => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
+
   const handleConnectClick = (domainId: string) => {
-    // Construct the URL with domain parameter
-    const url = `https://www.delphi.ai/hardeepanand?domain=${domainId}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
+    setSelectedDomain(domainId);
+    setDialogOpen(true);
   };
 
+  const domain = selectedDomain ? domainTopics.find(d => d.id === selectedDomain) : null;
+  const domainUrl = selectedDomain ? `https://www.delphi.ai/hardeepanand?domain=${selectedDomain}` : 'https://www.delphi.ai/hardeepanand';
+
   return (
-    <section id="digital-clone" className="py-20 md:py-32 bg-gradient-to-b from-gray-50 to-gray-100">
+    <section id="digital-avatar" className="py-20 md:py-32 bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="section-container">
         <div className="text-center mb-16 opacity-0 animate-fade-up">
-          <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-3">Connect with My Digital Clone</h2>
+          <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-3">Connect with My Digital Avatar</h2>
           <h3 className="text-3xl md:text-4xl font-display font-bold mb-6">Ask Me Anything</h3>
           <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto mt-6">
-            Experience a conversation with my digital clone powered by AI. Choose a domain you'd like to discuss 
+            Experience a conversation with my digital avatar powered by AI. Choose a domain you'd like to discuss 
             and start a meaningful interaction based on my expertise and perspectives.
           </p>
           
           <div className="mt-8 flex justify-center">
             <Button
-              onClick={() => window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer')}
+              onClick={() => handleConnectClick('general')}
               className="group"
               variant="outline"
             >
-              <span>Visit My Full Digital Clone</span>
+              <span>Visit My Full Digital Avatar</span>
               <ExternalLink className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
             </Button>
           </div>
@@ -123,6 +130,33 @@ const DigitalCloneConnect = () => {
           })}
         </div>
       </div>
+
+      {/* Avatar Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="w-full max-w-4xl h-[80vh] p-0">
+          <DialogHeader className="p-6 border-b">
+            <div className="flex items-start justify-between w-full">
+              <div>
+                <DialogTitle className="text-xl mb-2">Digital Avatar - {domain?.title || 'General Chat'}</DialogTitle>
+                <DialogDescription>
+                  {domain?.prompt || 'Ask me anything about my expertise and experiences.'}
+                </DialogDescription>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setDialogOpen(false)} className="h-8 w-8">
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </DialogHeader>
+          <div className="h-full">
+            <iframe 
+              src={domainUrl}
+              className="w-full h-full border-0" 
+              title="Digital Avatar"
+              allow="microphone"
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

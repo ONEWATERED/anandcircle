@@ -88,7 +88,7 @@ const InterestForm = () => {
             >
               <div className="text-left mb-8">
                 <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-3">Create Your Own</h2>
-                <h3 className="text-3xl md:text-4xl font-display font-bold mb-6">Interested in Your Personal Digital Twin?</h3>
+                <h3 className="text-3xl md:text-4xl font-display font-bold mb-6">Interested in Your Personal Digital Avatar?</h3>
                 <div className="h-1 w-20 bg-primary rounded-full mb-6"></div>
               </div>
               
@@ -98,8 +98,8 @@ const InterestForm = () => {
                     <Bot size={24} className="text-primary" />
                   </div>
                   <div>
-                    <h4 className="text-lg font-semibold mb-2">Digital Clone</h4>
-                    <p className="text-muted-foreground">Create your own AI twin that speaks in your voice, reflects your knowledge, and represents your perspectives accurately.</p>
+                    <h4 className="text-lg font-semibold mb-2">Digital Avatar</h4>
+                    <p className="text-muted-foreground">Create your own AI avatar that speaks in your voice, reflects your knowledge, and represents your perspectives accurately.</p>
                   </div>
                 </div>
                 
@@ -196,7 +196,7 @@ const InterestForm = () => {
                                   className={field.value === "digital-clone" ? "border-primary" : ""}
                                   onClick={() => form.setValue("interest", "digital-clone")}
                                 >
-                                  Digital Clone
+                                  Digital Avatar
                                 </Button>
                                 <Button
                                   type="button"
