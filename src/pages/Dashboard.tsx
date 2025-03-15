@@ -12,7 +12,8 @@ import {
   fileToDataUrl, 
   getUserProfileData, 
   saveSocialLinks, 
-  uploadImageToDatabase 
+  uploadImageToDatabase,
+  checkDatabaseConnection
 } from '@/utils/imageLoader';
 import { 
   Card,
@@ -24,6 +25,7 @@ import {
 } from '@/components/ui/card';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from '@/components/ui/form';
 import { useForm } from "react-hook-form";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SocialLinksFormValues {
   linkedInUrl: string;
@@ -40,6 +42,7 @@ const Dashboard = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [isDatabaseConnected, setIsDatabaseConnected] = useState<boolean>(false);
+  const [isCheckingConnection, setIsCheckingConnection] = useState<boolean>(true);
 
   const socialLinksForm = useForm<SocialLinksFormValues>({
     defaultValues: {
@@ -54,16 +57,25 @@ const Dashboard = () => {
   useEffect(() => {
     const loadUserData = async () => {
       try {
+        setIsCheckingConnection(true);
+        
+        // Check database connection
+        const isConnected = await checkDatabaseConnection();
+        setIsDatabaseConnected(isConnected);
+        
+        // Load profile image
         const savedImage = await getProfileImage();
         if (savedImage) {
           setPreviewUrl(savedImage);
         }
         
+        // Load resume URL
         const savedResumeUrl = localStorage.getItem('resumeUrl');
         if (savedResumeUrl) {
           setResumeUrl(savedResumeUrl);
         }
 
+        // Load social links
         const userData = await getUserProfileData();
         if (userData && userData.socialLinks) {
           socialLinksForm.reset({
@@ -74,11 +86,11 @@ const Dashboard = () => {
             anandCircleUrl: userData.socialLinks.anandCircle,
           });
         }
-
-        setIsDatabaseConnected(false);
       } catch (error) {
         console.error("Error loading user data:", error);
         toast.error("Failed to load user data");
+      } finally {
+        setIsCheckingConnection(false);
       }
     };
 
@@ -193,6 +205,24 @@ const Dashboard = () => {
     });
   };
 
+  const testDatabaseConnection = async () => {
+    try {
+      setIsCheckingConnection(true);
+      const isConnected = await checkDatabaseConnection();
+      setIsDatabaseConnected(isConnected);
+      if (isConnected) {
+        toast.success("Successfully connected to database!");
+      } else {
+        toast.error("Failed to connect to database.");
+      }
+    } catch (error) {
+      console.error("Error testing database connection:", error);
+      toast.error("Error testing connection");
+    } finally {
+      setIsCheckingConnection(false);
+    }
+  };
+
   return (
     <MainLayout>
       <section className="py-20">
@@ -205,7 +235,7 @@ const Dashboard = () => {
                 <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mt-4">
                   <p className="text-yellow-700 text-sm">
                     <strong>Note:</strong> You are currently using local storage for saving data. 
-                    To enable database functionality, please connect a database in the project settings.
+                    Database connection is not active. Try logging in or check your Supabase configuration.
                   </p>
                 </div>
               )}
@@ -477,20 +507,25 @@ const Dashboard = () => {
                     <span className="font-medium">Database Status:</span>
                   </div>
                   <span className={isDatabaseConnected ? 'text-green-600' : 'text-red-600'}>
-                    {isDatabaseConnected ? 'Connected' : 'Not Connected'}
+                    {isCheckingConnection ? 'Checking...' : (isDatabaseConnected ? 'Connected' : 'Not Connected')}
                   </span>
                 </div>
                 
                 <div className="text-sm text-muted-foreground">
                   {isDatabaseConnected ? (
-                    <p>Your profile data is being saved to the database.</p>
+                    <p>Your profile data is being saved to the Supabase database.</p>
                   ) : (
-                    <p>Currently using localStorage as a temporary solution. To enable persistent storage, connect a database.</p>
+                    <p>Not connected to Supabase. Data is currently stored in localStorage as a temporary solution.</p>
                   )}
                 </div>
                 
-                <Button className="w-full" variant="outline">
-                  {isDatabaseConnected ? 'Database Settings' : 'Connect Database'}
+                <Button 
+                  className="w-full" 
+                  variant="outline" 
+                  onClick={testDatabaseConnection}
+                  disabled={isCheckingConnection}
+                >
+                  {isCheckingConnection ? 'Testing Connection...' : (isDatabaseConnected ? 'Test Connection' : 'Connect Database')}
                 </Button>
               </CardContent>
             </Card>
