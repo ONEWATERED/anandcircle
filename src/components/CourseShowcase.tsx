@@ -1,9 +1,17 @@
-
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { GraduationCap, Users, Code, Lightbulb, MessageSquare, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 
 const courses = [
   {
@@ -59,19 +67,10 @@ const courses = [
 ];
 
 const CourseShowcase = () => {
-  const courseScrollRef = useRef<HTMLDivElement>(null);
-  
-  const scrollLeft = () => {
-    if (courseScrollRef.current) {
-      courseScrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
-    }
-  };
-  
-  const scrollRight = () => {
-    if (courseScrollRef.current) {
-      courseScrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
-    }
-  };
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: 'start', skipSnaps: false },
+    [Autoplay({ delay: 4000, stopOnInteract: true })]
+  );
 
   return (
     <section id="courses" className="py-20 md:py-32 relative overflow-hidden">
@@ -104,69 +103,63 @@ const CourseShowcase = () => {
           </TabsList>
           
           <TabsContent value="courses" className="space-y-8">
-            {/* Horizontal scrolling course cards with navigation buttons */}
-            <div className="relative">
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
+            {/* Auto-scrolling course carousel */}
+            <div className="max-w-5xl mx-auto relative">
+              <div className="overflow-hidden" ref={emblaRef}>
+                <div className="flex">
+                  {courses.map((course) => (
+                    <div key={course.id} className="flex-[0_0_90%] md:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0 pl-4">
+                      <Card className="neo-glass border-0 overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+                        <div className={`h-2 w-full bg-gradient-to-r ${course.color}`}></div>
+                        <CardHeader>
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <CardTitle className="text-xl font-bold">{course.title}</CardTitle>
+                              <CardDescription className="mt-2 text-xs">
+                                <span className="inline-flex items-center mr-3">
+                                  <Users className="mr-1 h-3 w-3" /> {course.students} students
+                                </span>
+                                <span className="inline-flex items-center">
+                                  <GraduationCap className="mr-1 h-3 w-3" /> {course.difficulty}
+                                </span>
+                              </CardDescription>
+                            </div>
+                            <div className="rounded-full p-2 bg-muted">{course.icon}</div>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm text-muted-foreground">{course.description}</p>
+                          <div className="mt-4 inline-flex items-center justify-center px-3 py-1 text-xs font-medium rounded-full bg-muted">
+                            Duration: {course.duration}
+                          </div>
+                        </CardContent>
+                        <CardFooter>
+                          <Button className={`w-full bg-gradient-to-r ${course.color} text-white`}>
+                            View Course Details
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="flex justify-center gap-2 mt-4">
                 <Button 
                   size="icon" 
-                  variant="ghost" 
-                  className="rounded-full bg-white/80 shadow-md border border-gray-200" 
-                  onClick={scrollLeft}
+                  variant="outline" 
+                  className="rounded-full h-8 w-8"
+                  onClick={() => emblaApi?.scrollPrev()}
                 >
-                  <ChevronLeft />
+                  <ChevronLeft className="h-4 w-4" />
                 </Button>
-              </div>
-              
-              <div 
-                ref={courseScrollRef}
-                className="flex overflow-x-auto py-4 gap-6 no-scrollbar snap-x snap-mandatory scroll-smooth"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                {courses.map((course) => (
-                  <Card 
-                    key={course.id} 
-                    className="neo-glass border-0 overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-w-[320px] snap-start"
-                  >
-                    <div className={`h-2 w-full bg-gradient-to-r ${course.color}`}></div>
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <CardTitle className="text-xl font-bold">{course.title}</CardTitle>
-                          <CardDescription className="mt-2 text-xs">
-                            <span className="inline-flex items-center mr-3">
-                              <Users className="mr-1 h-3 w-3" /> {course.students} students
-                            </span>
-                            <span className="inline-flex items-center">
-                              <GraduationCap className="mr-1 h-3 w-3" /> {course.difficulty}
-                            </span>
-                          </CardDescription>
-                        </div>
-                        <div className="rounded-full p-2 bg-muted">{course.icon}</div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground">{course.description}</p>
-                      <div className="mt-4 inline-flex items-center justify-center px-3 py-1 text-xs font-medium rounded-full bg-muted">
-                        Duration: {course.duration}
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button className={`w-full bg-gradient-to-r ${course.color} text-white`}>
-                        View Course Details
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-              
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
                 <Button 
                   size="icon" 
-                  variant="ghost" 
-                  className="rounded-full bg-white/80 shadow-md border border-gray-200" 
-                  onClick={scrollRight}
+                  variant="outline" 
+                  className="rounded-full h-8 w-8"
+                  onClick={() => emblaApi?.scrollNext()}
                 >
-                  <ChevronRight />
+                  <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -225,7 +218,6 @@ const CourseShowcase = () => {
                         className="w-full aspect-video object-cover"
                       />
                     </div>
-                    {/* Decorative elements */}
                     <div className="absolute -top-5 -right-5 w-20 h-20 bg-gradient-to-r from-primary/30 to-accent/30 rounded-full blur-xl -z-10"></div>
                     <div className="absolute -bottom-5 -left-5 w-20 h-20 bg-gradient-to-r from-accent/30 to-primary/30 rounded-full blur-xl -z-10"></div>
                     
@@ -242,7 +234,6 @@ const CourseShowcase = () => {
           </TabsContent>
         </Tabs>
         
-        {/* Testimonial */}
         <div className="mt-24 max-w-4xl mx-auto">
           <div className="glass-card p-8 rounded-2xl border border-primary/10">
             <div className="flex flex-col md:flex-row items-center gap-6">

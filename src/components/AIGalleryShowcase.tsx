@@ -13,13 +13,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
 
 const images = [
   {
@@ -65,7 +60,10 @@ const images = [
 ];
 
 const AIGalleryShowcase = () => {
-  const [activeImage, setActiveImage] = useState<number | null>(null);
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, align: 'start', skipSnaps: false },
+    [Autoplay({ delay: 4000, stopOnInteract: true })]
+  );
 
   return (
     <section id="ai-gallery" className="py-20 md:py-32 bg-gradient-to-b from-white to-purple-50 relative overflow-hidden">
@@ -92,51 +90,63 @@ const AIGalleryShowcase = () => {
           </p>
         </div>
 
-        {/* Featured Gallery Carousel */}
-        <div className="max-w-5xl mx-auto px-4 md:px-0">
-          <Carousel className="w-full">
-            <CarouselContent>
+        {/* Auto-scrolling image gallery */}
+        <div className="max-w-5xl mx-auto px-4 md:px-0 relative">
+          <div className="overflow-hidden" ref={emblaRef}>
+            <div className="flex">
               {images.map((image) => (
-                <CarouselItem key={image.id} className="md:basis-1/2 lg:basis-1/3">
-                  <div className="p-1">
-                    <Card className="neo-glass overflow-hidden border-0 transition-all duration-300 hover:shadow-xl">
-                      <div className="relative aspect-square overflow-hidden">
-                        <img 
-                          src={image.url} 
-                          alt={image.title}
-                          className="object-cover w-full h-full transition-transform duration-500 hover:scale-110"
-                        />
-                        <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-black/60 text-white text-xs font-medium flex items-center">
-                          {image.icon}
-                          <span className="ml-1">{image.category}</span>
-                        </div>
+                <div key={image.id} className="flex-[0_0_90%] md:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0 pl-4">
+                  <Card className="neo-glass overflow-hidden border-0 transition-all duration-300 hover:shadow-xl h-full">
+                    <div className="relative aspect-square overflow-hidden">
+                      <img 
+                        src={image.url} 
+                        alt={image.title}
+                        className="object-cover w-full h-full transition-transform duration-500 hover:scale-110"
+                      />
+                      <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-black/60 text-white text-xs font-medium flex items-center">
+                        {image.icon}
+                        <span className="ml-1">{image.category}</span>
                       </div>
-                      <CardHeader className="pb-2">
-                        <CardTitle className="text-lg">{image.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="pb-4">
-                        <CardDescription className="text-sm">{image.description}</CardDescription>
-                      </CardContent>
-                      <CardFooter className="flex justify-between">
-                        <Button variant="outline" size="sm" className="text-xs">
-                          <Download className="mr-1 h-3 w-3" />
-                          Preview
-                        </Button>
-                        <Button variant="outline" size="sm" className="text-xs">
-                          View Details
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </div>
-                </CarouselItem>
+                    </div>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-lg">{image.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="pb-4">
+                      <CardDescription className="text-sm">{image.description}</CardDescription>
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <Button variant="outline" size="sm" className="text-xs">
+                        <Download className="mr-1 h-3 w-3" />
+                        Preview
+                      </Button>
+                      <Button variant="outline" size="sm" className="text-xs">
+                        View Details
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </div>
               ))}
-            </CarouselContent>
-            
-            <div className="hidden md:block">
-              <CarouselPrevious className="left-0" />
-              <CarouselNext className="right-0" />
             </div>
-          </Carousel>
+          </div>
+          
+          <div className="flex justify-center gap-2 mt-4">
+            <Button 
+              size="icon" 
+              variant="outline" 
+              className="rounded-full h-8 w-8"
+              onClick={() => emblaApi?.scrollPrev()}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Button 
+              size="icon" 
+              variant="outline" 
+              className="rounded-full h-8 w-8"
+              onClick={() => emblaApi?.scrollNext()}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
         
         {/* Call to action */}

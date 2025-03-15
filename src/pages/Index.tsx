@@ -19,10 +19,10 @@ const Index = () => {
       <PassionSection />
       <CourseShowcase />
       <AIGalleryShowcase />
-      <DigitalCloneConnect />
-      <InterestForm />
       <HealthResources />
       <BlogPreview />
+      <DigitalCloneConnect />
+      <InterestForm />
     </MainLayout>
   );
 };
