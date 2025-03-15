@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -14,48 +14,63 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { Publication } from '@/types/publications';
 
-// Sample health resources data
-const healthResources = [
+// For demo purposes, import the mock data. In a real app, this would come from an API
+const healthResources: Publication[] = [
   {
     id: 1,
     title: "Biomarkers for Optimal Health",
     description: "A comprehensive guide to understanding key biomarkers and what they reveal about your health status.",
-    imageUrl: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    thumbnailUrl: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     pdfUrl: "#",
-    hasVideo: true
+    hasVideo: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
   },
   {
     id: 2,
     title: "Nutrition & Brain Health",
     description: "Discover the nutrients that support cognitive function and protect against neurodegeneration.",
-    imageUrl: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    thumbnailUrl: "https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     pdfUrl: "#",
-    hasVideo: true
+    hasVideo: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
   },
   {
     id: 3,
     title: "Sleep Optimization Protocol",
     description: "Evidence-based strategies to improve sleep quality and duration for better health outcomes.",
-    imageUrl: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    thumbnailUrl: "https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     pdfUrl: "#",
-    hasVideo: true
+    hasVideo: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
   },
   {
     id: 4,
     title: "Stress Resilience Techniques",
     description: "Practical approaches to build resilience and manage stress in high-pressure environments.",
-    imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    thumbnailUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     pdfUrl: "#",
-    hasVideo: false
+    hasVideo: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
   },
 ];
 
 const HealthResources = () => {
-  const [activeResource, setActiveResource] = useState<any>(null);
+  const [publications, setPublications] = useState<Publication[]>([]);
   
+  // In a real application, you would fetch publications from an API
+  useEffect(() => {
+    // Simulating API call
+    setPublications(healthResources);
+  }, []);
+
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+    <section id="health-resources" className="py-20 bg-gradient-to-b from-white to-gray-50">
       <div className="section-container">
         <div className="text-center mb-16">
           <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-3">Health Resources</h2>
@@ -64,6 +79,13 @@ const HealthResources = () => {
           <p className="text-muted-foreground max-w-2xl mx-auto mt-6">
             Access my evidence-based research and publications on optimizing health, wellness, and performance.
           </p>
+          
+          {/* Admin link - In a real app, this would be hidden for non-admin users */}
+          <div className="mt-4">
+            <Link to="/admin/publications" className="text-sm text-primary hover:underline">
+              Manage Publications (Admin)
+            </Link>
+          </div>
         </div>
 
         <Tabs defaultValue="publications" className="w-full">
@@ -74,11 +96,11 @@ const HealthResources = () => {
           
           <TabsContent value="publications" className="space-y-8">
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {healthResources.map((resource) => (
+              {publications.map((resource) => (
                 <Card key={resource.id} className="overflow-hidden hover:shadow-lg transition-all duration-300">
                   <div className="aspect-[4/3] overflow-hidden">
                     <img 
-                      src={resource.imageUrl} 
+                      src={resource.thumbnailUrl} 
                       alt={resource.title} 
                       className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
                     />
@@ -91,7 +113,7 @@ const HealthResources = () => {
                   </CardContent>
                   <CardFooter className="flex justify-between">
                     <Button variant="outline" size="sm">
-                      <FileText className="mr-2 h-4 w-4" />
+                      <Download className="mr-2 h-4 w-4" />
                       <a href={resource.pdfUrl} download>Download PDF</a>
                     </Button>
                     
@@ -107,14 +129,14 @@ const HealthResources = () => {
                           <DialogHeader>
                             <DialogTitle>Video Content Available</DialogTitle>
                             <DialogDescription>
-                              Full video content is available exclusively for HARDEEP ANAND Circle members.
+                              Full video content is available exclusively for ANAND Circle members.
                             </DialogDescription>
                           </DialogHeader>
                           <div className="flex items-center justify-center p-6 border rounded-md bg-muted/20">
                             <div className="flex flex-col items-center gap-2">
                               <Lock className="h-12 w-12 text-muted-foreground" />
                               <p className="text-center text-sm text-muted-foreground">
-                                Join the HARDEEP ANAND Circle to access premium video content, workshops, and exclusive resources.
+                                Join the ANAND Circle to access premium video content, workshops, and exclusive resources.
                               </p>
                             </div>
                           </div>
@@ -140,7 +162,7 @@ const HealthResources = () => {
               <Lock className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
               <h3 className="text-2xl font-display font-semibold mb-4">Premium Video Content</h3>
               <p className="text-muted-foreground mb-6">
-                Get access to in-depth video content, workshops, and expert interviews on advanced health topics when you join the HARDEEP ANAND Circle.
+                Get access to in-depth video content, workshops, and expert interviews on advanced health topics when you join the ANAND Circle.
               </p>
               <Link to="#anand-circle">
                 <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8">

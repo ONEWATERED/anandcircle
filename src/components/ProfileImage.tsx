@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Linkedin, Twitter, Users } from 'lucide-react';
+import { Linkedin, Twitter, Users, Youtube, Music } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getProfileImage } from '@/utils/imageLoader';
 
@@ -49,15 +49,23 @@ const ProfileImage = () => {
       {/* Social Media Links */}
       <div className="absolute -left-3 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 z-20">
         <a href="https://linkedin.com/in/hardeepanand" target="_blank" rel="noopener noreferrer" 
-           className="glass-card p-2 rounded-full hover:bg-primary/10 transition-colors">
+           className="glass-card p-2 rounded-full hover:bg-primary/10 transition-colors" aria-label="LinkedIn">
           <Linkedin size={18} className="text-primary" />
         </a>
         <a href="https://twitter.com/hardeepanand" target="_blank" rel="noopener noreferrer"
-           className="glass-card p-2 rounded-full hover:bg-blue-400/10 transition-colors">
+           className="glass-card p-2 rounded-full hover:bg-blue-400/10 transition-colors" aria-label="Twitter">
           <Twitter size={18} className="text-blue-400" />
         </a>
+        <a href="https://youtube.com/@hardeepanand" target="_blank" rel="noopener noreferrer"
+           className="glass-card p-2 rounded-full hover:bg-red-500/10 transition-colors" aria-label="YouTube">
+          <Youtube size={18} className="text-red-500" />
+        </a>
+        <a href="https://open.spotify.com/user/hardeepanand" target="_blank" rel="noopener noreferrer"
+           className="glass-card p-2 rounded-full hover:bg-green-500/10 transition-colors" aria-label="Spotify">
+          <Music size={18} className="text-green-500" />
+        </a>
         <Link to="#anand-circle"
-              className="glass-card p-2 rounded-full hover:bg-accent/10 transition-colors">
+              className="glass-card p-2 rounded-full hover:bg-accent/10 transition-colors" aria-label="ANAND Circle">
           <Users size={18} className="text-accent" />
         </Link>
       </div>
