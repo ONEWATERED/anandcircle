@@ -4,7 +4,6 @@ import PassionCard from './PassionCard';
 import InterconnectedDomainsGraphic from './InterconnectedDomainsGraphic';
 import { Button } from '@/components/ui/button';
 import { Users, ArrowRight, Zap } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { domains } from '@/data/domainData';
 
 // Updated passions array with more concise descriptions
@@ -88,17 +87,11 @@ const PassionSection = () => {
                 at the intersection of my five domains. Access exclusive resources, insights, and community.
               </p>
               
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8 py-6 h-auto shadow-lg group w-full sm:w-auto">
+              <div className="flex justify-center">
+                <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8 py-6 h-auto shadow-lg group">
                   <span>Join The Community</span>
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
-                
-                <Link to="/dashboard">
-                  <Button variant="outline" className="border-primary/20 hover:bg-primary/5 px-8 py-6 h-auto w-full sm:w-auto">
-                    <span>Member Dashboard</span>
-                  </Button>
-                </Link>
               </div>
               
               <div className="mt-6 text-center text-muted-foreground">

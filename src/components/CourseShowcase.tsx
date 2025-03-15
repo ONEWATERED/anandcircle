@@ -1,7 +1,6 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { GraduationCap, Users, Code, Lightbulb, MessageSquare, ExternalLink } from 'lucide-react';
+import React, { useRef } from 'react';
+import { GraduationCap, Users, Code, Lightbulb, MessageSquare, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -36,10 +35,44 @@ const courses = [
     duration: '5 weeks',
     students: '120+',
     color: 'from-emerald-500 to-teal-400'
+  },
+  {
+    id: 'data-visualization',
+    title: 'Data Visualization',
+    description: 'Create compelling visual narratives with data. Learn to use modern visualization tools to communicate insights effectively.',
+    icon: <Code className="h-10 w-10 text-amber-500" />,
+    difficulty: 'Intermediate',
+    duration: '5 weeks',
+    students: '210+',
+    color: 'from-amber-500 to-orange-400'
+  },
+  {
+    id: 'llm-development',
+    title: 'LLM Development',
+    description: 'Develop and fine-tune large language models for specific business applications and use cases.',
+    icon: <Lightbulb className="h-10 w-10 text-indigo-500" />,
+    difficulty: 'Advanced',
+    duration: '8 weeks',
+    students: '90+',
+    color: 'from-indigo-500 to-violet-400'
   }
 ];
 
 const CourseShowcase = () => {
+  const courseScrollRef = useRef<HTMLDivElement>(null);
+  
+  const scrollLeft = () => {
+    if (courseScrollRef.current) {
+      courseScrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  };
+  
+  const scrollRight = () => {
+    if (courseScrollRef.current) {
+      courseScrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="courses" className="py-20 md:py-32 relative overflow-hidden">
       {/* Background effect */}
@@ -71,40 +104,73 @@ const CourseShowcase = () => {
           </TabsList>
           
           <TabsContent value="courses" className="space-y-8">
-            <div className="grid md:grid-cols-3 gap-6">
-              {courses.map((course, index) => (
-                <Card key={course.id} className="neo-glass border-0 overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                  <div className={`h-2 w-full bg-gradient-to-r ${course.color}`}></div>
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-xl font-bold">{course.title}</CardTitle>
-                        <CardDescription className="mt-2 text-xs">
-                          <span className="inline-flex items-center mr-3">
-                            <Users className="mr-1 h-3 w-3" /> {course.students} students
-                          </span>
-                          <span className="inline-flex items-center">
-                            <GraduationCap className="mr-1 h-3 w-3" /> {course.difficulty}
-                          </span>
-                        </CardDescription>
+            {/* Horizontal scrolling course cards with navigation buttons */}
+            <div className="relative">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
+                <Button 
+                  size="icon" 
+                  variant="ghost" 
+                  className="rounded-full bg-white/80 shadow-md border border-gray-200" 
+                  onClick={scrollLeft}
+                >
+                  <ChevronLeft />
+                </Button>
+              </div>
+              
+              <div 
+                ref={courseScrollRef}
+                className="flex overflow-x-auto py-4 gap-6 no-scrollbar snap-x snap-mandatory scroll-smooth"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {courses.map((course) => (
+                  <Card 
+                    key={course.id} 
+                    className="neo-glass border-0 overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 min-w-[320px] snap-start"
+                  >
+                    <div className={`h-2 w-full bg-gradient-to-r ${course.color}`}></div>
+                    <CardHeader>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <CardTitle className="text-xl font-bold">{course.title}</CardTitle>
+                          <CardDescription className="mt-2 text-xs">
+                            <span className="inline-flex items-center mr-3">
+                              <Users className="mr-1 h-3 w-3" /> {course.students} students
+                            </span>
+                            <span className="inline-flex items-center">
+                              <GraduationCap className="mr-1 h-3 w-3" /> {course.difficulty}
+                            </span>
+                          </CardDescription>
+                        </div>
+                        <div className="rounded-full p-2 bg-muted">{course.icon}</div>
                       </div>
-                      <div className="rounded-full p-2 bg-muted">{course.icon}</div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">{course.description}</p>
-                    <div className="mt-4 inline-flex items-center justify-center px-3 py-1 text-xs font-medium rounded-full bg-muted">
-                      Duration: {course.duration}
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Button className={`w-full bg-gradient-to-r ${course.color} text-white`}>
-                      View Course Details
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground">{course.description}</p>
+                      <div className="mt-4 inline-flex items-center justify-center px-3 py-1 text-xs font-medium rounded-full bg-muted">
+                        Duration: {course.duration}
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button className={`w-full bg-gradient-to-r ${course.color} text-white`}>
+                        View Course Details
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+              
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10">
+                <Button 
+                  size="icon" 
+                  variant="ghost" 
+                  className="rounded-full bg-white/80 shadow-md border border-gray-200" 
+                  onClick={scrollRight}
+                >
+                  <ChevronRight />
+                </Button>
+              </div>
             </div>
+            
             <div className="text-center mt-10">
               <Button size="lg" className="bg-primary">
                 Browse All Courses
