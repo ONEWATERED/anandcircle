@@ -1,11 +1,15 @@
 
 import React, { useEffect, useState } from 'react';
-import { Linkedin, Twitter, Users, Youtube, Music } from 'lucide-react';
+import { Linkedin, Twitter, Users, Youtube, Music, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getProfileImage } from '@/utils/imageLoader';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 const ProfileImage = () => {
   const [profileImage, setProfileImage] = useState<string | null>('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+  const [isAvatarPulsing, setIsAvatarPulsing] = useState(true);
+  const [showAvatarHint, setShowAvatarHint] = useState(false);
 
   useEffect(() => {
     // Load profile image from localStorage if available (for user customization)
@@ -13,7 +17,22 @@ const ProfileImage = () => {
     if (savedImage) {
       setProfileImage(savedImage);
     }
+
+    // Set interval for the avatar animation
+    const pulseInterval = setInterval(() => {
+      setIsAvatarPulsing(prev => !prev);
+    }, 2000);
+
+    return () => clearInterval(pulseInterval);
   }, []);
+
+  const handleAvatarHover = () => {
+    setShowAvatarHint(true);
+  };
+
+  const handleAvatarLeave = () => {
+    setShowAvatarHint(false);
+  };
 
   return (
     <div className="relative">
@@ -33,6 +52,38 @@ const ProfileImage = () => {
           )}
         </div>
       </div>
+      
+      {/* Digital Avatar Interactive Element */}
+      <Link 
+        to="#digital-avatar"
+        className="absolute -top-3 -right-3 z-30"
+        onMouseEnter={handleAvatarHover}
+        onMouseLeave={handleAvatarLeave}
+      >
+        <div className={`neo-glass p-1.5 rounded-full shadow-lg transition-all duration-300 ${isAvatarPulsing ? 'animate-pulse ring-4 ring-primary/60 scale-105' : 'ring-2 ring-primary/40'}`}>
+          <Avatar className="h-12 w-12 border-2 border-white/60 bg-primary/10">
+            <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white text-sm font-semibold">
+              AI
+            </AvatarFallback>
+          </Avatar>
+          
+          {/* Animated glow effect */}
+          <div className="absolute inset-0 bg-primary/20 rounded-full blur-md -z-10"></div>
+        </div>
+        
+        {/* Message indicator */}
+        <div className={`absolute -top-1 -right-1 bg-accent rounded-full p-0.5 shadow-md border border-white ${isAvatarPulsing ? 'animate-bounce' : ''}`}>
+          <MessageCircle size={14} className="text-white" fill="white" />
+        </div>
+        
+        {/* Tooltip that appears on hover */}
+        {showAvatarHint && (
+          <div className="absolute right-0 top-14 glass-card p-2 rounded-xl shadow-lg min-w-48 animate-fade-in z-50">
+            <Badge className="bg-primary mb-1">Digital Avatar</Badge>
+            <p className="text-xs text-foreground/90">Chat with my digital avatar. Get to know me better!</p>
+          </div>
+        )}
+      </Link>
       
       {/* Decorative elements */}
       <div className="absolute -top-3 -right-3 w-24 h-24 bg-gradient-to-r from-blue-500/30 to-cyan-400/30 rounded-full blur-xl z-0"></div>
