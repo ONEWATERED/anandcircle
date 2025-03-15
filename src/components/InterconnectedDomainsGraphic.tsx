@@ -2,12 +2,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Users, HeartPulse, Droplet, Brain, GraduationCap } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
-// Domain definitions with updated content for the fifth domain
+// Updated domain definitions with the correct five domains
 const domains = [
   {
     id: 'family',
-    title: 'Family & Nuclear Values',
+    title: 'Nuclear Families',
     icon: Users,
     color: 'rgb(244, 114, 182)', // rose-500
     description: 'Strong families as the cornerstone of society',
@@ -29,8 +30,8 @@ const domains = [
     icon: Droplet,
     color: 'rgb(6, 182, 212)', // cyan-500
     description: 'Integrating technology with environmental sustainability',
-    x: -0.8,
-    y: 0.5,
+    x: 0,
+    y: 0.9,
   },
   {
     id: 'ai',
@@ -38,17 +39,17 @@ const domains = [
     icon: Brain,
     color: 'rgb(16, 185, 129)', // emerald-500
     description: 'Transforming organizations through innovative technology',
-    x: 0.8,
+    x: -0.8,
     y: 0.5,
   },
   {
-    id: 'workforce',
-    title: 'Workforce Development',
+    id: 'mentoring',
+    title: 'Coaching & Mentoring',
     icon: GraduationCap,
     color: 'rgb(168, 85, 247)', // purple-500
-    description: 'Coaching, mentoring & training for growth',
-    x: 0,
-    y: 0,
+    description: 'Unlocking potential through guidance and development',
+    x: 0.8,
+    y: 0.5,
   },
 ];
 
@@ -58,6 +59,7 @@ const InterconnectedDomainsGraphic = () => {
   const [height, setHeight] = useState(0);
   const [activeNode, setActiveNode] = useState<string | null>(null);
   const [animationComplete, setAnimationComplete] = useState(false);
+  const isMobile = useIsMobile();
 
   // Update dimensions on resize
   useEffect(() => {
@@ -73,11 +75,12 @@ const InterconnectedDomainsGraphic = () => {
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
 
-  // Calculate node positions based on container dimensions
+  // Calculate node positions based on container dimensions and mobile state
   const getNodePosition = (x: number, y: number) => {
     const centerX = width / 2;
     const centerY = height / 2;
-    const radius = Math.min(width, height) * 0.35; // Radius for the circle
+    // Adjust radius to be responsive - smaller on mobile
+    const radius = Math.min(width, height) * (isMobile ? 0.28 : 0.35);
     
     return {
       x: centerX + x * radius,
@@ -89,40 +92,73 @@ const InterconnectedDomainsGraphic = () => {
   const renderConnections = () => {
     if (!animationComplete) return null;
     
-    return domains.map((domain, i) => {
-      // Connect to all other nodes
-      return domains.slice(i + 1).map((target, j) => {
+    const connections: JSX.Element[] = [];
+
+    // Connect each node to the center (ANAND Circle)
+    domains.forEach((domain, i) => {
+      const source = getNodePosition(domain.x, domain.y);
+      const dest = getNodePosition(0, 0); // Center point
+      
+      const key = `${domain.id}-center`;
+      const isActive = activeNode === domain.id;
+      
+      connections.push(
+        <motion.path
+          key={key}
+          d={`M ${source.x} ${source.y} L ${dest.x} ${dest.y}`}
+          stroke={isActive ? "rgba(99, 102, 241, 0.9)" : "rgba(209, 213, 219, 0.5)"}
+          strokeWidth={isActive ? 3 : 1.5}
+          strokeDasharray="5,5"
+          fill="none"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ 
+            pathLength: 1, 
+            opacity: isActive ? 1 : 0.7,
+            strokeWidth: isActive ? 3 : 1.5
+          }}
+          transition={{ 
+            duration: 1.5, 
+            delay: 0.5 + (i * 0.1),
+            ease: "easeInOut"
+          }}
+        />
+      );
+    });
+
+    // Connect nodes to each other in a web pattern
+    domains.forEach((domain, i) => {
+      domains.slice(i + 1).forEach((target, j) => {
         const source = getNodePosition(domain.x, domain.y);
         const dest = getNodePosition(target.x, target.y);
         
-        // This will give a unique key for each connection
         const key = `${domain.id}-${target.id}`;
-        
         const isActive = activeNode === domain.id || activeNode === target.id;
         
-        return (
+        connections.push(
           <motion.path
             key={key}
             d={`M ${source.x} ${source.y} L ${dest.x} ${dest.y}`}
-            stroke={isActive ? "rgba(99, 102, 241, 0.8)" : "rgba(209, 213, 219, 0.5)"}
-            strokeWidth={isActive ? 3 : 1.5}
-            strokeDasharray="5,5"
+            stroke={isActive ? "rgba(99, 102, 241, 0.8)" : "rgba(209, 213, 219, 0.3)"}
+            strokeWidth={isActive ? 2 : 1}
+            strokeDasharray="3,3"
             fill="none"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ 
               pathLength: 1, 
-              opacity: isActive ? 1 : 0.7,
-              strokeWidth: isActive ? 3 : 1.5
+              opacity: isActive ? 1 : 0.5,
+              strokeWidth: isActive ? 2 : 1
             }}
             transition={{ 
               duration: 1.5, 
-              delay: 0.5 + (i * 0.1) + (j * 0.1),
+              delay: 0.7 + (i * 0.1) + (j * 0.1),
               ease: "easeInOut"
             }}
           />
         );
       });
-    }).flat();
+    });
+
+    return connections;
   };
 
   // Main component animation sequence
@@ -134,6 +170,12 @@ const InterconnectedDomainsGraphic = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  // Define node sizes based on mobile state
+  const centerSize = isMobile ? 100 : 120;
+  const nodeSize = isMobile ? 14 : 16;
+  const iconSize = isMobile ? 24 : 30;
+  const textWidth = isMobile ? 'w-24' : 'w-32';
 
   return (
     <div 
@@ -152,25 +194,23 @@ const InterconnectedDomainsGraphic = () => {
         style={{ 
           top: '50%', 
           left: '50%', 
-          width: 120, 
-          height: 120,
+          width: centerSize, 
+          height: centerSize,
           transform: 'translate(-50%, -50%)'
         }}
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.8, type: "spring" }}
+        whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)' }}
       >
         <div className="text-center">
-          <div className="text-2xl font-bold tracking-tight">ANAND</div>
-          <div className="text-xs font-medium mt-1">The Circle</div>
+          <div className="text-xl md:text-2xl font-bold tracking-tight">HARDEEP</div>
+          <div className="text-xs font-medium mt-1">ANAND Circle</div>
         </div>
       </motion.div>
       
       {/* Domain Nodes */}
       {domains.map((domain, index) => {
-        // Skip the central node as we've created it above
-        if (domain.id === 'workforce') return null;
-        
         const position = getNodePosition(domain.x, domain.y);
         const Icon = domain.icon;
         
@@ -181,10 +221,10 @@ const InterconnectedDomainsGraphic = () => {
             style={{ 
               top: position.y, 
               left: position.x, 
-              width: 100,
-              height: 100,
-              marginLeft: -50,
-              marginTop: -50,
+              width: isMobile ? 80 : 100,
+              height: isMobile ? 80 : 100,
+              marginLeft: isMobile ? -40 : -50,
+              marginTop: isMobile ? -40 : -50,
             }}
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -197,10 +237,12 @@ const InterconnectedDomainsGraphic = () => {
             onMouseLeave={() => setActiveNode(null)}
           >
             <motion.div 
-              className="cursor-pointer w-16 h-16 rounded-full flex items-center justify-center shadow-lg mb-2 transition-transform"
+              className="cursor-pointer rounded-full flex items-center justify-center shadow-lg mb-2 transition-transform"
               style={{ 
                 backgroundColor: domain.color,
-                border: `2px solid ${activeNode === domain.id ? 'white' : 'transparent'}`
+                border: `2px solid ${activeNode === domain.id ? 'white' : 'transparent'}`,
+                width: isMobile ? 56 : 64,
+                height: isMobile ? 56 : 64,
               }}
               whileHover={{ scale: 1.1 }}
               animate={{ 
@@ -208,10 +250,10 @@ const InterconnectedDomainsGraphic = () => {
                 boxShadow: activeNode === domain.id ? '0 0 15px rgba(255,255,255,0.5)' : '0 4px 6px rgba(0,0,0,0.1)'
               }}
             >
-              <Icon size={30} color="white" />
+              <Icon size={iconSize} color="white" />
             </motion.div>
             <motion.div 
-              className="text-center w-32"
+              className={`text-center ${textWidth}`}
               initial={{ opacity: 0 }}
               animate={{ 
                 opacity: 1,
@@ -219,7 +261,7 @@ const InterconnectedDomainsGraphic = () => {
               }}
               transition={{ delay: 0.5 + (index * 0.1) }}
             >
-              <div className="font-semibold text-sm">{domain.title}</div>
+              <div className="font-semibold text-xs md:text-sm">{domain.title}</div>
               {activeNode === domain.id && (
                 <motion.div 
                   className="text-xs text-muted-foreground mt-1"
@@ -234,6 +276,52 @@ const InterconnectedDomainsGraphic = () => {
           </motion.div>
         );
       })}
+      
+      {/* Floating particles effect */}
+      {[...Array(10)].map((_, i) => (
+        <motion.div
+          key={`particle-${i}`}
+          className="absolute rounded-full bg-primary/10"
+          style={{
+            width: Math.random() * 10 + 5,
+            height: Math.random() * 10 + 5,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`
+          }}
+          animate={{
+            x: [0, Math.random() * 50 - 25],
+            y: [0, Math.random() * 50 - 25],
+            opacity: [0.7, 0.1, 0.7],
+            scale: [1, 1.5, 1]
+          }}
+          transition={{
+            duration: Math.random() * 5 + 5,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+        />
+      ))}
+      
+      {/* Pulsing ring around center */}
+      <motion.div
+        className="absolute rounded-full border-2 border-primary/20"
+        style={{ 
+          top: '50%', 
+          left: '50%', 
+          width: centerSize + 20, 
+          height: centerSize + 20,
+          transform: 'translate(-50%, -50%)'
+        }}
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.2, 0.5, 0.2]
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          repeatType: "loop"
+        }}
+      />
     </div>
   );
 };

@@ -5,9 +5,10 @@ import InterconnectedDomainsGraphic from './InterconnectedDomainsGraphic';
 import { Button } from '@/components/ui/button';
 import { Users, ArrowRight, Zap } from 'lucide-react';
 
+// Updated passions array with the requested changes
 const passions = [
   {
-    title: "Family & Nuclear Values",
+    title: "Nuclear Families",
     description: "I believe strong families are the cornerstone of society. My approach integrates evidence-based parenting frameworks with traditional values to navigate modern challenges. I focus on practical solutions for raising resilient children while maintaining core family structures in a rapidly changing world.",
     cta: "Family Resources",
     ctaLink: "#",
@@ -35,7 +36,7 @@ const passions = [
     colorAccent: "bg-emerald-500"
   },
   {
-    title: "Workforce Development",
+    title: "Coaching & Mentoring",
     description: "I focus on coaching, mentoring, and training professionals to unlock their potential. My frameworks provide actionable strategies for growth, drawing from experience managing cross-functional teams and developing talent in complex environments.",
     cta: "Development Resources",
     ctaLink: "#",
@@ -77,7 +78,7 @@ const PassionSection = () => {
           ))}
         </div>
 
-        {/* The ANAND Circle Section */}
+        {/* The HARDEEP ANAND Circle Section */}
         <div id="anand-circle" className="mt-32 opacity-0 animate-fade-up">
           <div className="max-w-4xl mx-auto glass-card p-8 md:p-12 rounded-3xl border-2 border-primary/20 relative overflow-hidden">
             {/* Background shapes */}
@@ -91,11 +92,11 @@ const PassionSection = () => {
                 </div>
               </div>
               
-              <h3 className="text-3xl md:text-4xl font-display font-bold text-center mb-4">Join The ANAND Circle</h3>
+              <h3 className="text-3xl md:text-4xl font-display font-bold text-center mb-4">Join The HARDEEP ANAND Circle</h3>
               
               <p className="text-lg text-center text-muted-foreground mb-8 max-w-3xl mx-auto">
-                Connect with an exclusive community where we integrate insights across family values, health innovation, 
-                water sustainability, AI advancement, and workforce development. The ANAND Circle brings together professionals 
+                Connect with an exclusive community where we integrate insights across nuclear families, health innovation, 
+                water sustainability, AI advancement, and coaching & mentoring. The HARDEEP ANAND Circle brings together professionals 
                 and thought leaders committed to creating meaningful impact at these critical intersections.
               </p>
               
