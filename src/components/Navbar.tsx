@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Linkedin, Twitter, Youtube, Music } from 'lucide-react';
 
 const navLinks = [
   { name: 'Home', href: '#home' },
@@ -37,6 +37,26 @@ const Navbar = () => {
             >
               HARDEEP ANAND
             </a>
+            
+            {/* Social Media Icons */}
+            <div className="ml-4 hidden md:flex items-center space-x-3">
+              <a href="https://linkedin.com/in/hardeepanand" target="_blank" rel="noopener noreferrer" 
+                 className="text-foreground/70 hover:text-primary transition-colors" aria-label="LinkedIn">
+                <Linkedin size={18} />
+              </a>
+              <a href="https://twitter.com/hardeepanand" target="_blank" rel="noopener noreferrer"
+                 className="text-foreground/70 hover:text-primary transition-colors" aria-label="Twitter">
+                <Twitter size={18} />
+              </a>
+              <a href="https://youtube.com/@hardeepanand" target="_blank" rel="noopener noreferrer"
+                 className="text-foreground/70 hover:text-primary transition-colors" aria-label="YouTube">
+                <Youtube size={18} />
+              </a>
+              <a href="https://open.spotify.com/user/hardeepanand" target="_blank" rel="noopener noreferrer"
+                 className="text-foreground/70 hover:text-primary transition-colors" aria-label="Spotify">
+                <Music size={18} />
+              </a>
+            </div>
           </div>
           
           {/* Desktop navigation */}
@@ -83,6 +103,26 @@ const Navbar = () => {
                   {link.name}
                 </a>
               ))}
+              
+              {/* Social Media Icons for Mobile */}
+              <div className="flex items-center space-x-4 px-3 py-3 border-t border-gray-200/30 mt-2">
+                <a href="https://linkedin.com/in/hardeepanand" target="_blank" rel="noopener noreferrer" 
+                   className="text-foreground/70 hover:text-primary transition-colors" aria-label="LinkedIn">
+                  <Linkedin size={18} />
+                </a>
+                <a href="https://twitter.com/hardeepanand" target="_blank" rel="noopener noreferrer"
+                   className="text-foreground/70 hover:text-primary transition-colors" aria-label="Twitter">
+                  <Twitter size={18} />
+                </a>
+                <a href="https://youtube.com/@hardeepanand" target="_blank" rel="noopener noreferrer"
+                   className="text-foreground/70 hover:text-primary transition-colors" aria-label="YouTube">
+                  <Youtube size={18} />
+                </a>
+                <a href="https://open.spotify.com/user/hardeepanand" target="_blank" rel="noopener noreferrer"
+                   className="text-foreground/70 hover:text-primary transition-colors" aria-label="Spotify">
+                  <Music size={18} />
+                </a>
+              </div>
             </div>
           </div>
         )}
