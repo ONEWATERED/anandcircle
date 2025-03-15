@@ -56,7 +56,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         top: position.y, 
         left: position.x, 
         width: nodeWidth,
-        height: nodeWidth,
+        height: nodeWidth * 1.5, // Increased height to accommodate more text
         marginLeft: -nodeWidth/2,
         marginTop: -nodeWidth/2,
         // The text should always stay upright even as the node rotates around the circle
@@ -77,7 +77,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
       onTouchStart={isMobile ? handleInteraction : undefined}
     >
       <motion.div 
-        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-1"
+        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-2"
         style={{ 
           backgroundColor: domain.color,
           border: `2px solid ${isActive ? 'white' : 'transparent'}`,
@@ -106,12 +106,12 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         </div>
         {isActive && (
           <motion.div 
-            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-0.5`}
+            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-0.5 z-10 bg-black/50 p-1 rounded-md backdrop-blur-sm text-white`}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {width < 350 ? domain.description.substring(0, 25) + "..." : domain.description.substring(0, 40) + "..."}
+            {domain.description}
           </motion.div>
         )}
       </motion.div>
