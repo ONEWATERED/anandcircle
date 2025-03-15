@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* About */}
           <div>
-            <h4 className="text-lg font-display font-semibold mb-4">Hardeep Anand</h4>
+            <h4 className="text-lg font-display font-semibold mb-4">HARDEEP ANAND</h4>
             <p className="text-muted-foreground mb-4">
               Executive, innovator, and mentor focused on the intersection of technology, health, and community.
             </p>
@@ -65,7 +65,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Hardeep Anand. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} HARDEEP ANAND. All rights reserved.</p>
           <div className="mt-4 md:mt-0 space-x-4">
             <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
