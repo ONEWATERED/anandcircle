@@ -1,64 +1,57 @@
 
 import React from 'react';
+import ProfileImage from './ProfileImage';
 
 const Story = () => {
   return (
-    <section id="story" className="bg-white py-20 md:py-32">
-      <div className="section-container">
-        <div className="text-center mb-16 opacity-0 animate-fade-up" style={{ animationDelay: '100ms' }}>
-          <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-3">My Journey</h2>
-          <h3 className="text-3xl md:text-4xl font-display font-bold mb-6">From Immigrant to Executive</h3>
-          <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-12">
-          {/* Journey Phase 1 */}
-          <div className="glass-card p-8 opacity-0 animate-fade-up" style={{ animationDelay: '200ms' }}>
-            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 text-primary mb-6">
-              <span className="text-xl font-bold">1</span>
+    <section id="story" className="relative py-20 overflow-hidden">
+      {/* Background with subtle gradient and patterns */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-gray-50 to-white z-0"></div>
+      
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 z-0 opacity-10" 
+        style={{ 
+          backgroundImage: 'linear-gradient(rgba(127, 127, 255, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(127, 127, 255, 0.2) 1px, transparent 1px)',
+          backgroundSize: '50px 50px'
+        }}>
+      </div>
+      
+      <div className="section-container relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Text content - spans 7 columns on desktop */}
+          <div className="lg:col-span-7 space-y-6">
+            <h2 className="text-3xl lg:text-4xl font-display font-bold opacity-0 animate-fade-up">
+              My <span className="text-gradient-primary">Story</span>
+            </h2>
+            
+            <div className="prose prose-lg max-w-none">
+              <p className="text-muted-foreground opacity-0 animate-fade-up" style={{ animationDelay: '100ms' }}>
+                From immigrant student to government executive, my journey has been shaped by the intersection of diverse experiences. As a Public Works Director with regulatory oversight of an $8.5 billion portfolio, I've had the unique opportunity to blend deep domain expertise with technological innovation.
+              </p>
+              
+              <p className="text-muted-foreground opacity-0 animate-fade-up" style={{ animationDelay: '200ms' }}>
+                My approach has always been to find connections between seemingly disparate fields—technology, public service, health, and community building. This integrative perspective has allowed me to implement transformative solutions that address complex challenges in novel ways.
+              </p>
+              
+              <p className="text-muted-foreground opacity-0 animate-fade-up" style={{ animationDelay: '300ms' }}>
+                Throughout my career, I've remained committed to leveraging data and technology to enhance public services, improve health outcomes, and build stronger communities. It's this commitment that continues to drive my work as an innovator and executive leader.
+              </p>
             </div>
-            <h4 className="text-xl font-display font-semibold mb-4">The Beginning</h4>
-            <p className="text-muted-foreground mb-4">
-              My journey began as an immigrant student, navigating a new country with determination and hope. Each challenge became an opportunity to grow and adapt in unfamiliar territory.
-            </p>
-            <p className="text-muted-foreground">
-              This formative experience laid the groundwork for my approach to problem-solving and innovation throughout my career.
-            </p>
+            
+            <div className="pt-4 opacity-0 animate-fade-up" style={{ animationDelay: '400ms' }}>
+              <a 
+                href="#passions" 
+                className="inline-flex items-center justify-center h-11 px-6 font-medium text-white transition duration-200 rounded-lg bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90 shadow-md"
+              >
+                Explore My Passions
+              </a>
+            </div>
           </div>
           
-          {/* Journey Phase 2 */}
-          <div className="glass-card p-8 opacity-0 animate-fade-up" style={{ animationDelay: '300ms' }}>
-            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 text-primary mb-6">
-              <span className="text-xl font-bold">2</span>
-            </div>
-            <h4 className="text-xl font-display font-semibold mb-4">Professional Growth</h4>
-            <p className="text-muted-foreground mb-4">
-              As my career evolved, I found myself at the intersection of public service and technology. Leading an $8.5 billion initiative as Public Works Director, I discovered the power of integrating deep domain knowledge with technology.
-            </p>
-            <p className="text-muted-foreground">
-              These experiences taught me how to implement innovative solutions within complex government structures.
-            </p>
+          {/* Profile image - spans 5 columns on desktop */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end opacity-0 animate-fade-up" style={{ animationDelay: '300ms' }}>
+            <ProfileImage />
           </div>
-          
-          {/* Journey Phase 3 */}
-          <div className="glass-card p-8 opacity-0 animate-fade-up" style={{ animationDelay: '400ms' }}>
-            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 text-primary mb-6">
-              <span className="text-xl font-bold">3</span>
-            </div>
-            <h4 className="text-xl font-display font-semibold mb-4">Integration & Innovation</h4>
-            <p className="text-muted-foreground mb-4">
-              Today, I blend my executive experience with my passion for data, AI, and technology. This unique perspective allows me to approach problems holistically and implement solutions that drive meaningful impact.
-            </p>
-            <p className="text-muted-foreground">
-              My focus has expanded to include mentoring others and sharing insights on health and wellness, creating a comprehensive approach to both work and life.
-            </p>
-          </div>
-        </div>
-        
-        <div className="mt-16 text-center opacity-0 animate-fade-up" style={{ animationDelay: '500ms' }}>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            This journey has shaped my perspective and approach as a leader, innovator, and mentor. Each experience has contributed to my ability to navigate complex challenges and create meaningful solutions.
-          </p>
         </div>
       </div>
     </section>

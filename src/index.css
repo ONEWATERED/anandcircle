@@ -16,16 +16,19 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 221 83% 53%;
+    /* AI-inspired primary color - deep blue with purple undertones */
+    --primary: 238 75% 50%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    /* Secondary color - cyan/teal for health tech feel */
+    --secondary: 172 80% 45%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    /* Accent color - vibrant purple */
+    --accent: 270 75% 55%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -33,7 +36,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221 83% 53%;
+    --ring: 238 75% 50%;
 
     --radius: 1rem;
   }
@@ -69,10 +72,25 @@
     @apply bg-white/90 backdrop-blur-lg border border-white/20 rounded-2xl shadow-md transition-all duration-300 hover:shadow-lg;
   }
   
+  /* New futuristic glass card */
+  .neo-glass {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl rounded-3xl;
+  }
+  
+  /* Gradient text utility */
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+  }
+  
+  .text-gradient-secondary {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary to-primary;
+  }
+  
   .section-container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24;
   }
   
+  /* Animation delays */
   .animate-delay-100 {
     animation-delay: 100ms;
   }
@@ -91,5 +109,32 @@
   
   .animate-delay-500 {
     animation-delay: 500ms;
+  }
+  
+  /* New utilities for futuristic effects */
+  .glow {
+    @apply relative;
+  }
+  
+  .glow::after {
+    content: '';
+    @apply absolute inset-0 rounded-inherit -z-10 opacity-70 blur-xl;
+    background: inherit;
+  }
+  
+  .neon-border {
+    @apply relative border border-transparent;
+    background-clip: padding-box;
+  }
+  
+  .neon-border::before {
+    content: '';
+    @apply absolute inset-0 -z-10 rounded-inherit;
+    padding: 1px;
+    background: linear-gradient(to right, theme('colors.primary'), theme('colors.secondary'));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
   }
 }
