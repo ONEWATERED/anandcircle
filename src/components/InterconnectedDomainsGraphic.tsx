@@ -61,7 +61,7 @@ const InterconnectedDomainsGraphic = () => {
   const [animationComplete, setAnimationComplete] = useState(false);
   const isMobile = useIsMobile();
 
-  // Update dimensions on resize
+  // Update dimensions on resize and on mount
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -72,15 +72,26 @@ const InterconnectedDomainsGraphic = () => {
     
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
+    
+    // Force another update after a slight delay to ensure proper rendering
+    const timer = setTimeout(updateDimensions, 100);
+    
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+      clearTimeout(timer);
+    };
   }, []);
 
-  // Calculate node positions based on container dimensions and mobile state
+  // Adjust layout based on screen size
   const getNodePosition = (x: number, y: number) => {
     const centerX = width / 2;
     const centerY = height / 2;
-    // Adjust radius to be responsive - smaller on mobile
-    const radius = Math.min(width, height) * (isMobile ? 0.28 : 0.35);
+    
+    // Make radius more responsive - smaller on mobile and vary based on container size
+    const minRadius = Math.min(width, height);
+    const radius = isMobile 
+      ? minRadius * (width < 350 ? 0.25 : 0.28) // Even smaller radius for very small screens
+      : minRadius * 0.35;
     
     return {
       x: centerX + x * radius,
@@ -90,7 +101,7 @@ const InterconnectedDomainsGraphic = () => {
 
   // Draw connection lines between nodes
   const renderConnections = () => {
-    if (!animationComplete) return null;
+    if (!animationComplete || width === 0) return null;
     
     const connections: JSX.Element[] = [];
 
@@ -172,15 +183,17 @@ const InterconnectedDomainsGraphic = () => {
   }, []);
 
   // Define node sizes based on mobile state
-  const centerSize = isMobile ? 100 : 120;
+  const centerSize = isMobile ? (width < 350 ? 80 : 100) : 120;
   const nodeSize = isMobile ? 14 : 16;
-  const iconSize = isMobile ? 24 : 30;
-  const textWidth = isMobile ? 'w-24' : 'w-32';
+  const iconSize = isMobile ? (width < 350 ? 20 : 24) : 30;
+  const textWidth = isMobile ? 'w-20' : 'w-32';
+  const nodeWidth = isMobile ? (width < 350 ? 70 : 80) : 100;
+  const nodeIconSize = isMobile ? (width < 350 ? 48 : 56) : 64;
 
   return (
     <div 
       ref={containerRef} 
-      className="w-full h-[500px] relative opacity-0 animate-fade-up"
+      className="w-full h-[400px] md:h-[500px] relative opacity-0 animate-fade-up"
       style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}
     >
       {/* SVG for connections */}
@@ -204,7 +217,7 @@ const InterconnectedDomainsGraphic = () => {
         whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(99, 102, 241, 0.5)' }}
       >
         <div className="text-center">
-          <div className="text-xl md:text-2xl font-bold tracking-tight">HARDEEP</div>
+          <div className="text-sm md:text-xl font-bold tracking-tight">HARDEEP</div>
           <div className="text-xs font-medium mt-1">ANAND Circle</div>
         </div>
       </motion.div>
@@ -221,10 +234,10 @@ const InterconnectedDomainsGraphic = () => {
             style={{ 
               top: position.y, 
               left: position.x, 
-              width: isMobile ? 80 : 100,
-              height: isMobile ? 80 : 100,
-              marginLeft: isMobile ? -40 : -50,
-              marginTop: isMobile ? -40 : -50,
+              width: nodeWidth,
+              height: nodeWidth,
+              marginLeft: -nodeWidth/2,
+              marginTop: -nodeWidth/2,
             }}
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -235,14 +248,15 @@ const InterconnectedDomainsGraphic = () => {
             }}
             onMouseEnter={() => setActiveNode(domain.id)}
             onMouseLeave={() => setActiveNode(null)}
+            onTouchStart={() => setActiveNode(domain.id === activeNode ? null : domain.id)}
           >
             <motion.div 
               className="cursor-pointer rounded-full flex items-center justify-center shadow-lg mb-2 transition-transform"
               style={{ 
                 backgroundColor: domain.color,
                 border: `2px solid ${activeNode === domain.id ? 'white' : 'transparent'}`,
-                width: isMobile ? 56 : 64,
-                height: isMobile ? 56 : 64,
+                width: nodeIconSize,
+                height: nodeIconSize,
               }}
               whileHover={{ scale: 1.1 }}
               animate={{ 
@@ -253,7 +267,7 @@ const InterconnectedDomainsGraphic = () => {
               <Icon size={iconSize} color="white" />
             </motion.div>
             <motion.div 
-              className={`text-center ${textWidth}`}
+              className={`text-center ${textWidth} mx-auto`}
               initial={{ opacity: 0 }}
               animate={{ 
                 opacity: 1,
@@ -264,7 +278,7 @@ const InterconnectedDomainsGraphic = () => {
               <div className="font-semibold text-xs md:text-sm">{domain.title}</div>
               {activeNode === domain.id && (
                 <motion.div 
-                  className="text-xs text-muted-foreground mt-1"
+                  className="text-2xs md:text-xs text-muted-foreground mt-1"
                   initial={{ opacity: 0, y: 5 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}

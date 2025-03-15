@@ -1,5 +1,7 @@
 
 import React from 'react';
+import { Linkedin, Twitter, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const ProfileImage = () => {
   return (
@@ -23,6 +25,22 @@ const ProfileImage = () => {
           <div className="w-2 h-2 rounded-full bg-gradient-to-r from-indigo-500 to-blue-500"></div>
           <span className="text-sm font-medium text-gray-700">Executive & Innovator</span>
         </div>
+      </div>
+
+      {/* Social Media Links */}
+      <div className="absolute -left-3 top-1/2 transform -translate-y-1/2 flex flex-col gap-2 z-20">
+        <a href="https://linkedin.com/in/hardeepanand" target="_blank" rel="noopener noreferrer" 
+           className="glass-card p-2 rounded-full hover:bg-primary/10 transition-colors">
+          <Linkedin size={18} className="text-primary" />
+        </a>
+        <a href="https://twitter.com/hardeepanand" target="_blank" rel="noopener noreferrer"
+           className="glass-card p-2 rounded-full hover:bg-blue-400/10 transition-colors">
+          <Twitter size={18} className="text-blue-400" />
+        </a>
+        <Link to="#anand-circle"
+              className="glass-card p-2 rounded-full hover:bg-accent/10 transition-colors">
+          <Users size={18} className="text-accent" />
+        </Link>
       </div>
     </div>
   );

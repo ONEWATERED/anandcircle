@@ -4,6 +4,7 @@ import PassionCard from './PassionCard';
 import InterconnectedDomainsGraphic from './InterconnectedDomainsGraphic';
 import { Button } from '@/components/ui/button';
 import { Users, ArrowRight, Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 // Updated passions array with the requested changes
 const passions = [
@@ -106,9 +107,11 @@ const PassionSection = () => {
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 
-                <Button variant="outline" className="border-primary/20 hover:bg-primary/5 px-8 py-6 h-auto">
-                  <span>Learn More</span>
-                </Button>
+                <Link to="/dashboard">
+                  <Button variant="outline" className="border-primary/20 hover:bg-primary/5 px-8 py-6 h-auto">
+                    <span>Member Dashboard</span>
+                  </Button>
+                </Link>
               </div>
               
               <div className="mt-8 text-center text-muted-foreground">
