@@ -1,18 +1,15 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import AdminLayout from '@/layouts/AdminLayout';
 import { useConnections } from '@/hooks/useConnections';
 import { Person } from '@/types/connections';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import ConnectionList from '@/components/connections/ConnectionList';
-import NewConnectionForm from '@/components/connections/NewConnectionForm';
+import { useToast } from '@/hooks/use-toast';
+import { syncAllConnections } from '@/utils/syncConnections';
+import ConnectionsDashboardHeader from '@/components/connections/ConnectionsDashboardHeader';
+import ConnectionsLoader from '@/components/connections/ConnectionsLoader';
+import ConnectionsCategoryTabs from '@/components/connections/ConnectionsCategoryTabs';
 import { uploadImageToStorage } from '@/utils/fileUtils';
 import { saveConnectionImage } from '@/utils/imageLoader';
-import { useToast } from '@/components/ui/use-toast';
-import { Loader2, RefreshCw, Users, Heart, Activity, Flag, Briefcase } from 'lucide-react';
-import { syncAllConnections } from '@/utils/syncConnections';
 
 const ConnectionsDashboard = () => {
   const { 
@@ -32,12 +29,6 @@ const ConnectionsDashboard = () => {
   const filteredConnections = activeCategoryTab === 'all' 
     ? connections 
     : connections.filter(conn => conn.category === activeCategoryTab);
-  
-  // Group by category for display
-  const familyConnections = connections.filter(conn => conn.category === 'family');
-  const businessConnections = connections.filter(conn => conn.category === 'business');
-  const healthConnections = connections.filter(conn => conn.category === 'health');
-  const politicsConnections = connections.filter(conn => conn.category === 'politics');
   
   // Handle image upload for connection
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>, personId: string) => {
@@ -140,90 +131,27 @@ const ConnectionsDashboard = () => {
     <AdminLayout>
       <div className="container mx-auto py-8">
         <div className="flex flex-col space-y-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold">Manage Connections</h1>
-              <p className="text-muted-foreground">
-                Add, edit, or remove people in your network
-              </p>
-            </div>
-            
-            <Button 
-              variant="outline" 
-              className="flex items-center gap-2"
-              onClick={handleSyncConnections}
-              disabled={isSyncing}
-            >
-              {isSyncing ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <RefreshCw className="h-4 w-4" />
-              )}
-              <span>Sync Connections</span>
-            </Button>
-          </div>
+          <ConnectionsDashboardHeader 
+            onSyncConnections={handleSyncConnections} 
+            isSyncing={isSyncing} 
+          />
           
           {isLoading ? (
-            <div className="flex justify-center items-center h-96">
-              <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            </div>
+            <ConnectionsLoader />
           ) : (
-            <Tabs defaultValue="all" onValueChange={setActiveCategoryTab}>
-              <TabsList className="grid grid-cols-5 w-full max-w-3xl mx-auto">
-                <TabsTrigger value="all" className="flex items-center gap-1">
-                  <Users className="h-4 w-4" />
-                  <span>All ({connections.length})</span>
-                </TabsTrigger>
-                <TabsTrigger value="family" className="flex items-center gap-1">
-                  <Heart className="h-4 w-4" />
-                  <span>Family ({familyConnections.length})</span>
-                </TabsTrigger>
-                <TabsTrigger value="business" className="flex items-center gap-1">
-                  <Briefcase className="h-4 w-4" />
-                  <span>Business ({businessConnections.length})</span>
-                </TabsTrigger>
-                <TabsTrigger value="health" className="flex items-center gap-1">
-                  <Activity className="h-4 w-4" />
-                  <span>Health ({healthConnections.length})</span>
-                </TabsTrigger>
-                <TabsTrigger value="politics" className="flex items-center gap-1">
-                  <Flag className="h-4 w-4" />
-                  <span>Politics ({politicsConnections.length})</span>
-                </TabsTrigger>
-              </TabsList>
-              
-              <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="col-span-1">
-                  <NewConnectionForm 
-                    onAddConnection={addConnection}
-                    onImageUpload={handleImageUpload}
-                  />
-                </div>
-                
-                <div className="col-span-1 md:col-span-2">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>
-                        {activeCategoryTab === 'all' 
-                          ? 'All Connections' 
-                          : `${activeCategoryTab.charAt(0).toUpperCase() + activeCategoryTab.slice(1)} Connections`}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ConnectionList
-                        connections={filteredConnections}
-                        editingConnection={editingConnection}
-                        onEdit={handleEditConnection}
-                        onSaveEdit={handleSaveEdit}
-                        onCancelEdit={handleCancelEdit}
-                        onDelete={handleDeleteConnection}
-                        onImageUpload={handleImageUpload}
-                      />
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </Tabs>
+            <ConnectionsCategoryTabs 
+              connections={connections}
+              activeCategoryTab={activeCategoryTab}
+              setActiveCategoryTab={setActiveCategoryTab}
+              filteredConnections={filteredConnections}
+              editingConnection={editingConnection}
+              onEditConnection={handleEditConnection}
+              onSaveEdit={handleSaveEdit}
+              onCancelEdit={handleCancelEdit}
+              onDeleteConnection={handleDeleteConnection}
+              onImageUpload={handleImageUpload}
+              addConnection={addConnection}
+            />
           )}
         </div>
       </div>
