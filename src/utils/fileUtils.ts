@@ -66,8 +66,8 @@ export const uploadImageToStorage = async (imageFile: File, personId?: string): 
       // If this is a connection image and personId is provided, store in the connection_images table
       if (personId) {
         const { error: insError } = await supabase.rpc('store_connection_image', {
-          p_person_id: personId,
-          p_image_path: publicUrl
+          p_person_id: personId as any,
+          p_image_path: publicUrl as any
         });
         
         if (insError) {

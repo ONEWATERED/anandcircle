@@ -8,14 +8,14 @@ export const getConnectionImage = async (personId: string): Promise<string | nul
   try {
     // Try to fetch image using RPC function
     const { data, error } = await supabase.rpc('get_connection_image', {
-      p_person_id: personId
+      p_person_id: personId as any
     });
     
     if (error) {
       console.error("Error fetching connection image:", error);
     }
     
-    if (data && data.length > 0 && data[0].image_path) {
+    if (data && Array.isArray(data) && data.length > 0 && data[0]?.image_path) {
       return data[0].image_path;
     }
     
@@ -74,8 +74,8 @@ export const uploadConnectionImage = async (imageFile: File, personId: string): 
       
       // Store the connection in a separate table using a custom SQL procedure
       const { error: insError } = await supabase.rpc('store_connection_image', {
-        p_person_id: personId,
-        p_image_path: publicUrl
+        p_person_id: personId as any,
+        p_image_path: publicUrl as any
       });
       
       if (insError) {
