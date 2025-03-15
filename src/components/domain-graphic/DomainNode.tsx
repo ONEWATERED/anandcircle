@@ -34,11 +34,6 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   const isActive = activeNode === domain.id;
   const width = window.innerWidth;
 
-  // Determine if the title should be split into two lines
-  // For titles with more than one word
-  const titleWords = domain.title.split(' ');
-  const shouldSplitTitle = titleWords.length > 1 && !isMobile;
-
   const handleInteraction = () => {
     if (isMobile) {
       // For mobile, toggle active state
@@ -53,8 +48,8 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   const nodeDelay = isMobile ? 0.2 + (index * 0.05) : 0.3 + (index * 0.1);
 
   // Calculate additional height for text to prevent overlap with center circle
-  // Increased height multiplier even more for mobile to ensure text is fully visible
-  const nodeHeight = nodeWidth * (shouldSplitTitle ? 2.2 : (isMobile ? 2.5 : 2.2));
+  // Increased height multiplier for better visibility
+  const nodeHeight = nodeWidth * (isMobile ? 3 : 2.5);
 
   return (
     <motion.div
@@ -87,7 +82,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     >
       {/* Circle with icon - centered horizontally */}
       <motion.div 
-        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-2"
+        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-3"
         style={{ 
           backgroundColor: domain.color,
           border: `2px solid ${isActive ? 'white' : 'transparent'}`,
@@ -105,9 +100,9 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         <Icon size={iconSize} color="white" />
       </motion.div>
 
-      {/* Text area - perfectly centered under the icon */}
+      {/* Text area - perfectly centered under the icon with improved visibility */}
       <motion.div 
-        className={`text-center ${textWidth} mx-auto mt-1`}
+        className={`text-center ${textWidth} mx-auto mt-2`}
         initial={{ opacity: 0 }}
         animate={{ 
           opacity: 1,
@@ -115,22 +110,13 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         }}
         transition={{ delay: nodeDelay + 0.1 }}
       >
-        {shouldSplitTitle ? (
-          // Split title into two lines for desktop
-          <div className={`font-semibold text-xs md:text-sm`}>
-            <div className="truncate text-center">{titleWords.slice(0, Math.ceil(titleWords.length / 2)).join(' ')}</div>
-            <div className="truncate text-center">{titleWords.slice(Math.ceil(titleWords.length / 2)).join(' ')}</div>
-          </div>
-        ) : (
-          // Single line for mobile or short titles
-          <div className={`font-semibold ${width < 350 ? 'text-3xs' : width < 500 ? 'text-2xs' : 'text-xs'} md:text-sm truncate text-center`}>
-            {domain.title}
-          </div>
-        )}
+        <div className={`font-semibold ${width < 350 ? 'text-xs' : 'text-sm'} md:text-sm text-center bg-black/50 rounded-md px-1 py-0.5 text-white`}>
+          {domain.title}
+        </div>
         
         {isActive && (
           <motion.div 
-            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-1 z-10 bg-black/90 p-1.5 rounded-md backdrop-blur-sm text-white`}
+            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs text-muted-foreground mt-2 z-10 bg-black/90 p-1.5 rounded-md backdrop-blur-sm text-white`}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}

@@ -9,12 +9,12 @@ import { domains } from '@/data/domainData';
 // Updated passions array with more concise descriptions
 const passions = [
   {
-    title: "Nuclear Families",
+    title: "Nuclear Family",
     description: "Strong families as the cornerstone of society, integrating evidence-based parenting frameworks with traditional values for raising resilient children.",
     colorAccent: "bg-rose-500"
   },
   {
-    title: "Health & Wellness",
+    title: "Wellness",
     description: "Data-driven approaches to optimize nutrition, wellness, and mindful living with unique engineering insights into health systems.",
     colorAccent: "bg-blue-500"
   },
@@ -24,12 +24,12 @@ const passions = [
     colorAccent: "bg-cyan-500"
   },
   {
-    title: "AI & Data Innovation",
+    title: "AI & Data",
     description: "Implementing advanced AI solutions across governmental and regulatory environments to transform organizations through innovative technology.",
     colorAccent: "bg-emerald-500"
   },
   {
-    title: "Coaching & Mentoring",
+    title: "Mentoring",
     description: "Frameworks for unlocking potential through actionable growth strategies, drawing from experience managing teams in complex environments.",
     colorAccent: "bg-purple-500"
   }

@@ -15,7 +15,7 @@ export interface DomainData {
 export const domains: DomainData[] = [
   {
     id: 'family',
-    title: 'Nuclear Families',
+    title: 'Nuclear Family',
     icon: Users,
     color: 'rgb(244, 114, 182)', // rose-500
     description: 'Strong families as the cornerstone of society',
@@ -23,7 +23,7 @@ export const domains: DomainData[] = [
   },
   {
     id: 'health',
-    title: 'Health & Wellness',
+    title: 'Wellness',
     icon: HeartPulse,
     color: 'rgb(59, 130, 246)', // blue-500
     description: 'Data-driven approaches to optimize wellness',
@@ -39,7 +39,7 @@ export const domains: DomainData[] = [
   },
   {
     id: 'ai',
-    title: 'AI & Data Innovation',
+    title: 'AI & Data',
     icon: Brain,
     color: 'rgb(16, 185, 129)', // emerald-500
     description: 'Transforming organizations through innovative technology',
@@ -47,7 +47,7 @@ export const domains: DomainData[] = [
   },
   {
     id: 'mentoring',
-    title: 'Coaching & Mentoring',
+    title: 'Mentoring',
     icon: GraduationCap,
     color: 'rgb(168, 85, 247)', // purple-500
     description: 'Unlocking potential through guidance and development',
