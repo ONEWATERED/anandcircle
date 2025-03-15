@@ -69,7 +69,6 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
   });
 
   // Connect between adjacent nodes in a circular fashion
-  // More visible outer circle connections
   domains.forEach((domain, i) => {
     const nextIndex = (i + 1) % domains.length;
     const nextDomain = domains[nextIndex];
@@ -79,7 +78,6 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
     
     const isActive = activeNode === domain.id || activeNode === nextDomain.id;
     
-    // Brighter, more visible connections
     connections.push(
       <motion.path
         key={`${domain.id}-to-${nextDomain.id}`}

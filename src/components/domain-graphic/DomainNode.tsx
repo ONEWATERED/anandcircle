@@ -126,7 +126,6 @@ const DomainNode: React.FC<DomainNodeProps> = ({
           className={`font-bold ${width < 350 ? 'text-xs' : 'text-sm'} md:text-sm text-center`}
           style={{ 
             color: getTextColor(),
-            textShadow: '0 1px 3px rgba(0,0,0,0.9)'
           }}
         >
           {domain.title}
@@ -137,7 +136,6 @@ const DomainNode: React.FC<DomainNodeProps> = ({
             className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs mt-2 z-10`}
             style={{ 
               color: getTextColor(),
-              textShadow: '0 1px 3px rgba(0,0,0,0.9)'
             }}
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
