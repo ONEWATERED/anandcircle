@@ -38,11 +38,7 @@ export const getConnectionImage = async (personId: string): Promise<string | nul
     const localImage = localStorage.getItem(`connection_image_${personId}`);
     console.log(`Fallback to localStorage for ${personId}:`, localImage ? "Found" : "Not found");
     
-    if (localImage) {
-      return localImage;
-    }
-    
-    return null;
+    return localImage;
   } catch (error) {
     console.error(`Error getting connection image for ${personId}:`, error);
     

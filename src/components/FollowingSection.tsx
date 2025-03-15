@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent, FlipCard } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -253,27 +253,23 @@ const FamilyMemberCard = ({ person }: { person: Person }) => {
           console.log(`Loaded image for ${person.name} from Supabase:`, fetchedImageUrl);
           setImageUrl(fetchedImageUrl);
         } else {
-          // Fallback to localStorage
-          const localImage = localStorage.getItem(`connection_image_${person.id}`);
-          if (localImage) {
-            console.log(`Loaded image for ${person.name} from localStorage`);
-            setImageUrl(localImage);
-          } else {
-            console.log(`Using default image for ${person.name}`);
-          }
+          // Use provided image or fallback
+          setImageUrl(person.image || '/placeholder.svg');
+          console.log(`Using default image for ${person.name}:`, person.image || '/placeholder.svg');
         }
       } catch (error) {
         console.error(`Error loading image for ${person.name}:`, error);
+        // Fallback to the provided image or placeholder
+        setImageUrl(person.image || '/placeholder.svg');
       } finally {
         setIsImageLoading(false);
       }
     };
 
     loadConnectionImage();
-  }, [person.id, person.name]);
+  }, [person.id, person.name, person.image]);
 
-  // Create front content of the card
-  const frontContent = (
+  return (
     <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-md border-primary/10 bg-background/70 backdrop-blur-sm group-hover:border-primary/20">
       <CardContent className="p-4">
         <div className="flex flex-col items-center text-center gap-3">
@@ -319,56 +315,15 @@ const FamilyMemberCard = ({ person }: { person: Person }) => {
           </div>
           
           {person.relationship && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full">
-                    <Info className="h-4 w-4" />
-                    <span className="sr-only">View relationship</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="bottom" align="center" className="max-w-[180px]">
-                  <p className="text-xs">Click to see relationship</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <p className="text-xs text-muted-foreground mt-1 italic">
+              "{person.relationship.length > 60 
+                ? person.relationship.substring(0, 60) + '...' 
+                : person.relationship}"
+            </p>
           )}
         </div>
       </CardContent>
     </Card>
-  );
-
-  // Create back content with the relationship info
-  const backContent = (
-    <Card className="h-full overflow-hidden border-primary/30 bg-primary/10 backdrop-blur-md shadow-md">
-      <CardContent className="p-4 flex items-center justify-center">
-        <div className="text-center">
-          <h4 className="font-medium text-base mb-2 text-primary">{person.name}</h4>
-          <p className="text-sm text-primary/90 italic">
-            {person.relationship}
-          </p>
-          <div className="absolute bottom-3 left-0 right-0 text-center">
-            <p className="text-xs text-muted-foreground">Tap to flip back</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-
-  return (
-    <div className="group relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl blur-lg opacity-0 group-hover:opacity-80 transition-opacity duration-300 -z-10"></div>
-      {person.relationship ? (
-        <FlipCard 
-          frontContent={frontContent}
-          backContent={backContent}
-          height="100%"
-          className="h-full"
-        />
-      ) : (
-        frontContent
-      )}
-    </div>
   );
 };
 
@@ -387,27 +342,23 @@ const PersonCard = ({ person }: { person: Person }) => {
           console.log(`Loaded image for ${person.name} from Supabase:`, fetchedImageUrl);
           setImageUrl(fetchedImageUrl);
         } else {
-          // Fallback to localStorage
-          const localImage = localStorage.getItem(`connection_image_${person.id}`);
-          if (localImage) {
-            console.log(`Loaded image for ${person.name} from localStorage`);
-            setImageUrl(localImage);
-          } else {
-            console.log(`Using default image for ${person.name}`);
-          }
+          // Use provided image or fallback
+          setImageUrl(person.image || '/placeholder.svg');
+          console.log(`Using default image for ${person.name}:`, person.image || '/placeholder.svg');
         }
       } catch (error) {
         console.error(`Error loading image for ${person.name}:`, error);
+        // Fallback to the provided image or placeholder
+        setImageUrl(person.image || '/placeholder.svg');
       } finally {
         setIsImageLoading(false);
       }
     };
 
     loadConnectionImage();
-  }, [person.id, person.name]);
+  }, [person.id, person.name, person.image]);
 
-  // Create front content
-  const frontContent = (
+  return (
     <Card className={`h-full overflow-hidden transition-all duration-300 hover:shadow-md ${
       person.special ? 'border-primary/20 bg-primary/5' : ''
     }`}>
@@ -464,55 +415,15 @@ const PersonCard = ({ person }: { person: Person }) => {
           </Badge>
           
           {person.relationship && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full mt-1">
-                    <Info className="h-4 w-4" />
-                    <span className="sr-only">View relationship</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="bottom" align="center" className="max-w-[180px]">
-                  <p className="text-xs">Click to see relationship</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <p className="text-xs text-muted-foreground mt-1 italic">
+              "{person.relationship.length > 60 
+                ? person.relationship.substring(0, 60) + '...' 
+                : person.relationship}"
+            </p>
           )}
         </div>
       </CardContent>
     </Card>
-  );
-
-  // Create back content
-  const backContent = (
-    <Card className="h-full overflow-hidden border-primary/30 bg-primary/10 backdrop-blur-md shadow-md">
-      <CardContent className="p-4 flex items-center justify-center">
-        <div className="text-center">
-          <h4 className="font-medium text-base mb-2 text-primary">{person.name}</h4>
-          <p className="text-sm text-primary/90 italic">
-            {person.relationship}
-          </p>
-          <div className="absolute bottom-3 left-0 right-0 text-center">
-            <p className="text-xs text-muted-foreground">Tap to flip back</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-
-  return (
-    <div className="group h-full">
-      {person.relationship ? (
-        <FlipCard 
-          frontContent={frontContent}
-          backContent={backContent}
-          height="100%"
-          className="h-full"
-        />
-      ) : (
-        frontContent
-      )}
-    </div>
   );
 };
 
