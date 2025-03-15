@@ -1,6 +1,8 @@
 
 import React from 'react';
 import PassionCard from './PassionCard';
+import { Button } from '@/components/ui/button';
+import { Users, ArrowRight, Zap } from 'lucide-react';
 
 const passions = [
   {
@@ -66,6 +68,49 @@ const PassionSection = () => {
               index={index}
             />
           ))}
+        </div>
+
+        {/* The ANAND Circle Section */}
+        <div id="anand-circle" className="mt-32 opacity-0 animate-fade-up">
+          <div className="max-w-4xl mx-auto glass-card p-8 md:p-12 rounded-3xl border-2 border-primary/20 relative overflow-hidden">
+            {/* Background shapes */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-primary/10 blur-3xl"></div>
+            <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-accent/10 blur-3xl"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center justify-center mb-8">
+                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                  <Users size={32} />
+                </div>
+              </div>
+              
+              <h3 className="text-3xl md:text-4xl font-display font-bold text-center mb-4">Join The ANAND Circle</h3>
+              
+              <p className="text-lg text-center text-muted-foreground mb-8 max-w-3xl mx-auto">
+                Connect with an exclusive community where we integrate insights across family values, health innovation, 
+                water sustainability, AI advancement, and executive leadership. The ANAND Circle brings together professionals 
+                and thought leaders committed to creating meaningful impact at these critical intersections.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8 py-6 h-auto shadow-lg group">
+                  <span>Join The Community</span>
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+                
+                <Button variant="outline" className="border-primary/20 hover:bg-primary/5 px-8 py-6 h-auto">
+                  <span>Learn More</span>
+                </Button>
+              </div>
+              
+              <div className="mt-8 text-center text-muted-foreground">
+                <p className="flex items-center justify-center gap-2 text-sm">
+                  <Zap size={16} className="text-accent" />
+                  <span>Already 500+ professionals connecting and sharing insights</span>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
