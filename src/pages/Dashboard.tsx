@@ -1,11 +1,11 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from 'sonner';
-import { Upload, Camera, Save, Check } from 'lucide-react';
+import { Upload, Camera, Save, Check, Users } from 'lucide-react';
+import { getProfileImage, saveProfileImage, isValidImageUrl } from '@/utils/imageLoader';
 
 const Dashboard = () => {
   const [profileImageUrl, setProfileImageUrl] = useState<string>('');

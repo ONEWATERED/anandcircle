@@ -1,17 +1,36 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Linkedin, Twitter, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getProfileImage } from '@/utils/imageLoader';
 
 const ProfileImage = () => {
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Load profile image on component mount
+    const savedImage = getProfileImage();
+    if (savedImage) {
+      setProfileImage(savedImage);
+    }
+  }, []);
+
   return (
     <div className="relative">
       {/* Main image container with glass effect */}
       <div className="glass-card p-2 rounded-2xl shadow-xl overflow-hidden relative z-10">
         <div className="aspect-[3/4] rounded-xl overflow-hidden">
-          <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
-            <p className="text-gray-400 text-sm">Professional photo here</p>
-          </div>
+          {profileImage ? (
+            <img 
+              src={profileImage} 
+              alt="Hardeep Anand" 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+              <p className="text-gray-400 text-sm">Professional photo here</p>
+            </div>
+          )}
         </div>
       </div>
       

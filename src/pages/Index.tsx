@@ -5,6 +5,7 @@ import Hero from '@/components/Hero';
 import Story from '@/components/Story';
 import PassionSection from '@/components/PassionSection';
 import BlogPreview from '@/components/BlogPreview';
+import HealthResources from '@/components/HealthResources';
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <Hero />
       <Story />
       <PassionSection />
+      <HealthResources />
       <BlogPreview />
     </MainLayout>
   );
