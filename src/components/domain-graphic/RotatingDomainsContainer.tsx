@@ -31,7 +31,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     centerSize 
   } = useNodePositioning();
 
-  // Orbit radius calculation
+  // Orbit radius calculation - use a consistent percentage of the smaller dimension
   const orbitRadius = Math.min(width, height) * 0.38;
 
   // Set animation complete after initial load
@@ -61,6 +61,8 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
   const getNodePosition = (initialAngle: number) => {
     const angle = (initialAngle + rotationAngle) % 360;
     const radians = (angle * Math.PI) / 180;
+    
+    // Use trigonometry to position nodes in a perfect circle
     return {
       x: width / 2 + Math.sin(radians) * orbitRadius,
       y: height / 2 - Math.cos(radians) * orbitRadius
