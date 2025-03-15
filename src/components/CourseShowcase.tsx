@@ -234,30 +234,6 @@ const CourseShowcase = () => {
             </div>
           </TabsContent>
         </Tabs>
-        
-        <div className="mt-24 max-w-4xl mx-auto">
-          <div className="glass-card p-8 rounded-2xl border border-primary/10">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 border-2 border-primary/20">
-                <img 
-                  src="/placeholder.svg" 
-                  alt="Student Testimonial" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div>
-                <p className="italic text-muted-foreground mb-4">
-                  "Hardeep's courses have transformed the way I approach AI projects. The prompt engineering 
-                  techniques I learned have increased my productivity tenfold, and the community support is invaluable."
-                </p>
-                <div>
-                  <h4 className="font-semibold">Sarah Johnson</h4>
-                  <p className="text-sm text-muted-foreground">AI Product Manager, Tech Solutions Inc.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
