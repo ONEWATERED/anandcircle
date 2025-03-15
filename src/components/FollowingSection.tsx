@@ -20,7 +20,8 @@ import {
   Pencil,
   Star,
   ThumbsUp,
-  Loader2
+  Loader2,
+  ChevronRight
 } from 'lucide-react';
 import { Person, SocialLink } from '@/types/connections';
 import { Link } from 'react-router-dom';
@@ -234,6 +235,88 @@ const SocialIcon = ({ platform, url }: SocialLink) => {
   );
 };
 
+const FamilyMemberCard = ({ person }: { person: Person }) => {
+  const [imageUrl, setImageUrl] = useState<string | null>(person.image || '/placeholder.svg');
+  const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const loadSupabaseImage = async () => {
+      try {
+        const supabaseImage = await getConnectionImage(person.id);
+        if (supabaseImage) {
+          setImageUrl(supabaseImage);
+        }
+      } catch (error) {
+        console.error(`Error loading image for ${person.name}:`, error);
+      } finally {
+        setIsImageLoading(false);
+      }
+    };
+
+    loadSupabaseImage();
+  }, [person.id, person.name]);
+
+  return (
+    <div className="group relative">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl blur-lg opacity-0 group-hover:opacity-80 transition-opacity duration-300 -z-10"></div>
+      <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-md border-primary/10 bg-background/70 backdrop-blur-sm">
+        <CardContent className="p-4">
+          <div className="flex flex-col items-center text-center gap-3">
+            <div className="relative">
+              <Avatar className="h-20 w-20 border-2 border-primary/20 transition-all duration-300 group-hover:border-primary">
+                {isImageLoading ? (
+                  <div className="h-full w-full flex items-center justify-center bg-muted">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary/50" />
+                  </div>
+                ) : (
+                  <>
+                    <AvatarImage src={imageUrl || '/placeholder.svg'} alt={person.name} />
+                    <AvatarFallback className="bg-muted">
+                      {person.name.split(' ').map(n => n[0]).join('')}
+                    </AvatarFallback>
+                  </>
+                )}
+              </Avatar>
+              <div className="absolute -bottom-1 -right-1 bg-primary rounded-full p-0.5 shadow-md border border-white">
+                <Heart size={12} className="text-white" fill="white" />
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="font-medium text-base mb-0.5">{person.name}</h4>
+              <p className="text-xs text-muted-foreground">{person.role}</p>
+              
+              {person.relationship && person.id === 'rohit' ? (
+                <p className="text-xs italic mt-2 text-primary/80 max-w-[220px] mx-auto line-clamp-3">
+                  {person.relationship}
+                </p>
+              ) : person.relationship && (
+                <p className="text-xs italic mt-2 text-primary/80 line-clamp-2">{person.relationship}</p>
+              )}
+            </div>
+            
+            <div className="flex space-x-3 mt-1">
+              {person.socialLinks && person.socialLinks.map((link, index) => (
+                <SocialIcon key={index} platform={link.platform} url={link.url} />
+              ))}
+              {person.linkedInUrl && (
+                <a 
+                  href={person.linkedInUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <Linkedin className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
 const PersonCard = ({ person }: { person: Person }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(person.image || '/placeholder.svg');
   const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
@@ -375,24 +458,20 @@ const FollowingSection = () => {
   const familyMembers = displayPeople.filter(p => p.category === 'family');
   const nonFamilyMembers = displayPeople.filter(p => p.category !== 'family');
   
-  const wifeRow = familyMembers.filter(p => p.order === 1);
-  const kidsRow = familyMembers.filter(p => p.order === 2);
-  const parentsRow = familyMembers.filter(p => p.order === 3);
-  
   return (
-    <section className="py-16 relative overflow-hidden">
+    <section className="py-12 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-gray-50 to-transparent"></div>
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-gray-50 to-transparent"></div>
       <div className="absolute top-1/4 -right-24 w-64 h-64 rounded-full bg-gradient-to-br from-purple-200/20 to-pink-200/20 blur-3xl"></div>
       <div className="absolute bottom-1/4 -left-24 w-64 h-64 rounded-full bg-gradient-to-br from-blue-200/20 to-cyan-200/20 blur-3xl"></div>
       
       <div className="section-container relative z-10">
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <h2 className="text-3xl font-display font-bold mb-3 opacity-0 animate-fade-up">
             <span className="text-gradient-primary">Connections</span> & Inspirations
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto opacity-0 animate-fade-up" style={{ animationDelay: '100ms' }}>
-            The people who shape my thinking, inspire my work, and hold a special place in my heart — from family bonds to thought leaders across various domains.
+            The people who shape my thinking, inspire my work, and hold a special place in my heart.
           </p>
           
           <div className="mt-4 flex justify-center opacity-0 animate-fade-up" style={{ animationDelay: '200ms' }}>
@@ -405,20 +484,6 @@ const FollowingSection = () => {
           </div>
         </div>
         
-        <div className="mb-12 glass-card p-6 rounded-xl border border-primary/10 max-w-3xl mx-auto opacity-0 animate-fade-up" style={{ animationDelay: '200ms' }}>
-          <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
-            <div className="flex-shrink-0 bg-gradient-to-br from-primary/20 to-purple-300/20 p-4 rounded-full">
-              <Users size={32} className="text-primary" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">The Power of Nuclear Families</h3>
-              <p className="text-muted-foreground">
-                The nuclear family is the cornerstone of society and the foundation of my values. My children and family members are not only my greatest blessings but also my daily teachers, showing me new perspectives and reinforcing the importance of strong family bonds.
-              </p>
-            </div>
-          </div>
-        </div>
-        
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-12">
             <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
@@ -426,39 +491,32 @@ const FollowingSection = () => {
           </div>
         ) : (
           <>
-            <div className="mb-14 opacity-0 animate-fade-up" style={{ animationDelay: '300ms' }}>
-              <div className="flex items-center justify-center mb-6">
-                <div className="h-px w-12 bg-primary/30"></div>
-                <h3 className="text-xl font-semibold px-4 flex items-center gap-2">
-                  <Heart size={20} className="text-rose-500" fill="#FDA4AF" />
-                  <span>Family Circle</span>
-                </h3>
-                <div className="h-px w-12 bg-primary/30"></div>
+            <div className="mb-12 opacity-0 animate-fade-up" style={{ animationDelay: '300ms' }}>
+              <div className="flex items-center justify-center mb-8">
+                <div className="h-px w-8 bg-primary/30"></div>
+                <div className="neo-glass px-6 py-2 mx-4 flex items-center gap-2 rounded-full">
+                  <Heart size={18} className="text-rose-500" fill="#FDA4AF" />
+                  <span className="font-semibold">Family Circle</span>
+                </div>
+                <div className="h-px w-8 bg-primary/30"></div>
               </div>
               
-              {wifeRow.length > 0 && (
-                <div className="grid grid-cols-1 max-w-xs mx-auto gap-6 mb-6">
-                  {wifeRow.map(person => (
-                    <PersonCard key={person.id} person={person} />
+              <div className="relative bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 rounded-2xl p-6 max-w-5xl mx-auto">
+                <div className="absolute inset-0 bg-white/40 backdrop-blur-sm rounded-2xl"></div>
+                <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto">
+                  {familyMembers.slice(0, 3).map(person => (
+                    <FamilyMemberCard key={person.id} person={person} />
                   ))}
                 </div>
-              )}
-              
-              {kidsRow.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 max-w-xl mx-auto gap-6 mb-6">
-                  {kidsRow.map(person => (
-                    <PersonCard key={person.id} person={person} />
-                  ))}
-                </div>
-              )}
-              
-              {parentsRow.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 max-w-xl mx-auto gap-6">
-                  {parentsRow.map(person => (
-                    <PersonCard key={person.id} person={person} />
-                  ))}
-                </div>
-              )}
+                {familyMembers.length > 3 && (
+                  <div className="flex justify-center mt-6 relative z-10">
+                    <Button variant="outline" size="sm" className="gap-1 text-xs">
+                      <span>View More Family</span>
+                      <ChevronRight size={14} />
+                    </Button>
+                  </div>
+                )}
+              </div>
             </div>
             
             <div className="opacity-0 animate-fade-up" style={{ animationDelay: '400ms' }}>
