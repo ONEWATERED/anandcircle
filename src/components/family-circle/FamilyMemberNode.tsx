@@ -66,7 +66,7 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
       >
         {photoUrl ? (
           <Avatar className="h-full w-full border-0">
-            <AvatarImage src={photoUrl} alt={member.name} className="object-cover" />
+            <AvatarImage src={photoUrl} alt={member.name} className="object-cover aspect-square" />
             <AvatarFallback style={{ backgroundColor: member.color }}>
               <Icon size={iconSize} className="text-white" />
             </AvatarFallback>

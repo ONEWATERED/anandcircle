@@ -76,8 +76,8 @@ const FamilyCircleGraphic: React.FC<FamilyCircleGraphicProps> = ({
   const getNodePosition = (angle: number) => {
     const radians = (angle * Math.PI) / 180;
     return {
-      x: circleRadius * Math.cos(radians),
-      y: circleRadius * Math.sin(radians)
+      x: dimensions.width / 2 + circleRadius * Math.cos(radians),
+      y: dimensions.height / 2 + circleRadius * Math.sin(radians)
     };
   };
   

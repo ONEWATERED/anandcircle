@@ -28,7 +28,7 @@ const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({
     >
       <div className="flex items-center justify-center mb-2">
         <Avatar className="h-10 w-10 border-2" style={{ borderColor: member.color }}>
-          <AvatarImage src={photoUrl || member.photoUrl} alt={member.name} />
+          <AvatarImage src={photoUrl || member.photoUrl} alt={member.name} className="object-cover aspect-square" />
           <AvatarFallback style={{ backgroundColor: member.color }}>
             <Icon size={16} className="text-white" />
           </AvatarFallback>

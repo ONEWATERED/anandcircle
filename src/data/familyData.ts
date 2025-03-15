@@ -1,4 +1,3 @@
-
 import { Users, Heart, Dog } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
@@ -19,7 +18,7 @@ export interface FamilyMember {
   };
 }
 
-// Position family members evenly spaced around a perfect circle (90 degrees apart)
+// Keep only the four family members, positioned evenly around the circle
 export const familyMembers: FamilyMember[] = [
   {
     id: 'spouse',
@@ -70,73 +69,6 @@ export const familyMembers: FamilyMember[] = [
     initialAngle: 270, // Left position (9 o'clock)
     socialLinks: {
       instagram: "https://instagram.com/spark_dog"
-    }
-  },
-  {
-    id: 'candace',
-    name: 'Candace Owens',
-    role: 'Political Commentator',
-    icon: Users,
-    color: "rgb(236, 72, 153)", // pink-500
-    bio: "Candace Owens is a conservative commentator, author, and political activist known for her critical perspectives on contemporary political and social issues.",
-    initialAngle: 45, // Between 12 and 3 o'clock
-    socialLinks: {
-      twitter: "https://twitter.com/RealCandaceO",
-      instagram: "https://instagram.com/realcandaceowens",
-      facebook: "https://facebook.com/RealCandaceOwens"
-    }
-  },
-  {
-    id: 'naval',
-    name: 'Naval Ravikant',
-    role: 'Entrepreneur & Investor',
-    icon: Users,
-    color: "rgb(14, 165, 233)", // sky-500
-    bio: "Naval Ravikant is an entrepreneur, investor, and modern philosopher known for founding AngelList and sharing wisdom on wealth creation, happiness, and decision-making.",
-    initialAngle: 135, // Between 3 and 6 o'clock
-    socialLinks: {
-      twitter: "https://twitter.com/naval",
-      linkedin: "https://linkedin.com/in/navalr"
-    }
-  },
-  {
-    id: 'patrick',
-    name: 'Patrick McDavid',
-    role: 'Entrepreneur',
-    icon: Users,
-    color: "rgb(34, 197, 94)", // green-500
-    bio: "Patrick McDavid is an accomplished entrepreneur and business strategist with expertise in digital transformation and innovative business models.",
-    initialAngle: 225, // Between 6 and 9 o'clock
-    socialLinks: {
-      linkedin: "https://linkedin.com/in/patrickm",
-      twitter: "https://twitter.com/patrickmcdavid"
-    }
-  },
-  {
-    id: 'joe',
-    name: 'Joe Dispenza',
-    role: 'Author & Researcher',
-    icon: Users,
-    color: "rgb(249, 115, 22)", // orange-500
-    bio: "Dr. Joe Dispenza is a researcher, lecturer, and author who explores neuroscience, epigenetics, and quantum physics to understand the science behind spontaneous remissions.",
-    initialAngle: 315, // Between 9 and 12 o'clock
-    socialLinks: {
-      facebook: "https://facebook.com/DrJoeDispenzaOfficial",
-      instagram: "https://instagram.com/drjoedispenza"
-    }
-  },
-  {
-    id: 'huberman',
-    name: 'Dr. Andrew Huberman',
-    role: 'Neuroscientist',
-    icon: Users,
-    color: "rgb(139, 92, 246)", // violet-500
-    bio: "Dr. Andrew Huberman is a neuroscientist and professor at Stanford School of Medicine who focuses on neural development, brain plasticity, and neural regeneration.",
-    initialAngle: 15, // Just past 12 o'clock
-    socialLinks: {
-      twitter: "https://twitter.com/hubermanlab",
-      instagram: "https://instagram.com/hubermanlab",
-      linkedin: "https://linkedin.com/in/andrew-huberman"
     }
   }
 ];
