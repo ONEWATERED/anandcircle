@@ -9,11 +9,9 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import PublicationsDashboard from "./pages/PublicationsDashboard";
 import ConnectionsDashboard from "./pages/ConnectionsDashboard";
-import FamilyMembersDashboard from "./pages/FamilyMembersDashboard";
 import AdminAuth from "./pages/AdminAuth";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
-import AdminFamilyMembers from "./pages/AdminFamilyMembers";
 import AdminSettings from "./pages/AdminSettings";
 import ProfileDashboard from "./pages/ProfileDashboard";
 
@@ -31,12 +29,10 @@ const App = () => (
           <Route path="/admin/login" element={<AdminAuth />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="family-members" element={<AdminFamilyMembers />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="publications" element={<PublicationsDashboard />} />
             <Route path="connections" element={<ConnectionsDashboard />} />
             <Route path="profile" element={<ProfileDashboard />} />
-            <Route path="family" element={<FamilyMembersDashboard />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

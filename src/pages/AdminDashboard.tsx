@@ -9,7 +9,6 @@ import { useToast } from '@/hooks/use-toast';
 export default function AdminDashboard() {
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
   const [counts, setCounts] = useState({
-    familyMembers: 0,
     images: 0,
     profiles: 0
   });
@@ -58,7 +57,6 @@ export default function AdminDashboard() {
         if (profilesError) throw profilesError;
         
         setCounts({
-          familyMembers: 9, // Hardcoded based on familyData.ts
           images: imagesCount || 0,
           profiles: profilesCount || 0
         });
@@ -111,12 +109,12 @@ export default function AdminDashboard() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center">
               <Users className="mr-2 h-5 w-5 text-blue-500" />
-              Family Members
+              Profiles
             </CardTitle>
-            <CardDescription>Manage family circle members</CardDescription>
+            <CardDescription>User profiles in database</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">{counts.familyMembers}</p>
+            <p className="text-2xl font-bold">{counts.profiles}</p>
           </CardContent>
         </Card>
         
@@ -137,12 +135,12 @@ export default function AdminDashboard() {
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center">
               <Database className="mr-2 h-5 w-5 text-green-500" />
-              Profiles
+              Database
             </CardTitle>
-            <CardDescription>User profiles in database</CardDescription>
+            <CardDescription>Connected to Supabase</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">{counts.profiles}</p>
+            <p className="text-2xl font-bold">{dbStatus === 'connected' ? 'Active' : 'Checking...'}</p>
           </CardContent>
         </Card>
       </div>
@@ -153,20 +151,10 @@ export default function AdminDashboard() {
           <Card className="hover:shadow-md transition-shadow cursor-pointer">
             <CardHeader>
               <CardTitle className="flex items-center">
-                <Users className="mr-2 h-5 w-5" />
-                Manage Family Members
-              </CardTitle>
-              <CardDescription>Edit family circle data</CardDescription>
-            </CardHeader>
-          </Card>
-          
-          <Card className="hover:shadow-md transition-shadow cursor-pointer">
-            <CardHeader>
-              <CardTitle className="flex items-center">
                 <Image className="mr-2 h-5 w-5" />
                 Upload Images
               </CardTitle>
-              <CardDescription>Add or replace member images</CardDescription>
+              <CardDescription>Add or replace connection images</CardDescription>
             </CardHeader>
           </Card>
         </div>
