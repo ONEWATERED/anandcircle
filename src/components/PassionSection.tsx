@@ -66,8 +66,8 @@ const PassionSection = () => {
           ))}
         </div>
 
-        {/* The HARDEEP ANAND Circle Section - Simplified and more impactful */}
-        <div id="anand-circle" className="mt-20 opacity-0 animate-fade-up">
+        {/* The HARDEEP ANAND Circle Section - Integrated directly into the passion section */}
+        <div className="mt-16 opacity-0 animate-fade-up">
           <div className="max-w-4xl mx-auto glass-card p-8 rounded-3xl border-2 border-primary/20 relative overflow-hidden">
             {/* Background shapes */}
             <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-primary/10 blur-3xl"></div>
@@ -80,7 +80,7 @@ const PassionSection = () => {
                 </div>
               </div>
               
-              <h3 className="text-3xl md:text-4xl font-display font-bold text-center mb-4">Join The HARDEEP ANAND Circle</h3>
+              <h3 className="text-2xl md:text-3xl font-display font-bold text-center mb-4">Join The HARDEEP ANAND Circle</h3>
               
               <p className="text-center text-muted-foreground mb-6 max-w-3xl mx-auto">
                 Connect with professionals and thought leaders committed to creating meaningful impact 

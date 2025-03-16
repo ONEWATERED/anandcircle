@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Publication } from '@/types/publications';
 import { healthResources } from './health-resources/resources-data';
 import HealthResourcesHeader from './health-resources/HealthResourcesHeader';
@@ -21,20 +20,11 @@ const HealthResources = () => {
       <div className="section-container">
         <HealthResourcesHeader />
 
-        <Tabs defaultValue="publications" className="w-full">
-          <TabsList className="grid w-full md:w-[400px] grid-cols-2 mx-auto mb-12">
-            <TabsTrigger value="publications">Publications</TabsTrigger>
-            <TabsTrigger value="videos">Premium Videos</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="publications" className="space-y-8">
-            <PublicationsCarousel publications={publications} />
-          </TabsContent>
-          
-          <TabsContent value="videos">
-            <PremiumVideosSection />
-          </TabsContent>
-        </Tabs>
+        {/* Combined Resources Section */}
+        <div className="space-y-12">
+          <PublicationsCarousel publications={publications} />
+          <PremiumVideosSection />
+        </div>
       </div>
     </section>
   );

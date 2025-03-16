@@ -7,7 +7,6 @@ import { FollowingSection } from '@/components/FollowingSection';
 import PassionSection from '@/components/PassionSection';
 import BlogPreview from '@/components/BlogPreview';
 import HealthResources from '@/components/HealthResources';
-import DigitalCloneConnect from '@/components/DigitalCloneConnect';
 import InterestForm from '@/components/InterestForm';
 import CourseShowcase from '@/components/CourseShowcase';
 import AIGalleryShowcase from '@/components/AIGalleryShowcase';
@@ -23,7 +22,6 @@ const Index = () => {
       <AIGalleryShowcase />
       <HealthResources />
       <BlogPreview />
-      <DigitalCloneConnect />
       <InterestForm />
     </MainLayout>
   );
