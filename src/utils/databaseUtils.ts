@@ -1,4 +1,3 @@
-
 // Database utilities
 import { supabase } from "@/integrations/supabase/client";
 
@@ -193,18 +192,22 @@ export const saveResumeToDatabase = async (resumeUrl: string) => {
     const { data: { session } } = await supabase.auth.getSession();
     
     if (session?.user) {
-      // Update profiles table
+      // Update profiles table - FIX: Only update profile_image_url and not resume_url
+      // since resume_url is not a known property in the profiles table type
       const { error: profileError } = await supabase
         .from('profiles')
-        .update({ resume_url: resumeUrl })
+        .update({ 
+          updated_at: new Date().toISOString() 
+          // resume_url is removed as it's not in the profiles table schema
+        })
         .eq('id', session.user.id);
         
       if (profileError) {
-        console.error("Error saving resume to profiles:", profileError);
+        console.error("Error updating profiles:", profileError);
       }
     }
     
-    // Always update personal_profile table
+    // Always update personal_profile table which does have resume_url field
     const { error } = await supabase
       .from('personal_profile')
       .update({ resume_url: resumeUrl })
