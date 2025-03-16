@@ -15,8 +15,8 @@ const Index = () => {
     <MainLayout>
       <Hero />
       <Story />
-      <FollowingSection />
       <PassionSection />
+      <FollowingSection />
       <CourseShowcase />
       <AIGalleryShowcase />
       <BlogPreview />
