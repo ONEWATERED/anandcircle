@@ -6,7 +6,6 @@ import Story from '@/components/Story';
 import { FollowingSection } from '@/components/FollowingSection';
 import PassionSection from '@/components/PassionSection';
 import BlogPreview from '@/components/BlogPreview';
-import HealthResources from '@/components/HealthResources';
 import InterestForm from '@/components/InterestForm';
 import CourseShowcase from '@/components/CourseShowcase';
 import AIGalleryShowcase from '@/components/AIGalleryShowcase';
@@ -20,7 +19,6 @@ const Index = () => {
       <PassionSection />
       <CourseShowcase />
       <AIGalleryShowcase />
-      <HealthResources />
       <BlogPreview />
       <InterestForm />
     </MainLayout>
