@@ -2,7 +2,6 @@
 import React from 'react';
 import AIGalleryHeader from './ai-gallery/AIGalleryHeader';
 import AIGalleryCarousel from './ai-gallery/AIGalleryCarousel';
-import AIGalleryCTA from './ai-gallery/AIGalleryCTA';
 
 const AIGalleryShowcase = () => {
   return (
@@ -15,7 +14,6 @@ const AIGalleryShowcase = () => {
       <div className="section-container">
         <AIGalleryHeader />
         <AIGalleryCarousel />
-        <AIGalleryCTA />
       </div>
     </section>
   );
