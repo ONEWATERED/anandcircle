@@ -63,10 +63,19 @@ export const saveSocialLinks = async (links: {
       console.log("User not authenticated, saving to localStorage only");
     }
     
-    // Always save to localStorage as fallback
-    Object.entries(links).forEach(([key, value]) => {
-      localStorage.setItem(`${key}Url`, value);
-    });
+    // Always save to localStorage as fallback, but handle storage limits
+    try {
+      // Save links individually to avoid quota issues
+      Object.entries(links).forEach(([key, value]) => {
+        try {
+          localStorage.setItem(`${key}Url`, value);
+        } catch (e) {
+          console.warn(`Could not save ${key} to localStorage:`, e);
+        }
+      });
+    } catch (error) {
+      console.error("Error saving links to localStorage:", error);
+    }
     
     return true;
   } catch (error) {
@@ -74,8 +83,13 @@ export const saveSocialLinks = async (links: {
     
     // Try localStorage as final fallback
     try {
+      // Save links individually
       Object.entries(links).forEach(([key, value]) => {
-        localStorage.setItem(`${key}Url`, value);
+        try {
+          localStorage.setItem(`${key}Url`, value);
+        } catch (e) {
+          console.warn(`Could not save ${key} to localStorage:`, e);
+        }
       });
     } catch (e) {
       console.error("Failed to save to localStorage:", e);

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { PersonalProfile } from '@/types/thought-leaders';
 import { useToast } from '@/components/ui/use-toast';
+import { toast as sonnerToast } from 'sonner';
 
 export const useSyncPersonalProfile = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -48,62 +49,107 @@ export const useSyncPersonalProfile = () => {
         updated_at: profileData.updated_at
       };
 
+      // Clear some localStorage items to make space
       try {
-        // Try to save the data to localStorage for the frontend components to use
-        // Handle localStorage quota exceeded error
+        // Remove any large items that aren't critical
+        localStorage.removeItem('connections');
+        localStorage.removeItem('familyMembers');
+        localStorage.removeItem('thoughtLeaders');
+      } catch (e) {
+        console.log('Could not clear localStorage items:', e);
+      }
+
+      try {
+        // Try to save full profile data first
         localStorage.setItem('personalProfile', JSON.stringify(personalProfile));
-      } catch (storageError) {
-        console.error('Error saving to localStorage:', storageError);
+        console.log('Full profile successfully saved to localStorage');
         
-        // Try to save with minimal data if quota is exceeded
+        // Also save individual pieces in case we need them later
+        if (personalProfile.photo_url) {
+          localStorage.setItem('profileImageUrl', personalProfile.photo_url);
+        }
+        if (personalProfile.resume_url) {
+          localStorage.setItem('resumeUrl', personalProfile.resume_url);
+        }
+        
+        // Update the last synced time
+        setLastSynced(new Date());
+        
+        toast({
+          title: 'Sync Successful',
+          description: 'Personal profile has been synchronized with the frontend'
+        });
+        
+        return true;
+      } catch (storageError) {
+        console.error('Error saving full profile to localStorage:', storageError);
+        
+        // Try to save minimal data after clearing more space
         try {
+          // Clear even more localStorage items
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key !== 'profileImageUrl' && key !== 'resumeUrl') {
+              localStorage.removeItem(key);
+            }
+          }
+          
+          // Save minimal profile data
           const minimalProfile = {
             id: personalProfile.id,
             name: personalProfile.name,
             photo_url: personalProfile.photo_url,
             resume_url: personalProfile.resume_url
           };
+          
           localStorage.setItem('personalProfile', JSON.stringify(minimalProfile));
+          
+          // Save critical elements individually
+          if (personalProfile.photo_url) {
+            localStorage.setItem('profileImageUrl', personalProfile.photo_url);
+          }
+          if (personalProfile.resume_url) {
+            localStorage.setItem('resumeUrl', personalProfile.resume_url);
+          }
+          
+          // Also save social links individually
+          if (personalProfile.socialLinks) {
+            Object.entries(personalProfile.socialLinks).forEach(([platform, url]) => {
+              localStorage.setItem(`${platform}Url`, url as string);
+            });
+          }
+          
+          setLastSynced(new Date());
           
           toast({
             title: 'Partial Sync Complete',
-            description: 'Profile was too large for local storage. Only essential data was synced.',
+            description: 'Only essential profile data was synced due to storage limitations',
             variant: 'default'
           });
-        } catch (e) {
-          // If even minimal data fails, clear some storage and try again
+          
+          sonnerToast.success('Profile data partially synced to frontend');
+          return true;
+        } catch (finalError) {
+          console.error('Final attempt to save profile data failed:', finalError);
+          
+          // One last attempt with absolute minimum data
           try {
-            // Try clearing other items to make space
-            localStorage.removeItem('connections');
-            
-            // Try again with minimal data
-            const minimalProfile = {
-              id: personalProfile.id,
-              name: personalProfile.name,
-              photo_url: personalProfile.photo_url
-            };
-            localStorage.setItem('personalProfile', JSON.stringify(minimalProfile));
-            
-            toast({
-              title: 'Limited Sync Complete',
-              description: 'Storage space limited. Only profile image and name were synced.',
-              variant: 'default'
-            });
-          } catch (finalError) {
-            throw new Error('Could not save profile data to localStorage after multiple attempts');
+            if (personalProfile.photo_url) {
+              localStorage.setItem('profileImageUrl', personalProfile.photo_url);
+              toast({
+                title: 'Minimal Sync Complete',
+                description: 'Only profile image was synced due to severe storage limitations',
+              });
+              setLastSynced(new Date());
+              return true;
+            }
+          } catch (e) {
+            console.error('Could not save even minimal data:', e);
           }
+          
+          throw new Error('Could not save profile data to localStorage after multiple attempts');
         }
       }
-      
-      // Update the last synced time
-      setLastSynced(new Date());
-      
-      toast({
-        title: 'Sync Successful',
-        description: 'Personal profile has been synchronized with the frontend'
-      });
-      
-      return true;
     } catch (error) {
       console.error('Error syncing personal profile:', error);
       
