@@ -33,7 +33,10 @@ const Footer = () => {
                   <a href="#story" className="text-muted-foreground hover:text-primary transition-colors">My Story</a>
                 </li>
                 <li>
-                  <a href="#passions" className="text-muted-foreground hover:text-primary transition-colors">Areas of Focus</a>
+                  <a href="#passions" className="text-muted-foreground hover:text-primary transition-colors">My Interests</a>
+                </li>
+                <li>
+                  <a href="#articles" className="text-muted-foreground hover:text-primary transition-colors">Articles</a>
                 </li>
                 <li>
                   <a href="#digital-clone" className="text-muted-foreground hover:text-primary transition-colors">Digital Clone</a>
@@ -76,7 +79,7 @@ const Footer = () => {
             <div>
               <h4 className="text-lg font-display font-semibold mb-4">Connect</h4>
               <p className="text-muted-foreground mb-4">
-                Join my Circle community for deeper insights and connections.
+                Join my community for deeper insights and connections.
               </p>
               <a
                 href="#anand-circle"

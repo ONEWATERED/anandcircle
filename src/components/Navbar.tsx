@@ -7,7 +7,8 @@ import ResumeButton from './ResumeButton';
 const navLinks = [
   { name: 'Home', href: '#home' },
   { name: 'My Story', href: '#story' },
-  { name: 'Passions', href: '#passions' },
+  { name: 'My Interests', href: '#passions' },
+  { name: 'Articles', href: '#articles' },
   { name: 'Connect', href: '#connect' }
 ];
 
