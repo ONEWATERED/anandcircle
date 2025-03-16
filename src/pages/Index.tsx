@@ -5,10 +5,8 @@ import Hero from '@/components/Hero';
 import Story from '@/components/Story';
 import { FollowingSection } from '@/components/FollowingSection';
 import PassionSection from '@/components/PassionSection';
-import BlogPreview from '@/components/BlogPreview';
 import InterestForm from '@/components/InterestForm';
-import CourseShowcase from '@/components/CourseShowcase';
-import AIGalleryShowcase from '@/components/AIGalleryShowcase';
+import TabbedContentSection from '@/components/TabbedContentSection';
 
 const Index = () => {
   return (
@@ -17,9 +15,7 @@ const Index = () => {
       <Story />
       <PassionSection />
       <FollowingSection />
-      <CourseShowcase />
-      <AIGalleryShowcase />
-      <BlogPreview />
+      <TabbedContentSection />
       <InterestForm />
     </MainLayout>
   );
