@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import FamilyCircleGraphic from '@/components/family-circle/FamilyCircleGraphic';
 import FamilyCircleHeader from '@/components/family-circle/FamilyCircleHeader';
@@ -12,7 +11,6 @@ import { Label } from '@/components/ui/label';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { uploadImageToStorage } from '@/utils/fileUtils';
 import { useToast } from '@/components/ui/use-toast';
-import SelectedMemberActions from '@/components/family-circle/SelectedMemberActions';
 
 const FamilyCircleSection = () => {
   const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(null);
@@ -21,7 +19,6 @@ const FamilyCircleSection = () => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const { toast } = useToast();
 
-  // Load member images from database on component mount
   useEffect(() => {
     const loadMemberImages = async () => {
       const images: Record<string, string | null> = {};
@@ -44,7 +41,6 @@ const FamilyCircleSection = () => {
     loadMemberImages();
   }, []);
 
-  // Handler to display member details when selected
   const handleSelectMember = (member: FamilyMember | null) => {
     console.log("Selected member:", member?.name);
     setSelectedMember(member);
@@ -68,14 +64,11 @@ const FamilyCircleSection = () => {
     setIsUploading(true);
     
     try {
-      // Upload file to storage
       const uploadedUrl = await uploadImageToStorage(file, selectedMember.id);
       
       if (uploadedUrl) {
-        // Save to connection images
         await saveConnectionImage(selectedMember.id, uploadedUrl);
         
-        // Update local state
         setMemberImages(prev => ({
           ...prev,
           [selectedMember.id]: uploadedUrl
@@ -104,16 +97,13 @@ const FamilyCircleSection = () => {
     if (!selectedMember || !imageUrl) return;
     
     try {
-      // Save image URL to connection images
       await saveConnectionImage(selectedMember.id, imageUrl);
       
-      // Update local state
       setMemberImages(prev => ({
         ...prev,
         [selectedMember.id]: imageUrl
       }));
       
-      // Reset form
       setImageUrl('');
       
       toast({
