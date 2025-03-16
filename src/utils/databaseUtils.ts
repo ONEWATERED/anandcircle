@@ -89,7 +89,7 @@ export const saveSocialLinks = async (links: {
 export const uploadImageToDatabase = async (file: File) => {
   try {
     // Get the URL from uploadImageToStorage
-    const imageUrl = await uploadImageToStorage(file);
+    const imageUrl = await uploadImageToStorage(file, 'profile-images');
     
     // Save the URL to the profile
     if (imageUrl) {
