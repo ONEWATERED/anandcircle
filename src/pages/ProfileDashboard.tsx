@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -21,6 +20,7 @@ const ProfileDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [frontendImageUrl, setFrontendImageUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [profile, setProfile] = useState<PersonalProfile>({
     id: 'hardeep',
     name: 'Hardeep Anand',
@@ -278,6 +278,12 @@ const ProfileDashboard = () => {
     }));
   };
 
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
   return (
     <div className="container mx-auto py-8">
       <div className="flex flex-col space-y-8">
@@ -354,15 +360,17 @@ const ProfileDashboard = () => {
                       </Avatar>
                       
                       <div>
-                        <Label htmlFor="profileImage" className="cursor-pointer">
-                          <div className="flex items-center space-x-2">
-                            <Button type="button" variant="outline">
-                              <Camera className="mr-2 h-4 w-4" />
-                              Change Image
-                            </Button>
-                          </div>
-                        </Label>
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={triggerFileInput}
+                          disabled={isSaving}
+                        >
+                          <Camera className="mr-2 h-4 w-4" />
+                          {isSaving ? 'Uploading...' : 'Change Image'}
+                        </Button>
                         <Input
+                          ref={fileInputRef}
                           id="profileImage"
                           type="file"
                           accept="image/*"
