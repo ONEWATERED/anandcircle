@@ -1,162 +1,226 @@
-
-import React, { useState } from 'react';
-import AdminLayout from '@/layouts/AdminLayout';
-import { useConnections } from '@/hooks/useConnections';
-import { Person } from '@/types/connections';
-import { useToast } from '@/hooks/use-toast';
-import { syncAllConnections } from '@/utils/syncConnections';
-import ConnectionsDashboardHeader from '@/components/connections/ConnectionsDashboardHeader';
-import ConnectionsLoader from '@/components/connections/ConnectionsLoader';
-import ConnectionsCategoryTabs from '@/components/connections/ConnectionsCategoryTabs';
+import React, { useState, useEffect } from 'react';
+import FamilyCircleGraphic from './FamilyCircleGraphic';
+import { FamilyMember, familyMembers } from '@/data/familyData';
+import { Users, Heart, Dog, Image as ImageIcon, Upload } from 'lucide-react';
+import { getConnectionImage, saveConnectionImage } from '@/utils/connectionImages';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { uploadImageToStorage } from '@/utils/fileUtils';
-import { saveConnectionImage } from '@/utils/imageLoader';
+import { useToast } from '@/components/ui/use-toast';
 
-const ConnectionsDashboard = () => {
-  const { 
-    connections, 
-    isLoading, 
-    addConnection, 
-    updateConnection, 
-    deleteConnection, 
-    setConnections 
-  } = useConnections();
-  const [editingConnection, setEditingConnection] = useState<Person | null>(null);
-  const [activeCategoryTab, setActiveCategoryTab] = useState('all');
-  const [isSyncing, setIsSyncing] = useState(false);
+const FamilyCircleSection = () => {
+  const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(null);
+  const [memberImages, setMemberImages] = useState<Record<string, string | null>>({});
+  const [imageUrl, setImageUrl] = useState<string>('');
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const { toast } = useToast();
-  
-  // Filter connections based on the selected category
-  const filteredConnections = activeCategoryTab === 'all' 
-    ? connections 
-    : connections.filter(conn => conn.category === activeCategoryTab);
-  
-  // Handle image upload for connection
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>, personId: string) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+
+  // Load member images from database on component mount
+  useEffect(() => {
+    const loadMemberImages = async () => {
+      const images: Record<string, string | null> = {};
+      
+      for (const member of familyMembers) {
+        try {
+          const imageUrl = await getConnectionImage(member.id);
+          if (imageUrl) {
+            images[member.id] = imageUrl;
+            console.log(`Loaded image for ${member.name}:`, imageUrl);
+          }
+        } catch (error) {
+          console.error(`Error loading image for ${member.name}:`, error);
+        }
+      }
+      
+      setMemberImages(images);
+    };
+    
+    loadMemberImages();
+  }, []);
+
+  // Handler to display member details when selected
+  const handleSelectMember = (member: FamilyMember | null) => {
+    console.log("Selected member:", member?.name);
+    setSelectedMember(member);
+  };
+
+  const getAvatarIcon = (role: string) => {
+    if (role.toLowerCase().includes('pet')) return <Dog size={24} />;
+    if (role.toLowerCase().includes('spouse')) return <Heart size={24} />;
+    return <Users size={24} />;
+  };
+
+  const handleImageUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImageUrl(e.target.value);
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!selectedMember) return;
+    if (!e.target.files || e.target.files.length === 0) return;
+    
+    const file = e.target.files[0];
+    setIsUploading(true);
     
     try {
-      toast({
-        title: 'Uploading image',
-        description: 'Please wait while we upload the image...'
-      });
+      // Upload file to storage
+      const uploadedUrl = await uploadImageToStorage(file, selectedMember.id);
       
-      // Upload the image file
-      const imageUrl = await uploadImageToStorage(file, `connection-${personId}`);
-      
-      if (imageUrl) {
-        // Save connection image to the database
-        await saveConnectionImage(personId, imageUrl);
+      if (uploadedUrl) {
+        // Save to connection images
+        await saveConnectionImage(selectedMember.id, uploadedUrl);
         
-        // Update the connection in the local state
-        const updatedConnections = connections.map(conn => {
-          if (conn.id === personId) {
-            return { ...conn, image: imageUrl };
-          }
-          return conn;
-        });
-        
-        setConnections(updatedConnections);
+        // Update local state
+        setMemberImages(prev => ({
+          ...prev,
+          [selectedMember.id]: uploadedUrl
+        }));
         
         toast({
-          title: 'Success',
-          description: 'Image uploaded successfully!'
+          title: "Image uploaded successfully",
+          description: `Image for ${selectedMember.name} has been updated.`,
+          duration: 3000,
         });
       }
     } catch (error) {
       console.error('Error uploading image:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to upload image.',
-        variant: 'destructive'
-      });
-    }
-  };
-  
-  const handleSyncConnections = async () => {
-    setIsSyncing(true);
-    try {
-      const result = await syncAllConnections();
-      
-      if (result.success) {
-        toast({
-          title: 'Success',
-          description: 'Connections synced successfully with database!'
-        });
-      } else {
-        toast({
-          title: 'Warning',
-          description: result.message,
-          variant: 'destructive'
-        });
-      }
-    } catch (error) {
-      console.error('Error syncing connections:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to sync connections with database.',
-        variant: 'destructive'
+        title: "Upload failed",
+        description: "There was an error uploading the image.",
+        variant: "destructive",
+        duration: 3000,
       });
     } finally {
-      setIsSyncing(false);
+      setIsUploading(false);
     }
   };
-  
-  // Edit connection
-  const handleEditConnection = (connection: Person) => {
-    setEditingConnection(connection);
-  };
-  
-  // Save edited connection
-  const handleSaveEdit = () => {
-    if (editingConnection) {
-      updateConnection(editingConnection);
-      setEditingConnection(null);
-    }
-  };
-  
-  // Cancel editing
-  const handleCancelEdit = () => {
-    setEditingConnection(null);
-  };
-  
-  // Delete connection
-  const handleDeleteConnection = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this connection?')) {
-      deleteConnection(id);
+
+  const handleImageUrlSubmit = async () => {
+    if (!selectedMember || !imageUrl) return;
+    
+    try {
+      // Save image URL to connection images
+      await saveConnectionImage(selectedMember.id, imageUrl);
+      
+      // Update local state
+      setMemberImages(prev => ({
+        ...prev,
+        [selectedMember.id]: imageUrl
+      }));
+      
+      // Reset form
+      setImageUrl('');
+      
+      toast({
+        title: "Image URL saved",
+        description: `Image for ${selectedMember.name} has been updated.`,
+        duration: 3000,
+      });
+    } catch (error) {
+      console.error('Error saving image URL:', error);
+      toast({
+        title: "Failed to save image URL",
+        description: "There was an error saving the image URL.",
+        variant: "destructive",
+        duration: 3000,
+      });
     }
   };
 
   return (
-    <AdminLayout>
-      <div className="container mx-auto py-8">
-        <div className="flex flex-col space-y-8">
-          <ConnectionsDashboardHeader 
-            onSyncConnections={handleSyncConnections} 
-            isSyncing={isSyncing} 
-          />
-          
-          {isLoading ? (
-            <ConnectionsLoader />
-          ) : (
-            <ConnectionsCategoryTabs 
-              connections={connections}
-              activeCategoryTab={activeCategoryTab}
-              setActiveCategoryTab={setActiveCategoryTab}
-              filteredConnections={filteredConnections}
-              editingConnection={editingConnection}
-              onEditConnection={handleEditConnection}
-              onSaveEdit={handleSaveEdit}
-              onCancelEdit={handleCancelEdit}
-              onDeleteConnection={handleDeleteConnection}
-              onImageUpload={handleImageUpload}
-              addConnection={addConnection}
-            />
-          )}
+    <section className="py-16 relative bg-gradient-to-b from-white to-slate-50">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
+            My Family Circle
+          </h2>
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            The wonderful people who make life meaningful every day.
+            <span className="block text-xs mt-2 text-slate-500">Click on a family member to see their details</span>
+          </p>
         </div>
+
+        <div className="flex flex-col lg:flex-row gap-6 items-center">
+          <div className="w-full">
+            <FamilyCircleGraphic 
+              onSelectMember={handleSelectMember} 
+              memberImages={memberImages}
+            />
+          </div>
+        </div>
+
+        {selectedMember && (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button 
+                className="mt-6 mx-auto flex items-center gap-2" 
+                variant="outline"
+              >
+                <ImageIcon size={16} />
+                Update {selectedMember.name}'s Photo
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Update Member Photo</DialogTitle>
+              </DialogHeader>
+              <div className="flex items-center space-x-4 mb-4">
+                <Avatar className="h-20 w-20 border-2" style={{ borderColor: selectedMember.color }}>
+                  <AvatarImage 
+                    src={memberImages[selectedMember.id] || selectedMember.photoUrl} 
+                    alt={selectedMember.name} 
+                  />
+                  <AvatarFallback style={{ backgroundColor: selectedMember.color }}>
+                    {selectedMember.icon && React.createElement(selectedMember.icon, { size: 24, className: "text-white" })}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <h3 className="font-medium">{selectedMember.name}</h3>
+                  <p className="text-sm text-gray-500">{selectedMember.role}</p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="imageUrl">Image URL</Label>
+                  <div className="flex space-x-2">
+                    <Input 
+                      id="imageUrl" 
+                      value={imageUrl} 
+                      onChange={handleImageUrlChange} 
+                      placeholder="https://example.com/image.jpg" 
+                    />
+                    <Button 
+                      onClick={handleImageUrlSubmit} 
+                      disabled={!imageUrl}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="imageFile">Or upload image</Label>
+                  <div className="flex items-center space-x-2">
+                    <Input
+                      id="imageFile"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      disabled={isUploading}
+                    />
+                    {isUploading && (
+                      <Upload className="h-4 w-4 animate-spin" />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
-    </AdminLayout>
+    </section>
   );
 };
 
-export default ConnectionsDashboard;
+export default FamilyCircleSection;

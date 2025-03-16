@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import FamilyMemberNode from './FamilyMemberNode';
-import FamilyCircleCenter from './FamilyCircleCenter';
 import CircleConnections from './CircleConnections';
 import { familyMembers, FamilyMember } from '@/data/familyData';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -26,7 +25,6 @@ const FamilyCircleGraphic: React.FC<FamilyCircleGraphicProps> = ({
   const nodeIconSize = isMobile ? 40 : 60;
   const iconSize = isMobile ? 20 : 28;
   const textWidth = isMobile ? 'w-20' : 'w-28';
-  const centerSize = isMobile ? 70 : 100;
   
   // Adjust circle radius based on screen size
   useEffect(() => {
@@ -83,13 +81,6 @@ const FamilyCircleGraphic: React.FC<FamilyCircleGraphicProps> = ({
   
   return (
     <div id="family-circle-container" className="relative w-full h-[500px] flex items-center justify-center">
-      {/* Center of Family Circle */}
-      <FamilyCircleCenter 
-        centerSize={centerSize} 
-        width={dimensions.width} 
-        height={dimensions.height} 
-      />
-      
       {/* Connecting lines */}
       <CircleConnections 
         members={familyMembers}

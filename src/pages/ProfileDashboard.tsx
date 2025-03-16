@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,7 +27,6 @@ const ProfileDashboard = () => {
     anandCircle: ''
   });
 
-  // Load profile data
   useEffect(() => {
     const loadProfileData = async () => {
       setIsLoading(true);
@@ -37,17 +35,14 @@ const ProfileDashboard = () => {
         console.log('Loaded user data:', userData);
         
         if (userData) {
-          // Set bio if available
           if (userData.bio) {
             setBio(userData.bio);
           }
           
-          // Set profile image if available
           if (userData.imageUrl) {
             setProfileImage(userData.imageUrl);
           }
           
-          // Set social links if available
           if (userData.socialLinks) {
             setSocialLinks({
               linkedIn: userData.socialLinks.linkedIn || '',
@@ -73,7 +68,6 @@ const ProfileDashboard = () => {
     loadProfileData();
   }, [toast]);
 
-  // Handle image upload
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -85,11 +79,9 @@ const ProfileDashboard = () => {
         description: 'Uploading profile image...'
       });
       
-      // Upload image
       const imageUrl = await uploadImageToStorage(file, 'profile');
       
       if (imageUrl) {
-        // Save profile image
         await saveProfileImage(imageUrl);
         setProfileImage(imageUrl);
         
@@ -110,14 +102,12 @@ const ProfileDashboard = () => {
     }
   };
 
-  // Handle form submission
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     
     try {
       setIsSaving(true);
       
-      // Save social links
       await saveSocialLinks({
         linkedIn: socialLinks.linkedIn,
         twitter: socialLinks.twitter,
@@ -126,7 +116,6 @@ const ProfileDashboard = () => {
         anandCircle: socialLinks.anandCircle
       });
       
-      // Save bio
       localStorage.setItem('userBio', bio);
       
       toast({
