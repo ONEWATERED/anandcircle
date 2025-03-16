@@ -154,7 +154,7 @@ const defaultPeople: Person[] = [
     name: "Naval Ravikant",
     role: "AngelList Co-founder",
     category: "business",
-    image: "https://pbs.twimg.com/profile_images/1256841238298292232/ycqwaMI2_400x400.jpg",
+    image: "/lovable-uploads/1f2c23f2-c00c-42dd-9f76-d8562ba0550c.png", // Updated Naval's image with the provided picture
     special: true,
     relationship: "Naval's insights on wealth creation and happiness have changed my perspective."
   },
