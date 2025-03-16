@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import FamilyCircleGraphic from '@/components/family-circle/FamilyCircleGraphic';
+import FamilyCircleHeader from '@/components/family-circle/FamilyCircleHeader';
 import { FamilyMember, familyMembers } from '@/data/familyData';
 import { Users, Heart, Dog, Image as ImageIcon, Upload } from 'lucide-react';
 import { getConnectionImage, saveConnectionImage } from '@/utils/connectionImages';
@@ -11,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { uploadImageToStorage } from '@/utils/fileUtils';
 import { useToast } from '@/components/ui/use-toast';
+import SelectedMemberActions from '@/components/family-circle/SelectedMemberActions';
 
 const FamilyCircleSection = () => {
   const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(null);
@@ -133,15 +135,7 @@ const FamilyCircleSection = () => {
   return (
     <section className="py-16 relative bg-gradient-to-b from-white to-slate-50">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
-            My Family Circle
-          </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">
-            The wonderful people who make life meaningful every day.
-            <span className="block text-xs mt-2 text-slate-500">Click on a family member to see their details</span>
-          </p>
-        </div>
+        <FamilyCircleHeader />
 
         <div className="flex flex-col lg:flex-row gap-6 items-center">
           <div className="w-full">
