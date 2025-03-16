@@ -69,7 +69,7 @@ export default function AdminLayout() {
             <NavItem to="/admin/connections" icon={Network} label="Connections" />
             <NavItem to="/admin/profile" icon={User} label="My Profile" />
             <NavItem to="/admin/publications" icon={FileText} label="Publications" />
-            <NavItem to="/admin/family-members" icon={Users} label="Other Family Members" />
+            {/* Removed the "Other Family Members" button */}
             <NavItem to="/admin/settings" icon={Settings} label="Settings" />
           </div>
         </nav>
