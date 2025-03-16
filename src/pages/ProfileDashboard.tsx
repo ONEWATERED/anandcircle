@@ -21,6 +21,7 @@ const ProfileDashboard = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [frontendImageUrl, setFrontendImageUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const resumeInputRef = useRef<HTMLInputElement>(null);
   const [profile, setProfile] = useState<PersonalProfile>({
     id: 'hardeep',
     name: 'Hardeep Anand',
@@ -284,6 +285,12 @@ const ProfileDashboard = () => {
     }
   };
 
+  const triggerResumeInput = () => {
+    if (resumeInputRef.current) {
+      resumeInputRef.current.click();
+    }
+  };
+
   return (
     <div className="container mx-auto py-8">
       <div className="flex flex-col space-y-8">
@@ -394,15 +401,17 @@ const ProfileDashboard = () => {
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="resumeUpload" className="cursor-pointer">
-                          <div className="flex items-center space-x-2">
-                            <Button type="button" variant="outline">
-                              <Upload className="mr-2 h-4 w-4" />
-                              Upload Resume
-                            </Button>
-                          </div>
-                        </Label>
+                        <Button 
+                          type="button" 
+                          variant="outline"
+                          onClick={triggerResumeInput}
+                          disabled={isSaving}
+                        >
+                          <Upload className="mr-2 h-4 w-4" />
+                          {isSaving ? 'Uploading...' : 'Upload Resume'}
+                        </Button>
                         <Input
+                          ref={resumeInputRef}
                           id="resumeUpload"
                           type="file"
                           accept=".pdf,.doc,.docx"
