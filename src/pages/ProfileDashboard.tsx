@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Camera, Loader2, User } from 'lucide-react';
 import { uploadImageToStorage } from '@/utils/fileUtils';
-import { saveProfileImage, getUserProfileData, ProfileData } from '@/utils/profileImages';
+import { saveProfileImage, getUserProfileData } from '@/utils/profileImages';
 import { saveSocialLinks } from '@/utils/databaseUtils';
 import AdminLayout from '@/layouts/AdminLayout';
 
