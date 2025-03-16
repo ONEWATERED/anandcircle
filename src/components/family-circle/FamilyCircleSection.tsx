@@ -2,22 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import FamilyCircleGraphic from './FamilyCircleGraphic';
 import { FamilyMember, familyMembers } from '@/data/familyData';
-import { Users, Heart, Dog, Image as ImageIcon, Upload } from 'lucide-react';
-import { getConnectionImage, saveConnectionImage } from '@/utils/connectionImages';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { uploadImageToStorage } from '@/utils/fileUtils';
-import { useToast } from '@/components/ui/use-toast';
+import { getConnectionImage } from '@/utils/connectionImages';
+import FamilyCircleHeader from './FamilyCircleHeader';
+import SelectedMemberActions from './SelectedMemberActions';
 
-const FamilyCircleSection = () => {
+const FamilyCircleSection: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(null);
   const [memberImages, setMemberImages] = useState<Record<string, string | null>>({});
-  const [imageUrl, setImageUrl] = useState<string>('');
-  const [isUploading, setIsUploading] = useState<boolean>(false);
-  const { toast } = useToast();
 
   // Load member images from database on component mount
   useEffect(() => {
@@ -48,100 +39,10 @@ const FamilyCircleSection = () => {
     setSelectedMember(member);
   };
 
-  const getAvatarIcon = (role: string) => {
-    if (role.toLowerCase().includes('pet')) return <Dog size={24} />;
-    if (role.toLowerCase().includes('spouse')) return <Heart size={24} />;
-    return <Users size={24} />;
-  };
-
-  const handleImageUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImageUrl(e.target.value);
-  };
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!selectedMember) return;
-    if (!e.target.files || e.target.files.length === 0) return;
-    
-    const file = e.target.files[0];
-    setIsUploading(true);
-    
-    try {
-      // Upload file to storage
-      const uploadedUrl = await uploadImageToStorage(file, selectedMember.id);
-      
-      if (uploadedUrl) {
-        // Save to connection images
-        await saveConnectionImage(selectedMember.id, uploadedUrl);
-        
-        // Update local state
-        setMemberImages(prev => ({
-          ...prev,
-          [selectedMember.id]: uploadedUrl
-        }));
-        
-        toast({
-          title: "Image uploaded successfully",
-          description: `Image for ${selectedMember.name} has been updated.`,
-          duration: 3000,
-        });
-      }
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      toast({
-        title: "Upload failed",
-        description: "There was an error uploading the image.",
-        variant: "destructive",
-        duration: 3000,
-      });
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const handleImageUrlSubmit = async () => {
-    if (!selectedMember || !imageUrl) return;
-    
-    try {
-      // Save image URL to connection images
-      await saveConnectionImage(selectedMember.id, imageUrl);
-      
-      // Update local state
-      setMemberImages(prev => ({
-        ...prev,
-        [selectedMember.id]: imageUrl
-      }));
-      
-      // Reset form
-      setImageUrl('');
-      
-      toast({
-        title: "Image URL saved",
-        description: `Image for ${selectedMember.name} has been updated.`,
-        duration: 3000,
-      });
-    } catch (error) {
-      console.error('Error saving image URL:', error);
-      toast({
-        title: "Failed to save image URL",
-        description: "There was an error saving the image URL.",
-        variant: "destructive",
-        duration: 3000,
-      });
-    }
-  };
-
   return (
     <section className="py-16 relative bg-gradient-to-b from-white to-slate-50">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
-            My Family Circle
-          </h2>
-          <p className="text-slate-600 max-w-2xl mx-auto">
-            The wonderful people who make life meaningful every day.
-            <span className="block text-xs mt-2 text-slate-500">Click on a family member to see their details</span>
-          </p>
-        </div>
+        <FamilyCircleHeader />
 
         <div className="flex flex-col lg:flex-row gap-6 items-center">
           <div className="w-full">
@@ -153,71 +54,11 @@ const FamilyCircleSection = () => {
         </div>
 
         {selectedMember && (
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button 
-                className="mt-6 mx-auto flex items-center gap-2" 
-                variant="outline"
-              >
-                <ImageIcon size={16} />
-                Update {selectedMember.name}'s Photo
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Update Member Photo</DialogTitle>
-              </DialogHeader>
-              <div className="flex items-center space-x-4 mb-4">
-                <Avatar className="h-20 w-20 border-2" style={{ borderColor: selectedMember.color }}>
-                  <AvatarImage 
-                    src={memberImages[selectedMember.id] || selectedMember.photoUrl} 
-                    alt={selectedMember.name} 
-                  />
-                  <AvatarFallback style={{ backgroundColor: selectedMember.color }}>
-                    {selectedMember.icon && React.createElement(selectedMember.icon, { size: 24, className: "text-white" })}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-medium">{selectedMember.name}</h3>
-                  <p className="text-sm text-gray-500">{selectedMember.role}</p>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="imageUrl">Image URL</Label>
-                  <div className="flex space-x-2">
-                    <Input 
-                      id="imageUrl" 
-                      value={imageUrl} 
-                      onChange={handleImageUrlChange} 
-                      placeholder="https://example.com/image.jpg" 
-                    />
-                    <Button 
-                      onClick={handleImageUrlSubmit} 
-                      disabled={!imageUrl}
-                    >
-                      Save
-                    </Button>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="imageFile">Or upload image</Label>
-                  <div className="flex items-center space-x-2">
-                    <Input
-                      id="imageFile"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileUpload}
-                      disabled={isUploading}
-                    />
-                    {isUploading && (
-                      <Upload className="h-4 w-4 animate-spin" />
-                    )}
-                  </div>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <SelectedMemberActions 
+            selectedMember={selectedMember}
+            memberImages={memberImages}
+            setMemberImages={setMemberImages}
+          />
         )}
       </div>
     </section>

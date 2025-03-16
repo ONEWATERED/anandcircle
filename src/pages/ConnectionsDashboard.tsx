@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect } from 'react';
-import FamilyCircleGraphic from './FamilyCircleGraphic';
+import FamilyCircleGraphic from '@/components/family-circle/FamilyCircleGraphic';
 import { FamilyMember, familyMembers } from '@/data/familyData';
 import { Users, Heart, Dog, Image as ImageIcon, Upload } from 'lucide-react';
 import { getConnectionImage, saveConnectionImage } from '@/utils/connectionImages';
