@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Person } from '@/types/connections';
 import { Connection } from '@/types/thought-leaders';
@@ -201,6 +202,23 @@ const defaultPeople: Person[] = [
     category: "learning",
     image: "https://pbs.twimg.com/profile_images/1475597165051080705/0gLU-JUK_400x400.jpg",
     relationship: "Lex's thoughtful conversations have expanded my understanding of AI and humanity."
+  },
+  {
+    id: "patrick-mcdavid",
+    name: "Patrick McDavid",
+    role: "Entrepreneur & Tech Innovator",
+    category: "business",
+    image: "https://randomuser.me/api/portraits/men/32.jpg", // Placeholder image
+    relationship: "Patrick's innovative approach to technology and business strategies is remarkable."
+  },
+  {
+    id: "foram",
+    name: "FORAM",
+    role: "Strategic Advisor & Business Consultant",
+    category: "business",
+    image: "https://randomuser.me/api/portraits/women/28.jpg", // Placeholder image
+    special: true,
+    relationship: "FORAM's strategic insights and analytical approach to problem-solving have been invaluable."
   }
 ];
 
