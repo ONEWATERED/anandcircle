@@ -1,20 +1,49 @@
 
 export interface SocialLink {
-  platform: 'instagram' | 'youtube' | 'twitter';
+  id?: string;
+  platform: 'instagram' | 'youtube' | 'twitter' | 'linkedin' | 'facebook' | 'spotify' | 'anandcircle';
   url: string;
 }
 
-export interface ThoughtLeader {
+export interface FamilyMember {
+  id: string;
+  name: string;
+  role: string;
+  bio?: string;
+  photo_url?: string;
+  order_position?: number;
+  socialLinks?: SocialLink[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface Connection {
   id: string;
   name: string;
   role: string;
   category: string;
+  bio?: string;
   image_url?: string;
   special?: boolean;
-  relationship?: string;
-  socialLinks?: SocialLink[];
-  linkedin_url?: string;
   order_position?: number;
+  socialLinks?: SocialLink[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface PersonalProfile {
+  id: string;
+  name: string;
+  bio?: string;
+  photo_url?: string;
+  resume_url?: string;
+  socialLinks?: {
+    linkedin?: string;
+    twitter?: string;
+    youtube?: string;
+    spotify?: string;
+    anandcircle?: string;
+  };
   created_at?: string;
   updated_at?: string;
 }

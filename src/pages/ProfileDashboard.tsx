@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,65 +8,82 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Camera, Loader2, User } from 'lucide-react';
+import { Camera, Loader2, User, RefreshCw, Upload, FileText } from 'lucide-react';
 import { uploadImageToStorage } from '@/utils/fileUtils';
-import { saveProfileImage, getUserProfileData } from '@/utils/profileImages';
-import { saveSocialLinks } from '@/utils/databaseUtils';
+import { PersonalProfile } from '@/types/thought-leaders';
+import { supabase } from '@/integrations/supabase/client';
+import { useSyncPersonalProfile } from '@/hooks/useSyncPersonalProfile';
 
 const ProfileDashboard = () => {
   const { toast } = useToast();
+  const { syncPersonalProfileToFrontend, isLoading: isSyncing, lastSynced } = useSyncPersonalProfile();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [bio, setBio] = useState('');
-  const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [socialLinks, setSocialLinks] = useState({
-    linkedIn: '',
-    twitter: '',
-    youtube: '',
-    spotify: '',
-    anandCircle: ''
+  const [profile, setProfile] = useState<PersonalProfile>({
+    id: 'hardeep',
+    name: 'Hardeep Anand',
+    bio: '',
+    photo_url: null,
+    resume_url: null,
+    socialLinks: {
+      linkedin: '',
+      twitter: '',
+      youtube: '',
+      spotify: '',
+      anandcircle: ''
+    }
   });
 
   useEffect(() => {
-    const loadProfileData = async () => {
-      setIsLoading(true);
-      try {
-        const userData = await getUserProfileData();
-        console.log('Loaded user data:', userData);
-        
-        if (userData) {
-          if (userData.bio) {
-            setBio(userData.bio);
-          }
-          
-          if (userData.imageUrl) {
-            setProfileImage(userData.imageUrl);
-          }
-          
-          if (userData.socialLinks) {
-            setSocialLinks({
-              linkedIn: userData.socialLinks.linkedIn || '',
-              twitter: userData.socialLinks.twitter || '',
-              youtube: userData.socialLinks.youtube || '',
-              spotify: userData.socialLinks.spotify || '',
-              anandCircle: userData.socialLinks.anandCircle || ''
-            });
-          }
-        }
-      } catch (error) {
-        console.error('Error loading profile data:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to load profile data.',
-          variant: 'destructive'
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
     loadProfileData();
-  }, [toast]);
+  }, []);
+
+  const loadProfileData = async () => {
+    setIsLoading(true);
+    try {
+      // Get personal profile from Supabase
+      const { data: profileData, error: profileError } = await supabase
+        .from('personal_profile')
+        .select('*')
+        .eq('id', 'hardeep')
+        .single();
+
+      if (profileError) throw profileError;
+
+      // Get social links
+      const { data: socialLinksData, error: socialLinksError } = await supabase
+        .from('personal_social_links')
+        .select('*')
+        .eq('profile_id', 'hardeep');
+
+      if (socialLinksError) throw socialLinksError;
+
+      // Create socialLinks object from array
+      const socialLinks = {};
+      
+      socialLinksData.forEach(link => {
+        socialLinks[link.platform] = link.url;
+      });
+
+      setProfile({
+        id: profileData.id,
+        name: profileData.name,
+        bio: profileData.bio || '',
+        photo_url: profileData.photo_url,
+        resume_url: profileData.resume_url,
+        socialLinks
+      });
+    } catch (error) {
+      console.error('Error loading profile data:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load profile data',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -81,8 +99,20 @@ const ProfileDashboard = () => {
       const imageUrl = await uploadImageToStorage(file, 'profile');
       
       if (imageUrl) {
-        await saveProfileImage(imageUrl);
-        setProfileImage(imageUrl);
+        // Update profile with new image URL
+        const { error } = await supabase
+          .from('personal_profile')
+          .update({ photo_url: imageUrl })
+          .eq('id', 'hardeep');
+
+        if (error) throw error;
+        
+        setProfile(prev => ({
+          ...prev,
+          photo_url: imageUrl
+        }));
+        
+        syncPersonalProfileToFrontend();
         
         toast({
           title: 'Success',
@@ -101,21 +131,96 @@ const ProfileDashboard = () => {
     }
   };
 
+  const handleResumeUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    try {
+      setIsSaving(true);
+      toast({
+        title: 'Uploading',
+        description: 'Uploading resume...'
+      });
+      
+      const resumeUrl = await uploadImageToStorage(file, 'resume');
+      
+      if (resumeUrl) {
+        // Update profile with new resume URL
+        const { error } = await supabase
+          .from('personal_profile')
+          .update({ resume_url: resumeUrl })
+          .eq('id', 'hardeep');
+
+        if (error) throw error;
+        
+        setProfile(prev => ({
+          ...prev,
+          resume_url: resumeUrl
+        }));
+        
+        syncPersonalProfileToFrontend();
+        
+        toast({
+          title: 'Success',
+          description: 'Resume updated successfully.'
+        });
+      }
+    } catch (error) {
+      console.error('Error uploading resume:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to upload resume.',
+        variant: 'destructive'
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     
     try {
       setIsSaving(true);
       
-      await saveSocialLinks({
-        linkedIn: socialLinks.linkedIn,
-        twitter: socialLinks.twitter,
-        youtube: socialLinks.youtube,
-        spotify: socialLinks.spotify,
-        anandCircle: socialLinks.anandCircle
-      });
+      // Update profile data
+      const { error: profileError } = await supabase
+        .from('personal_profile')
+        .update({
+          name: profile.name,
+          bio: profile.bio
+        })
+        .eq('id', 'hardeep');
+
+      if (profileError) throw profileError;
+
+      // Update social links
+      if (profile.socialLinks) {
+        // Delete existing links
+        const { error: deleteError } = await supabase
+          .from('personal_social_links')
+          .delete()
+          .eq('profile_id', 'hardeep');
+
+        if (deleteError) throw deleteError;
+
+        // Insert new links
+        const linksToInsert = Object.entries(profile.socialLinks).map(([platform, url]) => ({
+          profile_id: 'hardeep',
+          platform,
+          url: url || ''
+        })).filter(link => link.url.trim() !== '');
+
+        if (linksToInsert.length > 0) {
+          const { error: insertError } = await supabase
+            .from('personal_social_links')
+            .insert(linksToInsert);
+
+          if (insertError) throw insertError;
+        }
+      }
       
-      localStorage.setItem('userBio', bio);
+      syncPersonalProfileToFrontend();
       
       toast({
         title: 'Success',
@@ -133,14 +238,41 @@ const ProfileDashboard = () => {
     }
   };
 
+  const updateSocialLink = (platform: string, value: string) => {
+    setProfile(prev => ({
+      ...prev,
+      socialLinks: {
+        ...prev.socialLinks,
+        [platform]: value
+      }
+    }));
+  };
+
   return (
     <div className="container mx-auto py-8">
       <div className="flex flex-col space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold">Profile Dashboard</h1>
-          <p className="text-muted-foreground">
-            Update your profile information that appears on your website
-          </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">My Profile</h1>
+            <p className="text-muted-foreground">
+              Update your personal profile information that appears on your website
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Button 
+              onClick={syncPersonalProfileToFrontend} 
+              variant="outline"
+              disabled={isSyncing}
+            >
+              <RefreshCw className={`mr-2 h-4 w-4 ${isSyncing ? 'animate-spin' : ''}`} />
+              Sync to Frontend
+            </Button>
+            {lastSynced && (
+              <span className="text-xs text-muted-foreground">
+                Last synced: {lastSynced.toLocaleTimeString()}
+              </span>
+            )}
+          </div>
         </div>
         
         {isLoading ? (
@@ -148,13 +280,13 @@ const ProfileDashboard = () => {
             <Loader2 className="h-12 w-12 animate-spin text-primary" />
           </div>
         ) : (
-          <Tabs defaultValue="general">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="general">General Information</TabsTrigger>
-              <TabsTrigger value="social">Social Media</TabsTrigger>
-            </TabsList>
-            
-            <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
+            <Tabs defaultValue="general">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="general">General Information</TabsTrigger>
+                <TabsTrigger value="social">Social Media</TabsTrigger>
+              </TabsList>
+              
               <TabsContent value="general" className="space-y-6">
                 <Card>
                   <CardHeader>
@@ -163,7 +295,7 @@ const ProfileDashboard = () => {
                   <CardContent className="space-y-4">
                     <div className="flex items-center space-x-6">
                       <Avatar className="h-24 w-24">
-                        <AvatarImage src={profileImage || '/placeholder.svg'} />
+                        <AvatarImage src={profile.photo_url || undefined} />
                         <AvatarFallback>
                           <User className="h-12 w-12 text-muted-foreground" />
                         </AvatarFallback>
@@ -193,17 +325,72 @@ const ProfileDashboard = () => {
                 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Biography</CardTitle>
+                    <CardTitle>Resume/CV</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
+                    <div className="flex items-center space-x-6">
+                      <div className="h-20 w-16 border rounded-md flex items-center justify-center bg-muted">
+                        <FileText className="h-10 w-10 text-muted-foreground" />
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="resumeUpload" className="cursor-pointer">
+                          <div className="flex items-center space-x-2">
+                            <Button type="button" variant="outline">
+                              <Upload className="mr-2 h-4 w-4" />
+                              Upload Resume
+                            </Button>
+                          </div>
+                        </Label>
+                        <Input
+                          id="resumeUpload"
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          className="hidden"
+                          onChange={handleResumeUpload}
+                          disabled={isSaving}
+                        />
+                        
+                        {profile.resume_url && (
+                          <div className="text-sm">
+                            <a 
+                              href={profile.resume_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-primary hover:underline"
+                            >
+                              View Current Resume
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Personal Information</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input
+                        id="name"
+                        value={profile.name}
+                        onChange={(e) => setProfile({...profile, name: e.target.value})}
+                        required
+                      />
+                    </div>
+                    
                     <div className="space-y-2">
                       <Label htmlFor="bio">Bio</Label>
                       <Textarea
                         id="bio"
                         placeholder="Enter your biography here..."
                         rows={6}
-                        value={bio}
-                        onChange={(e) => setBio(e.target.value)}
+                        value={profile.bio || ''}
+                        onChange={(e) => setProfile({...profile, bio: e.target.value})}
                       />
                     </div>
                   </CardContent>
@@ -221,8 +408,8 @@ const ProfileDashboard = () => {
                       <Input
                         id="linkedin"
                         placeholder="https://linkedin.com/in/..."
-                        value={socialLinks.linkedIn}
-                        onChange={(e) => setSocialLinks({...socialLinks, linkedIn: e.target.value})}
+                        value={profile.socialLinks?.linkedin || ''}
+                        onChange={(e) => updateSocialLink('linkedin', e.target.value)}
                       />
                     </div>
                     
@@ -231,8 +418,8 @@ const ProfileDashboard = () => {
                       <Input
                         id="twitter"
                         placeholder="https://twitter.com/..."
-                        value={socialLinks.twitter}
-                        onChange={(e) => setSocialLinks({...socialLinks, twitter: e.target.value})}
+                        value={profile.socialLinks?.twitter || ''}
+                        onChange={(e) => updateSocialLink('twitter', e.target.value)}
                       />
                     </div>
                     
@@ -241,8 +428,8 @@ const ProfileDashboard = () => {
                       <Input
                         id="youtube"
                         placeholder="https://youtube.com/..."
-                        value={socialLinks.youtube}
-                        onChange={(e) => setSocialLinks({...socialLinks, youtube: e.target.value})}
+                        value={profile.socialLinks?.youtube || ''}
+                        onChange={(e) => updateSocialLink('youtube', e.target.value)}
                       />
                     </div>
                     
@@ -251,8 +438,8 @@ const ProfileDashboard = () => {
                       <Input
                         id="spotify"
                         placeholder="https://open.spotify.com/user/..."
-                        value={socialLinks.spotify}
-                        onChange={(e) => setSocialLinks({...socialLinks, spotify: e.target.value})}
+                        value={profile.socialLinks?.spotify || ''}
+                        onChange={(e) => updateSocialLink('spotify', e.target.value)}
                       />
                     </div>
                     
@@ -261,8 +448,8 @@ const ProfileDashboard = () => {
                       <Input
                         id="anandCircle"
                         placeholder="#anand-circle"
-                        value={socialLinks.anandCircle}
-                        onChange={(e) => setSocialLinks({...socialLinks, anandCircle: e.target.value})}
+                        value={profile.socialLinks?.anandcircle || ''}
+                        onChange={(e) => updateSocialLink('anandcircle', e.target.value)}
                       />
                     </div>
                   </CardContent>
@@ -275,8 +462,8 @@ const ProfileDashboard = () => {
                   Save Changes
                 </Button>
               </div>
-            </form>
-          </Tabs>
+            </Tabs>
+          </form>
         )}
       </div>
     </div>

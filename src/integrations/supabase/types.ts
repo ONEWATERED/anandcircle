@@ -33,6 +33,213 @@ export type Database = {
         }
         Relationships: []
       }
+      connection_social_links: {
+        Row: {
+          connection_id: string
+          created_at: string
+          id: string
+          platform: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          connection_id: string
+          created_at?: string
+          id?: string
+          platform: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          connection_id?: string
+          created_at?: string
+          id?: string
+          platform?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "connection_social_links_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      connections: {
+        Row: {
+          bio: string | null
+          category: string
+          created_at: string
+          id: string
+          image_url: string | null
+          name: string
+          order_position: number | null
+          role: string
+          special: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          category: string
+          created_at?: string
+          id: string
+          image_url?: string | null
+          name: string
+          order_position?: number | null
+          role: string
+          special?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          category?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          order_position?: number | null
+          role?: string
+          special?: boolean | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      family_members: {
+        Row: {
+          bio: string | null
+          created_at: string
+          id: string
+          name: string
+          order_position: number | null
+          photo_url: string | null
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          id: string
+          name: string
+          order_position?: number | null
+          photo_url?: string | null
+          role: string
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          order_position?: number | null
+          photo_url?: string | null
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      family_social_links: {
+        Row: {
+          created_at: string
+          family_member_id: string
+          id: string
+          platform: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          family_member_id: string
+          id?: string
+          platform: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          family_member_id?: string
+          id?: string
+          platform?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "family_social_links_family_member_id_fkey"
+            columns: ["family_member_id"]
+            isOneToOne: false
+            referencedRelation: "family_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      personal_profile: {
+        Row: {
+          bio: string | null
+          created_at: string
+          id: string
+          name: string
+          photo_url: string | null
+          resume_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          photo_url?: string | null
+          resume_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          photo_url?: string | null
+          resume_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      personal_social_links: {
+        Row: {
+          created_at: string
+          id: string
+          platform: string
+          profile_id: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          platform: string
+          profile_id: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          platform?: string
+          profile_id?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "personal_social_links_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "personal_profile"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -88,83 +295,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      thought_leader_social_links: {
-        Row: {
-          created_at: string
-          id: string
-          leader_id: string
-          platform: string
-          updated_at: string
-          url: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          leader_id: string
-          platform: string
-          updated_at?: string
-          url: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          leader_id?: string
-          platform?: string
-          updated_at?: string
-          url?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "thought_leader_social_links_leader_id_fkey"
-            columns: ["leader_id"]
-            isOneToOne: false
-            referencedRelation: "thought_leaders"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      thought_leaders: {
-        Row: {
-          category: string
-          created_at: string
-          id: string
-          image_url: string | null
-          linkedin_url: string | null
-          name: string
-          order_position: number | null
-          relationship: string | null
-          role: string
-          special: boolean | null
-          updated_at: string
-        }
-        Insert: {
-          category: string
-          created_at?: string
-          id: string
-          image_url?: string | null
-          linkedin_url?: string | null
-          name: string
-          order_position?: number | null
-          relationship?: string | null
-          role: string
-          special?: boolean | null
-          updated_at?: string
-        }
-        Update: {
-          category?: string
-          created_at?: string
-          id?: string
-          image_url?: string | null
-          linkedin_url?: string | null
-          name?: string
-          order_position?: number | null
-          relationship?: string | null
-          role?: string
-          special?: boolean | null
-          updated_at?: string
-        }
-        Relationships: []
       }
     }
     Views: {
