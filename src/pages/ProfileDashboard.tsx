@@ -8,17 +8,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Camera, Loader2, User, RefreshCw, Upload, FileText } from 'lucide-react';
+import { Camera, Loader2, User, RefreshCw, Upload, FileText, Info } from 'lucide-react';
 import { uploadImageToStorage } from '@/utils/fileUtils';
 import { PersonalProfile } from '@/types/thought-leaders';
 import { supabase } from '@/integrations/supabase/client';
 import { useSyncPersonalProfile } from '@/hooks/useSyncPersonalProfile';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const ProfileDashboard = () => {
   const { toast } = useToast();
   const { syncPersonalProfileToFrontend, isLoading: isSyncing, lastSynced } = useSyncPersonalProfile();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [frontendImageUrl, setFrontendImageUrl] = useState<string | null>(null);
   const [profile, setProfile] = useState<PersonalProfile>({
     id: 'hardeep',
     name: 'Hardeep Anand',
@@ -36,6 +38,19 @@ const ProfileDashboard = () => {
 
   useEffect(() => {
     loadProfileData();
+    
+    // Get the current frontend image from localStorage
+    try {
+      const storedProfile = localStorage.getItem('personalProfile');
+      if (storedProfile) {
+        const profileData = JSON.parse(storedProfile);
+        if (profileData.photo_url) {
+          setFrontendImageUrl(profileData.photo_url);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading frontend image:', error);
+    }
   }, []);
 
   const loadProfileData = async () => {
@@ -112,7 +127,9 @@ const ProfileDashboard = () => {
           photo_url: imageUrl
         }));
         
-        syncPersonalProfileToFrontend();
+        // Update the frontend image URL after successful sync
+        await syncPersonalProfileToFrontend();
+        setFrontendImageUrl(imageUrl);
         
         toast({
           title: 'Success',
@@ -220,7 +237,20 @@ const ProfileDashboard = () => {
         }
       }
       
-      syncPersonalProfileToFrontend();
+      // Update frontend image URL after successful sync
+      await syncPersonalProfileToFrontend();
+      
+      try {
+        const storedProfile = localStorage.getItem('personalProfile');
+        if (storedProfile) {
+          const profileData = JSON.parse(storedProfile);
+          if (profileData.photo_url) {
+            setFrontendImageUrl(profileData.photo_url);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading frontend image after sync:', error);
+      }
       
       toast({
         title: 'Success',
@@ -274,6 +304,28 @@ const ProfileDashboard = () => {
             )}
           </div>
         </div>
+        
+        {frontendImageUrl && (
+          <Alert className="bg-muted">
+            <Info className="h-4 w-4" />
+            <AlertTitle>Current Frontend Image</AlertTitle>
+            <AlertDescription className="flex items-center mt-2">
+              <div className="mr-4">
+                <p className="text-sm text-muted-foreground mb-1">
+                  This is the image currently displayed on your public site:
+                </p>
+                <img 
+                  src={frontendImageUrl} 
+                  alt="Current frontend profile" 
+                  className="w-24 h-24 object-cover rounded-md border" 
+                />
+              </div>
+              <div className="text-sm text-muted-foreground">
+                <p>To update this image, upload a new one below and click "Sync to Frontend".</p>
+              </div>
+            </AlertDescription>
+          </Alert>
+        )}
         
         {isLoading ? (
           <div className="flex justify-center items-center h-96">
