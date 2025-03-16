@@ -208,7 +208,7 @@ const defaultPeople: Person[] = [
     name: "Patrick McDavid",
     role: "Entrepreneur & Tech Innovator",
     category: "business",
-    image: "https://randomuser.me/api/portraits/men/32.jpg", // Placeholder image
+    image: "/lovable-uploads/ba77db19-a5a2-49c5-87cf-85f690643d20.png", // Updated to use the newly uploaded image
     relationship: "Patrick's innovative approach to technology and business strategies is remarkable."
   },
   {
