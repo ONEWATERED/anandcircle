@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import PublicationsDashboard from "./pages/PublicationsDashboard";
 import ConnectionsDashboard from "./pages/ConnectionsDashboard";
+import ThoughtLeadersDashboard from "./pages/ThoughtLeadersDashboard";
 import AdminAuth from "./pages/AdminAuth";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="publications" element={<PublicationsDashboard />} />
             <Route path="connections" element={<ConnectionsDashboard />} />
             <Route path="profile" element={<ProfileDashboard />} />
+            <Route path="thought-leaders" element={<ThoughtLeadersDashboard />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

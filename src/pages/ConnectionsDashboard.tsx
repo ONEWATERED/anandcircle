@@ -1,211 +1,159 @@
-import React, { useState, useEffect } from 'react';
-import FamilyCircleGraphic from '@/components/family-circle/FamilyCircleGraphic';
-import FamilyCircleHeader from '@/components/family-circle/FamilyCircleHeader';
-import { FamilyMember, familyMembers } from '@/data/familyData';
-import { Users, Heart, Dog, Image as ImageIcon, Upload } from 'lucide-react';
-import { getConnectionImage, saveConnectionImage } from '@/utils/connectionImages';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { uploadImageToStorage } from '@/utils/fileUtils';
-import { useToast } from '@/components/ui/use-toast';
 
-const FamilyCircleSection = () => {
-  const [selectedMember, setSelectedMember] = useState<FamilyMember | null>(null);
-  const [memberImages, setMemberImages] = useState<Record<string, string | null>>({});
-  const [imageUrl, setImageUrl] = useState<string>('');
-  const [isUploading, setIsUploading] = useState<boolean>(false);
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/components/ui/use-toast';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Search, Loader2, Brain } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { useConnections } from '@/hooks/useConnections';
+import { Person } from '@/types/connections';
+import ConnectionsCategoryTabs from '@/components/connections/ConnectionsCategoryTabs';
+import ConnectionsDashboardHeader from '@/components/connections/ConnectionsDashboardHeader';
+import { useSyncThoughtLeaders } from '@/hooks/useSyncThoughtLeaders';
+
+const ConnectionsDashboard = () => {
+  const { connections, isLoading, addConnection, updateConnection, deleteConnection } = useConnections();
+  const [search, setSearch] = useState('');
+  const [activeCategoryTab, setActiveCategoryTab] = useState('all');
+  const [editingConnection, setEditingConnection] = useState<Person | null>(null);
+  const [filteredConnections, setFilteredConnections] = useState<Person[]>([]);
+  const { syncThoughtLeadersToFrontend, isLoading: isSyncing } = useSyncThoughtLeaders();
+  const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Filter connections based on search and active tab
   useEffect(() => {
-    const loadMemberImages = async () => {
-      const images: Record<string, string | null> = {};
-      
-      for (const member of familyMembers) {
-        try {
-          const imageUrl = await getConnectionImage(member.id);
-          if (imageUrl) {
-            images[member.id] = imageUrl;
-            console.log(`Loaded image for ${member.name}:`, imageUrl);
-          }
-        } catch (error) {
-          console.error(`Error loading image for ${member.name}:`, error);
-        }
-      }
-      
-      setMemberImages(images);
-    };
+    let filtered = [...connections];
     
-    loadMemberImages();
-  }, []);
-
-  const handleSelectMember = (member: FamilyMember | null) => {
-    console.log("Selected member:", member?.name);
-    setSelectedMember(member);
-  };
-
-  const getAvatarIcon = (role: string) => {
-    if (role.toLowerCase().includes('pet')) return <Dog size={24} />;
-    if (role.toLowerCase().includes('spouse')) return <Heart size={24} />;
-    return <Users size={24} />;
-  };
-
-  const handleImageUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImageUrl(e.target.value);
-  };
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!selectedMember) return;
-    if (!e.target.files || e.target.files.length === 0) return;
+    // Apply search filter
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filtered = filtered.filter(
+        connection => 
+          connection.name.toLowerCase().includes(searchLower) || 
+          connection.role.toLowerCase().includes(searchLower)
+      );
+    }
     
-    const file = e.target.files[0];
-    setIsUploading(true);
+    // Apply category filter
+    if (activeCategoryTab !== 'all') {
+      filtered = filtered.filter(connection => connection.category === activeCategoryTab);
+    }
     
-    try {
-      const uploadedUrl = await uploadImageToStorage(file, selectedMember.id);
-      
-      if (uploadedUrl) {
-        await saveConnectionImage(selectedMember.id, uploadedUrl);
-        
-        setMemberImages(prev => ({
-          ...prev,
-          [selectedMember.id]: uploadedUrl
-        }));
-        
-        toast({
-          title: "Image uploaded successfully",
-          description: `Image for ${selectedMember.name} has been updated.`,
-          duration: 3000,
-        });
-      }
-    } catch (error) {
-      console.error('Error uploading image:', error);
+    setFilteredConnections(filtered);
+  }, [connections, search, activeCategoryTab]);
+
+  // Edit a connection
+  const handleEditConnection = (connection: Person) => {
+    setEditingConnection(connection);
+  };
+  
+  // Save edited connection
+  const handleSaveEdit = () => {
+    if (editingConnection) {
+      updateConnection(editingConnection);
+      setEditingConnection(null);
       toast({
-        title: "Upload failed",
-        description: "There was an error uploading the image.",
-        variant: "destructive",
-        duration: 3000,
+        title: "Connection Updated",
+        description: `${editingConnection.name} has been updated successfully.`
       });
-    } finally {
-      setIsUploading(false);
     }
   };
-
-  const handleImageUrlSubmit = async () => {
-    if (!selectedMember || !imageUrl) return;
-    
-    try {
-      await saveConnectionImage(selectedMember.id, imageUrl);
-      
-      setMemberImages(prev => ({
-        ...prev,
-        [selectedMember.id]: imageUrl
-      }));
-      
-      setImageUrl('');
-      
+  
+  // Cancel editing
+  const handleCancelEdit = () => {
+    setEditingConnection(null);
+  };
+  
+  // Delete a connection
+  const handleDeleteConnection = (id: string) => {
+    const connectionToDelete = connections.find(c => c.id === id);
+    if (connectionToDelete) {
+      if (confirm(`Are you sure you want to delete ${connectionToDelete.name}?`)) {
+        deleteConnection(id);
+        toast({
+          title: "Connection Deleted",
+          description: `${connectionToDelete.name} has been removed from your connections.`
+        });
+      }
+    }
+  };
+  
+  // Image upload for a connection
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>, personId: string) => {
+    // This is handled in the EditConnectionForm component using fileUtils
+  };
+  
+  // Sync with the thought leaders database
+  const handleSyncConnections = async () => {
+    const success = await syncThoughtLeadersToFrontend();
+    if (success) {
       toast({
-        title: "Image URL saved",
-        description: `Image for ${selectedMember.name} has been updated.`,
-        duration: 3000,
-      });
-    } catch (error) {
-      console.error('Error saving image URL:', error);
-      toast({
-        title: "Failed to save image URL",
-        description: "There was an error saving the image URL.",
-        variant: "destructive",
-        duration: 3000,
+        title: "Sync Complete",
+        description: "Your connections have been synchronized with the thought leaders database."
       });
     }
   };
 
   return (
-    <section className="py-16 relative bg-gradient-to-b from-white to-slate-50">
-      <div className="container mx-auto px-4 md:px-6">
-        <FamilyCircleHeader />
-
-        <div className="flex flex-col lg:flex-row gap-6 items-center">
-          <div className="w-full">
-            <FamilyCircleGraphic 
-              onSelectMember={handleSelectMember} 
-              memberImages={memberImages}
+    <div className="container max-w-7xl mx-auto py-6">
+      <div className="flex flex-col space-y-6">
+        <ConnectionsDashboardHeader 
+          onSyncConnections={handleSyncConnections} 
+          isSyncing={isSyncing}
+        />
+        
+        <div className="flex items-center justify-between">
+          <div className="relative w-full max-w-sm">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search connections..."
+              className="pl-8"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
+          
+          <Button
+            onClick={() => navigate('/admin/thought-leaders')}
+            className="flex items-center gap-2"
+          >
+            <Brain className="h-4 w-4" />
+            <span>Manage Thought Leaders</span>
+          </Button>
         </div>
-
-        {selectedMember && (
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button 
-                className="mt-6 mx-auto flex items-center gap-2" 
-                variant="outline"
-              >
-                <ImageIcon size={16} />
-                Update {selectedMember.name}'s Photo
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
-              <DialogHeader>
-                <DialogTitle>Update Member Photo</DialogTitle>
-              </DialogHeader>
-              <div className="flex items-center space-x-4 mb-4">
-                <Avatar className="h-20 w-20 border-2" style={{ borderColor: selectedMember.color }}>
-                  <AvatarImage 
-                    src={memberImages[selectedMember.id] || selectedMember.photoUrl} 
-                    alt={selectedMember.name} 
-                  />
-                  <AvatarFallback style={{ backgroundColor: selectedMember.color }}>
-                    {selectedMember.icon && React.createElement(selectedMember.icon, { size: 24, className: "text-white" })}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-medium">{selectedMember.name}</h3>
-                  <p className="text-sm text-gray-500">{selectedMember.role}</p>
-                </div>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Connections</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {isLoading ? (
+              <div className="flex justify-center items-center h-64">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="imageUrl">Image URL</Label>
-                  <div className="flex space-x-2">
-                    <Input 
-                      id="imageUrl" 
-                      value={imageUrl} 
-                      onChange={handleImageUrlChange} 
-                      placeholder="https://example.com/image.jpg" 
-                    />
-                    <Button 
-                      onClick={handleImageUrlSubmit} 
-                      disabled={!imageUrl}
-                    >
-                      Save
-                    </Button>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="imageFile">Or upload image</Label>
-                  <div className="flex items-center space-x-2">
-                    <Input
-                      id="imageFile"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleFileUpload}
-                      disabled={isUploading}
-                    />
-                    {isUploading && (
-                      <Upload className="h-4 w-4 animate-spin" />
-                    )}
-                  </div>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
-        )}
+            ) : (
+              <ConnectionsCategoryTabs
+                connections={connections}
+                activeCategoryTab={activeCategoryTab}
+                setActiveCategoryTab={setActiveCategoryTab}
+                filteredConnections={filteredConnections}
+                editingConnection={editingConnection}
+                onEditConnection={handleEditConnection}
+                onSaveEdit={handleSaveEdit}
+                onCancelEdit={handleCancelEdit}
+                onDeleteConnection={handleDeleteConnection}
+                onImageUpload={handleImageUpload}
+                addConnection={addConnection}
+              />
+            )}
+          </CardContent>
+        </Card>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default FamilyCircleSection;
+export default ConnectionsDashboard;

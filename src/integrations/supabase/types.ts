@@ -89,6 +89,83 @@ export type Database = {
           },
         ]
       }
+      thought_leader_social_links: {
+        Row: {
+          created_at: string
+          id: string
+          leader_id: string
+          platform: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          leader_id: string
+          platform: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          leader_id?: string
+          platform?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "thought_leader_social_links_leader_id_fkey"
+            columns: ["leader_id"]
+            isOneToOne: false
+            referencedRelation: "thought_leaders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      thought_leaders: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          image_url: string | null
+          linkedin_url: string | null
+          name: string
+          order_position: number | null
+          relationship: string | null
+          role: string
+          special: boolean | null
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id: string
+          image_url?: string | null
+          linkedin_url?: string | null
+          name: string
+          order_position?: number | null
+          relationship?: string | null
+          role: string
+          special?: boolean | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          linkedin_url?: string | null
+          name?: string
+          order_position?: number | null
+          relationship?: string | null
+          role?: string
+          special?: boolean | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -10,8 +10,33 @@ import {
   Settings,
   FileText,
   Network,
-  User
+  User,
+  Brain,
+  LucideIcon
 } from 'lucide-react';
+
+interface NavItemProps {
+  to: string;
+  icon: LucideIcon;
+  label: string;
+}
+
+const NavItem: React.FC<NavItemProps> = ({ to, icon: Icon, label }) => (
+  <NavLink 
+    to={to} 
+    className={({ isActive }) => 
+      `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
+        isActive 
+          ? "bg-primary text-primary-foreground" 
+          : "hover:bg-accent hover:text-accent-foreground"
+      }`
+    }
+    end
+  >
+    <Icon size={18} />
+    <span>{label}</span>
+  </NavLink>
+);
 
 export default function AdminLayout() {
   const { isAuthenticated, isLoading, signOut } = useAdminAuth('/admin/login');
@@ -39,90 +64,13 @@ export default function AdminLayout() {
         
         <nav className="flex-1 overflow-y-auto p-2">
           <div className="space-y-1">
-            <NavLink 
-              to="/admin/dashboard" 
-              className={({ isActive }) => 
-                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
-                  isActive 
-                    ? "bg-primary text-primary-foreground" 
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }`
-              }
-              end
-            >
-              <Home size={18} />
-              <span>Dashboard</span>
-            </NavLink>
-            
-            <NavLink 
-              to="/admin/family-members" 
-              className={({ isActive }) => 
-                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
-                  isActive 
-                    ? "bg-primary text-primary-foreground" 
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }`
-              }
-            >
-              <Users size={18} />
-              <span>Family Members</span>
-            </NavLink>
-            
-            <NavLink 
-              to="/admin/profile" 
-              className={({ isActive }) => 
-                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
-                  isActive 
-                    ? "bg-primary text-primary-foreground" 
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }`
-              }
-            >
-              <User size={18} />
-              <span>My Profile</span>
-            </NavLink>
-            
-            <NavLink 
-              to="/admin/publications" 
-              className={({ isActive }) => 
-                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
-                  isActive 
-                    ? "bg-primary text-primary-foreground" 
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }`
-              }
-            >
-              <FileText size={18} />
-              <span>Publications</span>
-            </NavLink>
-
-            <NavLink 
-              to="/admin/connections" 
-              className={({ isActive }) => 
-                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
-                  isActive 
-                    ? "bg-primary text-primary-foreground" 
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }`
-              }
-            >
-              <Network size={18} />
-              <span>Connections</span>
-            </NavLink>
-            
-            <NavLink 
-              to="/admin/settings" 
-              className={({ isActive }) => 
-                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
-                  isActive 
-                    ? "bg-primary text-primary-foreground" 
-                    : "hover:bg-accent hover:text-accent-foreground"
-                }`
-              }
-            >
-              <Settings size={18} />
-              <span>Settings</span>
-            </NavLink>
+            <NavItem to="/admin/dashboard" icon={Home} label="Dashboard" />
+            <NavItem to="/admin/family-members" icon={Users} label="Family Members" />
+            <NavItem to="/admin/profile" icon={User} label="My Profile" />
+            <NavItem to="/admin/publications" icon={FileText} label="Publications" />
+            <NavItem to="/admin/connections" icon={Network} label="Connections" />
+            <NavItem to="/admin/thought-leaders" icon={Brain} label="Thought Leaders" />
+            <NavItem to="/admin/settings" icon={Settings} label="Settings" />
           </div>
         </nav>
         
