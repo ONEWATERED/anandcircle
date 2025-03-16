@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CourseShowcase from '@/components/CourseShowcase'; // Horses
 import AIGalleryShowcase from '@/components/AIGalleryShowcase'; // Digital collections
 import BlogPreview from '@/components/BlogPreview'; // Art articles
-import { Horse, Images, BookText } from 'lucide-react';
+import { Dog, Images, BookText } from 'lucide-react';
 
 const TabbedContentSection = () => {
   return (
@@ -25,7 +25,7 @@ const TabbedContentSection = () => {
               value="horses" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-500 data-[state=active]:text-white flex items-center gap-2 py-3 text-lg transition-all duration-300"
             >
-              <Horse className="h-5 w-5" />
+              <Dog className="h-5 w-5" />
               <span>Horses</span>
             </TabsTrigger>
             <TabsTrigger 
