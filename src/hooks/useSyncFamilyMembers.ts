@@ -16,7 +16,7 @@ export const useSyncFamilyMembers = () => {
       const { data: membersData, error: membersError } = await supabase
         .from('family_members')
         .select('*')
-        .order('order_position', { nullsLast: true })
+        .order('order_position', { nullsFirst: false })
         .order('name');
 
       if (membersError) throw membersError;

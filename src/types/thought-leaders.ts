@@ -47,3 +47,19 @@ export interface PersonalProfile {
   created_at?: string;
   updated_at?: string;
 }
+
+// Add ThoughtLeader interface that was missing
+export interface ThoughtLeader {
+  id: string;
+  name: string;
+  role: string;
+  category: string;
+  image_url?: string;
+  special?: boolean;
+  relationship?: string;
+  linkedin_url?: string;
+  order_position?: number;
+  socialLinks?: SocialLink[];
+  created_at?: string;
+  updated_at?: string;
+}

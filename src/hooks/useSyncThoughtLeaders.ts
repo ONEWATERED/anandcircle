@@ -1,7 +1,7 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Person } from '@/types/connections';
+import { Connection } from '@/types/thought-leaders';
 import { useToast } from '@/components/ui/use-toast';
 
 export const useSyncThoughtLeaders = () => {
@@ -12,27 +12,27 @@ export const useSyncThoughtLeaders = () => {
   const syncThoughtLeadersToFrontend = async () => {
     setIsLoading(true);
     try {
-      // Get all thought leaders from the database
+      // Get all connections from the database instead of thought_leaders
       const { data: leadersData, error: leadersError } = await supabase
-        .from('thought_leaders')
+        .from('connections')
         .select('*')
         .order('category')
-        .order('order_position', { nullsLast: true })
+        .order('order_position', { nullsFirst: false })
         .order('name');
 
       if (leadersError) throw leadersError;
 
-      // Get all social links for the thought leaders
+      // Get all social links for the connections
       const { data: socialLinksData, error: socialLinksError } = await supabase
-        .from('thought_leader_social_links')
+        .from('connection_social_links')
         .select('*');
 
       if (socialLinksError) throw socialLinksError;
 
       // Convert the data to the format expected by the frontend
-      const connections: Person[] = leadersData.map(leader => {
+      const connections = leadersData.map(leader => {
         const leaderSocialLinks = socialLinksData
-          .filter(link => link.leader_id === leader.id)
+          .filter(link => link.connection_id === leader.id)
           .map(link => ({ 
             platform: link.platform as 'instagram' | 'youtube' | 'twitter', 
             url: link.url 
@@ -45,9 +45,8 @@ export const useSyncThoughtLeaders = () => {
           category: leader.category,
           image: leader.image_url,
           special: leader.special,
-          relationship: leader.relationship,
+          bio: leader.bio,
           socialLinks: leaderSocialLinks.length > 0 ? leaderSocialLinks : undefined,
-          linkedInUrl: leader.linkedin_url,
           order: leader.order_position
         };
       });

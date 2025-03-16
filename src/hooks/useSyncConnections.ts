@@ -17,7 +17,7 @@ export const useSyncConnections = () => {
         .from('connections')
         .select('*')
         .order('category')
-        .order('order_position', { nullsLast: true })
+        .order('order_position', { nullsFirst: false })
         .order('name');
 
       if (connectionsError) throw connectionsError;

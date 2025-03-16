@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSyncFamilyMembers } from '@/hooks/useSyncFamilyMembers';
 import { FamilyMember, SocialLink } from '@/types/thought-leaders';
@@ -9,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Plus, RefreshCw, Save, Trash2, Upload, User, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
@@ -30,12 +30,11 @@ const FamilyMembersDashboard = () => {
       const { data, error } = await supabase
         .from('family_members')
         .select('*')
-        .order('order_position', { nullsLast: true })
+        .order('order_position', { nullsFirst: false })
         .order('name');
 
       if (error) throw error;
 
-      // Get social links for each family member
       const { data: socialLinks, error: socialLinksError } = await supabase
         .from('family_social_links')
         .select('*');
@@ -91,7 +90,6 @@ const FamilyMembersDashboard = () => {
 
     setIsSaving(true);
     try {
-      // Update or insert family member
       const { error } = await supabase
         .from('family_members')
         .upsert({
@@ -105,9 +103,7 @@ const FamilyMembersDashboard = () => {
 
       if (error) throw error;
 
-      // Handle social links
       if (editingMember.socialLinks && editingMember.socialLinks.length > 0) {
-        // Delete existing links first
         const { error: deleteError } = await supabase
           .from('family_social_links')
           .delete()
@@ -115,7 +111,6 @@ const FamilyMembersDashboard = () => {
 
         if (deleteError) throw deleteError;
 
-        // Insert new links
         const linksToInsert = editingMember.socialLinks.map(link => ({
           family_member_id: editingMember.id,
           platform: link.platform,
@@ -129,7 +124,6 @@ const FamilyMembersDashboard = () => {
         if (insertError) throw insertError;
       }
 
-      // Refresh the data
       loadFamilyMembers();
       syncFamilyMembersToFrontend();
       setEditingMember(null);
@@ -184,7 +178,6 @@ const FamilyMembersDashboard = () => {
     if (!confirm('Are you sure you want to delete this family member?')) return;
 
     try {
-      // Delete will cascade to social links due to foreign key constraints
       const { error } = await supabase
         .from('family_members')
         .delete()
@@ -289,7 +282,6 @@ const FamilyMembersDashboard = () => {
         </div>
       </div>
 
-      {/* Editing Card */}
       {editingMember && (
         <Card className="mb-6">
           <CardHeader>
@@ -451,7 +443,6 @@ const FamilyMembersDashboard = () => {
         </Card>
       )}
 
-      {/* List of Family Members */}
       {familyMembers.length === 0 ? (
         <Card className="p-8 text-center">
           <p className="text-muted-foreground">No family members found. Add your first family member.</p>
