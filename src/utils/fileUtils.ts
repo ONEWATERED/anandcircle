@@ -1,105 +1,88 @@
-
-// General file utilities
 import { supabase } from "@/integrations/supabase/client";
 
-// Helper for validation
-export const isValidImageUrl = (url: string): boolean => {
-  return !!url && typeof url === 'string' && url.trim() !== '';
+export const isValidImageUrl = async (url: string): Promise<boolean> => {
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+    return response.ok;
+  } catch (error) {
+    console.error("Error checking image URL:", error);
+    return false;
+  }
 };
 
-// Convert uploaded file to data URL for storage
 export const fileToDataUrl = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = reject;
+    reader.onload = (event) => {
+      if (event.target?.result) {
+        resolve(event.target.result as string);
+      } else {
+        reject(new Error('Failed to convert file to data URL'));
+      }
+    };
+    reader.onerror = (error) => reject(error);
     reader.readAsDataURL(file);
   });
 };
 
-// Upload an image file to Supabase Storage
-export const uploadImageToStorage = async (imageFile: File, personId?: string): Promise<string | null> => {
+export const uploadImageToStorage = async (file: File, folder: string): Promise<string | null> => {
   try {
-    // Always start by converting file to data URL for fallback
-    const dataUrl = await fileToDataUrl(imageFile);
+    console.log(`Uploading ${file.name} to storage/${folder}`);
     
-    // Attempt to upload to Supabase Storage if available
+    // Create a unique file name to avoid collisions
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+    const filePath = `${folder}/${fileName}`;
+    
+    // Check if bucket exists and create it if needed
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      // Generate a unique file name
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Date.now()}.${fileExt}`;
-      
-      // Create a folder structure for better organization
-      // If personId is provided, store in connections folder, else in profiles
-      const folder = personId 
-        ? `connections/${personId}` 
-        : session?.user 
-          ? `profiles/${session.user.id}` 
-          : 'anonymous';
-      
-      const filePath = `${folder}/${fileName}`;
-      
-      // Upload to connection_images bucket
-      const bucket = 'connection_images';
-      
-      // Check if the bucket exists, if not create it
-      const { data: buckets } = await supabase.storage.listBuckets();
-      const bucketExists = buckets?.some(b => b.name === bucket);
+      const { data: bucketExists } = await supabase.storage.getBucket(folder);
       
       if (!bucketExists) {
-        console.log("Creating new storage bucket:", bucket);
-        const { error: createError } = await supabase.storage.createBucket(bucket, {
-          public: true,
-          fileSizeLimit: 5242880 // 5MB
+        console.log(`Creating new storage bucket: ${folder}`);
+        const { error: bucketError } = await supabase.storage.createBucket(folder, {
+          public: true
         });
         
-        if (createError) {
-          console.error("Error creating bucket:", createError);
-          return dataUrl; // Fallback to data URL
+        if (bucketError) {
+          console.error('Error creating bucket:', bucketError);
+          // Continue anyway, the bucket might already exist
         }
       }
-      
-      // Upload file to appropriate bucket
-      const { data, error } = await supabase.storage
-        .from(bucket)
-        .upload(filePath, imageFile, {
-          cacheControl: '3600',
-          upsert: true
+    } catch (bucketError) {
+      console.log('Creating new storage bucket:', folder);
+      // Try to create bucket anyway, if getBucket fails
+      try {
+        await supabase.storage.createBucket(folder, {
+          public: true
         });
-      
-      if (error) {
-        console.error(`Error uploading to ${bucket}:`, error);
-        // Fall back to data URL since Supabase upload failed
-        return dataUrl;
+      } catch (createError) {
+        console.error('Error creating bucket:', createError);
+        // Continue anyway, the bucket might already exist
       }
-      
-      // Get the public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from(bucket)
-        .getPublicUrl(data.path);
-      
-      // If this is a connection image and personId is provided, store in the connection_images table
-      if (personId) {
-        const { error: insError } = await supabase.rpc('store_connection_image', {
-          p_person_id: personId as any,
-          p_image_path: publicUrl as any
-        });
-        
-        if (insError) {
-          console.error("Error storing connection image:", insError);
-        }
-      }
-      
-      console.log("Image uploaded to Supabase Storage:", publicUrl);
-      return publicUrl;
-    } catch (error) {
-      console.error("Failed to upload to Supabase, using data URL instead:", error);
-      return dataUrl;
     }
+    
+    // Upload file
+    const { error: uploadError } = await supabase.storage
+      .from(folder)
+      .upload(fileName, file, {
+        cacheControl: '3600',
+        upsert: true
+      });
+      
+    if (uploadError) {
+      console.error('Error uploading file:', uploadError);
+      return null;
+    }
+    
+    // Get public URL
+    const { data } = supabase.storage
+      .from(folder)
+      .getPublicUrl(fileName);
+      
+    return data.publicUrl;
   } catch (error) {
-    console.error("Error in uploadImageToStorage:", error);
+    console.error('Error in uploadImageToStorage:', error);
     return null;
   }
 };

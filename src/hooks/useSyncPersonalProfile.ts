@@ -48,8 +48,52 @@ export const useSyncPersonalProfile = () => {
         updated_at: profileData.updated_at
       };
 
-      // Save the data to localStorage for the frontend components to use
-      localStorage.setItem('personalProfile', JSON.stringify(personalProfile));
+      try {
+        // Try to save the data to localStorage for the frontend components to use
+        // Handle localStorage quota exceeded error
+        localStorage.setItem('personalProfile', JSON.stringify(personalProfile));
+      } catch (storageError) {
+        console.error('Error saving to localStorage:', storageError);
+        
+        // Try to save with minimal data if quota is exceeded
+        try {
+          const minimalProfile = {
+            id: personalProfile.id,
+            name: personalProfile.name,
+            photo_url: personalProfile.photo_url,
+            resume_url: personalProfile.resume_url
+          };
+          localStorage.setItem('personalProfile', JSON.stringify(minimalProfile));
+          
+          toast({
+            title: 'Partial Sync Complete',
+            description: 'Profile was too large for local storage. Only essential data was synced.',
+            variant: 'default'
+          });
+        } catch (e) {
+          // If even minimal data fails, clear some storage and try again
+          try {
+            // Try clearing other items to make space
+            localStorage.removeItem('connections');
+            
+            // Try again with minimal data
+            const minimalProfile = {
+              id: personalProfile.id,
+              name: personalProfile.name,
+              photo_url: personalProfile.photo_url
+            };
+            localStorage.setItem('personalProfile', JSON.stringify(minimalProfile));
+            
+            toast({
+              title: 'Limited Sync Complete',
+              description: 'Storage space limited. Only profile image and name were synced.',
+              variant: 'default'
+            });
+          } catch (finalError) {
+            throw new Error('Could not save profile data to localStorage after multiple attempts');
+          }
+        }
+      }
       
       // Update the last synced time
       setLastSynced(new Date());
