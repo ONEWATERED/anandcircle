@@ -1,10 +1,10 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CourseShowcase from '@/components/CourseShowcase'; // Horses
+import CourseShowcase from '@/components/CourseShowcase'; // Courses
 import AIGalleryShowcase from '@/components/AIGalleryShowcase'; // Digital collections
 import BlogPreview from '@/components/BlogPreview'; // Art articles
-import { Dog, Images, BookText } from 'lucide-react';
+import { GraduationCap, Images, BookText } from 'lucide-react';
 
 const TabbedContentSection = () => {
   return (
@@ -19,14 +19,14 @@ const TabbedContentSection = () => {
           </p>
         </div>
         
-        <Tabs defaultValue="horses" className="w-full">
+        <Tabs defaultValue="courses" className="w-full">
           <TabsList className="w-full max-w-2xl mx-auto grid grid-cols-3 mb-8">
             <TabsTrigger 
-              value="horses" 
+              value="courses" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-500 data-[state=active]:text-white flex items-center gap-2 py-3 text-lg transition-all duration-300"
             >
-              <Dog className="h-5 w-5" />
-              <span>Horses</span>
+              <GraduationCap className="h-5 w-5" />
+              <span>Courses</span>
             </TabsTrigger>
             <TabsTrigger 
               value="digital" 
@@ -45,7 +45,7 @@ const TabbedContentSection = () => {
           </TabsList>
           
           <div className="mt-6">
-            <TabsContent value="horses" className="mt-0">
+            <TabsContent value="courses" className="mt-0">
               <CourseShowcase />
             </TabsContent>
             
