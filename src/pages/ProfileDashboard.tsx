@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +11,6 @@ import { Camera, Loader2, User } from 'lucide-react';
 import { uploadImageToStorage } from '@/utils/fileUtils';
 import { saveProfileImage, getUserProfileData } from '@/utils/profileImages';
 import { saveSocialLinks } from '@/utils/databaseUtils';
-import AdminLayout from '@/layouts/AdminLayout';
 
 const ProfileDashboard = () => {
   const { toast } = useToast();
@@ -136,154 +134,152 @@ const ProfileDashboard = () => {
   };
 
   return (
-    <AdminLayout>
-      <div className="container mx-auto py-8">
-        <div className="flex flex-col space-y-8">
-          <div>
-            <h1 className="text-3xl font-bold">Profile Dashboard</h1>
-            <p className="text-muted-foreground">
-              Update your profile information that appears on your website
-            </p>
-          </div>
-          
-          {isLoading ? (
-            <div className="flex justify-center items-center h-96">
-              <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            </div>
-          ) : (
-            <Tabs defaultValue="general">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="general">General Information</TabsTrigger>
-                <TabsTrigger value="social">Social Media</TabsTrigger>
-              </TabsList>
-              
-              <form onSubmit={handleSubmit}>
-                <TabsContent value="general" className="space-y-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Profile Image</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center space-x-6">
-                        <Avatar className="h-24 w-24">
-                          <AvatarImage src={profileImage || '/placeholder.svg'} />
-                          <AvatarFallback>
-                            <User className="h-12 w-12 text-muted-foreground" />
-                          </AvatarFallback>
-                        </Avatar>
-                        
-                        <div>
-                          <Label htmlFor="profileImage" className="cursor-pointer">
-                            <div className="flex items-center space-x-2">
-                              <Button type="button" variant="outline">
-                                <Camera className="mr-2 h-4 w-4" />
-                                Change Image
-                              </Button>
-                            </div>
-                          </Label>
-                          <Input
-                            id="profileImage"
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={handleImageUpload}
-                            disabled={isSaving}
-                          />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Biography</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="bio">Bio</Label>
-                        <Textarea
-                          id="bio"
-                          placeholder="Enter your biography here..."
-                          rows={6}
-                          value={bio}
-                          onChange={(e) => setBio(e.target.value)}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-                
-                <TabsContent value="social" className="space-y-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Social Media Links</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="linkedin">LinkedIn URL</Label>
-                        <Input
-                          id="linkedin"
-                          placeholder="https://linkedin.com/in/..."
-                          value={socialLinks.linkedIn}
-                          onChange={(e) => setSocialLinks({...socialLinks, linkedIn: e.target.value})}
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="twitter">Twitter URL</Label>
-                        <Input
-                          id="twitter"
-                          placeholder="https://twitter.com/..."
-                          value={socialLinks.twitter}
-                          onChange={(e) => setSocialLinks({...socialLinks, twitter: e.target.value})}
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="youtube">YouTube URL</Label>
-                        <Input
-                          id="youtube"
-                          placeholder="https://youtube.com/..."
-                          value={socialLinks.youtube}
-                          onChange={(e) => setSocialLinks({...socialLinks, youtube: e.target.value})}
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="spotify">Spotify URL</Label>
-                        <Input
-                          id="spotify"
-                          placeholder="https://open.spotify.com/user/..."
-                          value={socialLinks.spotify}
-                          onChange={(e) => setSocialLinks({...socialLinks, spotify: e.target.value})}
-                        />
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="anandCircle">Anand Circle URL</Label>
-                        <Input
-                          id="anandCircle"
-                          placeholder="#anand-circle"
-                          value={socialLinks.anandCircle}
-                          onChange={(e) => setSocialLinks({...socialLinks, anandCircle: e.target.value})}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-                
-                <div className="flex justify-end mt-6">
-                  <Button type="submit" disabled={isSaving}>
-                    {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Save Changes
-                  </Button>
-                </div>
-              </form>
-            </Tabs>
-          )}
+    <div className="container mx-auto py-8">
+      <div className="flex flex-col space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold">Profile Dashboard</h1>
+          <p className="text-muted-foreground">
+            Update your profile information that appears on your website
+          </p>
         </div>
+        
+        {isLoading ? (
+          <div className="flex justify-center items-center h-96">
+            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          </div>
+        ) : (
+          <Tabs defaultValue="general">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="general">General Information</TabsTrigger>
+              <TabsTrigger value="social">Social Media</TabsTrigger>
+            </TabsList>
+            
+            <form onSubmit={handleSubmit}>
+              <TabsContent value="general" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Profile Image</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center space-x-6">
+                      <Avatar className="h-24 w-24">
+                        <AvatarImage src={profileImage || '/placeholder.svg'} />
+                        <AvatarFallback>
+                          <User className="h-12 w-12 text-muted-foreground" />
+                        </AvatarFallback>
+                      </Avatar>
+                      
+                      <div>
+                        <Label htmlFor="profileImage" className="cursor-pointer">
+                          <div className="flex items-center space-x-2">
+                            <Button type="button" variant="outline">
+                              <Camera className="mr-2 h-4 w-4" />
+                              Change Image
+                            </Button>
+                          </div>
+                        </Label>
+                        <Input
+                          id="profileImage"
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={handleImageUpload}
+                          disabled={isSaving}
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Biography</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="bio">Bio</Label>
+                      <Textarea
+                        id="bio"
+                        placeholder="Enter your biography here..."
+                        rows={6}
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              
+              <TabsContent value="social" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Social Media Links</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="linkedin">LinkedIn URL</Label>
+                      <Input
+                        id="linkedin"
+                        placeholder="https://linkedin.com/in/..."
+                        value={socialLinks.linkedIn}
+                        onChange={(e) => setSocialLinks({...socialLinks, linkedIn: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="twitter">Twitter URL</Label>
+                      <Input
+                        id="twitter"
+                        placeholder="https://twitter.com/..."
+                        value={socialLinks.twitter}
+                        onChange={(e) => setSocialLinks({...socialLinks, twitter: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="youtube">YouTube URL</Label>
+                      <Input
+                        id="youtube"
+                        placeholder="https://youtube.com/..."
+                        value={socialLinks.youtube}
+                        onChange={(e) => setSocialLinks({...socialLinks, youtube: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="spotify">Spotify URL</Label>
+                      <Input
+                        id="spotify"
+                        placeholder="https://open.spotify.com/user/..."
+                        value={socialLinks.spotify}
+                        onChange={(e) => setSocialLinks({...socialLinks, spotify: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="anandCircle">Anand Circle URL</Label>
+                      <Input
+                        id="anandCircle"
+                        placeholder="#anand-circle"
+                        value={socialLinks.anandCircle}
+                        onChange={(e) => setSocialLinks({...socialLinks, anandCircle: e.target.value})}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+              
+              <div className="flex justify-end mt-6">
+                <Button type="submit" disabled={isSaving}>
+                  {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Save Changes
+                </Button>
+              </div>
+            </form>
+          </Tabs>
+        )}
       </div>
-    </AdminLayout>
+    </div>
   );
 };
 
