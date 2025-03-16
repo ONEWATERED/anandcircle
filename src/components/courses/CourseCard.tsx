@@ -11,6 +11,7 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course, icon }) => {
+  // Use the icon prop passed from parent component
   return (
     <Card className="neo-glass border-0 overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
       <div className={`h-2 w-full bg-gradient-to-r ${course.color}`}></div>

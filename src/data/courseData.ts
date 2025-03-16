@@ -3,11 +3,11 @@ export interface Course {
   id: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   duration: string;
   students: string;
   color: string;
+  icon?: React.ReactNode; // Make icon optional
 }
 
 export const courses = [
