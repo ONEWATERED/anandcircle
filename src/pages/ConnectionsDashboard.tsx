@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Plus, RefreshCw, Save, Trash2, Upload, User, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
-import { uploadImageToStorage } from '@/utils/fileUtils';
+import { uploadImageToStorage, saveConnectionImage } from '@/utils/imageLoader';
 
 const ConnectionsDashboard = () => {
   const { syncConnectionsToFrontend, isLoading, lastSynced } = useSyncConnections();
@@ -106,6 +106,16 @@ const ConnectionsDashboard = () => {
 
       if (error) throw error;
 
+      // Also save to connection_images table to ensure frontend sync
+      if (editingConnection.image_url) {
+        try {
+          await saveConnectionImage(editingConnection.id, editingConnection.image_url);
+          console.log("Connection image saved to connection_images table");
+        } catch (imgError) {
+          console.error("Failed to save connection image:", imgError);
+        }
+      }
+
       // Handle social links
       if (editingConnection.socialLinks && editingConnection.socialLinks.length > 0) {
         // Delete existing links first
@@ -132,7 +142,10 @@ const ConnectionsDashboard = () => {
 
       // Refresh the data
       loadConnections();
-      syncConnectionsToFrontend();
+      
+      // Sync to frontend to ensure updates are visible there
+      await syncConnectionsToFrontend();
+      
       setEditingConnection(null);
 
       toast({
@@ -159,10 +172,16 @@ const ConnectionsDashboard = () => {
 
     try {
       setIsSaving(true);
-      const imageUrl = await uploadImageToStorage(file, 'connections');
+      
+      // Use the connection ID as part of the path to better organize images
+      const imageUrl = await uploadImageToStorage(file, `connections/${editingConnection.id}`);
       
       if (imageUrl) {
+        // Update the editing connection state
         setEditingConnection(prev => prev ? {...prev, image_url: imageUrl} : null);
+        
+        // Also save to connection_images table for frontend sync
+        await saveConnectionImage(editingConnection.id, imageUrl);
         
         toast({
           title: 'Success',

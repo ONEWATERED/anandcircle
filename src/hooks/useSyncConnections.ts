@@ -28,6 +28,19 @@ export const useSyncConnections = () => {
         .select('*');
 
       if (socialLinksError) throw socialLinksError;
+      
+      // Get all connection images
+      const { data: connectionImagesData, error: imagesError } = await supabase
+        .from('connection_images')
+        .select('*');
+        
+      if (imagesError) throw imagesError;
+
+      // Create a map of connection ID to image path for faster lookup
+      const imageMap = new Map();
+      connectionImagesData.forEach(img => {
+        imageMap.set(img.person_id, img.image_path);
+      });
 
       // Convert the data to the format expected by the frontend
       const connections: Connection[] = connectionsData.map(connection => {
@@ -39,13 +52,16 @@ export const useSyncConnections = () => {
             url: link.url 
           }));
         
+        // Look up image from connection_images table if not in connections table
+        const imageUrl = connection.image_url || imageMap.get(connection.id) || null;
+        
         return {
           id: connection.id,
           name: connection.name,
           role: connection.role,
           category: connection.category,
           bio: connection.bio,
-          image_url: connection.image_url,
+          image_url: imageUrl,
           special: connection.special,
           order_position: connection.order_position,
           socialLinks: connectionSocialLinks.length > 0 ? connectionSocialLinks : undefined,
