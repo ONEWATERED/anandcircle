@@ -47,3 +47,24 @@ export const ensureHttpProtocol = (url: string | null): string => {
   
   return `https://${url}`;
 };
+
+// Add a helper to directly get the profile image URL from Supabase without auth check
+export const getHardeepProfileImage = async (): Promise<string | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('personal_profile')
+      .select('photo_url')
+      .eq('id', 'hardeep')
+      .single();
+    
+    if (error) {
+      console.error("Error fetching Hardeep's profile image:", error);
+      return null;
+    }
+    
+    return data?.photo_url || null;
+  } catch (error) {
+    console.error("Error in getHardeepProfileImage:", error);
+    return null;
+  }
+};

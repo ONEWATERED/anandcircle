@@ -2,6 +2,7 @@
 // Module for profile image management
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { getHardeepProfileImage } from "./databaseConnection";
 
 // Define the profile data interface
 export interface ProfileData {
@@ -19,7 +20,16 @@ export interface ProfileData {
 // Get profile image URL from Supabase or localStorage fallback
 export const getProfileImage = async (): Promise<string | null> => {
   try {
-    // First check if user is authenticated
+    // First try to get profile directly from personal_profile table
+    const directImageUrl = await getHardeepProfileImage();
+    
+    if (directImageUrl) {
+      console.log("Retrieved profile image from personal_profile table:", directImageUrl);
+      localStorage.setItem('profileImageUrl', directImageUrl);
+      return directImageUrl;
+    }
+    
+    // Next check if user is authenticated
     const { data: { session } } = await supabase.auth.getSession();
     
     if (session?.user) {
@@ -85,42 +95,37 @@ export const getUserProfileData = async (): Promise<ProfileData> => {
   
   // Try to get social links from Supabase if user is authenticated
   try {
-    const { data: { session } } = await supabase.auth.getSession();
+    // Get personal profile social links
+    const { data: socialLinksData, error } = await supabase
+      .from('personal_social_links')
+      .select('platform, url')
+      .eq('profile_id', 'hardeep');
     
-    if (session?.user) {
-      // Instead of looking for social_links in the profiles table,
-      // We'll query the social_links table to get the user's social links
-      const { data: socialLinksData, error } = await supabase
-        .from('social_links')
-        .select('platform, url')
-        .eq('user_id', session.user.id);
+    if (!error && socialLinksData && socialLinksData.length > 0) {
+      // Convert the array of social links to our expected format
+      const socialLinksMap: Record<string, string> = {};
       
-      if (!error && socialLinksData && socialLinksData.length > 0) {
-        // Convert the array of social links to our expected format
-        const socialLinksMap: Record<string, string> = {};
-        
-        socialLinksData.forEach(link => {
-          // Map platform names to our expected keys
-          const platformMap: Record<string, keyof typeof socialLinks> = {
-            'linkedin': 'linkedIn',
-            'twitter': 'twitter',
-            'youtube': 'youtube',
-            'spotify': 'spotify',
-            'anandcircle': 'anandCircle'
-          };
-          
-          const key = platformMap[link.platform.toLowerCase()] || link.platform.toLowerCase();
-          if (key in socialLinks) {
-            socialLinksMap[key] = link.url;
-          }
-        });
-        
-        // Update our socialLinks object with the values from the database
-        socialLinks = {
-          ...socialLinks,
-          ...socialLinksMap
+      socialLinksData.forEach(link => {
+        // Map platform names to our expected keys
+        const platformMap: Record<string, keyof typeof socialLinks> = {
+          'linkedin': 'linkedIn',
+          'twitter': 'twitter',
+          'youtube': 'youtube',
+          'spotify': 'spotify',
+          'anandcircle': 'anandCircle'
         };
-      }
+        
+        const key = platformMap[link.platform.toLowerCase()] || link.platform.toLowerCase();
+        if (key in socialLinks) {
+          socialLinksMap[key] = link.url;
+        }
+      });
+      
+      // Update our socialLinks object with the values from the database
+      socialLinks = {
+        ...socialLinks,
+        ...socialLinksMap
+      };
     }
   } catch (error) {
     console.error("Error fetching social links from Supabase:", error);
@@ -133,6 +138,19 @@ export const getUserProfileData = async (): Promise<ProfileData> => {
 export const saveProfileImage = async (url: string): Promise<void> => {
   try {
     console.log("Saving profile image:", url);
+    
+    // First, try to save to personal_profile table
+    const { error: personalProfileError } = await supabase
+      .from('personal_profile')
+      .update({ photo_url: url })
+      .eq('id', 'hardeep');
+    
+    if (personalProfileError) {
+      console.error("Error saving to personal_profile:", personalProfileError);
+      // Continue to try other methods
+    } else {
+      console.log("Profile image saved to personal_profile table");
+    }
     
     // Check if user is authenticated
     const { data: { session } } = await supabase.auth.getSession();
