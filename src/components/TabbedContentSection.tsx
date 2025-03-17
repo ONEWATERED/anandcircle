@@ -15,14 +15,14 @@ const TabbedContentSection = () => {
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-500 data-[state=active]:text-white flex items-center gap-2 py-3 text-lg transition-all duration-300"
             >
               <GraduationCap className="h-5 w-5" />
-              <span>Featured Courses</span>
+              <span>Courses</span>
             </TabsTrigger>
             <TabsTrigger 
               value="community" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-cyan-400 data-[state=active]:text-white flex items-center gap-2 py-3 text-lg transition-all duration-300"
             >
               <Users className="h-5 w-5" />
-              <span>Join Circle</span>
+              <span>Circle</span>
             </TabsTrigger>
           </TabsList>
           
