@@ -163,7 +163,7 @@ const InterestForm = () => {
               <h4 className="text-2xl font-semibold mb-2">Digital Avatar</h4>
               <div className="flex items-center justify-center mb-4">
                 <CreditCard className="text-primary mr-2" size={20} />
-                <span className="text-xl font-bold">$2,500</span>
+                <span className="text-xl font-bold">$3,000</span>
               </div>
               <p className="text-muted-foreground mb-6">
                 Create your own AI avatar that speaks in your voice, reflects your knowledge, and represents your perspectives accurately.
@@ -239,7 +239,7 @@ const InterestForm = () => {
               Digital Avatar Interest
             </SheetTitle>
             <SheetDescription>
-              Complete this form to register your interest in creating a personal AI avatar. Price: $2,500
+              Complete this form to register your interest in creating a personal AI avatar. Price: $3,000
             </SheetDescription>
           </SheetHeader>
           
