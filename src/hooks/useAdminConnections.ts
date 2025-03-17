@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -28,14 +27,12 @@ export const useAdminConnections = () => {
 
       if (error) throw error;
 
-      // Get all social links for the connections
       const { data: socialLinksData, error: socialLinksError } = await supabase
         .from('connection_social_links')
         .select('*');
 
       if (socialLinksError) throw socialLinksError;
 
-      // Map social links to their connections
       const connectionsWithLinks = data.map(connection => {
         const links = socialLinksData
           .filter(link => link.connection_id === connection.id)
@@ -64,12 +61,19 @@ export const useAdminConnections = () => {
     }
   };
 
-  const addConnection = async (connection: Omit<Connection, 'id' | 'created_at' | 'updated_at'>) => {
+  const addConnection = async (connection: Partial<Connection>) => {
     try {
-      // Generate a unique ID
+      if (!connection.name || !connection.role || !connection.category) {
+        toast({
+          title: 'Error',
+          description: 'Name, role, and category are required fields',
+          variant: 'destructive'
+        });
+        return false;
+      }
+      
       const id = `connection-${Date.now()}`;
       
-      // Add the connection
       const { error } = await supabase
         .from('connections')
         .insert({
@@ -85,7 +89,6 @@ export const useAdminConnections = () => {
 
       if (error) throw error;
 
-      // Add social links if provided
       if (connection.socialLinks && connection.socialLinks.length > 0) {
         const socialLinksToInsert = connection.socialLinks.map(link => ({
           connection_id: id,
@@ -100,10 +103,8 @@ export const useAdminConnections = () => {
         if (linksError) throw linksError;
       }
 
-      // Sync the data to the frontend
       await syncConnectionsToFrontend();
       
-      // Reload connections
       await loadConnections();
       
       toast({
@@ -125,7 +126,6 @@ export const useAdminConnections = () => {
 
   const updateConnection = async (connection: Connection) => {
     try {
-      // Update the connection
       const { error } = await supabase
         .from('connections')
         .update({
@@ -142,7 +142,6 @@ export const useAdminConnections = () => {
 
       if (error) throw error;
 
-      // Delete existing social links
       const { error: deleteError } = await supabase
         .from('connection_social_links')
         .delete()
@@ -150,7 +149,6 @@ export const useAdminConnections = () => {
 
       if (deleteError) throw deleteError;
 
-      // Add new social links if provided
       if (connection.socialLinks && connection.socialLinks.length > 0) {
         const socialLinksToInsert = connection.socialLinks.map(link => ({
           connection_id: connection.id,
@@ -165,10 +163,8 @@ export const useAdminConnections = () => {
         if (linksError) throw linksError;
       }
 
-      // Sync the data to the frontend
       await syncConnectionsToFrontend();
       
-      // Reload connections
       await loadConnections();
       
       toast({
@@ -190,7 +186,6 @@ export const useAdminConnections = () => {
 
   const deleteConnection = async (id: string) => {
     try {
-      // Delete social links first due to foreign key constraints
       const { error: linksError } = await supabase
         .from('connection_social_links')
         .delete()
@@ -198,7 +193,6 @@ export const useAdminConnections = () => {
 
       if (linksError) throw linksError;
 
-      // Then delete the connection
       const { error } = await supabase
         .from('connections')
         .delete()
@@ -206,13 +200,10 @@ export const useAdminConnections = () => {
 
       if (error) throw error;
 
-      // Sync the data to the frontend
       await syncConnectionsToFrontend();
       
-      // Reload connections
       await loadConnections();
       
-      // Reset selected connection if it was deleted
       if (selectedConnection && selectedConnection.id === id) {
         setSelectedConnection(null);
       }
@@ -238,7 +229,6 @@ export const useAdminConnections = () => {
     try {
       if (!file) return null;
       
-      // Upload to Supabase Storage
       const fileExt = file.name.split('.').pop();
       const fileName = `${connectionId}_${Math.random().toString(36).substring(2)}.${fileExt}`;
       
@@ -248,14 +238,12 @@ export const useAdminConnections = () => {
       
       if (uploadError) throw uploadError;
       
-      // Get the public URL
       const { data: publicUrlData } = supabase.storage
         .from('connection-images')
         .getPublicUrl(fileName);
       
       const imageUrl = publicUrlData.publicUrl;
       
-      // Update the connection with the new image URL
       const { error: updateError } = await supabase
         .from('connections')
         .update({ image_url: imageUrl })
@@ -263,7 +251,6 @@ export const useAdminConnections = () => {
       
       if (updateError) throw updateError;
       
-      // Also store in connection_images table as fallback
       const { error: imageError } = await supabase
         .rpc('store_connection_image', { 
           p_person_id: connectionId,
@@ -272,13 +259,10 @@ export const useAdminConnections = () => {
       
       if (imageError) {
         console.error('Error storing image in connection_images table:', imageError);
-        // Continue anyway since the image URL is already in the connections table
       }
       
-      // Sync the data to the frontend
       await syncConnectionsToFrontend();
       
-      // Reload connections
       await loadConnections();
       
       toast({
