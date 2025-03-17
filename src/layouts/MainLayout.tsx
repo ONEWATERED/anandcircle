@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdminLink from '@/components/AdminLink';
+import ScrollToTopButton from '@/components/ScrollToTopButton';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -54,6 +55,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <AdminLink />
       </div>
       <Footer />
+      <ScrollToTopButton />
     </div>
   );
 };
