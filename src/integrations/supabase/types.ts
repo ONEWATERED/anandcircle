@@ -296,6 +296,36 @@ export type Database = {
           },
         ]
       }
+      story_milestones: {
+        Row: {
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          order_position: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          icon: string
+          id?: string
+          order_position: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          order_position?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

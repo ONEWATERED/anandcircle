@@ -11,6 +11,7 @@ import AdminDashboard from '@/pages/AdminDashboard';
 import AdminSettings from '@/pages/AdminSettings';
 import AdminLayout from '@/layouts/AdminLayout';
 import AdminConnections from '@/pages/AdminConnections';
+import AdminStoryMilestones from '@/pages/AdminStoryMilestones';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="settings" element={<AdminSettings />} />
           <Route path="connections" element={<AdminConnections />} />
+          <Route path="story" element={<AdminStoryMilestones />} />
         </Route>
         
         <Route path="*" element={<NotFound />} />

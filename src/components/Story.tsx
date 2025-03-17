@@ -3,7 +3,8 @@ import React from 'react';
 import ProfileImage from './ProfileImage';
 import ResumeButton from './ResumeButton';
 import { createGlobalStyle } from 'styled-components';
-import { Award, Droplets, Globe, GraduationCap, Briefcase, Star } from 'lucide-react';
+import { Award, Droplets, Globe, GraduationCap, Briefcase, Star, Loader2 } from 'lucide-react';
+import { useStoryMilestones } from '@/hooks/useStoryMilestones';
 
 // Add global style for the neural network animations
 const NeuralAnimations = createGlobalStyle`
@@ -40,7 +41,19 @@ const NeuralAnimations = createGlobalStyle`
   }
 `;
 
+// Map icon names to Lucide components
+const iconMap: Record<string, React.ReactNode> = {
+  GraduationCap: <GraduationCap size={16} className="text-primary" />,
+  Briefcase: <Briefcase size={16} className="text-primary" />,
+  Award: <Award size={16} className="text-primary" />,
+  Droplets: <Droplets size={16} className="text-primary" />,
+  Globe: <Globe size={16} className="text-primary" />,
+  Star: <Star size={16} className="text-primary" />
+};
+
 const Story = () => {
+  const { milestones, loading, error } = useStoryMilestones();
+
   return (
     <section id="story" className="relative py-24 overflow-hidden">
       <NeuralAnimations />
@@ -70,65 +83,38 @@ const Story = () => {
             
             {/* Timeline element */}
             <div className="relative border-l-2 border-primary/20 pl-8 pb-2 space-y-8 opacity-0 animate-fade-up" style={{ animationDelay: '100ms' }}>
-              {/* Milestone 1 */}
-              <div className="relative">
-                <div className="absolute -left-[42px] flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 shadow-md">
-                  <GraduationCap size={16} className="text-primary" />
+              {loading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                  <span className="ml-2 text-muted-foreground">Loading story...</span>
                 </div>
-                <h3 className="text-lg font-semibold text-primary">The Journey Begins</h3>
-                <p className="text-muted-foreground leading-relaxed mt-2">
-                  Nearly 30 years ago, I arrived in the United States as an immigrant student with determination and dreams. This foundation of perseverance shaped my approach to challenges and opportunities that would follow.
-                </p>
-              </div>
-              
-              {/* Milestone 2 */}
-              <div className="relative">
-                <div className="absolute -left-[42px] flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 shadow-md">
-                  <Briefcase size={16} className="text-primary" />
+              ) : error ? (
+                <div className="p-4 bg-red-50 text-red-700 rounded-md">
+                  <p>Failed to load story milestones. Please try again later.</p>
                 </div>
-                <h3 className="text-lg font-semibold text-primary">Building Expertise</h3>
-                <p className="text-muted-foreground leading-relaxed mt-2">
-                  My career began as a consultant, where I developed critical problem-solving skills and sector knowledge. This experience allowed me to transition into regulation, where I gained a deep understanding of policy frameworks and public service.
-                </p>
-              </div>
-              
-              {/* Milestone 3 */}
-              <div className="relative">
-                <div className="absolute -left-[42px] flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 shadow-md">
-                  <Award size={16} className="text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-primary">Executive Leadership</h3>
-                <p className="text-muted-foreground leading-relaxed mt-2">
-                  As Public Works Director for the City of Fort Lauderdale, I led transformative initiatives that improved infrastructure and community services. This executive role taught me how to balance competing priorities while maintaining a focus on public benefit.
-                </p>
-              </div>
-              
-              {/* Milestone 4 */}
-              <div className="relative">
-                <div className="absolute -left-[42px] flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 shadow-md">
-                  <Droplets size={16} className="text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-primary">Infrastructure Innovation</h3>
-                <p className="text-muted-foreground leading-relaxed mt-2">
-                  I returned to Miami-Dade to oversee an $8.5 billion infrastructure program with Miami Water and Sewer, integrating cutting-edge technology with sustainable practices. This massive undertaking required strategic vision and meticulous execution.
-                </p>
-              </div>
-              
-              {/* Milestone 5 */}
-              <div className="relative">
-                <div className="absolute -left-[42px] flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-primary/30 to-accent/30 shadow-md">
-                  <Globe size={16} className="text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-primary">Pioneering Leadership</h3>
-                <p className="text-muted-foreground leading-relaxed mt-2">
-                  My appointment as the country's first One Water Director marked a historic milestone. I now oversee water management across 35 cities in Miami-Dade County, pioneering an integrated approach that connects communities, technology, and environmental stewardship.
-                </p>
-                {/* Signature moved here, right after the last milestone text */}
-                <div className="text-left mt-3">
-                  <p className="text-muted-foreground text-sm italic">Grateful,</p>
-                  <h3 className="text-xl font-['Pinyon_Script',_cursive] text-primary/90">Hardeep</h3>
-                </div>
-              </div>
+              ) : (
+                <>
+                  {milestones.map((milestone, index) => (
+                    <div className="relative" key={milestone.id}>
+                      <div className="absolute -left-[42px] flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 shadow-md">
+                        {iconMap[milestone.icon]}
+                      </div>
+                      <h3 className="text-lg font-semibold text-primary">{milestone.title}</h3>
+                      <p className="text-muted-foreground leading-relaxed mt-2">
+                        {milestone.description}
+                      </p>
+                      
+                      {/* Signature after the last milestone */}
+                      {index === milestones.length - 1 && (
+                        <div className="text-left mt-3">
+                          <p className="text-muted-foreground text-sm italic">Grateful,</p>
+                          <h3 className="text-xl font-['Pinyon_Script',_cursive] text-primary/90">Hardeep</h3>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </>
+              )}
               
               {/* Connecting line effect */}
               <div className="absolute left-[-1px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary/10 via-primary/30 to-accent/20"></div>
