@@ -3,6 +3,7 @@ import React from 'react';
 import OneWaterPromo from './OneWaterPromo';
 import ResumeButton from './ResumeButton';
 import { FileText, ExternalLink, Heart } from 'lucide-react';
+import NewsletterSubscription from './NewsletterSubscription';
 
 const Footer = () => {
   return (
@@ -75,17 +76,14 @@ const Footer = () => {
                 Join our community for deeper insights and connections.
               </p>
               <a
-                href="#anand-circle"
+                href="https://www.circleso.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center h-10 px-4 font-medium tracking-wide text-white transition duration-200 rounded-full bg-primary hover:bg-primary/90 w-full mb-3"
               >
                 Join the One Water Circle
               </a>
-              <a
-                href="#newsletter"
-                className="inline-flex items-center justify-center h-10 px-4 font-medium tracking-wide text-white transition duration-200 rounded-full bg-primary hover:bg-primary/90 w-full"
-              >
-                Subscribe to Newsletter
-              </a>
+              <NewsletterSubscription />
             </div>
           </div>
           
