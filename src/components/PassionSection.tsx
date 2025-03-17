@@ -35,9 +35,9 @@ const passions = [
 
 const PassionSection = () => {
   return (
-    <section id="passions" className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50">
+    <section id="passions" className="py-12 md:py-16 bg-gradient-to-b from-white to-gray-50">
       <div className="section-container">
-        <div className="text-center mb-12 opacity-0 animate-fade-up">
+        <div className="text-center mb-10 opacity-0 animate-fade-up">
           <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-3">My Domains</h2>
           <h3 className="text-3xl md:text-4xl font-display font-bold mb-6">Areas of Expertise & Innovation</h3>
           <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
@@ -47,7 +47,7 @@ const PassionSection = () => {
         </div>
         
         {/* Interactive Animated Graphic */}
-        <div className="mb-16">
+        <div className="mb-12">
           <InterconnectedDomainsGraphic />
         </div>
         
