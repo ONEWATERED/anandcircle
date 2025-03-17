@@ -131,9 +131,14 @@ const Story = () => {
             
             <div className="w-24 h-0.5 bg-gradient-to-r from-primary/30 to-accent/30 my-6 opacity-0 animate-fade-up" style={{ animationDelay: '400ms' }}></div>
             
-            <p className="text-muted-foreground opacity-0 animate-fade-up leading-relaxed text-lg" style={{ animationDelay: '500ms' }}>
-              My journey from immigrant student to pioneering public servant embodies the power of perseverance and innovation. Throughout my career, I've leveraged technology and data to solve complex challenges, while maintaining a deep commitment to community service and sustainability.
-            </p>
+            {/* Replace the paragraph with a calligraphic signature */}
+            <div className="flex flex-col items-center justify-center py-8 opacity-0 animate-fade-up" style={{ animationDelay: '500ms' }}>
+              <p className="text-center text-xl text-primary/80 font-serif italic mb-3">Grateful</p>
+              <div className="signature-container relative">
+                <h3 className="text-4xl md:text-5xl font-['Pinyon_Script',_cursive] text-primary/90">Hardeep</h3>
+                <div className="absolute -bottom-3 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
+              </div>
+            </div>
             
             <div className="pt-8 flex flex-wrap gap-4 opacity-0 animate-fade-up" style={{ animationDelay: '600ms' }}>
               <a 

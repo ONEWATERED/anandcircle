@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdminLink from '@/components/AdminLink';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
+import OneWaterPromo from '@/components/OneWaterPromo';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -12,6 +13,12 @@ interface MainLayoutProps {
 const MainLayout = ({ children }: MainLayoutProps) => {
   // Intersection Observer for animations
   useEffect(() => {
+    // Add Pinyon Script font for signature
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -51,6 +58,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">{children}</main>
+      <OneWaterPromo />
       <div className="flex justify-end p-2 border-t">
         <AdminLink />
       </div>
