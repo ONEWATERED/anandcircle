@@ -1,7 +1,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { familyMembers } from "@/data/familyData";
-import { people } from "@/components/FollowingSection";
+import { defaultPeople } from "@/components/following/connectionUtils";
 import { saveConnectionImage } from "./connectionImages";
 
 // Function to sync family members data
@@ -11,8 +11,8 @@ export const syncFamilyMembersWithDatabase = async () => {
     
     // For each family member, ensure there's a connection image entry
     for (const member of familyMembers) {
-      // Try to find a corresponding person in the people array
-      const personMatch = people.find(p => p.id === member.id);
+      // Try to find a corresponding person in the defaultPeople array
+      const personMatch = defaultPeople.find(p => p.id === member.id);
       
       if (personMatch && personMatch.image && !personMatch.image.includes('/placeholder.svg')) {
         // If we found a match with an image, save the connection image
@@ -31,10 +31,10 @@ export const syncFamilyMembersWithDatabase = async () => {
           url
         }));
         
-        // Find the corresponding person and update their social links
-        const personIndex = people.findIndex(p => p.id === member.id);
+        // Find the corresponding person in defaultPeople and update their social links
+        const personIndex = defaultPeople.findIndex(p => p.id === member.id);
         if (personIndex !== -1) {
-          const updatedPeople = [...people];
+          const updatedPeople = [...defaultPeople];
           updatedPeople[personIndex] = {
             ...updatedPeople[personIndex],
             socialLinks: socialLinks.map(link => ({
@@ -63,7 +63,7 @@ export const syncThoughtLeadersWithDatabase = async () => {
     console.log("Starting to sync thought leaders with database...");
     
     // Get only the thought leaders (non-family members)
-    const thoughtLeaders = people.filter(p => p.category !== 'family');
+    const thoughtLeaders = defaultPeople.filter(p => p.category !== 'family');
     
     // For each thought leader, ensure there's a connection image entry
     for (const leader of thoughtLeaders) {

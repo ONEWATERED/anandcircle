@@ -32,12 +32,13 @@ export const FollowingSection: React.FC = () => {
         }
 
         if (connectionsData && connectionsData.length > 0) {
-          // Convert connections to Person[] format
+          // Convert connections to Person[] format with proper type casting
           const convertedPeople = connectionsData.map(connection => ({
             id: connection.id,
             name: connection.name,
             role: connection.role,
-            category: connection.category,
+            // Explicitly cast the category to the expected union type
+            category: connection.category as Person['category'],
             relationship: connection.bio,
             image: connection.image_url,
             special: connection.special || false
@@ -79,6 +80,3 @@ export const FollowingSection: React.FC = () => {
     </section>
   );
 };
-
-// We don't export the default people from this component anymore
-// as it's now handled by useLocalConnections
