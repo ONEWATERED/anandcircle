@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { FileText, ExternalLink, Download, Save } from 'lucide-react';
+import { FileText, ExternalLink, Download, Save, Printer, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ResumeSectionProps {
@@ -28,6 +28,54 @@ const ResumeSection: React.FC<ResumeSectionProps> = ({ initialResumeUrl }) => {
     } else {
       toast.error('Please save a resume URL first');
     }
+  };
+
+  const handlePrintResume = () => {
+    if (resumeUrl) {
+      const printWindow = window.open(resumeUrl, '_blank');
+      if (printWindow) {
+        printWindow.addEventListener('load', () => {
+          printWindow.print();
+        });
+      }
+    } else {
+      toast.error('Please save a resume URL first');
+    }
+  };
+
+  const handleShareResume = async () => {
+    if (!resumeUrl) {
+      toast.error('Please save a resume URL first');
+      return;
+    }
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'My Resume',
+          url: resumeUrl
+        });
+        toast.success('Resume shared successfully!');
+      } catch (error) {
+        console.error('Error sharing:', error);
+        // Fallback to copy to clipboard
+        copyToClipboard(resumeUrl);
+      }
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      copyToClipboard(resumeUrl);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        toast.success('Resume URL copied to clipboard!');
+      })
+      .catch((err) => {
+        console.error('Could not copy resume URL:', err);
+        toast.error('Failed to copy URL to clipboard');
+      });
   };
 
   return (
@@ -73,9 +121,13 @@ const ResumeSection: React.FC<ResumeSectionProps> = ({ initialResumeUrl }) => {
             <Download className="mr-2 h-4 w-4" />
             Download PDF
           </Button>
-          <Button variant="outline" className="w-full sm:w-auto" onClick={() => window.open(`${resumeUrl}/png`, '_blank')}>
-            <Download className="mr-2 h-4 w-4" />
-            Download PNG
+          <Button variant="outline" className="w-full sm:w-auto" onClick={handlePrintResume}>
+            <Printer className="mr-2 h-4 w-4" />
+            Print
+          </Button>
+          <Button variant="outline" className="w-full sm:w-auto" onClick={handleShareResume}>
+            <Share2 className="mr-2 h-4 w-4" />
+            Share
           </Button>
         </CardFooter>
       )}
