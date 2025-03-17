@@ -123,6 +123,11 @@ const Story = () => {
                 <p className="text-muted-foreground leading-relaxed mt-2">
                   My appointment as the country's first One Water Director marked a historic milestone. I now oversee water management across 35 cities in Miami-Dade County, pioneering an integrated approach that connects communities, technology, and environmental stewardship.
                 </p>
+                {/* Signature moved here, right after the last milestone text */}
+                <div className="text-left mt-3">
+                  <p className="text-muted-foreground text-sm italic">Grateful,</p>
+                  <h3 className="text-xl font-['Pinyon_Script',_cursive] text-primary/90">Hardeep</h3>
+                </div>
               </div>
               
               {/* Connecting line effect */}
@@ -130,15 +135,6 @@ const Story = () => {
             </div>
             
             <div className="w-24 h-0.5 bg-gradient-to-r from-primary/30 to-accent/30 my-6 opacity-0 animate-fade-up" style={{ animationDelay: '400ms' }}></div>
-            
-            {/* Replace the paragraph with a calligraphic signature */}
-            <div className="flex flex-col items-center justify-center py-8 opacity-0 animate-fade-up" style={{ animationDelay: '500ms' }}>
-              <p className="text-center text-xl text-primary/80 font-serif italic mb-3">Grateful</p>
-              <div className="signature-container relative">
-                <h3 className="text-4xl md:text-5xl font-['Pinyon_Script',_cursive] text-primary/90">Hardeep</h3>
-                <div className="absolute -bottom-3 left-1/4 right-1/4 h-0.5 bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
-              </div>
-            </div>
             
             <div className="pt-8 flex flex-wrap gap-4 opacity-0 animate-fade-up" style={{ animationDelay: '600ms' }}>
               <a 
