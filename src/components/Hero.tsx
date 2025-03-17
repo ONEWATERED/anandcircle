@@ -26,9 +26,7 @@ const Hero = () => {
       <div className="section-container z-10 text-center max-w-5xl mx-auto">
         {/* Center aligned content */}
         <div className="space-y-6 animate-fade-up px-4">
-          <div className="inline-block glass-dark rounded-full px-4 py-1 text-sm font-medium text-white/90 animate-fade-up animate-delay-100">
-            hardeepand.com
-          </div>
+          {/* Removed the hardeepand.com text that was here */}
           
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight text-white text-balance animate-fade-up animate-delay-200 drop-shadow-lg">
             Innovating at the <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-teal-300">Intersection</span>
