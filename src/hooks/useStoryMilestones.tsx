@@ -24,7 +24,9 @@ export function useStoryMilestones() {
   const fetchMilestones = async () => {
     try {
       setLoading(true);
+      setError(null);
       
+      console.log('Fetching story milestones...');
       const { data, error } = await supabase
         .from('story_milestones')
         .select('*')
@@ -36,6 +38,7 @@ export function useStoryMilestones() {
         return;
       }
       
+      console.log('Fetched milestones:', data);
       setMilestones(data || []);
     } catch (err) {
       console.error('Error in fetchMilestones:', err);

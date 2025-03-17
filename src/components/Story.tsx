@@ -56,6 +56,12 @@ const iconMap: Record<string, React.ReactNode> = {
 const Story = () => {
   const { milestones, loading, error } = useStoryMilestones();
 
+  console.log('Story component rendering with:', { 
+    milestoneCount: milestones.length,
+    loading,
+    error: error?.message
+  });
+
   return (
     <section id="story" className="relative py-24 overflow-hidden">
       <NeuralAnimations />
@@ -93,6 +99,10 @@ const Story = () => {
               ) : error ? (
                 <div className="p-4 bg-red-50 text-red-700 rounded-md">
                   <p>Failed to load story milestones. Please try again later.</p>
+                </div>
+              ) : milestones.length === 0 ? (
+                <div className="p-4 text-center">
+                  <p className="text-muted-foreground">No story milestones found. Please add some from the admin panel.</p>
                 </div>
               ) : (
                 <>

@@ -8,7 +8,7 @@ const MilestonesError = () => {
       <AlertTriangle className="w-5 h-5 mt-0.5" />
       <div>
         <h3 className="font-medium">Failed to load milestones</h3>
-        <p className="text-sm opacity-80">There was an error loading your story milestones. Please try refreshing the page.</p>
+        <p className="text-sm opacity-80">There was an error loading your story milestones. Please try refreshing the page or check your database connection.</p>
       </div>
     </div>
   );
