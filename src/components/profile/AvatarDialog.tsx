@@ -40,7 +40,7 @@ const AvatarDialog = ({
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
-          {/* Single, more prominent neural connection path */}
+          {/* Neural connection path with "Chat with me" text */}
           <div className="absolute top-12 right-6 w-28 h-16 overflow-visible pointer-events-none">
             <svg width="100%" height="100%" viewBox="0 0 100 60" className="absolute">
               <path 
@@ -51,6 +51,21 @@ const AvatarDialog = ({
                 strokeDasharray="5,3"
                 className="animate-pulse" 
               />
+              
+              {/* Text path for "Chat with me" */}
+              <path 
+                id="textPath" 
+                d="M15,48 C35,38 65,28 85,12" 
+                fill="none" 
+                stroke="none" 
+              />
+              
+              <text className="text-xs font-medium">
+                <textPath href="#textPath" startOffset="25%" className="fill-primary">
+                  Chat with me
+                </textPath>
+              </text>
+              
               <defs>
                 <linearGradient id="gradient-path" x1="0%" y1="100%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#9b87f5" stopOpacity="0.4" />
