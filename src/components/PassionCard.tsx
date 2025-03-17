@@ -12,13 +12,15 @@ type PassionCardProps = {
   imageSrc?: string;
   colorAccent: string;
   index: number;
+  link?: string; // Added link prop
 };
 
 const PassionCard = ({
   title,
   description,
   colorAccent,
-  index
+  index,
+  link
 }: PassionCardProps) => {
   return (
     <div 
@@ -35,6 +37,19 @@ const PassionCard = ({
           <p className="text-gray-700 text-sm">
             {description}
           </p>
+
+          {link && (
+            <div className="mt-4">
+              <a 
+                href={link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+              >
+                Learn more <ArrowRight className="ml-1 h-4 w-4" />
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </div>
