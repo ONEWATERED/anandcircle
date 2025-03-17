@@ -1,4 +1,6 @@
 
+import { ReactNode } from 'react';
+
 export interface Course {
   id: string;
   title: string;
@@ -7,53 +9,35 @@ export interface Course {
   duration: string;
   students: string;
   color: string;
-  icon?: React.ReactNode; // Optional icon property
+  icon?: ReactNode; // Optional icon property
 }
 
 export const courses = [
   {
-    id: 'data-fundamentals',
-    title: 'Data Fundamentals',
-    description: 'Master the essentials of data analysis, visualization, and interpretation. Learn to transform raw data into actionable insights.',
-    difficulty: 'Beginner' as const,
-    duration: '4 weeks',
-    students: '250+',
-    color: 'from-blue-500 to-cyan-400'
+    id: 'prompt-engineering',
+    title: 'AI Prompt Engineering Mastery',
+    description: 'Master the art of crafting effective prompts for different AI models. Learn advanced techniques to get consistently high-quality outputs for your specific use cases.',
+    difficulty: 'Intermediate' as const,
+    duration: '6 weeks',
+    students: '120+',
+    color: 'from-purple-600 to-indigo-500'
   },
   {
     id: 'ai-foundations',
-    title: 'AI Foundations',
-    description: 'Understand the core concepts of artificial intelligence and machine learning. Build your first AI models with hands-on projects.',
-    difficulty: 'Intermediate' as const,
-    duration: '6 weeks',
-    students: '180+',
-    color: 'from-purple-500 to-pink-400'
-  },
-  {
-    id: 'prompt-engineering',
-    title: 'Prompt Engineering Mastery',
-    description: 'Learn advanced techniques to craft effective prompts for large language models. Maximize AI outputs for your specific needs.',
-    difficulty: 'Advanced' as const,
-    duration: '5 weeks',
-    students: '120+',
-    color: 'from-emerald-500 to-teal-400'
-  },
-  {
-    id: 'data-visualization',
-    title: 'Data Visualization',
-    description: 'Create compelling visual narratives with data. Learn to use modern visualization tools to communicate insights effectively.',
-    difficulty: 'Intermediate' as const,
-    duration: '5 weeks',
-    students: '210+',
-    color: 'from-amber-500 to-orange-400'
-  },
-  {
-    id: 'llm-development',
-    title: 'LLM Development',
-    description: 'Develop and fine-tune large language models for specific business applications and use cases.',
-    difficulty: 'Advanced' as const,
+    title: 'Applied AI for Professionals',
+    description: 'Understand key AI concepts and learn how to implement AI solutions in your organization. No coding experience required - focus on practical applications.',
+    difficulty: 'Beginner' as const,
     duration: '8 weeks',
-    students: '90+',
-    color: 'from-indigo-500 to-violet-400'
+    students: '180+',
+    color: 'from-blue-500 to-cyan-400'
+  },
+  {
+    id: 'notion-mastery',
+    title: 'Notion System Design',
+    description: 'Build powerful knowledge management systems in Notion. Learn to create databases, automate workflows, and design systems that scale with your needs.',
+    difficulty: 'Beginner' as const,
+    duration: '4 weeks',
+    students: '150+',
+    color: 'from-emerald-500 to-teal-400'
   }
 ];

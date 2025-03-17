@@ -1,20 +1,19 @@
 
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import CourseShowcase from '@/components/CourseShowcase'; // Courses
-import AIGalleryShowcase from '@/components/AIGalleryShowcase'; // Digital collections
-import { GraduationCap, Images } from 'lucide-react';
+import CourseShowcase from '@/components/CourseShowcase';
+import { GraduationCap, Users } from 'lucide-react';
 
 const TabbedContentSection = () => {
   return (
-    <section id="articles" className="py-10 bg-white">
+    <section id="courses" className="py-14 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
+        <div className="text-center mb-10">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            My Collections
+            Exclusive Courses
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
-            Join the circle for access to the collection
+            Join the One Water Circle for access to premium learning experiences
           </p>
         </div>
         
@@ -25,14 +24,14 @@ const TabbedContentSection = () => {
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-500 data-[state=active]:text-white flex items-center gap-2 py-3 text-lg transition-all duration-300"
             >
               <GraduationCap className="h-5 w-5" />
-              <span>Courses</span>
+              <span>Featured Courses</span>
             </TabsTrigger>
             <TabsTrigger 
-              value="digital" 
+              value="community" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-cyan-400 data-[state=active]:text-white flex items-center gap-2 py-3 text-lg transition-all duration-300"
             >
-              <Images className="h-5 w-5" />
-              <span>Digital Art</span>
+              <Users className="h-5 w-5" />
+              <span>Join Circle</span>
             </TabsTrigger>
           </TabsList>
           
@@ -41,8 +40,26 @@ const TabbedContentSection = () => {
               <CourseShowcase />
             </TabsContent>
             
-            <TabsContent value="digital" className="mt-0">
-              <AIGalleryShowcase />
+            <TabsContent value="community" className="mt-0">
+              <div className="max-w-3xl mx-auto text-center">
+                <div className="p-8 rounded-3xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                    Join the <span className="text-gradient-primary">One Water Circle</span>
+                  </h3>
+                  <p className="text-muted-foreground mb-6">
+                    Connect with like-minded professionals, participate in exclusive events, 
+                    and engage in meaningful discussions around data science, AI, and prompt engineering.
+                  </p>
+                  <a 
+                    href="https://www.circleso.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center h-11 px-6 font-medium tracking-wide text-white transition duration-200 rounded-lg bg-gradient-to-r from-primary to-accent hover:opacity-90"
+                  >
+                    Join the One Water Circle
+                  </a>
+                </div>
+              </div>
             </TabsContent>
           </div>
         </Tabs>
