@@ -46,12 +46,6 @@ const Footer = () => {
                 <li>
                   <a href="#interest-form" className="text-muted-foreground hover:text-primary transition-colors">Create Your Own</a>
                 </li>
-                <li>
-                  <a href="#" className="flex items-center text-muted-foreground hover:text-primary transition-colors">
-                    <FileText className="mr-2 h-4 w-4" />
-                    Resume/CV
-                  </a>
-                </li>
               </ul>
             </div>
             
@@ -78,13 +72,19 @@ const Footer = () => {
             <div>
               <h4 className="text-lg font-display font-semibold mb-4">Connect</h4>
               <p className="text-muted-foreground mb-4">
-                Join my community for deeper insights and connections.
+                Join our community for deeper insights and connections.
               </p>
               <a
                 href="#anand-circle"
-                className="inline-flex items-center justify-center h-10 px-4 font-medium tracking-wide text-white transition duration-200 rounded-full bg-primary hover:bg-primary/90"
+                className="inline-flex items-center justify-center h-10 px-4 font-medium tracking-wide text-white transition duration-200 rounded-full bg-primary hover:bg-primary/90 w-full mb-3"
               >
-                Join the Community
+                Join the One Water Circle
+              </a>
+              <a
+                href="#newsletter"
+                className="inline-flex items-center justify-center h-10 px-4 font-medium tracking-wide text-white transition duration-200 rounded-full bg-primary hover:bg-primary/90 w-full"
+              >
+                Subscribe to Newsletter
               </a>
             </div>
           </div>
