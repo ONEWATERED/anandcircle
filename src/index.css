@@ -158,4 +158,20 @@
     font-size: 0.7rem;
     line-height: 1rem;
   }
+  
+  /* Add the pulse-travel animation for the connection line */
+  @keyframes pulse-travel {
+    0% {
+      transform: translateX(0);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateX(150%);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateX(300%);
+      opacity: 0.3;
+    }
+  }
 }

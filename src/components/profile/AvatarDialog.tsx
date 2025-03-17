@@ -40,6 +40,15 @@ const AvatarDialog = ({
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
+          {/* Pulsing connection line */}
+          <div className="absolute top-8 left-0 w-32 pointer-events-none overflow-visible">
+            {/* Base connection line */}
+            <div className="absolute top-2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/20 to-primary/40"></div>
+            
+            {/* Pulsing effect that travels along the line */}
+            <div className="absolute top-1.5 left-0 w-8 h-1 rounded-full bg-primary/60 animate-[pulse-travel_3s_ease-in-out_infinite]"></div>
+          </div>
+          
           <div className={`neo-glass p-1.5 rounded-full shadow-lg transition-all duration-300 ${isAvatarPulsing ? 'animate-pulse ring-4 ring-primary/60 scale-105' : 'ring-2 ring-primary/40'}`}>
             <Avatar className="h-12 w-12 border-2 border-white/60 bg-primary/10">
               <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white text-sm font-semibold">

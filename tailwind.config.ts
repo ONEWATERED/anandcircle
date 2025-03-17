@@ -105,6 +105,11 @@ export default {
 				'flip': {
 					'0%': { transform: 'rotateY(0deg)' },
 					'100%': { transform: 'rotateY(180deg)' }
+				},
+				'pulse-travel': {
+					'0%': { transform: 'translateX(0)', opacity: '0.3' },
+					'50%': { transform: 'translateX(150%)', opacity: '0.8' },
+					'100%': { transform: 'translateX(300%)', opacity: '0.3' }
 				}
 			},
 			animation: {
@@ -115,7 +120,8 @@ export default {
 				'fade-down': 'fade-down 0.7s ease-out forwards',
 				'fade-left': 'fade-left 0.7s ease-out forwards',
 				'fade-right': 'fade-right 0.7s ease-out forwards',
-				'flip': 'flip 0.5s ease-out forwards'
+				'flip': 'flip 0.5s ease-out forwards',
+				'pulse-travel': 'pulse-travel 3s ease-in-out infinite'
 			}
 		}
 	},
