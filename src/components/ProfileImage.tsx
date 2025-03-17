@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { PersonalProfile } from '@/types/thought-leaders';
 import SocialMediaLinks from './profile/SocialMediaLinks';
@@ -16,7 +17,7 @@ const ProfileImage = () => {
     twitter: 'https://twitter.com/hardeepanand',
     youtube: 'https://youtube.com/@hardeepanand',
     spotify: 'https://open.spotify.com/user/hardeepanand',
-    anandCircle: '#anand-circle'
+    anandCircle: 'https://www.circleso.com'
   });
 
   useEffect(() => {
