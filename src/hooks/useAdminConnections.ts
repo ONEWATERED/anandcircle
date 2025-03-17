@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Connection, SocialLink } from '@/types/thought-leaders';
 import { useSyncConnections } from './useSyncConnections';
+import { ensureConnectionImagesBucket } from '@/utils/ensureStorageBucket';
 
 export const useAdminConnections = () => {
   const [connections, setConnections] = useState<Connection[]>([]);
@@ -13,6 +15,8 @@ export const useAdminConnections = () => {
 
   useEffect(() => {
     loadConnections();
+    // Ensure the storage bucket exists when the hook is initialized
+    ensureConnectionImagesBucket();
   }, []);
 
   const loadConnections = async () => {
@@ -232,18 +236,27 @@ export const useAdminConnections = () => {
       const fileExt = file.name.split('.').pop();
       const fileName = `${connectionId}_${Math.random().toString(36).substring(2)}.${fileExt}`;
       
+      // Upload the file to the connection-images bucket
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('connection-images')
-        .upload(fileName, file);
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: true
+        });
       
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Error uploading image:', uploadError);
+        throw uploadError;
+      }
       
+      // Get the public URL of the uploaded image
       const { data: publicUrlData } = supabase.storage
         .from('connection-images')
         .getPublicUrl(fileName);
       
       const imageUrl = publicUrlData.publicUrl;
       
+      // Update the connection with the new image URL
       const { error: updateError } = await supabase
         .from('connections')
         .update({ image_url: imageUrl })
@@ -251,6 +264,7 @@ export const useAdminConnections = () => {
       
       if (updateError) throw updateError;
       
+      // Store the image in the connection_images table using the RPC function
       const { error: imageError } = await supabase
         .rpc('store_connection_image', { 
           p_person_id: connectionId,

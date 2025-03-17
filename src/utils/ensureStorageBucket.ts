@@ -27,6 +27,15 @@ export const ensureConnectionImagesBucket = async () => {
       console.log('connection-images bucket created successfully');
     } else {
       console.log('connection-images bucket already exists');
+      
+      // Make sure the bucket is public
+      const { error: updateError } = await supabase.storage.updateBucket('connection-images', {
+        public: true
+      });
+      
+      if (updateError) {
+        console.error('Error updating bucket visibility:', updateError);
+      }
     }
     
     return true;
