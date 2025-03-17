@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { FileText, ExternalLink, Download, Save, Printer, Share2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { saveResumeToDatabase } from '@/utils/profileUtils';
+import { supabase } from '@/integrations/supabase/client';
+import { ensureHttpProtocol } from '@/utils/databaseConnection';
 
 interface ResumeSectionProps {
   initialResumeUrl: string;
@@ -30,17 +31,55 @@ const ResumeSection: React.FC<ResumeSectionProps> = ({ initialResumeUrl }) => {
 
     setIsSaving(true);
     try {
-      // Save to localStorage
-      localStorage.setItem('resumeUrl', resumeUrl);
+      // Ensure URL has proper protocol
+      const validUrl = ensureHttpProtocol(resumeUrl);
+      
+      // Save to localStorage first as fallback
+      localStorage.setItem('resumeUrl', validUrl);
       
       // Save to database if possible
-      const savedToDb = await saveResumeToDatabase(resumeUrl);
+      let savedToDb = false;
+      
+      try {
+        // First check if user is authenticated
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .update({ 
+              updated_at: new Date().toISOString() 
+            })
+            .eq('id', session.user.id);
+            
+          if (profileError) {
+            console.error("Error updating profiles:", profileError);
+          }
+        }
+        
+        // Always update personal_profile table which does have resume_url field
+        const { error } = await supabase
+          .from('personal_profile')
+          .update({ resume_url: validUrl })
+          .eq('id', 'hardeep');
+          
+        if (error) {
+          console.error("Error saving resume to personal_profile:", error);
+        } else {
+          savedToDb = true;
+        }
+      } catch (error) {
+        console.error("Error saving resume to database:", error);
+      }
       
       if (savedToDb) {
         toast.success('Resume URL saved to database and localStorage');
       } else {
-        toast.success('Resume URL saved to localStorage (database connection not available)');
+        toast.success('Resume URL saved to localStorage');
       }
+      
+      // Update the state with the validated URL
+      setResumeUrl(validUrl);
     } catch (error) {
       console.error('Error saving resume URL:', error);
       toast.error('Error saving resume URL');
@@ -51,7 +90,7 @@ const ResumeSection: React.FC<ResumeSectionProps> = ({ initialResumeUrl }) => {
 
   const openResume = () => {
     if (resumeUrl) {
-      window.open(resumeUrl, '_blank');
+      window.open(resumeUrl, '_blank', 'noopener,noreferrer');
     } else {
       toast.error('Please save a resume URL first');
     }
@@ -59,10 +98,12 @@ const ResumeSection: React.FC<ResumeSectionProps> = ({ initialResumeUrl }) => {
 
   const handlePrintResume = () => {
     if (resumeUrl) {
-      const printWindow = window.open(resumeUrl, '_blank');
+      const printWindow = window.open(resumeUrl, '_blank', 'noopener,noreferrer');
       if (printWindow) {
         printWindow.addEventListener('load', () => {
-          printWindow.print();
+          setTimeout(() => {
+            printWindow.print();
+          }, 1000); // Give it time to load
         });
       }
     } else {
@@ -109,7 +150,7 @@ const ResumeSection: React.FC<ResumeSectionProps> = ({ initialResumeUrl }) => {
     // Basic URL validation
     if (!url) return true;
     try {
-      new URL(url);
+      new URL(ensureHttpProtocol(url));
       return true;
     } catch (e) {
       return false;
@@ -174,7 +215,7 @@ const ResumeSection: React.FC<ResumeSectionProps> = ({ initialResumeUrl }) => {
             <ExternalLink className="mr-2 h-4 w-4" />
             View Resume
           </Button>
-          <Button variant="outline" className="w-full sm:w-auto" onClick={() => window.open(`${resumeUrl}/pdf`, '_blank')}>
+          <Button variant="outline" className="w-full sm:w-auto" onClick={() => window.open(`${resumeUrl}/pdf`, '_blank', 'noopener,noreferrer')}>
             <Download className="mr-2 h-4 w-4" />
             Download PDF
           </Button>

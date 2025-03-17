@@ -1,9 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { checkDatabaseConnection } from '@/utils/imageLoader';
+import { checkDatabaseConnection } from '@/utils/databaseConnection';
+import { supabase } from '@/integrations/supabase/client';
 
 interface DatabaseStatusSectionProps {
   initialStatus: boolean;
@@ -12,20 +13,57 @@ interface DatabaseStatusSectionProps {
 const DatabaseStatusSection: React.FC<DatabaseStatusSectionProps> = ({ initialStatus }) => {
   const [isDatabaseConnected, setIsDatabaseConnected] = useState<boolean>(initialStatus);
   const [isCheckingConnection, setIsCheckingConnection] = useState<boolean>(false);
+  
+  useEffect(() => {
+    // Validate the initial connection status
+    const validateConnection = async () => {
+      if (initialStatus) {
+        try {
+          const isConnected = await checkDatabaseConnection();
+          if (isConnected !== initialStatus) {
+            setIsDatabaseConnected(isConnected);
+          }
+        } catch (error) {
+          console.error("Error validating database connection:", error);
+        }
+      }
+    };
+    
+    validateConnection();
+  }, [initialStatus]);
 
   const testDatabaseConnection = async () => {
     try {
       setIsCheckingConnection(true);
+      
+      // Test connection to Supabase
       const isConnected = await checkDatabaseConnection();
+      
+      // Update connection status
       setIsDatabaseConnected(isConnected);
+      
       if (isConnected) {
         toast.success("Successfully connected to database!");
+        
+        // Try to authenticate if not already authenticated
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (!session) {
+          toast.info("You're not logged in. Some features may be limited.", {
+            duration: 5000,
+            action: {
+              label: "Login",
+              onClick: () => window.location.href = "/admin/login"
+            }
+          });
+        }
       } else {
         toast.error("Failed to connect to database.");
       }
     } catch (error) {
       console.error("Error testing database connection:", error);
       toast.error("Error testing connection");
+      setIsDatabaseConnected(false);
     } finally {
       setIsCheckingConnection(false);
     }

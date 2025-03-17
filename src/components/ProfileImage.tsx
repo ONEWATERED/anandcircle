@@ -5,6 +5,8 @@ import AvatarDialog from './profile/AvatarDialog';
 import ProfileImageDisplay from './profile/ProfileImageDisplay';
 import DecorativeElements from './profile/DecorativeElements';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+import { ensureHttpProtocol } from '@/utils/databaseConnection';
 
 const ProfileImage = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -31,55 +33,104 @@ const ProfileImage = () => {
           setProfileImage(directProfileImage);
           console.log('Loaded profile image directly from localStorage');
         } else {
-          const storedProfile = localStorage.getItem('personalProfile');
-          
-          if (storedProfile) {
-            try {
-              const profileData: PersonalProfile = JSON.parse(storedProfile);
+          try {
+            const { data: profileData, error } = await supabase
+              .from('personal_profile')
+              .select('photo_url')
+              .eq('id', 'hardeep')
+              .single();
               
-              if (profileData.photo_url) {
-                setProfileImage(profileData.photo_url);
+            if (!error && profileData?.photo_url) {
+              setProfileImage(profileData.photo_url);
+              localStorage.setItem('profileImageUrl', profileData.photo_url);
+              console.log('Loaded profile image from Supabase');
+            } else {
+              const storedProfile = localStorage.getItem('personalProfile');
+              
+              if (storedProfile) {
+                try {
+                  const profileData: PersonalProfile = JSON.parse(storedProfile);
+                  
+                  if (profileData.photo_url) {
+                    setProfileImage(profileData.photo_url);
+                  } else {
+                    setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+                  }
+                  
+                  if (profileData.socialLinks) {
+                    const processedLinks = {
+                      linkedIn: ensureHttpProtocol(profileData.socialLinks.linkedin) || socialLinks.linkedIn,
+                      twitter: ensureHttpProtocol(profileData.socialLinks.twitter) || socialLinks.twitter,
+                      youtube: ensureHttpProtocol(profileData.socialLinks.youtube) || socialLinks.youtube,
+                      spotify: ensureHttpProtocol(profileData.socialLinks.spotify) || socialLinks.spotify,
+                      anandCircle: profileData.socialLinks.anandcircle || socialLinks.anandCircle
+                    };
+                    
+                    setSocialLinks(processedLinks);
+                  }
+                } catch (parseError) {
+                  console.error("Error parsing profile data:", parseError);
+                  setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+                }
               } else {
-                setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+                try {
+                  const linkedInUrl = ensureHttpProtocol(localStorage.getItem('linkedInUrl'));
+                  const twitterUrl = ensureHttpProtocol(localStorage.getItem('twitterUrl'));
+                  const youtubeUrl = ensureHttpProtocol(localStorage.getItem('youtubeUrl'));
+                  const spotifyUrl = ensureHttpProtocol(localStorage.getItem('spotifyUrl'));
+                  const anandCircleUrl = localStorage.getItem('anandCircleUrl');
+                  
+                  setSocialLinks({
+                    linkedIn: linkedInUrl || socialLinks.linkedIn,
+                    twitter: twitterUrl || socialLinks.twitter,
+                    youtube: youtubeUrl || socialLinks.youtube,
+                    spotify: spotifyUrl || socialLinks.spotify,
+                    anandCircle: anandCircleUrl || socialLinks.anandCircle
+                  });
+                  
+                  setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+                } catch (e) {
+                  console.error("Error loading individual social links:", e);
+                  setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+                }
               }
-              
-              if (profileData.socialLinks) {
-                const processedLinks = {
-                  linkedIn: ensureHttpProtocol(profileData.socialLinks.linkedin) || socialLinks.linkedIn,
-                  twitter: ensureHttpProtocol(profileData.socialLinks.twitter) || socialLinks.twitter,
-                  youtube: ensureHttpProtocol(profileData.socialLinks.youtube) || socialLinks.youtube,
-                  spotify: ensureHttpProtocol(profileData.socialLinks.spotify) || socialLinks.spotify,
-                  anandCircle: profileData.socialLinks.anandcircle || socialLinks.anandCircle
-                };
-                
-                setSocialLinks(processedLinks);
-              }
-            } catch (parseError) {
-              console.error("Error parsing profile data:", parseError);
-              setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
             }
-          } else {
-            try {
-              const linkedInUrl = ensureHttpProtocol(localStorage.getItem('linkedInUrl'));
-              const twitterUrl = ensureHttpProtocol(localStorage.getItem('twitterUrl'));
-              const youtubeUrl = ensureHttpProtocol(localStorage.getItem('youtubeUrl'));
-              const spotifyUrl = ensureHttpProtocol(localStorage.getItem('spotifyUrl'));
-              const anandCircleUrl = localStorage.getItem('anandCircleUrl');
-              
-              setSocialLinks({
-                linkedIn: linkedInUrl || socialLinks.linkedIn,
-                twitter: twitterUrl || socialLinks.twitter,
-                youtube: youtubeUrl || socialLinks.youtube,
-                spotify: spotifyUrl || socialLinks.spotify,
-                anandCircle: anandCircleUrl || socialLinks.anandCircle
-              });
-              
-              setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
-            } catch (e) {
-              console.error("Error loading individual social links:", e);
-              setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
-            }
+          } catch (error) {
+            console.error("Error loading profile from Supabase:", error);
+            setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+            toast.error("Error loading profile data");
           }
+        }
+        
+        try {
+          const { data: socialLinksData, error } = await supabase
+            .from('personal_social_links')
+            .select('platform, url')
+            .eq('profile_id', 'hardeep');
+            
+          if (!error && socialLinksData && socialLinksData.length > 0) {
+            const links = {
+              linkedIn: socialLinks.linkedIn,
+              twitter: socialLinks.twitter,
+              youtube: socialLinks.youtube,
+              spotify: socialLinks.spotify,
+              anandCircle: socialLinks.anandCircle
+            };
+            
+            socialLinksData.forEach(link => {
+              const platform = link.platform.toLowerCase();
+              if (platform === 'linkedin') links.linkedIn = ensureHttpProtocol(link.url);
+              if (platform === 'twitter') links.twitter = ensureHttpProtocol(link.url);
+              if (platform === 'youtube') links.youtube = ensureHttpProtocol(link.url);
+              if (platform === 'spotify') links.spotify = ensureHttpProtocol(link.url);
+              if (platform === 'anandcircle') links.anandCircle = link.url;
+            });
+            
+            setSocialLinks(links);
+            console.log('Loaded social links from Supabase');
+          }
+        } catch (error) {
+          console.error("Error loading social links from Supabase:", error);
         }
       } catch (error) {
         console.error("Error loading profile image:", error);
@@ -105,19 +156,6 @@ const ProfileImage = () => {
       clearInterval(connectionInterval);
     };
   }, []);
-
-  const ensureHttpProtocol = (url: string | null): string => {
-    if (!url) return '';
-    
-    if (url.startsWith('#') || 
-        url.startsWith('/') || 
-        url.startsWith('http://') || 
-        url.startsWith('https://')) {
-      return url;
-    }
-    
-    return `https://${url}`;
-  };
 
   const handleAvatarHover = () => {
     setShowAvatarHint(true);

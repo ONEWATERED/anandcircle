@@ -19,3 +19,17 @@ export const checkDatabaseConnection = async () => {
     return false;
   }
 };
+
+// Utility function to ensure URLs have proper protocol
+export const ensureHttpProtocol = (url: string | null): string => {
+  if (!url) return '';
+  
+  if (url.startsWith('#') || 
+      url.startsWith('/') || 
+      url.startsWith('http://') || 
+      url.startsWith('https://')) {
+    return url;
+  }
+  
+  return `https://${url}`;
+};

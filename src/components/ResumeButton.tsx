@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { toast } from 'sonner';
+import { ensureHttpProtocol } from '@/utils/databaseConnection';
 
 interface ResumeButtonProps {
   variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'link';
@@ -21,20 +22,54 @@ const ResumeButton = ({
 }: ResumeButtonProps) => {
   const [open, setOpen] = useState(false);
   const [resumeUrl, setResumeUrl] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Get resume URL from localStorage when component mounts
-    const storedResumeUrl = localStorage.getItem('resumeUrl');
-    if (storedResumeUrl) {
-      setResumeUrl(storedResumeUrl);
-    }
+    // Get resume URL from localStorage and validate it
+    const loadResumeUrl = async () => {
+      setIsLoading(true);
+      try {
+        // First try to get from Supabase if available
+        const { data: profileData, error } = await supabase
+          .from('personal_profile')
+          .select('resume_url')
+          .eq('id', 'hardeep')
+          .single();
+          
+        if (!error && profileData?.resume_url) {
+          const validUrl = ensureHttpProtocol(profileData.resume_url);
+          setResumeUrl(validUrl);
+          // Update localStorage for fallback
+          localStorage.setItem('resumeUrl', validUrl);
+        } else {
+          // Fallback to localStorage
+          const storedResumeUrl = localStorage.getItem('resumeUrl');
+          if (storedResumeUrl) {
+            const validUrl = ensureHttpProtocol(storedResumeUrl);
+            setResumeUrl(validUrl);
+          }
+        }
+      } catch (error) {
+        console.error('Error loading resume URL:', error);
+        // Final fallback - check localStorage directly
+        const storedResumeUrl = localStorage.getItem('resumeUrl');
+        if (storedResumeUrl) {
+          const validUrl = ensureHttpProtocol(storedResumeUrl);
+          setResumeUrl(validUrl);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadResumeUrl();
   }, []);
 
   // Handle external view (opens in new tab)
   const handleExternalView = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (resumeUrl) {
-      window.open(resumeUrl, '_blank');
+      window.open(resumeUrl, '_blank', 'noopener,noreferrer');
     } else {
       toast.error('No resume URL found. Please add a resume URL on your dashboard.');
       // Redirect to a page explaining that the resume will be available soon
@@ -46,10 +81,12 @@ const ResumeButton = ({
   const handlePrint = () => {
     if (resumeUrl) {
       // Open resume in a new window for printing
-      const printWindow = window.open(resumeUrl, '_blank');
+      const printWindow = window.open(resumeUrl, '_blank', 'noopener,noreferrer');
       if (printWindow) {
         printWindow.addEventListener('load', () => {
-          printWindow.print();
+          setTimeout(() => {
+            printWindow.print();
+          }, 1000); // Give it time to load
         });
       }
     } else {
@@ -97,7 +134,8 @@ const ResumeButton = ({
   // Handle download resume
   const handleDownload = () => {
     if (resumeUrl) {
-      window.open(`${resumeUrl}/pdf`, '_blank');
+      // Try to append /pdf if it's a link that supports it (like Gamma)
+      window.open(`${resumeUrl}/pdf`, '_blank', 'noopener,noreferrer');
     } else {
       toast.error('No resume URL found. Please add a resume URL on your dashboard.');
     }
@@ -108,16 +146,18 @@ const ResumeButton = ({
       <div className="text-center p-6">
         <FileText className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
         <p className="text-center text-muted-foreground mb-2">
-          No resume URL found. Please add a resume URL on your dashboard.
+          {isLoading ? 'Loading resume...' : 'No resume URL found. Please add a resume URL on your dashboard.'}
         </p>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => window.location.href = '/dashboard'}
-          className="mt-2"
-        >
-          Go to Dashboard
-        </Button>
+        {!isLoading && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.location.href = '/dashboard'}
+            className="mt-2"
+          >
+            Go to Dashboard
+          </Button>
+        )}
       </div>
     </div>
   );
@@ -145,7 +185,7 @@ const ResumeButton = ({
                   <Button 
                     size="sm" 
                     variant="outline"
-                    disabled={!resumeUrl}
+                    disabled={!resumeUrl || isLoading}
                   >
                     <Share2 className="mr-2 h-4 w-4" />
                     Share
@@ -175,7 +215,9 @@ const ResumeButton = ({
           </DialogTitle>
         </DialogHeader>
         <div className="aspect-ratio-box h-[calc(90vh-10rem)] overflow-auto">
-          {resumeUrl ? (
+          {isLoading ? (
+            noResumePlaceholder
+          ) : resumeUrl ? (
             <iframe 
               src={resumeUrl} 
               className="w-full h-full" 
