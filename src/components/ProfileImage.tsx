@@ -4,6 +4,7 @@ import SocialMediaLinks from './profile/SocialMediaLinks';
 import AvatarDialog from './profile/AvatarDialog';
 import ProfileImageDisplay from './profile/ProfileImageDisplay';
 import DecorativeElements from './profile/DecorativeElements';
+import { toast } from 'sonner';
 
 const ProfileImage = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -43,13 +44,15 @@ const ProfileImage = () => {
               }
               
               if (profileData.socialLinks) {
-                setSocialLinks({
-                  linkedIn: profileData.socialLinks.linkedin || socialLinks.linkedIn,
-                  twitter: profileData.socialLinks.twitter || socialLinks.twitter,
-                  youtube: profileData.socialLinks.youtube || socialLinks.youtube,
-                  spotify: profileData.socialLinks.spotify || socialLinks.spotify,
+                const processedLinks = {
+                  linkedIn: ensureHttpProtocol(profileData.socialLinks.linkedin) || socialLinks.linkedIn,
+                  twitter: ensureHttpProtocol(profileData.socialLinks.twitter) || socialLinks.twitter,
+                  youtube: ensureHttpProtocol(profileData.socialLinks.youtube) || socialLinks.youtube,
+                  spotify: ensureHttpProtocol(profileData.socialLinks.spotify) || socialLinks.spotify,
                   anandCircle: profileData.socialLinks.anandcircle || socialLinks.anandCircle
-                });
+                };
+                
+                setSocialLinks(processedLinks);
               }
             } catch (parseError) {
               console.error("Error parsing profile data:", parseError);
@@ -57,10 +60,10 @@ const ProfileImage = () => {
             }
           } else {
             try {
-              const linkedInUrl = localStorage.getItem('linkedInUrl');
-              const twitterUrl = localStorage.getItem('twitterUrl');
-              const youtubeUrl = localStorage.getItem('youtubeUrl');
-              const spotifyUrl = localStorage.getItem('spotifyUrl');
+              const linkedInUrl = ensureHttpProtocol(localStorage.getItem('linkedInUrl'));
+              const twitterUrl = ensureHttpProtocol(localStorage.getItem('twitterUrl'));
+              const youtubeUrl = ensureHttpProtocol(localStorage.getItem('youtubeUrl'));
+              const spotifyUrl = ensureHttpProtocol(localStorage.getItem('spotifyUrl'));
               const anandCircleUrl = localStorage.getItem('anandCircleUrl');
               
               setSocialLinks({
@@ -81,6 +84,7 @@ const ProfileImage = () => {
       } catch (error) {
         console.error("Error loading profile image:", error);
         setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+        toast.error("Error loading profile data");
       } finally {
         setIsLoading(false);
       }
@@ -101,6 +105,19 @@ const ProfileImage = () => {
       clearInterval(connectionInterval);
     };
   }, []);
+
+  const ensureHttpProtocol = (url: string | null): string => {
+    if (!url) return '';
+    
+    if (url.startsWith('#') || 
+        url.startsWith('/') || 
+        url.startsWith('http://') || 
+        url.startsWith('https://')) {
+      return url;
+    }
+    
+    return `https://${url}`;
+  };
 
   const handleAvatarHover = () => {
     setShowAvatarHint(true);
