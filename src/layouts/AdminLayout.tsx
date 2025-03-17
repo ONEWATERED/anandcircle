@@ -15,7 +15,7 @@ import {
 
 interface NavItemProps {
   to: string;
-  icon: LucideIcon;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   label: string;
 }
 
