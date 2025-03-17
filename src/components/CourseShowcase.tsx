@@ -1,7 +1,5 @@
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CourseCarousel from './courses/CourseCarousel';
 import CommunitySection from './courses/CommunitySection';
@@ -26,13 +24,6 @@ const CourseShowcase = () => {
           
           <TabsContent value="courses" className="space-y-8">
             <CourseCarousel />
-            
-            <div className="text-center mt-10">
-              <Button size="lg" className="bg-primary">
-                Browse All Courses
-                <ExternalLink className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
           </TabsContent>
           
           <TabsContent value="community" className="space-y-8">
