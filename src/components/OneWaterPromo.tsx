@@ -9,19 +9,19 @@ const OneWaterPromo = () => {
       <div className="section-container">
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-center md:text-left">
           <div className="flex items-center gap-2">
-            <HeartHandshake size={24} className="text-cyan-600" />
-            <span className="text-base font-bold">
+            <HeartHandshake size={24} className="text-blue-600" />
+            <span className="text-base font-bold text-blue-600">
               All proceeds from services are donated to 
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <Droplet size={24} className="text-cyan-600" />
-            <span className="font-bold text-lg">One Water Foundation</span>
+            <Droplet size={24} className="text-blue-600" />
+            <span className="font-bold text-lg text-blue-600">One Water Foundation</span>
           </div>
           <Button 
             variant="outline" 
             size="sm" 
-            className="border-cyan-500/50 text-cyan-700 hover:bg-cyan-100 font-semibold"
+            className="border-blue-500/50 text-blue-700 hover:bg-blue-100 font-semibold"
             onClick={() => window.open('https://www.onewater.foundation', '_blank', 'noopener,noreferrer')}
           >
             <span>Learn More</span>

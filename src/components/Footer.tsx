@@ -1,3 +1,4 @@
+
 import React from 'react';
 import OneWaterPromo from './OneWaterPromo';
 import ResumeButton from './ResumeButton';
@@ -8,24 +9,7 @@ const Footer = () => {
     <footer id="connect">
       <OneWaterPromo />
       
-      {/* One Water Foundation Donation Banner */}
-      <div className="bg-gradient-to-r from-cyan-500 to-blue-600 py-5">
-        <div className="section-container">
-          <div className="flex flex-col md:flex-row items-center justify-center text-white">
-            <Heart className="h-7 w-7 mr-2 animate-pulse" />
-            <p className="text-center font-medium text-lg">
-              <span className="font-bold">100% of all proceeds</span> from this website go to 
-              <a href="https://www.onewater.foundation" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="underline font-bold hover:text-blue-100 transition-colors ml-1">
-                One Water Foundation
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-      
+      {/* Main Footer Content */}
       <div className="bg-gradient-to-b from-gray-50 to-gray-100 pt-16 pb-8">
         <div className="section-container">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
