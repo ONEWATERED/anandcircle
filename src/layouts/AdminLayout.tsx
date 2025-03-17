@@ -9,7 +9,8 @@ import {
   Home,
   Settings,
   FileText,
-  Network
+  Network,
+  type Icon as LucideIcon
 } from 'lucide-react';
 
 interface NavItemProps {
