@@ -20,18 +20,18 @@ const OneWaterPromo = () => {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2">
             <Button 
-              variant="outline" 
+              variant="secondary" 
               size="sm" 
-              className="border-white/50 text-white hover:bg-white/10 font-semibold"
+              className="bg-white/20 hover:bg-white/30 text-white font-semibold border border-white/50"
               onClick={() => window.open('https://www.onewater.foundation', '_blank', 'noopener,noreferrer')}
             >
               <span>Foundation</span>
               <ExternalLink size={14} className="ml-1" />
             </Button>
             <Button 
-              variant="outline" 
+              variant="secondary" 
               size="sm" 
-              className="border-white/50 text-white hover:bg-white/10 font-semibold"
+              className="bg-white/20 hover:bg-white/30 text-white font-semibold border border-white/50"
               onClick={() => window.open('https://www.onewater.ai', '_blank', 'noopener,noreferrer')}
             >
               <span>One Water AI</span>
