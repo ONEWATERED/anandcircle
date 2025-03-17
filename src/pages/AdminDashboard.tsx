@@ -3,15 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { checkDatabaseConnection } from '@/utils/databaseUtils';
-import { Users, Image, Database, CheckCircle, AlertCircle } from 'lucide-react';
+import { Database, CheckCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 export default function AdminDashboard() {
   const [dbStatus, setDbStatus] = useState<'checking' | 'connected' | 'error'>('checking');
-  const [counts, setCounts] = useState({
-    images: 0,
-    profiles: 0
-  });
   const { toast } = useToast();
   
   useEffect(() => {
@@ -39,41 +35,6 @@ export default function AdminDashboard() {
     
     checkConnection();
   }, [toast]);
-  
-  useEffect(() => {
-    const fetchCounts = async () => {
-      try {
-        // Get count of connection_images
-        const { count: imagesCount, error: imagesError } = await supabase
-          .from('connection_images')
-          .select('*', { count: 'exact', head: true });
-          
-        // Get count of profiles  
-        const { count: profilesCount, error: profilesError } = await supabase
-          .from('profiles')
-          .select('*', { count: 'exact', head: true });
-          
-        if (imagesError) throw imagesError;
-        if (profilesError) throw profilesError;
-        
-        setCounts({
-          images: imagesCount || 0,
-          profiles: profilesCount || 0
-        });
-      } catch (error) {
-        console.error("Error fetching counts:", error);
-        toast({
-          title: "Error fetching data",
-          description: "Could not retrieve data counts",
-          variant: "destructive"
-        });
-      }
-    };
-    
-    if (dbStatus === 'connected') {
-      fetchCounts();
-    }
-  }, [dbStatus, toast]);
   
   return (
     <div className="space-y-6">
@@ -108,32 +69,6 @@ export default function AdminDashboard() {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center">
-              <Users className="mr-2 h-5 w-5 text-blue-500" />
-              Profiles
-            </CardTitle>
-            <CardDescription>User profiles in database</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{counts.profiles}</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center">
-              <Image className="mr-2 h-5 w-5 text-purple-500" />
-              Images
-            </CardTitle>
-            <CardDescription>Stored connection images</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{counts.images}</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center">
               <Database className="mr-2 h-5 w-5 text-green-500" />
               Database
             </CardTitle>
@@ -143,21 +78,6 @@ export default function AdminDashboard() {
             <p className="text-2xl font-bold">{dbStatus === 'connected' ? 'Active' : 'Checking...'}</p>
           </CardContent>
         </Card>
-      </div>
-      
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <Card className="hover:shadow-md transition-shadow cursor-pointer">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Image className="mr-2 h-5 w-5" />
-                Upload Images
-              </CardTitle>
-              <CardDescription>Add or replace connection images</CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
       </div>
     </div>
   );
