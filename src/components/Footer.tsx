@@ -83,13 +83,7 @@ const Footer = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">One Water Academy</a>
-                </li>
-                <li>
                   <a href="#" className="text-muted-foreground hover:text-primary transition-colors">One Water AI</a>
-                </li>
-                <li>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">One Water</a>
                 </li>
                 <li>
                   <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Health & Wellness</a>
