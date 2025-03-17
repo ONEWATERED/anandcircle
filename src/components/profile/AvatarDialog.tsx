@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -41,10 +40,11 @@ const AvatarDialog = ({
           onMouseLeave={handleAvatarLeave}
         >
           {/* Neural connection path with "Chat with me" text */}
-          <div className="absolute top-12 right-6 w-28 h-16 overflow-visible pointer-events-none">
-            <svg width="100%" height="100%" viewBox="0 0 100 60" className="absolute">
+          <div className="absolute top-12 right-6 w-40 h-20 overflow-visible pointer-events-none">
+            <svg width="100%" height="100%" viewBox="0 0 120 80" className="absolute">
+              {/* Main connection path */}
               <path 
-                d="M10,50 C30,40 70,30 90,10" 
+                d="M20,60 C40,50 80,40 100,20" 
                 fill="none" 
                 stroke="url(#gradient-path)" 
                 strokeWidth="3" 
@@ -52,18 +52,22 @@ const AvatarDialog = ({
                 className="animate-pulse" 
               />
               
-              {/* Text path for "Chat with me" */}
-              <path 
-                id="textPath" 
-                d="M15,48 C35,38 65,28 85,12" 
-                fill="none" 
-                stroke="none" 
+              {/* Arrow at the end of the path */}
+              <polygon 
+                points="100,20 94,26 97,19 91,16" 
+                fill="url(#gradient-path)" 
+                className="animate-pulse"
               />
               
-              <text className="text-xs font-medium">
-                <textPath href="#textPath" startOffset="25%" className="fill-primary">
-                  Chat with me
-                </textPath>
+              {/* Text label - positioned above the line */}
+              <text 
+                x="50" 
+                y="35" 
+                className="fill-primary font-medium text-sm"
+                textAnchor="middle"
+                dominantBaseline="middle"
+              >
+                Chat with me
               </text>
               
               <defs>
