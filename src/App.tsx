@@ -10,7 +10,6 @@ import AdminAuth from '@/pages/AdminAuth';
 import AdminDashboard from '@/pages/AdminDashboard';
 import AdminSettings from '@/pages/AdminSettings';
 import AdminLayout from '@/layouts/AdminLayout';
-import AdminFamilyMembers from '@/pages/AdminFamilyMembers';
 
 function App() {
   return (
@@ -25,7 +24,6 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="settings" element={<AdminSettings />} />
-          <Route path="family" element={<AdminFamilyMembers />} />
         </Route>
         
         <Route path="*" element={<NotFound />} />

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
@@ -9,7 +8,6 @@ import {
   Home,
   Settings,
   FileText,
-  Network,
 } from 'lucide-react';
 
 interface NavItemProps {
