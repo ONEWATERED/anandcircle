@@ -9,9 +9,7 @@ import {
   Home,
   Settings,
   FileText,
-  Network,
-  User,
-  LucideIcon
+  Network
 } from 'lucide-react';
 
 interface NavItemProps {
@@ -64,8 +62,6 @@ export default function AdminLayout() {
         <nav className="flex-1 overflow-y-auto p-2">
           <div className="space-y-1">
             <NavItem to="/admin/dashboard" icon={Home} label="Dashboard" />
-            <NavItem to="/admin/connections" icon={Network} label="Connections" />
-            <NavItem to="/admin/profile" icon={User} label="My Profile" />
             <NavItem to="/admin/publications" icon={FileText} label="Publications" />
             <NavItem to="/admin/settings" icon={Settings} label="Settings" />
           </div>
