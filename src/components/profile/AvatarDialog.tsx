@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -39,7 +40,7 @@ const AvatarDialog = ({
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
-          {/* Neural connection path with "Chat with me" text */}
+          {/* Neural connection path with "Talk or Chat with me" text */}
           <div className="absolute top-12 right-6 w-40 h-20 overflow-visible pointer-events-none">
             <svg width="100%" height="100%" viewBox="0 0 120 80" className="absolute">
               {/* Main connection path */}
@@ -50,6 +51,7 @@ const AvatarDialog = ({
                 strokeWidth="3" 
                 strokeDasharray="5,3"
                 className="animate-pulse" 
+                id="curvePath"
               />
               
               {/* Arrow at the end of the path */}
@@ -59,15 +61,15 @@ const AvatarDialog = ({
                 className="animate-pulse"
               />
               
-              {/* Text label - positioned above the line */}
-              <text 
-                x="50" 
-                y="35" 
-                className="fill-primary font-medium text-sm"
-                textAnchor="middle"
-                dominantBaseline="middle"
-              >
-                Chat with me
+              {/* Text path for "Talk or Chat with me" */}
+              <text className="font-medium">
+                <textPath 
+                  href="#curvePath" 
+                  startOffset="30%" 
+                  className="fill-primary text-sm"
+                >
+                  Talk or Chat with me
+                </textPath>
               </text>
               
               <defs>
