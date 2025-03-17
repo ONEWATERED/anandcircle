@@ -41,11 +41,11 @@ const AvatarDialog = ({
           onMouseLeave={handleAvatarLeave}
         >
           {/* Neural connection path with "Talk or Chat with me" text */}
-          <div className="absolute top-12 right-6 w-40 h-20 overflow-visible pointer-events-none">
-            <svg width="100%" height="100%" viewBox="0 0 120 80" className="absolute">
+          <div className="absolute top-16 right-8 w-52 h-24 overflow-visible pointer-events-none">
+            <svg width="100%" height="100%" viewBox="0 0 160 100" className="absolute">
               {/* Main connection path */}
               <path 
-                d="M20,60 C40,50 80,40 100,20" 
+                d="M30,70 C50,60 90,50 120,30" 
                 fill="none" 
                 stroke="url(#gradient-path)" 
                 strokeWidth="3" 
@@ -56,7 +56,7 @@ const AvatarDialog = ({
               
               {/* Arrow at the end of the path */}
               <polygon 
-                points="100,20 94,26 97,19 91,16" 
+                points="120,30 114,36 117,29 111,26" 
                 fill="url(#gradient-path)" 
                 className="animate-pulse"
               />
@@ -65,7 +65,7 @@ const AvatarDialog = ({
               <text className="font-medium">
                 <textPath 
                   href="#curvePath" 
-                  startOffset="30%" 
+                  startOffset="25%" 
                   className="fill-primary text-sm"
                 >
                   Talk or Chat with me
