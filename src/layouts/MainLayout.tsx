@@ -4,7 +4,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdminLink from '@/components/AdminLink';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
-import OneWaterPromo from '@/components/OneWaterPromo';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -58,7 +57,6 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow">{children}</main>
-      <OneWaterPromo />
       <div className="flex justify-end p-2 border-t">
         <AdminLink />
       </div>
