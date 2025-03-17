@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -17,7 +16,8 @@ import {
   Check, 
   X,
   CreditCard,
-  Droplet
+  Droplet,
+  ExternalLink
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from '@/components/ui/sheet';
 
@@ -41,6 +41,9 @@ interface InterestSubmission extends FormValues {
   date: string;
   type: 'avatar' | 'profile' | 'none'; // Fixed to include 'none' as a valid type
 }
+
+// HubSpot payment link
+const HUBSPOT_PAYMENT_LINK = "https://app-na2.hubspot.com/payment-links/242071608/preview/215795906/test";
 
 const InterestForm = () => {
   const { toast } = useToast();
@@ -127,6 +130,11 @@ const InterestForm = () => {
     setIsSubmitted(false);
   };
 
+  // Direct to HubSpot payment
+  const redirectToPayment = () => {
+    window.open(HUBSPOT_PAYMENT_LINK, '_blank');
+  };
+
   return (
     <section id="interest-form" className="py-16 md:py-24 bg-gradient-to-br from-gray-100 to-white">
       <div className="section-container">
@@ -164,7 +172,9 @@ const InterestForm = () => {
                 <Droplet className="text-cyan-500 mr-2" size={16} />
                 <p>100% of proceeds donated to <a href="https://onewater.foundation" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">One Water Foundation</a></p>
               </div>
-              <Button onClick={openAvatarSheet} className="w-full">Get Started</Button>
+              <Button onClick={redirectToPayment} className="w-full flex items-center justify-center gap-2">
+                Get Started <ExternalLink size={16} />
+              </Button>
             </motion.div>
             
             {/* Professional Profile Card */}
@@ -189,7 +199,9 @@ const InterestForm = () => {
                 <Droplet className="text-cyan-500 mr-2" size={16} />
                 <p>100% of proceeds donated to <a href="https://onewater.foundation" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">One Water Foundation</a></p>
               </div>
-              <Button onClick={openProfileSheet} className="w-full">Get Started</Button>
+              <Button onClick={redirectToPayment} className="w-full flex items-center justify-center gap-2">
+                Get Started <ExternalLink size={16} />
+              </Button>
             </motion.div>
           </div>
           
