@@ -1,30 +1,15 @@
+
 import React, { useState } from 'react';
 import { useStoryMilestones, StoryMilestone } from '@/hooks/useStoryMilestones';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Plus, Save, ArrowUp, ArrowDown, Trash2, Edit, AlertTriangle } from 'lucide-react';
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogFooter, 
-  DialogClose
-} from '@/components/ui/dialog';
-import { 
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+import { Plus } from 'lucide-react';
+import MilestoneCard from '@/components/admin/MilestoneCard';
+import MilestoneFormDialog from '@/components/admin/MilestoneFormDialog';
+import DeleteMilestoneDialog from '@/components/admin/DeleteMilestoneDialog';
+import EmptyMilestones from '@/components/admin/EmptyMilestones';
+import MilestonesLoading from '@/components/admin/MilestonesLoading';
+import MilestonesError from '@/components/admin/MilestonesError';
 
 export default function AdminStoryMilestones() {
   const { milestones, loading, error, addMilestone, updateMilestone, deleteMilestone, reorderMilestones } = useStoryMilestones();
@@ -137,9 +122,11 @@ export default function AdminStoryMilestones() {
     }
   };
   
-  const handleDeleteMilestone = async (id: string) => {
+  const handleDeleteMilestone = async () => {
+    if (!openDeleteDialog) return;
+    
     try {
-      const success = await deleteMilestone(id);
+      const success = await deleteMilestone(openDeleteDialog);
       if (success) {
         toast({
           title: "Milestone Deleted",
@@ -211,173 +198,46 @@ export default function AdminStoryMilestones() {
         </Button>
       </div>
       
-      {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3 text-red-700">
-          <AlertTriangle className="w-5 h-5 mt-0.5" />
-          <div>
-            <h3 className="font-medium">Failed to load milestones</h3>
-            <p className="text-sm opacity-80">There was an error loading your story milestones. Please try refreshing the page.</p>
-          </div>
-        </div>
-      )}
+      {error && <MilestonesError />}
       
       {loading ? (
-        <div className="flex items-center justify-center py-16">
-          <Loader2 className="w-8 h-8 animate-spin text-primary/70" />
-          <span className="ml-3 text-lg text-muted-foreground">Loading story milestones...</span>
-        </div>
+        <MilestonesLoading />
       ) : (
         <div className="grid gap-4">
           {milestones.length === 0 ? (
-            <div className="text-center py-16 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-              <h3 className="text-lg font-medium text-gray-600 mb-2">No milestones yet</h3>
-              <p className="text-muted-foreground mb-4">Add your first story milestone to get started.</p>
-              <Button onClick={() => handleOpenDialog()} variant="outline" className="gap-2">
-                <Plus size={16} />
-                <span>Add First Milestone</span>
-              </Button>
-            </div>
+            <EmptyMilestones onAddFirst={() => handleOpenDialog()} />
           ) : (
-            milestones.map(milestone => (
-              <Card key={milestone.id} className="relative overflow-hidden">
-                <div className={`absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-primary to-primary/50`} />
-                
-                <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center gap-2">
-                    {milestone.title}
-                  </CardTitle>
-                </CardHeader>
-                
-                <CardContent>
-                  <p className="text-muted-foreground">{milestone.description}</p>
-                  <div className="mt-2 text-sm text-muted-foreground/70">
-                    Position: {milestone.order_position} | Icon: {milestone.icon}
-                  </div>
-                </CardContent>
-                
-                <CardFooter className="flex justify-between pt-2">
-                  <div className="flex items-center gap-1">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      onClick={() => handleReorderMilestone(milestone.id, 'up')}
-                      disabled={milestone.order_position <= 1}
-                    >
-                      <ArrowUp size={16} />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      onClick={() => handleReorderMilestone(milestone.id, 'down')}
-                      disabled={milestone.order_position >= milestones.length}
-                    >
-                      <ArrowDown size={16} />
-                    </Button>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="flex items-center gap-1"
-                      onClick={() => handleOpenDialog(milestone)}
-                    >
-                      <Edit size={14} />
-                      <span>Edit</span>
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="flex items-center gap-1 text-red-500 hover:text-red-700 hover:bg-red-50"
-                      onClick={() => setOpenDeleteDialog(milestone.id)}
-                    >
-                      <Trash2 size={14} />
-                      <span>Delete</span>
-                    </Button>
-                  </div>
-                </CardFooter>
-              </Card>
+            milestones.map((milestone, index) => (
+              <MilestoneCard 
+                key={milestone.id}
+                milestone={milestone}
+                onEdit={handleOpenDialog}
+                onDelete={(id) => setOpenDeleteDialog(id)}
+                onReorder={handleReorderMilestone}
+                isFirst={index === 0}
+                isLast={index === milestones.length - 1}
+              />
             ))
           )}
         </div>
       )}
       
-      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>{editingMilestone ? 'Edit Milestone' : 'Add New Milestone'}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <label htmlFor="title" className="text-sm font-medium">Title</label>
-              <Input 
-                id="title" 
-                name="title" 
-                value={formData.title} 
-                onChange={handleInputChange} 
-                placeholder="e.g., The Journey Begins" 
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label htmlFor="description" className="text-sm font-medium">Description</label>
-              <Textarea 
-                id="description" 
-                name="description" 
-                value={formData.description} 
-                onChange={handleInputChange} 
-                placeholder="Describe this milestone of your story..." 
-                rows={4} 
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label htmlFor="icon" className="text-sm font-medium">Icon</label>
-              <Select value={formData.icon} onValueChange={handleIconChange}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select an icon" />
-                </SelectTrigger>
-                <SelectContent>
-                  {iconOptions.map(option => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <Button onClick={handleSaveMilestone} className="gap-2">
-              <Save size={16} />
-              <span>Save Milestone</span>
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <MilestoneFormDialog 
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+        formData={formData}
+        onInputChange={handleInputChange}
+        onIconChange={handleIconChange}
+        onSave={handleSaveMilestone}
+        isEditing={!!editingMilestone}
+        iconOptions={iconOptions}
+      />
       
-      <AlertDialog open={!!openDeleteDialog} onOpenChange={() => setOpenDeleteDialog(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will permanently delete this milestone from your story. This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={() => openDeleteDialog && handleDeleteMilestone(openDeleteDialog)}
-              className="bg-red-500 hover:bg-red-600"
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeleteMilestoneDialog 
+        open={!!openDeleteDialog}
+        onOpenChange={() => setOpenDeleteDialog(null)}
+        onConfirm={handleDeleteMilestone}
+      />
     </div>
   );
 }
