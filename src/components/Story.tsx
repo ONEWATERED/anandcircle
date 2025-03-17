@@ -2,10 +2,48 @@
 import React from 'react';
 import ProfileImage from './ProfileImage';
 import ResumeButton from './ResumeButton';
+import { createGlobalStyle } from 'styled-components';
+
+// Add global style for the neural network animations
+const NeuralAnimations = createGlobalStyle`
+  @keyframes neural-particle-1 {
+    0% { transform: translate(10px, 50px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translate(90px, 10px); opacity: 0; }
+  }
+  
+  @keyframes neural-particle-2 {
+    0% { transform: translate(10px, 50px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translate(90px, 10px); opacity: 0; }
+  }
+  
+  @keyframes neural-particle-3 {
+    0% { transform: translate(10px, 50px); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translate(90px, 10px); opacity: 0; }
+  }
+  
+  @keyframes neural-data-1 {
+    0% { opacity: 0; }
+    25% { opacity: 1; }
+    75% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  
+  @keyframes neural-data-2 {
+    0% { opacity: 0; }
+    25% { opacity: 1; }
+    75% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+`;
 
 const Story = () => {
   return (
     <section id="story" className="relative py-24 overflow-hidden">
+      <NeuralAnimations />
+      
       {/* Background with subtle gradient and patterns */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-gray-50 to-white z-0"></div>
       

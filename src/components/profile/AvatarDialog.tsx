@@ -40,6 +40,31 @@ const AvatarDialog = ({
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
+          {/* Connection path animation - neural pathway effect */}
+          <div className="absolute top-12 right-6 w-28 h-16 overflow-visible pointer-events-none">
+            <svg width="100%" height="100%" viewBox="0 0 100 60" className="absolute">
+              <path 
+                d="M10,50 C30,40 70,30 90,10" 
+                fill="none" 
+                stroke="url(#gradient-path)" 
+                strokeWidth="2" 
+                strokeDasharray="4,4"
+                className="animate-pulse" 
+              />
+              <defs>
+                <linearGradient id="gradient-path" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#9b87f5" stopOpacity="0.1" />
+                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.9" />
+                </linearGradient>
+              </defs>
+            </svg>
+            
+            {/* Animated particles traveling along the path */}
+            <div className="absolute top-0 left-0 w-3 h-3 rounded-full bg-primary/40 blur-sm animate-[neural-particle-1_3s_infinite]"></div>
+            <div className="absolute top-0 left-0 w-2 h-2 rounded-full bg-accent/40 blur-sm animate-[neural-particle-2_4s_infinite_0.5s]"></div>
+            <div className="absolute top-0 left-0 w-2 h-2 rounded-full bg-primary/40 blur-sm animate-[neural-particle-3_5s_infinite_1s]"></div>
+          </div>
+          
           <div className={`neo-glass p-1.5 rounded-full shadow-lg transition-all duration-300 ${isAvatarPulsing ? 'animate-pulse ring-4 ring-primary/60 scale-105' : 'ring-2 ring-primary/40'}`}>
             <Avatar className="h-12 w-12 border-2 border-white/60 bg-primary/10">
               <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white text-sm font-semibold">
@@ -56,11 +81,12 @@ const AvatarDialog = ({
             <MessageCircle size={14} className="text-white" fill="white" />
           </div>
           
-          {/* Tooltip that appears on hover */}
+          {/* Enhanced tooltip that appears on hover */}
           {showAvatarHint && (
-            <div className="absolute right-0 top-14 glass-card p-2 rounded-xl shadow-lg min-w-48 animate-fade-in z-50">
-              <Badge className="bg-primary mb-1">Digital Avatar</Badge>
-              <p className="text-xs text-foreground/90">Chat with my digital avatar. Get to know me better!</p>
+            <div className="absolute right-0 top-14 glass-card p-3 rounded-xl shadow-lg min-w-56 animate-fade-in z-50">
+              <Badge className="bg-primary mb-2">Digital Twin</Badge>
+              <p className="text-xs text-foreground/90 mb-1">Chat with my AI-powered digital twin.</p>
+              <p className="text-[10px] text-foreground/70 italic">Trained on my knowledge & expertise</p>
             </div>
           )}
         </Link>
@@ -81,6 +107,14 @@ const AvatarDialog = ({
             </Avatar>
             <div className="absolute inset-0 bg-white/20 rounded-full blur-xl -z-10"></div>
           </div>
+          
+          {/* Connection visualization within the dialog too */}
+          <div className="relative py-2">
+            <div className="absolute left-1/2 top-0 h-full w-0.5 bg-gradient-to-b from-white/80 to-white/20"></div>
+            <div className="absolute left-[calc(50%-4px)] top-0 w-2 h-2 rounded-full bg-white animate-ping"></div>
+            <div className="absolute left-[calc(50%-4px)] bottom-0 w-2 h-2 rounded-full bg-white"></div>
+          </div>
+          
           <p className="text-center text-white/90 px-2">
             My digital avatar can answer questions about my experience, projects, and vision for AI and healthcare. It's always learning and improving!
           </p>

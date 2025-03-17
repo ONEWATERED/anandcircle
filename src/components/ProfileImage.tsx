@@ -12,6 +12,7 @@ const ProfileImage = () => {
   const [showAvatarHint, setShowAvatarHint] = useState(false);
   const [showAvatarDialog, setShowAvatarDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showConnectionEffect, setShowConnectionEffect] = useState(false);
   const [socialLinks, setSocialLinks] = useState({
     linkedIn: 'https://linkedin.com/in/hardeepanand',
     twitter: 'https://twitter.com/hardeepanand',
@@ -103,19 +104,28 @@ const ProfileImage = () => {
       setIsAvatarPulsing(prev => !prev);
     }, 2000);
 
-    // Removed the automatic avatar dialog display
+    // Set up occasional connection effect show/hide
+    const connectionInterval = setInterval(() => {
+      setShowConnectionEffect(prev => !prev);
+    }, 5000);
 
     return () => {
       clearInterval(pulseInterval);
+      clearInterval(connectionInterval);
     };
   }, []);
 
   const handleAvatarHover = () => {
     setShowAvatarHint(true);
+    setShowConnectionEffect(true);
   };
 
   const handleAvatarLeave = () => {
     setShowAvatarHint(false);
+    // Don't turn off connection effect immediately
+    setTimeout(() => {
+      setShowConnectionEffect(false);
+    }, 2000);
   };
 
   return (
@@ -124,6 +134,48 @@ const ProfileImage = () => {
       <div className="relative z-10">
         <ProfileImageDisplay profileImage={profileImage} isLoading={isLoading} />
       </div>
+      
+      {/* "Mind connection" animation overlay */}
+      {showConnectionEffect && (
+        <div className="absolute top-0 left-0 w-full h-full z-20 pointer-events-none">
+          {/* Neural network-like connecting lines from head to avatar */}
+          <div className="absolute top-[25%] right-0 w-[150px] h-[100px]">
+            <svg width="100%" height="100%" viewBox="0 0 150 100" className="opacity-60">
+              {/* Neural network nodes from head to AI avatar */}
+              <circle cx="10" cy="50" r="3" fill="#9b87f5" className="animate-pulse" />
+              <circle cx="40" cy="35" r="2" fill="#8B5CF6" className="animate-pulse" style={{ animationDelay: '0.2s' }} />
+              <circle cx="70" cy="25" r="2.5" fill="#D6BCFA" className="animate-pulse" style={{ animationDelay: '0.4s' }} />
+              <circle cx="100" cy="20" r="2" fill="#9b87f5" className="animate-pulse" style={{ animationDelay: '0.6s' }} />
+              <circle cx="130" cy="10" r="3" fill="#8B5CF6" className="animate-pulse" style={{ animationDelay: '0.8s' }} />
+              
+              {/* Connection paths */}
+              <path d="M10,50 Q40,45 40,35" stroke="#9b87f5" strokeWidth="1.5" fill="none" strokeDasharray="3,3" />
+              <path d="M40,35 Q55,30 70,25" stroke="#8B5CF6" strokeWidth="1.5" fill="none" strokeDasharray="3,3" />
+              <path d="M70,25 Q85,22 100,20" stroke="#D6BCFA" strokeWidth="1.5" fill="none" strokeDasharray="3,3" />
+              <path d="M100,20 Q115,15 130,10" stroke="#9b87f5" strokeWidth="1.5" fill="none" strokeDasharray="3,3" />
+              
+              {/* Moving data particle effects */}
+              <circle className="animate-[neural-data-1_3s_infinite]" r="1.5" fill="#ffffff">
+                <animateMotion
+                  path="M10,50 Q40,45 40,35 Q55,30 70,25 Q85,22 100,20 Q115,15 130,10"
+                  dur="3s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+              <circle className="animate-[neural-data-2_3s_infinite_1s]" r="1" fill="#ffffff">
+                <animateMotion
+                  path="M10,50 Q40,45 40,35 Q55,30 70,25 Q85,22 100,20 Q115,15 130,10"
+                  dur="4s"
+                  repeatCount="indefinite"
+                />
+              </circle>
+            </svg>
+          </div>
+          
+          {/* Pulsing brain energy effect near profile head */}
+          <div className="absolute top-[30%] left-[35%] w-16 h-16 rounded-full bg-primary/10 animate-pulse blur-lg"></div>
+        </div>
+      )}
       
       {/* Digital Avatar Interactive Element */}
       <AvatarDialog 
