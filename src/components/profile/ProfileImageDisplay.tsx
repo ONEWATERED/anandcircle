@@ -44,16 +44,26 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-gray-50 via-transparent to-gray-50 opacity-90"></div>
           
           {/* Main image with enhanced glass effect */}
-          <div className="glass-card relative p-2 rounded-2xl shadow-xl overflow-hidden backdrop-blur-md">
+          <div className="glass-card relative p-2 rounded-2xl shadow-xl overflow-hidden backdrop-blur-md border-2 border-primary/20">
             <img 
               src={imageToDisplay} 
               alt="Hardeep Anand" 
               className="w-full h-full object-cover rounded-xl z-10"
               onError={handleImageError}
             />
-            {/* Inner glow effect - enhanced */}
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-purple-300/15 to-blue-300/15 mix-blend-overlay"></div>
+            
+            {/* Matching purple glow to connect with avatar */}
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-primary/15 to-accent/15 mix-blend-overlay"></div>
+            
+            {/* Subtle avatar connection indicator in top-right */}
+            <div className="absolute top-2 right-2 w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-sm 
+                          flex items-center justify-center opacity-80 shadow-inner border border-white/30 z-20">
+              <span className="text-[10px] font-semibold text-white/90">AI</span>
+            </div>
           </div>
+          
+          {/* Inner shadow glow in matching colors */}
+          <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_15px_rgba(139,92,246,0.2)] pointer-events-none"></div>
         </div>
       )}
     </div>
