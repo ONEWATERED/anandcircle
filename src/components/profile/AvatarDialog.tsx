@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MessageCircle, BrainCircuit } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -40,24 +40,6 @@ const AvatarDialog = ({
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
-          {/* Knowledge transfer animation */}
-          <div className="absolute top-5 right-5 w-32 h-16 pointer-events-none overflow-visible">
-            {/* Brain energy particles flowing horizontal from profile to avatar */}
-            <div className="absolute top-8 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/30 to-primary/50"></div>
-            
-            {/* Knowledge particles */}
-            <div className="absolute top-7 left-2 w-1.5 h-1.5 rounded-full bg-primary/40 animate-[pulse_2s_infinite_0.1s]"></div>
-            <div className="absolute top-6 left-6 w-2 h-2 rounded-full bg-primary/50 animate-[pulse_2.2s_infinite_0.3s]"></div>
-            <div className="absolute top-7.5 left-12 w-2.5 h-2.5 rounded-full bg-primary/60 animate-[pulse_2.5s_infinite_0.5s]"></div>
-            <div className="absolute top-6.5 left-18 w-2 h-2 rounded-full bg-primary/70 animate-[pulse_2.3s_infinite_0.7s]"></div>
-            <div className="absolute top-8 left-24 w-3 h-3 rounded-full bg-primary/80 animate-[pulse_2s_infinite_0.9s]"></div>
-            
-            {/* Brain energy icon at start of connection */}
-            <div className="absolute top-4 left-1 text-primary/60 animate-pulse">
-              <BrainCircuit size={14} />
-            </div>
-          </div>
-          
           <div className={`neo-glass p-1.5 rounded-full shadow-lg transition-all duration-300 ${isAvatarPulsing ? 'animate-pulse ring-4 ring-primary/60 scale-105' : 'ring-2 ring-primary/40'}`}>
             <Avatar className="h-12 w-12 border-2 border-white/60 bg-primary/10">
               <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white text-sm font-semibold">
@@ -99,14 +81,6 @@ const AvatarDialog = ({
               </AvatarFallback>
             </Avatar>
             <div className="absolute inset-0 bg-white/20 rounded-full blur-xl -z-10"></div>
-          </div>
-          
-          {/* Knowledge visualization in dialog */}
-          <div className="relative py-2 w-full">
-            <div className="absolute left-1/3 w-full h-0.5 bg-gradient-to-r from-white/10 via-white/40 to-white/10"></div>
-            <div className="absolute left-1/3 top-0 w-2 h-2 rounded-full bg-white/50 animate-[pulse_2.5s_infinite]"></div>
-            <div className="absolute left-1/2 top-0 w-2.5 h-2.5 rounded-full bg-white/60 animate-[pulse_2s_infinite_0.5s]"></div>
-            <div className="absolute left-2/3 top-0 w-2 h-2 rounded-full bg-white/50 animate-[pulse_2.5s_infinite_1s]"></div>
           </div>
           
           <p className="text-center text-white/90 px-2">
