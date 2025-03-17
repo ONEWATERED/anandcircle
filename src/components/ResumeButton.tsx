@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { FileText, ExternalLink, Download, Printer, Share2 } from 'lucide-react';
 import { Button } from './ui/button';
@@ -6,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { toast } from 'sonner';
 import { ensureHttpProtocol } from '@/utils/databaseConnection';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ResumeButtonProps {
   variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'link';
@@ -25,11 +25,9 @@ const ResumeButton = ({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Get resume URL from localStorage and validate it
     const loadResumeUrl = async () => {
       setIsLoading(true);
       try {
-        // First try to get from Supabase if available
         const { data: profileData, error } = await supabase
           .from('personal_profile')
           .select('resume_url')
@@ -39,10 +37,8 @@ const ResumeButton = ({
         if (!error && profileData?.resume_url) {
           const validUrl = ensureHttpProtocol(profileData.resume_url);
           setResumeUrl(validUrl);
-          // Update localStorage for fallback
           localStorage.setItem('resumeUrl', validUrl);
         } else {
-          // Fallback to localStorage
           const storedResumeUrl = localStorage.getItem('resumeUrl');
           if (storedResumeUrl) {
             const validUrl = ensureHttpProtocol(storedResumeUrl);
@@ -51,7 +47,6 @@ const ResumeButton = ({
         }
       } catch (error) {
         console.error('Error loading resume URL:', error);
-        // Final fallback - check localStorage directly
         const storedResumeUrl = localStorage.getItem('resumeUrl');
         if (storedResumeUrl) {
           const validUrl = ensureHttpProtocol(storedResumeUrl);
@@ -65,28 +60,24 @@ const ResumeButton = ({
     loadResumeUrl();
   }, []);
 
-  // Handle external view (opens in new tab)
   const handleExternalView = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (resumeUrl) {
       window.open(resumeUrl, '_blank', 'noopener,noreferrer');
     } else {
       toast.error('No resume URL found. Please add a resume URL on your dashboard.');
-      // Redirect to a page explaining that the resume will be available soon
       window.location.href = '#story';
     }
   };
 
-  // Handle print resume
   const handlePrint = () => {
     if (resumeUrl) {
-      // Open resume in a new window for printing
       const printWindow = window.open(resumeUrl, '_blank', 'noopener,noreferrer');
       if (printWindow) {
         printWindow.addEventListener('load', () => {
           setTimeout(() => {
             printWindow.print();
-          }, 1000); // Give it time to load
+          }, 1000);
         });
       }
     } else {
@@ -94,7 +85,6 @@ const ResumeButton = ({
     }
   };
 
-  // Handle share resume
   const handleShare = async () => {
     if (!resumeUrl) {
       toast.error('No resume URL found. Please add a resume URL on your dashboard.');
@@ -110,16 +100,13 @@ const ResumeButton = ({
         toast.success('Resume shared successfully!');
       } catch (error) {
         console.error('Error sharing:', error);
-        // Fallback to copy to clipboard
         copyToClipboard(resumeUrl);
       }
     } else {
-      // Fallback for browsers that don't support Web Share API
       copyToClipboard(resumeUrl);
     }
   };
 
-  // Utility to copy URL to clipboard
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
       .then(() => {
@@ -131,10 +118,8 @@ const ResumeButton = ({
       });
   };
 
-  // Handle download resume
   const handleDownload = () => {
     if (resumeUrl) {
-      // Try to append /pdf if it's a link that supports it (like Gamma)
       window.open(`${resumeUrl}/pdf`, '_blank', 'noopener,noreferrer');
     } else {
       toast.error('No resume URL found. Please add a resume URL on your dashboard.');
