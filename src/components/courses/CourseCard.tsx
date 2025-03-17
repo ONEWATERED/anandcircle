@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, GraduationCap } from 'lucide-react';
+import { Users, GraduationCap, Clock } from 'lucide-react';
 import { Course } from '@/data/courseData';
 
 interface CourseCardProps {
@@ -37,10 +37,14 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, icon }) => {
           Duration: {course.duration}
         </div>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex flex-col items-stretch gap-2">
         <Button className={`w-full bg-gradient-to-r ${course.color} text-white`}>
           View Course Details
         </Button>
+        <div className="flex items-center justify-center w-full gap-2 text-sm text-amber-600 font-medium">
+          <Clock className="h-4 w-4" />
+          Coming Soon
+        </div>
       </CardFooter>
     </Card>
   );

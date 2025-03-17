@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Users, GraduationCap, MessageSquare } from 'lucide-react';
+import CourseEmailSignup from './CourseEmailSignup';
 
 const CommunitySection = () => {
   return (
@@ -41,7 +42,7 @@ const CommunitySection = () => {
           </Button>
         </div>
         
-        <div className="md:w-1/2">
+        <div className="md:w-1/2 space-y-6">
           <div className="relative">
             <div className="rounded-2xl overflow-hidden border-2 border-white/70 shadow-xl">
               <img 
@@ -56,10 +57,12 @@ const CommunitySection = () => {
             <div className="absolute top-4 right-4 glass-card p-2 rounded-full shadow-lg">
               <div className="flex items-center space-x-2 px-3">
                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                <span className="text-xs font-medium">Live Community</span>
+                <span className="text-xs font-medium">Coming Soon</span>
               </div>
             </div>
           </div>
+          
+          <CourseEmailSignup />
         </div>
       </div>
     </div>
