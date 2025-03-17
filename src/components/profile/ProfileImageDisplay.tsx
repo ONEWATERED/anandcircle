@@ -44,8 +44,31 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
           {/* Extra gradient overlay for better color blending with page background */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-gray-50 via-transparent to-gray-50 opacity-90"></div>
           
+          {/* Animated glow effect behind the main image */}
+          <div className="absolute inset-0 rounded-2xl animate-pulse">
+            <div className="absolute inset-0 -m-1 rounded-2xl bg-gradient-to-tr from-primary/40 to-accent/40 blur-xl"></div>
+            <div className="absolute inset-0 -m-2 rounded-2xl bg-gradient-to-br from-violet-500/30 to-fuchsia-500/30 blur-lg animate-pulse"></div>
+            <div className="absolute inset-0 -m-3 rounded-2xl bg-gradient-to-bl from-primary/20 to-accent/20 blur-xl opacity-80"></div>
+          </div>
+          
+          {/* Dynamic particles effect */}
+          <div className="absolute inset-0 overflow-hidden rounded-2xl">
+            {[...Array(8)].map((_, i) => (
+              <div 
+                key={i}
+                className="absolute w-3 h-3 rounded-full bg-primary/40 animate-pulse blur-sm"
+                style={{
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  animationDelay: `${i * 0.5}s`,
+                  animationDuration: `${3 + Math.random() * 4}s`
+                }}
+              ></div>
+            ))}
+          </div>
+          
           {/* Main image with enhanced glass effect */}
-          <div className="glass-card relative p-2 rounded-2xl shadow-xl overflow-hidden backdrop-blur-md border-2 border-primary/20">
+          <div className="glass-card relative p-2 rounded-2xl shadow-xl overflow-hidden backdrop-blur-md border-2 border-primary/20 animate-[pulse_5s_ease-in-out_infinite]">
             <img 
               src={imageToDisplay} 
               alt="Hardeep Anand" 
@@ -113,6 +136,12 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
           <div className="absolute top-[-35px] right-[15px] w-2 h-2 rounded-full bg-primary/40 animate-pulse"></div>
           <div className="absolute top-[-25px] right-[25px] w-1.5 h-1.5 rounded-full bg-accent/50 animate-pulse"></div>
           <div className="absolute top-[-15px] right-[10px] w-1 h-1 rounded-full bg-primary/60 animate-pulse"></div>
+          
+          {/* Animated energy flows around the image */}
+          <div className="absolute inset-0 rounded-2xl pointer-events-none overflow-hidden">
+            <div className="absolute top-1/4 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/30 to-transparent animate-[pulse-travel_4s_linear_infinite]"></div>
+            <div className="absolute bottom-1/3 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent/30 to-transparent animate-[pulse-travel_5s_linear_infinite_reverse]"></div>
+          </div>
           
           {/* Inner shadow glow in matching colors */}
           <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_15px_rgba(139,92,246,0.2)] pointer-events-none"></div>
