@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { PersonalProfile } from '@/types/thought-leaders';
@@ -10,7 +9,7 @@ export const useSyncPersonalProfile = () => {
   const [lastSynced, setLastSynced] = useState<Date | null>(null);
   const { toast } = useToast();
 
-  const syncPersonalProfileToFrontend = async () => {
+  const syncPersonalProfileToFrontend = async (): Promise<void> => {
     setIsLoading(true);
     try {
       // Get personal profile from the database
@@ -71,11 +70,9 @@ export const useSyncPersonalProfile = () => {
           title: 'Sync Successful',
           description: 'Personal profile has been synchronized with the frontend'
         });
-        
-        return true;
       } catch (storageError) {
         console.error('Error saving full profile to localStorage:', storageError);
-        return handleStorageError(personalProfile, toast);
+        handleStorageError(personalProfile, toast);
       }
     } catch (error) {
       console.error('Error syncing personal profile:', error);
@@ -85,8 +82,6 @@ export const useSyncPersonalProfile = () => {
         description: 'Failed to synchronize personal profile with the frontend',
         variant: 'destructive'
       });
-      
-      return false;
     } finally {
       setIsLoading(false);
     }
@@ -130,7 +125,7 @@ export const useSyncPersonalProfile = () => {
   };
 
   // Handle localStorage storage errors with multiple fallback strategies
-  const handleStorageError = (profile: PersonalProfile, toast: any): boolean => {
+  const handleStorageError = (profile: PersonalProfile, toast: any): void => {
     // First try: Clear some localStorage items to make space
     try {
       // Remove any large items that aren't critical
@@ -159,7 +154,6 @@ export const useSyncPersonalProfile = () => {
       });
       
       sonnerToast.success('Profile data partially synced to frontend');
-      return true;
     } catch (secondError) {
       console.error('Second attempt to save profile data failed:', secondError);
       
@@ -185,10 +179,8 @@ export const useSyncPersonalProfile = () => {
           title: 'Minimal Sync Complete',
           description: 'Only critical data was synced due to severe storage limitations',
         });
-        return true;
       } catch (finalError) {
         console.error('Could not save even minimal data:', finalError);
-        return false;
       }
     }
   };

@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -45,7 +44,6 @@ const ProfileImageTab: React.FC<ProfileImageTabProps> = ({
       const imageUrl = await uploadImageToStorage(file, 'profile');
       
       if (imageUrl) {
-        // Update profile with new image URL
         const { error } = await supabase
           .from('personal_profile')
           .update({ photo_url: imageUrl })
@@ -58,7 +56,6 @@ const ProfileImageTab: React.FC<ProfileImageTabProps> = ({
           photo_url: imageUrl
         }));
         
-        // Update the frontend image URL after successful sync
         await syncPersonalProfileToFrontend();
         
         toast({
@@ -92,7 +89,6 @@ const ProfileImageTab: React.FC<ProfileImageTabProps> = ({
       const resumeUrl = await uploadImageToStorage(file, 'resume');
       
       if (resumeUrl) {
-        // Update profile with new resume URL
         const { error } = await supabase
           .from('personal_profile')
           .update({ resume_url: resumeUrl })
