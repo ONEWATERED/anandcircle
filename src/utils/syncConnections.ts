@@ -74,6 +74,36 @@ export const syncThoughtLeadersWithDatabase = async () => {
       }
     }
     
+    // Update connections in the database to ensure all thought leaders exist
+    for (const leader of thoughtLeaders) {
+      const { data, error } = await supabase
+        .from('connections')
+        .select('id')
+        .eq('id', leader.id)
+        .single();
+        
+      if (error || !data) {
+        // If connection doesn't exist in DB, create it
+        const { error: insertError } = await supabase
+          .from('connections')
+          .insert({
+            id: leader.id,
+            name: leader.name,
+            role: leader.role,
+            category: leader.category,
+            bio: leader.relationship,
+            image_url: leader.image,
+            special: leader.special || false
+          });
+          
+        if (insertError) {
+          console.error(`Error inserting ${leader.name}:`, insertError);
+        } else {
+          console.log(`Added thought leader to database: ${leader.name}`);
+        }
+      }
+    }
+    
     return { success: true, message: "Thought leaders synced successfully" };
   } catch (error) {
     console.error("Error syncing thought leaders:", error);

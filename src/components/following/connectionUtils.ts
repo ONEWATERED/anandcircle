@@ -62,7 +62,7 @@ export const defaultPeople: Person[] = [
     name: "Naval Ravikant",
     role: "AngelList Co-founder",
     category: "business",
-    image: "/lovable-uploads/1f2c23f2-c00c-42dd-9f76-d8562ba0550c.png", // Updated Naval's image with the provided picture
+    image: "/lovable-uploads/1f2c23f2-c00c-42dd-9f76-d8562ba0550c.png",
     special: true,
     relationship: "Naval's insights on wealth creation and happiness have changed my perspective."
   },
@@ -110,22 +110,5 @@ export const defaultPeople: Person[] = [
     category: "learning",
     image: "https://pbs.twimg.com/profile_images/1475597165051080705/0gLU-JUK_400x400.jpg",
     relationship: "Lex's thoughtful conversations have expanded my understanding of AI and humanity."
-  },
-  {
-    id: "naval-ravikant-2",
-    name: "Naval Ravikant",
-    role: "Entrepreneur & Tech Innovator",
-    category: "business",
-    image: "/lovable-uploads/ba77db19-a5a2-49c5-87cf-85f690643d20.png",
-    relationship: "Naval's innovative approach to technology and business strategies is remarkable."
-  },
-  {
-    id: "foram",
-    name: "FORAM",
-    role: "Strategic Advisor & Business Consultant",
-    category: "business",
-    image: "https://randomuser.me/api/portraits/women/28.jpg", // Placeholder image
-    special: true,
-    relationship: "FORAM's strategic insights and analytical approach to problem-solving have been invaluable."
   }
 ];

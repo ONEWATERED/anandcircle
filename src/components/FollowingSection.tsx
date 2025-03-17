@@ -47,7 +47,8 @@ export const FollowingSection: React.FC = () => {
           setPeople(convertedPeople);
           console.log("Loaded connections from Supabase:", convertedPeople.length);
         } else {
-          // If no connections in DB, use local connections
+          // If the database returned no connections, log this information
+          console.log("No connections found in database, using local data instead");
           setPeople(localPeople);
         }
       } catch (error) {
@@ -60,6 +61,14 @@ export const FollowingSection: React.FC = () => {
 
     fetchConnections();
   }, [localPeople]);
+
+  // Make sure we're actually displaying all connections from defaultPeople if no DB connections
+  useEffect(() => {
+    if (people.length === 0 && localPeople.length > 0) {
+      console.log("No people loaded, falling back to local people data");
+      setPeople(localPeople);
+    }
+  }, [people, localPeople]);
 
   return (
     <section className="py-12 bg-white">
