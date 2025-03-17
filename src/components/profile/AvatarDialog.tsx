@@ -40,7 +40,7 @@ const AvatarDialog = ({
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
-          {/* Neural connection path with "Talk or Chat with me" text */}
+          {/* Neural connection path - text removed */}
           <div className="absolute top-16 right-8 w-52 h-24 overflow-visible pointer-events-none">
             <svg width="100%" height="100%" viewBox="0 0 160 100" className="absolute">
               {/* Main connection path */}
@@ -60,17 +60,6 @@ const AvatarDialog = ({
                 fill="url(#gradient-path)" 
                 className="animate-pulse"
               />
-              
-              {/* Text path for "Talk or Chat with me" */}
-              <text className="font-medium">
-                <textPath 
-                  href="#curvePath" 
-                  startOffset="25%" 
-                  className="fill-primary text-sm"
-                >
-                  Talk or Chat with me
-                </textPath>
-              </text>
               
               <defs>
                 <linearGradient id="gradient-path" x1="0%" y1="100%" x2="100%" y2="0%">
