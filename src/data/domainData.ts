@@ -21,6 +21,7 @@ export const domains: DomainData[] = [
     color: 'rgb(244, 114, 182)', // rose-500
     description: 'Strong families as the cornerstone of society',
     initialAngle: 0, // Top position (12 o'clock)
+    link: 'https://www.circleso.com'
   },
   {
     id: 'health',
@@ -29,6 +30,7 @@ export const domains: DomainData[] = [
     color: 'rgb(59, 130, 246)', // blue-500
     description: 'Data-driven approaches to optimize wellness',
     initialAngle: 72, // 72 degrees clockwise (about 2:30 position)
+    link: 'https://www.onewater.ai'
   },
   {
     id: 'water',
@@ -46,6 +48,7 @@ export const domains: DomainData[] = [
     color: 'rgb(16, 185, 129)', // emerald-500
     description: 'Transforming organizations through innovative technology',
     initialAngle: 216, // 216 degrees clockwise (about 7:30 position)
+    link: 'https://www.onewater.ai'
   },
   {
     id: 'mentoring',
@@ -54,5 +57,6 @@ export const domains: DomainData[] = [
     color: 'rgb(168, 85, 247)', // purple-500
     description: 'Unlocking potential through guidance and development',
     initialAngle: 288, // 288 degrees clockwise (about 10 o'clock position)
+    link: 'https://www.circleso.com'
   },
 ];

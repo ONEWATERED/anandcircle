@@ -4,17 +4,19 @@ import PassionCard from './PassionCard';
 import InterconnectedDomainsGraphic from './InterconnectedDomainsGraphic';
 import { domains } from '@/data/domainData';
 
-// Updated passions array with more concise descriptions
+// Updated passions array with more concise descriptions and links
 const passions = [
   {
     title: "Nuclear Family",
     description: "Strong families as the cornerstone of society, integrating evidence-based parenting frameworks with traditional values for raising resilient children.",
-    colorAccent: "bg-rose-500"
+    colorAccent: "bg-rose-500",
+    link: "https://www.circleso.com"
   },
   {
     title: "Wellness",
     description: "Data-driven approaches to optimize nutrition, wellness, and mindful living with unique engineering insights into health systems.",
-    colorAccent: "bg-blue-500"
+    colorAccent: "bg-blue-500",
+    link: "https://www.onewater.ai"
   },
   {
     title: "One Water",
@@ -25,12 +27,14 @@ const passions = [
   {
     title: "AI & Data",
     description: "Implementing advanced AI solutions across governmental and regulatory environments to transform organizations through innovative technology.",
-    colorAccent: "bg-emerald-500"
+    colorAccent: "bg-emerald-500",
+    link: "https://www.onewater.ai"
   },
   {
     title: "Mentoring",
     description: "Frameworks for unlocking potential through actionable growth strategies, drawing from experience managing teams in complex environments.",
-    colorAccent: "bg-purple-500"
+    colorAccent: "bg-purple-500",
+    link: "https://www.circleso.com"
   }
 ];
 
