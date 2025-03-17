@@ -102,14 +102,10 @@ const ProfileImage = () => {
       setIsAvatarPulsing(prev => !prev);
     }, 2000);
 
-    // Show the avatar dialog automatically after 3 seconds
-    const dialogTimer = setTimeout(() => {
-      setShowAvatarDialog(true);
-    }, 3000);
+    // Removed the automatic avatar dialog display
 
     return () => {
       clearInterval(pulseInterval);
-      clearTimeout(dialogTimer);
     };
   }, []);
 
