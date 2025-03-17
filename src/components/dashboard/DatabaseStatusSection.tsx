@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { toast } from 'sonner';
 import { checkDatabaseConnection } from '@/utils/databaseConnection';
 import { supabase } from '@/integrations/supabase/client';
+import { Loader2 } from 'lucide-react';
 
 interface DatabaseStatusSectionProps {
   initialStatus: boolean;
@@ -56,9 +57,22 @@ const DatabaseStatusSection: React.FC<DatabaseStatusSectionProps> = ({ initialSt
               onClick: () => window.location.href = "/admin/login"
             }
           });
+        } else {
+          // Verify story_milestones access
+          try {
+            const { error } = await supabase.from('story_milestones').select('count').limit(1);
+            if (error) {
+              console.error("Story milestones access check failed:", error);
+              toast.warning("Connected, but there might be permission issues with story milestones.");
+            } else {
+              console.log("Successfully verified story_milestones access");
+            }
+          } catch (error) {
+            console.error("Error checking story_milestones access:", error);
+          }
         }
       } else {
-        toast.error("Failed to connect to database.");
+        toast.error("Failed to connect to database. Check your network connection and try again.");
       }
     } catch (error) {
       console.error("Error testing database connection:", error);
@@ -91,7 +105,14 @@ const DatabaseStatusSection: React.FC<DatabaseStatusSectionProps> = ({ initialSt
             <span className="font-medium">Database Status:</span>
           </div>
           <span className={isDatabaseConnected ? 'text-green-600' : 'text-red-600'}>
-            {isCheckingConnection ? 'Checking...' : (isDatabaseConnected ? 'Connected' : 'Not Connected')}
+            {isCheckingConnection ? (
+              <div className="flex items-center">
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Checking...
+              </div>
+            ) : (
+              isDatabaseConnected ? 'Connected' : 'Not Connected'
+            )}
           </span>
         </div>
         
@@ -109,7 +130,14 @@ const DatabaseStatusSection: React.FC<DatabaseStatusSectionProps> = ({ initialSt
           onClick={testDatabaseConnection}
           disabled={isCheckingConnection}
         >
-          {isCheckingConnection ? 'Testing Connection...' : (isDatabaseConnected ? 'Test Connection' : 'Connect Database')}
+          {isCheckingConnection ? (
+            <div className="flex items-center">
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Testing Connection...
+            </div>
+          ) : (
+            isDatabaseConnected ? 'Test Connection' : 'Connect Database'
+          )}
         </Button>
       </CardContent>
     </Card>

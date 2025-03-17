@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export interface StoryMilestone {
   id: string;
@@ -50,6 +51,7 @@ export function useStoryMilestones() {
 
   const addMilestone = async (milestone: Omit<StoryMilestone, 'id' | 'created_at' | 'updated_at'>) => {
     try {
+      console.log('Adding milestone:', milestone);
       const { data, error } = await supabase
         .from('story_milestones')
         .insert([milestone])
@@ -57,14 +59,17 @@ export function useStoryMilestones() {
       
       if (error) {
         console.error('Error adding milestone:', error);
+        toast.error(`Failed to add milestone: ${error.message}`);
         setError(error);
         return null;
       }
       
+      toast.success('Milestone added successfully');
       await fetchMilestones();
       return data?.[0] || null;
     } catch (err) {
       console.error('Error in addMilestone:', err);
+      toast.error('An unexpected error occurred while adding the milestone');
       setError(err instanceof Error ? err : new Error(String(err)));
       return null;
     }
@@ -72,6 +77,7 @@ export function useStoryMilestones() {
 
   const updateMilestone = async (id: string, updates: Partial<Omit<StoryMilestone, 'id' | 'created_at' | 'updated_at'>>) => {
     try {
+      console.log('Updating milestone:', id, updates);
       const { error } = await supabase
         .from('story_milestones')
         .update(updates)
@@ -79,14 +85,17 @@ export function useStoryMilestones() {
       
       if (error) {
         console.error('Error updating milestone:', error);
+        toast.error(`Failed to update milestone: ${error.message}`);
         setError(error);
         return false;
       }
       
+      toast.success('Milestone updated successfully');
       await fetchMilestones();
       return true;
     } catch (err) {
       console.error('Error in updateMilestone:', err);
+      toast.error('An unexpected error occurred while updating the milestone');
       setError(err instanceof Error ? err : new Error(String(err)));
       return false;
     }
@@ -94,6 +103,7 @@ export function useStoryMilestones() {
 
   const deleteMilestone = async (id: string) => {
     try {
+      console.log('Deleting milestone:', id);
       const { error } = await supabase
         .from('story_milestones')
         .delete()
@@ -101,14 +111,17 @@ export function useStoryMilestones() {
       
       if (error) {
         console.error('Error deleting milestone:', error);
+        toast.error(`Failed to delete milestone: ${error.message}`);
         setError(error);
         return false;
       }
       
+      toast.success('Milestone deleted successfully');
       await fetchMilestones();
       return true;
     } catch (err) {
       console.error('Error in deleteMilestone:', err);
+      toast.error('An unexpected error occurred while deleting the milestone');
       setError(err instanceof Error ? err : new Error(String(err)));
       return false;
     }
@@ -116,6 +129,7 @@ export function useStoryMilestones() {
 
   const reorderMilestones = async (reorderedIds: string[]) => {
     try {
+      console.log('Reordering milestones:', reorderedIds);
       // Update each milestone with its new position
       const updates = reorderedIds.map((id, index) => {
         return supabase
@@ -125,10 +139,12 @@ export function useStoryMilestones() {
       });
       
       await Promise.all(updates);
+      toast.success('Milestone order updated successfully');
       await fetchMilestones();
       return true;
     } catch (err) {
       console.error('Error in reorderMilestones:', err);
+      toast.error('An unexpected error occurred while reordering milestones');
       setError(err instanceof Error ? err : new Error(String(err)));
       return false;
     }
