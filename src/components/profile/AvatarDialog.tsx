@@ -40,38 +40,22 @@ const AvatarDialog = ({
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
-          {/* Neural connection path - text removed */}
-          <div className="absolute top-16 right-8 w-52 h-24 overflow-visible pointer-events-none">
-            <svg width="100%" height="100%" viewBox="0 0 160 100" className="absolute">
-              {/* Main connection path */}
-              <path 
-                d="M30,70 C50,60 90,50 120,30" 
-                fill="none" 
-                stroke="url(#gradient-path)" 
-                strokeWidth="3" 
-                strokeDasharray="5,3"
-                className="animate-pulse" 
-                id="curvePath"
-              />
-              
-              {/* Arrow at the end of the path */}
-              <polygon 
-                points="120,30 114,36 117,29 111,26" 
-                fill="url(#gradient-path)" 
-                className="animate-pulse"
-              />
-              
-              <defs>
-                <linearGradient id="gradient-path" x1="0%" y1="100%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#9b87f5" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#8B5CF6" stopOpacity="1" />
-                </linearGradient>
-              </defs>
-            </svg>
+          {/* Neural connection bubbles */}
+          <div className="absolute top-8 right-8 w-56 h-32 overflow-visible pointer-events-none">
+            {/* Multiple animated bubbles flowing from profile to AI */}
+            <div className="absolute top-16 left-4 w-4 h-4 rounded-full bg-primary/70 blur-sm animate-[pulse_2s_infinite]"></div>
+            <div className="absolute top-12 left-12 w-3 h-3 rounded-full bg-primary/60 blur-sm animate-[ping_3s_infinite]"></div>
+            <div className="absolute top-8 left-20 w-5 h-5 rounded-full bg-accent/60 blur-sm animate-[pulse_2.5s_infinite_0.7s]"></div>
+            <div className="absolute top-6 left-28 w-3 h-3 rounded-full bg-primary/70 blur-sm animate-[ping_2.7s_infinite_0.3s]"></div>
+            <div className="absolute top-4 left-36 w-4 h-4 rounded-full bg-accent/70 blur-sm animate-[pulse_3.2s_infinite_0.5s]"></div>
+            <div className="absolute top-2 left-44 w-2 h-2 rounded-full bg-primary/80 blur-sm animate-[ping_2.3s_infinite_0.9s]"></div>
             
-            {/* Animated particles traveling along the path */}
-            <div className="absolute top-0 left-0 w-3 h-3 rounded-full bg-primary/60 blur-sm animate-[neural-particle-1_3s_infinite]"></div>
-            <div className="absolute top-0 left-0 w-2 h-2 rounded-full bg-accent/60 blur-sm animate-[neural-particle-2_4s_infinite_0.5s]"></div>
+            {/* Additional bubbles with different paths */}
+            <div className="absolute top-14 left-8 w-3 h-3 rounded-full bg-accent/50 blur-sm animate-[pulse_2.8s_infinite_0.4s]"></div>
+            <div className="absolute top-10 left-16 w-4 h-4 rounded-full bg-primary/60 blur-sm animate-[ping_3.4s_infinite_0.2s]"></div>
+            <div className="absolute top-7 left-24 w-3 h-3 rounded-full bg-accent/60 blur-sm animate-[pulse_2.9s_infinite_0.8s]"></div>
+            <div className="absolute top-5 left-32 w-5 h-5 rounded-full bg-primary/50 blur-sm animate-[ping_3.1s_infinite_0.6s]"></div>
+            <div className="absolute top-3 left-40 w-2 h-2 rounded-full bg-accent/70 blur-sm animate-[pulse_2.6s_infinite_0.1s]"></div>
           </div>
           
           <div className={`neo-glass p-1.5 rounded-full shadow-lg transition-all duration-300 ${isAvatarPulsing ? 'animate-pulse ring-4 ring-primary/60 scale-105' : 'ring-2 ring-primary/40'}`}>
@@ -117,11 +101,11 @@ const AvatarDialog = ({
             <div className="absolute inset-0 bg-white/20 rounded-full blur-xl -z-10"></div>
           </div>
           
-          {/* Connection visualization within the dialog too - simplified to one line */}
-          <div className="relative py-2">
-            <div className="absolute left-1/2 top-0 h-full w-1 bg-gradient-to-b from-white/80 to-white/20"></div>
-            <div className="absolute left-[calc(50%-4px)] top-0 w-2 h-2 rounded-full bg-white animate-ping"></div>
-            <div className="absolute left-[calc(50%-4px)] bottom-0 w-2 h-2 rounded-full bg-white"></div>
+          {/* Connection visualization within the dialog too - simplified to bubbles */}
+          <div className="relative py-2 w-full">
+            <div className="absolute left-1/4 top-0 w-3 h-3 rounded-full bg-white/80 animate-ping"></div>
+            <div className="absolute left-1/2 top-2 w-4 h-4 rounded-full bg-white/60 animate-[pulse_2s_infinite_0.3s]"></div>
+            <div className="absolute left-3/4 bottom-0 w-3 h-3 rounded-full bg-white/70 animate-ping"></div>
           </div>
           
           <p className="text-center text-white/90 px-2">
