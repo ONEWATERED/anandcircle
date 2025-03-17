@@ -19,7 +19,8 @@ const passions = [
   {
     title: "One Water",
     description: "Integrating water infrastructure with environmental sustainability through technology, health outcomes, and community resilience.",
-    colorAccent: "bg-cyan-500"
+    colorAccent: "bg-cyan-500",
+    link: "https://www.onewater.ai"
   },
   {
     title: "AI & Data",
@@ -43,6 +44,9 @@ const PassionSection = () => {
           <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto mt-6">
             My work spans five interconnected domains where I drive innovation and deliver measurable impact.
+            <a href="#articles" className="text-primary hover:underline ml-1">
+              Check out related articles →
+            </a>
           </p>
         </div>
         
@@ -60,6 +64,7 @@ const PassionSection = () => {
               description={passion.description}
               colorAccent={passion.colorAccent}
               index={index}
+              link={passion.link}
             />
           ))}
         </div>

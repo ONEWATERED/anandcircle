@@ -66,7 +66,10 @@ const Footer = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">One Water AI</a>
+                  <a href="https://www.onewater.ai" target="_blank" rel="noopener noreferrer" className="flex items-center text-muted-foreground hover:text-primary transition-colors">
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    One Water AI
+                  </a>
                 </li>
               </ul>
             </div>

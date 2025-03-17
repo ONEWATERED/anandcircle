@@ -44,6 +44,12 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     }
   };
 
+  const handleClick = () => {
+    if (domain.link) {
+      window.open(domain.link, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   // Optimize transition delays for faster initial loading on mobile
   const nodeDelay = isMobile ? 0.2 + (index * 0.05) : 0.3 + (index * 0.1);
 
@@ -94,7 +100,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     >
       {/* Circle with icon - centered horizontally */}
       <motion.div 
-        className="cursor-pointer rounded-full flex items-center justify-center shadow-md mb-4"
+        className={`rounded-full flex items-center justify-center shadow-md mb-4 ${domain.link ? 'cursor-pointer' : ''}`}
         style={{ 
           backgroundColor: domain.color,
           border: `2px solid ${isActive ? 'white' : 'transparent'}`,
@@ -108,19 +114,21 @@ const DomainNode: React.FC<DomainNodeProps> = ({
           scale: isActive ? 1.1 : 1,
           boxShadow: isActive ? '0 0 10px rgba(255,255,255,0.3)' : '0 2px 4px rgba(0,0,0,0.1)'
         }}
+        onClick={domain.link ? handleClick : undefined}
       >
         <Icon size={iconSize} color="white" />
       </motion.div>
 
       {/* Text area - perfectly centered under the icon with improved visibility */}
       <motion.div 
-        className={`text-center ${textWidth} mx-auto`}
+        className={`text-center ${textWidth} mx-auto ${domain.link ? 'cursor-pointer' : ''}`}
         initial={{ opacity: 0 }}
         animate={{ 
           opacity: 1,
           scale: isActive ? 1.05 : 1
         }}
         transition={{ delay: nodeDelay + 0.1 }}
+        onClick={domain.link ? handleClick : undefined}
       >
         <div 
           className={`font-bold ${width < 350 ? 'text-xs' : 'text-sm'} md:text-sm text-center`}
@@ -129,6 +137,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
           }}
         >
           {domain.title}
+          {domain.link && <span className="ml-1">↗</span>}
         </div>
         
         {isActive && (

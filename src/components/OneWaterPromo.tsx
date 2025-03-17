@@ -18,15 +18,26 @@ const OneWaterPromo = () => {
             <Droplet size={24} className="text-blue-600" />
             <span className="font-bold text-lg text-blue-600">One Water Foundation</span>
           </div>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            className="border-blue-500/50 text-blue-700 hover:bg-blue-100 font-semibold"
-            onClick={() => window.open('https://www.onewater.foundation', '_blank', 'noopener,noreferrer')}
-          >
-            <span>Learn More</span>
-            <ExternalLink size={14} className="ml-1" />
-          </Button>
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="border-blue-500/50 text-blue-700 hover:bg-blue-100 font-semibold"
+              onClick={() => window.open('https://www.onewater.foundation', '_blank', 'noopener,noreferrer')}
+            >
+              <span>Foundation</span>
+              <ExternalLink size={14} className="ml-1" />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="border-blue-500/50 text-blue-700 hover:bg-blue-100 font-semibold"
+              onClick={() => window.open('https://www.onewater.ai', '_blank', 'noopener,noreferrer')}
+            >
+              <span>One Water AI</span>
+              <ExternalLink size={14} className="ml-1" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ export interface DomainData {
   color: string;
   description: string;
   initialAngle: number; // We'll use angles for rotation (0-360 degrees)
+  link?: string; // Optional link for domains
 }
 
 // Position domains evenly spaced around a perfect circle (72 degrees apart)
@@ -36,6 +37,7 @@ export const domains: DomainData[] = [
     color: 'rgb(6, 182, 212)', // cyan-500
     description: 'Integrating technology with environmental sustainability',
     initialAngle: 144, // 144 degrees clockwise (about 5 o'clock position)
+    link: 'https://www.onewater.ai'
   },
   {
     id: 'ai',
