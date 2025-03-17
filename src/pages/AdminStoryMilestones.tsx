@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useStoryMilestones, StoryMilestone } from '@/hooks/useStoryMilestones';
 import { Button } from '@/components/ui/button';
@@ -47,7 +46,9 @@ export default function AdminStoryMilestones() {
     { value: 'Award', label: 'Achievement (Award)' },
     { value: 'Droplets', label: 'Water (Droplets)' },
     { value: 'Globe', label: 'Global (Globe)' },
-    { value: 'Star', label: 'Excellence (Star)' }
+    { value: 'Star', label: 'Excellence (Star)' },
+    { value: 'Shield', label: 'Leadership (Shield)' },
+    { value: 'Lightbulb', label: 'Innovation (Lightbulb)' }
   ];
   
   const resetForm = () => {
@@ -301,7 +302,6 @@ export default function AdminStoryMilestones() {
         </div>
       )}
       
-      {/* Add/Edit Milestone Dialog */}
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
@@ -359,7 +359,6 @@ export default function AdminStoryMilestones() {
         </DialogContent>
       </Dialog>
       
-      {/* Confirm Delete Dialog */}
       <AlertDialog open={!!openDeleteDialog} onOpenChange={() => setOpenDeleteDialog(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>

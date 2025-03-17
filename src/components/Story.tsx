@@ -3,7 +3,7 @@ import React from 'react';
 import ProfileImage from './ProfileImage';
 import ResumeButton from './ResumeButton';
 import { createGlobalStyle } from 'styled-components';
-import { Award, Droplets, Globe, GraduationCap, Briefcase, Star, Loader2 } from 'lucide-react';
+import { Award, Droplets, Globe, GraduationCap, Briefcase, Star, Loader2, Shield, Lightbulb } from 'lucide-react';
 import { useStoryMilestones } from '@/hooks/useStoryMilestones';
 
 // Add global style for the neural network animations
@@ -48,7 +48,9 @@ const iconMap: Record<string, React.ReactNode> = {
   Award: <Award size={16} className="text-primary" />,
   Droplets: <Droplets size={16} className="text-primary" />,
   Globe: <Globe size={16} className="text-primary" />,
-  Star: <Star size={16} className="text-primary" />
+  Star: <Star size={16} className="text-primary" />,
+  Shield: <Shield size={16} className="text-primary" />,
+  Lightbulb: <Lightbulb size={16} className="text-primary" />
 };
 
 const Story = () => {
