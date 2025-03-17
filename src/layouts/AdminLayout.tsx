@@ -10,7 +10,6 @@ import {
   Settings,
   FileText,
   Network,
-  type Icon as LucideIcon
 } from 'lucide-react';
 
 interface NavItemProps {
@@ -31,7 +30,7 @@ const NavItem: React.FC<NavItemProps> = ({ to, icon: Icon, label }) => (
     }
     end
   >
-    <Icon size={18} />
+    <Icon width={18} height={18} />
     <span>{label}</span>
   </NavLink>
 );
