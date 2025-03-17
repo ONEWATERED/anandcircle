@@ -2,12 +2,31 @@
 import React from 'react';
 import OneWaterPromo from './OneWaterPromo';
 import ResumeButton from './ResumeButton';
-import { FileText } from 'lucide-react';
+import { FileText, ExternalLink, Heart } from 'lucide-react';
 
 const Footer = () => {
   return (
     <footer id="connect">
       <OneWaterPromo />
+      
+      {/* One Water Foundation Donation Banner */}
+      <div className="bg-gradient-to-r from-cyan-500 to-blue-600 py-4">
+        <div className="section-container">
+          <div className="flex flex-col md:flex-row items-center justify-center text-white">
+            <Heart className="h-6 w-6 mr-2 animate-pulse" />
+            <p className="text-center font-medium">
+              <span className="font-bold">100% of all proceeds</span> from this website go to 
+              <a href="https://www.onewater.foundation" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="underline font-bold hover:text-blue-100 transition-colors ml-1">
+                One Water Foundation
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+      
       <div className="bg-gradient-to-b from-gray-50 to-gray-100 pt-16 pb-8">
         <div className="section-container">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
@@ -53,24 +72,30 @@ const Footer = () => {
               </ul>
             </div>
             
-            {/* Areas of Focus */}
+            {/* One Water Initiatives */}
             <div>
-              <h4 className="text-lg font-display font-semibold mb-4">Areas of Focus</h4>
+              <h4 className="text-lg font-display font-semibold mb-4">One Water Initiatives</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Nuclear Families</a>
+                  <a href="https://www.onewater.foundation" target="_blank" rel="noopener noreferrer" className="flex items-center text-muted-foreground hover:text-primary transition-colors">
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    One Water Foundation
+                  </a>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Health & Wellness</a>
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">One Water Academy</a>
+                </li>
+                <li>
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">One Water AI</a>
                 </li>
                 <li>
                   <a href="#" className="text-muted-foreground hover:text-primary transition-colors">One Water</a>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">AI & Data Innovation</a>
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Health & Wellness</a>
                 </li>
                 <li>
-                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Coaching & Mentoring</a>
+                  <a href="#" className="text-muted-foreground hover:text-primary transition-colors">AI & Data Innovation</a>
                 </li>
               </ul>
             </div>
