@@ -112,12 +112,12 @@ export const defaultPeople: Person[] = [
     relationship: "Lex's thoughtful conversations have expanded my understanding of AI and humanity."
   },
   {
-    id: "patrick-mcdavid",
-    name: "Patrick McDavid",
+    id: "naval-ravikant-2",
+    name: "Naval Ravikant",
     role: "Entrepreneur & Tech Innovator",
     category: "business",
-    image: "/lovable-uploads/ba77db19-a5a2-49c5-87cf-85f690643d20.png", // Updated to use the newly uploaded image
-    relationship: "Patrick's innovative approach to technology and business strategies is remarkable."
+    image: "/lovable-uploads/ba77db19-a5a2-49c5-87cf-85f690643d20.png",
+    relationship: "Naval's innovative approach to technology and business strategies is remarkable."
   },
   {
     id: "foram",
