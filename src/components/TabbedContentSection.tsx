@@ -3,8 +3,7 @@ import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CourseShowcase from '@/components/CourseShowcase'; // Courses
 import AIGalleryShowcase from '@/components/AIGalleryShowcase'; // Digital collections
-import BlogPreview from '@/components/BlogPreview'; // Art articles
-import { GraduationCap, Images, BookText } from 'lucide-react';
+import { GraduationCap, Images } from 'lucide-react';
 
 const TabbedContentSection = () => {
   return (
@@ -20,7 +19,7 @@ const TabbedContentSection = () => {
         </div>
         
         <Tabs defaultValue="courses" className="w-full">
-          <TabsList className="w-full max-w-2xl mx-auto grid grid-cols-3 mb-6">
+          <TabsList className="w-full max-w-md mx-auto grid grid-cols-2 mb-6">
             <TabsTrigger 
               value="courses" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-blue-500 data-[state=active]:text-white flex items-center gap-2 py-3 text-lg transition-all duration-300"
@@ -35,13 +34,6 @@ const TabbedContentSection = () => {
               <Images className="h-5 w-5" />
               <span>Digital Art</span>
             </TabsTrigger>
-            <TabsTrigger 
-              value="articles" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-cyan-400 data-[state=active]:to-emerald-500 data-[state=active]:text-white flex items-center gap-2 py-3 text-lg transition-all duration-300"
-            >
-              <BookText className="h-5 w-5" />
-              <span>Articles</span>
-            </TabsTrigger>
           </TabsList>
           
           <div className="mt-4">
@@ -51,10 +43,6 @@ const TabbedContentSection = () => {
             
             <TabsContent value="digital" className="mt-0">
               <AIGalleryShowcase />
-            </TabsContent>
-            
-            <TabsContent value="articles" className="mt-0">
-              <BlogPreview />
             </TabsContent>
           </div>
         </Tabs>
