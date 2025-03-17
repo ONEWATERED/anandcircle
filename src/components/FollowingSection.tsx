@@ -2,14 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import { FollowingHeader } from './following/FollowingHeader';
 import { PersonList } from './following/PersonList';
-import { useLocalConnections } from './following/UseLocalConnections';
 import { supabase } from "@/integrations/supabase/client";
 import { Person } from '@/types/connections';
-import { connectionToPerson } from './following/connectionUtils';
 
 export const FollowingSection: React.FC = () => {
-  const { people: localPeople } = useLocalConnections();
-  const [people, setPeople] = useState<Person[]>(localPeople);
+  const [people, setPeople] = useState<Person[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,8 +23,7 @@ export const FollowingSection: React.FC = () => {
 
         if (error) {
           console.error("Error fetching connections:", error);
-          // If we can't fetch from DB, use local connections
-          setPeople(localPeople);
+          setPeople([]);
           return;
         }
 
@@ -47,28 +43,20 @@ export const FollowingSection: React.FC = () => {
           setPeople(convertedPeople);
           console.log("Loaded connections from Supabase:", convertedPeople.length);
         } else {
-          // If the database returned no connections, log this information
-          console.log("No connections found in database, using local data instead");
-          setPeople(localPeople);
+          // If the database returned no connections, show empty list
+          console.log("No connections found in database");
+          setPeople([]);
         }
       } catch (error) {
         console.error("Error in fetchConnections:", error);
-        setPeople(localPeople);
+        setPeople([]);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchConnections();
-  }, [localPeople]);
-
-  // Make sure we're actually displaying all connections from defaultPeople if no DB connections
-  useEffect(() => {
-    if (people.length === 0 && localPeople.length > 0) {
-      console.log("No people loaded, falling back to local people data");
-      setPeople(localPeople);
-    }
-  }, [people, localPeople]);
+  }, []);
 
   return (
     <section className="py-12 bg-white">
