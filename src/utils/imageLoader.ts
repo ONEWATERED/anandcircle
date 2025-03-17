@@ -23,8 +23,16 @@ export {
 } from './fileUtils';
 
 export {
-  // From databaseUtils.ts
+  // From databaseConnection.ts (was databaseUtils.ts)
   checkDatabaseConnection,
+} from './databaseConnection';
+
+export {
+  // From socialLinksUtils.ts (was databaseUtils.ts)
   saveSocialLinks,
+} from './socialLinksUtils';
+
+export {
+  // From profileUtils.ts (was databaseUtils.ts)
   uploadImageToDatabase,
-} from './databaseUtils';
+} from './profileUtils';
