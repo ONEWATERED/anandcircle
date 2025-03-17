@@ -62,52 +62,57 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
               <BrainCircuit size={14} className="text-white" />
             </div>
             
-            {/* Neural connection dots */}
-            <div className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary/40 animate-pulse blur-sm"></div>
-            <div className="absolute -top-8 -right-4 w-3 h-3 rounded-full bg-accent/30 animate-pulse blur-sm"></div>
-            <div className="absolute -top-14 -right-2 w-2 h-2 rounded-full bg-primary/50 animate-pulse blur-sm"></div>
-            <div className="absolute -top-20 right-0 w-2 h-2 rounded-full bg-accent/40 animate-pulse blur-sm"></div>
+            {/* Neural connection dots - more prominent */}
+            <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary/50 animate-pulse blur-sm"></div>
+            <div className="absolute -top-8 -right-4 w-4 h-4 rounded-full bg-accent/40 animate-pulse blur-sm"></div>
+            <div className="absolute -top-14 -right-2 w-3 h-3 rounded-full bg-primary/60 animate-pulse blur-sm"></div>
+            <div className="absolute -top-20 right-0 w-3 h-3 rounded-full bg-accent/50 animate-pulse blur-sm"></div>
           </div>
           
-          {/* Neural network overlay */}
-          <div className="absolute -top-20 -right-10 w-28 h-28 pointer-events-none opacity-60">
+          {/* Neural network overlay - more visible */}
+          <div className="absolute -top-20 -right-10 w-32 h-32 pointer-events-none opacity-70">
             <svg viewBox="0 0 100 100" className="w-full h-full">
-              {/* Neural connection lines */}
+              {/* Neural connection lines - improved visibility */}
               <path 
                 d="M50,90 Q55,70 60,50 Q70,30 80,20" 
                 fill="none" 
                 stroke="url(#neuralGradient)" 
-                strokeWidth="0.5" 
+                strokeWidth="0.8" 
                 strokeDasharray="1,2"
-                className="opacity-70"
+                className="animate-pulse-travel opacity-80"
               />
               <path 
                 d="M40,90 Q45,60 55,40 Q65,25 75,15" 
                 fill="none" 
                 stroke="url(#neuralGradient)" 
-                strokeWidth="0.5"
+                strokeWidth="0.8"
                 strokeDasharray="1,3"
-                className="opacity-60" 
+                className="animate-pulse opacity-70" 
               />
               <path 
                 d="M60,90 Q65,75 70,55 Q75,35 80,25" 
                 fill="none" 
                 stroke="url(#neuralGradient)" 
-                strokeWidth="0.5"
+                strokeWidth="0.8"
                 strokeDasharray="2,2"
-                className="opacity-50" 
+                className="animate-pulse-travel opacity-60" 
               />
               
-              {/* Gradient definition */}
+              {/* Gradient definition - more vibrant colors */}
               <defs>
                 <linearGradient id="neuralGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="rgba(139,92,246,0.1)" />
-                  <stop offset="50%" stopColor="rgba(139,92,246,0.3)" />
-                  <stop offset="100%" stopColor="rgba(139,92,246,0.6)" />
+                  <stop offset="0%" stopColor="rgba(139,92,246,0.3)" />
+                  <stop offset="50%" stopColor="rgba(139,92,246,0.5)" />
+                  <stop offset="100%" stopColor="rgba(139,92,246,0.7)" />
                 </linearGradient>
               </defs>
             </svg>
           </div>
+          
+          {/* Neural node effects - added more nodes */}
+          <div className="absolute top-[-35px] right-[15px] w-2 h-2 rounded-full bg-primary/40 animate-pulse"></div>
+          <div className="absolute top-[-25px] right-[25px] w-1.5 h-1.5 rounded-full bg-accent/50 animate-pulse"></div>
+          <div className="absolute top-[-15px] right-[10px] w-1 h-1 rounded-full bg-primary/60 animate-pulse"></div>
           
           {/* Inner shadow glow in matching colors */}
           <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_15px_rgba(139,92,246,0.2)] pointer-events-none"></div>
