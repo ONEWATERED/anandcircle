@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdminLink from '@/components/AdminLink';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
+import OneWaterPromo from '@/components/OneWaterPromo';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -32,10 +33,11 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col bg-gradient-to-b from-[#0F172A] to-[#1E293B] text-foreground" 
+      className="min-h-screen flex flex-col bg-tech-dark text-foreground" 
     >
+      <OneWaterPromo />
       <Navbar />
-      <main className="flex-grow w-full">
+      <main className="flex-grow w-full bg-gradient-to-b from-tech-dark to-[#131c32]">
         {children}
       </main>
       <div className="flex justify-end p-2 border-t border-primary/20 relative z-[2]">

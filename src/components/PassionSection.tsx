@@ -40,13 +40,13 @@ const passions = [
 
 const PassionSection = () => {
   return (
-    <section id="passions" className="py-6 md:py-8 bg-gradient-to-b from-white to-gray-50">
+    <section id="passions" className="py-6 md:py-8 bg-[#1E293B]">
       <div className="section-container">
         <div className="text-center mb-4 md:mb-6">
           <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-2">My Domains</h2>
-          <h3 className="text-2xl md:text-4xl font-display font-bold mb-3 md:mb-4">Areas of Expertise & Innovation</h3>
+          <h3 className="text-2xl md:text-4xl font-display font-bold mb-3 md:mb-4 text-white">Areas of Expertise & Innovation</h3>
           <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
-          <p className="text-muted-foreground max-w-2xl mx-auto mt-3 md:mt-4 px-4">
+          <p className="text-gray-300 max-w-2xl mx-auto mt-3 md:mt-4 px-4">
             My work spans five interconnected domains where I drive innovation and deliver measurable impact.
             <a href="#articles" className="text-primary hover:underline ml-1">
               Check out related articles →

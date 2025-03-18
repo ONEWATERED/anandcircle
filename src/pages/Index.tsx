@@ -14,28 +14,28 @@ const Index = () => {
   
   return (
     <MainLayout>
-      <div className="flex flex-col items-center w-full bg-gradient-to-b from-[#0F172A] to-[#1E293B]">
+      <div className="flex flex-col items-center w-full">
         {/* Hero section with dark tech background */}
         <div className="w-full">
           <Hero />
         </div>
         
-        {/* Story section with white background for contrast */}
-        <div className="w-full py-16 bg-white">
+        {/* Story section with dark slate background for better contrast */}
+        <div className="w-full py-16 bg-[#1A2235]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Story />
           </div>
         </div>
         
-        {/* Passion section with slate background */}
-        <div className="w-full py-16 bg-slate-100">
+        {/* Passion section with slightly lighter background */}
+        <div className="w-full py-16 bg-[#1E293B]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <PassionSection />
           </div>
         </div>
         
         {/* Following section with consistent dark background */}
-        <div className="w-full py-16 bg-[#1E293B] text-white">
+        <div className="w-full py-16 bg-[#131c32] text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <FollowingSection />
           </div>
@@ -49,7 +49,7 @@ const Index = () => {
         </div>
         
         {/* Interest form with consistent dark background */}
-        <div className="w-full py-16 bg-[#1E293B] text-white">
+        <div className="w-full py-16 bg-[#131c32] text-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <InterestForm />
           </div>
