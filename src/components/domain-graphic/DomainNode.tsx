@@ -69,10 +69,10 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     >
       {/* Circle with icon - centered horizontally */}
       <div 
-        className={`rounded-full flex items-center justify-center shadow-sm mb-1 ${domain.link ? 'cursor-pointer' : ''}`}
+        className={`rounded-lg flex items-center justify-center shadow-sm mb-1 ${domain.link ? 'cursor-pointer' : ''}`}
         style={{ 
-          backgroundColor: "#f0f0f0",
-          border: `1px solid ${isActive ? '#000000' : '#e0e0e0'}`,
+          backgroundColor: isActive ? "#f0f9ff" : "#ffffff",
+          border: `1px solid ${isActive ? '#0ea5e9' : '#e5e7eb'}`,
           width: nodeIconSize,
           height: nodeIconSize,
           marginLeft: 'auto',
@@ -80,7 +80,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         }}
         onClick={domain.link ? handleClick : undefined}
       >
-        <Icon size={iconSize} color="#333333" />
+        <Icon size={iconSize} color="#0ea5e9" />
       </div>
 
       {/* Text area - simplified */}
@@ -90,14 +90,14 @@ const DomainNode: React.FC<DomainNodeProps> = ({
       >
         <div 
           className={`font-medium text-xs md:text-sm text-center whitespace-nowrap`}
-          style={{ color: "#333333" }}
+          style={{ color: isActive ? "#0ea5e9" : "#333333" }}
         >
           {domain.title}
-          {domain.link && <span className="ml-1">↗</span>}
+          {domain.link && <span className="ml-1 text-primary">↗</span>}
         </div>
         
         {isActive && (
-          <div className="text-[7px] md:text-xs mt-1 z-10 text-gray-600">
+          <div className="text-[7px] md:text-xs mt-1 z-10 text-muted-foreground bg-white/80 backdrop-blur-sm p-1 rounded-md">
             {isMobile 
               ? domain.description.split(' ').slice(0, 3).join(' ') + '...' 
               : domain.description.split(' ').slice(0, 10).join(' ') + '...'}

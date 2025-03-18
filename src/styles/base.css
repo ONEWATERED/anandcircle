@@ -7,43 +7,39 @@
 
 @layer base {
   :root {
-    /* Futuristic tech color palette */
-    --background: 226 30% 4%;
-    --foreground: 210 40% 96.1%;
+    /* Langflow-inspired color palette */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
 
-    --card: 222 25% 8%;
-    --card-foreground: 210 40% 96.1%;
+    --card: 210 40% 98%;
+    --card-foreground: 222 47% 11%;
 
-    --popover: 222 25% 8%;
-    --popover-foreground: 210 40% 96.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 196 100% 50%; /* Vibrant cyan */
+    --primary: 199 89% 48%; /* Langflow blue */
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 273 70% 54%; /* Rich purple */
+    --secondary: 204 94% 33%; /* Darker blue */
     --secondary-foreground: 210 40% 98%;
 
-    --accent: 322 75% 50%; /* Magenta */
-    --accent-foreground: 210 40% 98%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
 
-    --muted: 223 25% 15%;
-    --muted-foreground: 215 20% 65.1%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --gold: 43 74% 60%; /* Gold accent */
-    --gold-foreground: 0 0% 12%;
+    --success: 160 84% 39%; /* Accent green */
+    --success-foreground: 210 40% 98%;
 
-    --cyan: 196 100% 50%; /* Explicit cyan */
-    --purple: 273 70% 54%; /* Explicit purple */
-    --magenta: 322 75% 50%; /* Explicit magenta */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 199 89% 48%;
 
-    --border: 217 33% 17.5%;
-    --input: 217 33% 17.5%;
-    --ring: 196 100% 50%;
-
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   * {
@@ -51,7 +47,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
   }
@@ -72,80 +68,31 @@
     @apply text-xl font-bold;
   }
 
-  /* Futuristic tech UI elements */
-  .tech-card {
-    @apply bg-card border border-cyan-900/30 rounded-lg overflow-hidden;
-    box-shadow: 0 4px 20px -2px rgba(0, 204, 255, 0.2), 
-                0 0 0 1px rgba(0, 204, 255, 0.1);
+  /* Langflow UI elements */
+  .langflow-card {
+    @apply bg-card border border-border rounded-xl overflow-hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
-  .tech-border {
-    @apply border border-cyan-800/40 rounded-md;
-    box-shadow: 0 0 0 1px rgba(0, 204, 255, 0.1), 
-                inset 0 0 0 1px rgba(0, 204, 255, 0.1);
+  .langflow-button {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded-md transition-colors;
   }
 
-  .neo-glass {
-    @apply bg-card/70 backdrop-blur-md border border-white/10 rounded-xl;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+  .langflow-glass {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 rounded-xl;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
-  /* Grid background overlay patterns */
-  .bg-grid-overlay {
-    background-image: linear-gradient(to right, rgba(0, 204, 255, 0.1) 1px, transparent 1px),
-                     linear-gradient(to bottom, rgba(0, 204, 255, 0.1) 1px, transparent 1px);
+  /* Light grid pattern overlay */
+  .bg-grid-light {
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                     linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
     background-size: 20px 20px;
-  }
-
-  .bg-scanlines {
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent,
-      transparent 2px,
-      rgba(0, 204, 255, 0.05) 3px,
-      rgba(0, 204, 255, 0.05) 3px
-    );
   }
 
   /* Text gradients */
   .text-gradient-primary {
-    @apply bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-transparent bg-clip-text;
-  }
-
-  .text-gradient-secondary {
-    @apply bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-400 text-transparent bg-clip-text;
-  }
-
-  .text-gradient-gold {
-    @apply bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-transparent bg-clip-text;
-  }
-
-  /* Angular tech design accents */
-  .tech-accent-corner {
-    position: relative;
-  }
-
-  .tech-accent-corner::before,
-  .tech-accent-corner::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border: 2px solid theme('colors.cyan.500');
-  }
-
-  .tech-accent-corner::before {
-    top: 0;
-    left: 0;
-    border-right: 0;
-    border-bottom: 0;
-  }
-
-  .tech-accent-corner::after {
-    bottom: 0;
-    right: 0;
-    border-left: 0;
-    border-top: 0;
+    @apply bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text;
   }
 
   /* Section spacing */

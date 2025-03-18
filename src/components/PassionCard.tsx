@@ -2,7 +2,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 type PassionCardProps = {
   title: string;
@@ -24,17 +23,17 @@ const PassionCard = ({
 }: PassionCardProps) => {
   return (
     <div 
-      className="neo-glass overflow-hidden opacity-0 animate-fade-up" 
-      style={{ animationDelay: `${200 + index * 100}ms` }}
+      className="bg-white border border-gray-200/50 rounded-xl overflow-hidden shadow-sm hover-shadow opacity-0 animate-fade-up" 
+      style={{ animationDelay: `${200 + index * 100}ms`, animationFillMode: 'forwards' }}
     >
       <div className="flex flex-col h-full">
-        <div className="p-6 flex flex-col flex-grow backdrop-blur-sm relative">
-          {/* Card accent glow */}
-          <div className={cn('h-1 w-16 rounded-full mb-4 glow', colorAccent)}></div>
+        <div className="p-6 flex flex-col flex-grow relative">
+          {/* Card accent line */}
+          <div className={cn('h-1 w-16 rounded-full mb-4', colorAccent)}></div>
           
-          <h3 className="text-xl font-display font-semibold mb-3 text-gradient-primary">{title}</h3>
+          <h3 className="text-xl font-semibold mb-3 text-foreground">{title}</h3>
           
-          <p className="text-gray-700 text-sm">
+          <p className="text-muted-foreground text-sm">
             {description}
           </p>
 
@@ -44,7 +43,7 @@ const PassionCard = ({
                 href={link} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+                className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-colors"
               >
                 Learn more <ArrowRight className="ml-1 h-4 w-4" />
               </a>

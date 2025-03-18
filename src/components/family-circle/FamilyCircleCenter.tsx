@@ -73,7 +73,7 @@ const FamilyCircleCenter: React.FC<FamilyCircleCenterProps> = ({ centerSize, wid
       }}
     >
       <div
-        className="rounded-full flex flex-col items-center justify-center bg-primary shadow-sm p-3 md:p-4"
+        className="rounded-xl flex flex-col items-center justify-center bg-primary shadow-sm p-3 md:p-4"
         style={{
           width: centerBoxSize,
           height: centerBoxSize,

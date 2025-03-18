@@ -7,7 +7,6 @@ import { FollowingSection } from '@/components/FollowingSection';
 import PassionSection from '@/components/PassionSection';
 import InterestForm from '@/components/InterestForm';
 import TabbedContentSection from '@/components/TabbedContentSection';
-import BackgroundParticles from '@/components/domain-graphic/BackgroundParticles';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
@@ -15,11 +14,10 @@ const Index = () => {
   
   return (
     <MainLayout>
-      {/* Futuristic tech background with reduced opacity */}
+      {/* Clean, subtle background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-[1]">
-        <div className="absolute inset-0 bg-tech-mesh opacity-70">
-          <BackgroundParticles isMobile={isMobile} />
-          <div className="absolute inset-0 bg-glowing-dots opacity-30"></div>
+        <div className="absolute inset-0 bg-grid opacity-30">
+          <div className="absolute inset-0 bg-subtle-dots opacity-30"></div>
         </div>
       </div>
       
@@ -27,15 +25,17 @@ const Index = () => {
       <div className="relative z-[2]">
         <Hero />
         <div className="reduced-gap">
-          <Story />
+          <div className="bg-white">
+            <Story />
+          </div>
         </div>
         <div className="reduced-gap">
-          <div className="bg-cyber py-16 bg-opacity-70">
+          <div className="bg-gradient-light py-16">
             <PassionSection />
           </div>
         </div>
         <div className="tighter-gap">
-          <div className="bg-data-pattern py-16">
+          <div className="bg-dot-pattern py-16">
             <FollowingSection />
           </div>
         </div>
@@ -43,7 +43,7 @@ const Index = () => {
           <TabbedContentSection />
         </div>
         <div className="reduced-gap">
-          <div className="bg-tech-gradient py-16">
+          <div className="bg-gradient-blue py-16">
             <InterestForm />
           </div>
         </div>
