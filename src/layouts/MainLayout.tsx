@@ -18,17 +18,16 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     link.rel = 'stylesheet';
     document.head.appendChild(link);
     
-    // Remove all animation and intersection observer code
     return () => {
       document.head.removeChild(link);
     };
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
       <Navbar />
-      <main className="flex-grow">{children}</main>
-      <div className="flex justify-end p-2 border-t">
+      <main className="flex-grow relative">{children}</main>
+      <div className="flex justify-end p-2 border-t relative z-[2]">
         <AdminLink />
       </div>
       <Footer />

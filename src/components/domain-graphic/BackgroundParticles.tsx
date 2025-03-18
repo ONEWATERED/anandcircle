@@ -8,30 +8,30 @@ interface BackgroundParticlesProps {
 
 const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({ isMobile }) => {
   // Create more particles for a richer, more visible effect
-  const particleCount = isMobile ? 18 : 35; // Increased particle count
+  const particleCount = isMobile ? 25 : 45; // Significantly increased particle count
   const particles = Array.from({ length: particleCount });
   
   // Enhanced particle sizes and shapes for a more prominent tech-inspired look
   const particleSizes = [
-    { width: 3, height: 3 },      // Small circle - slightly larger
-    { width: 4, height: 4 },      // Medium circle
-    { width: 5, height: 5 },      // Large circle - slightly larger
-    { width: 2, height: 8 },      // Small vertical line (data stream effect) - longer
-    { width: 8, height: 2 },      // Small horizontal line (data stream effect)
-    { width: 1, height: 12 },     // Thin vertical line - longer
-    { width: 12, height: 1 },     // Thin horizontal line - longer
-    { width: 4, height: 4, isSquare: true }  // Square particle - slightly larger
+    { width: 5, height: 5 },      // Small circle - larger
+    { width: 7, height: 7 },      // Medium circle - larger
+    { width: 9, height: 9 },      // Large circle - larger
+    { width: 3, height: 12 },     // Small vertical line (data stream effect) - longer
+    { width: 12, height: 3 },     // Small horizontal line (data stream effect) - wider
+    { width: 2, height: 16 },     // Thin vertical line - longer
+    { width: 16, height: 2 },     // Thin horizontal line - longer
+    { width: 8, height: 8, isSquare: true }  // Square particle - larger
   ];
   
   // Updated color palette with more vibrant tech colors and higher opacity
   const particleColors = [
-    "bg-brand-cyan/40",           // Vibrant cyan - more visible
-    "bg-brand-purple/35",         // Vibrant purple - more visible
-    "bg-fuchsia-500/30",          // Magenta - more visible
-    "bg-amber-400/25",            // Gold accent - more visible
-    "bg-brand-blue/30",           // Brand blue - more visible
-    "bg-cyan-300/40",             // Light cyan - more visible
-    "bg-indigo-500/30"            // Indigo - more visible
+    "bg-brand-cyan/60",           // Vibrant cyan - much more visible
+    "bg-brand-purple/55",         // Vibrant purple - much more visible
+    "bg-fuchsia-500/50",          // Magenta - much more visible
+    "bg-amber-400/45",            // Gold accent - much more visible
+    "bg-brand-blue/50",           // Brand blue - much more visible
+    "bg-cyan-300/60",             // Light cyan - much more visible
+    "bg-indigo-500/50"            // Indigo - much more visible
   ];
   
   return (
@@ -44,7 +44,7 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({ isMobile }) =
         const color = particleColors[colorIndex];
         
         // Determine if this particle will have a glow effect - increased probability
-        const hasGlow = Math.random() > 0.4; // More particles will glow
+        const hasGlow = Math.random() > 0.3; // More particles will glow
         
         // Determine if particle will be a data stream effect
         const isDataStream = sizeIndex === 3 || sizeIndex === 4;
@@ -57,8 +57,8 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({ isMobile }) =
         // Determine randomized position and movement for more organic feel
         const xPosition = `${Math.random() * 100}%`;
         const yPosition = `${Math.random() * 100}%`;
-        const xMovement = Math.random() * (isMobile ? 40 : 80) * direction; // Increased movement range
-        const yMovement = Math.random() * (isMobile ? 40 : 80) * (Math.random() > 0.5 ? 1 : -1); // Increased movement range
+        const xMovement = Math.random() * (isMobile ? 50 : 100) * direction; // Increased movement range
+        const yMovement = Math.random() * (isMobile ? 50 : 100) * (Math.random() > 0.5 ? 1 : -1); // Increased movement range
         
         // For square particles, add border-radius of 0
         const borderRadius = size.isSquare ? 'rounded-none' : 'rounded-full';
@@ -71,24 +71,23 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({ isMobile }) =
         return (
           <motion.div
             key={`particle-${i}`}
-            className={`absolute ${borderRadius} ${color} ${glowClass} 
-              ${isDataStream ? 'opacity-80' : ''}`} // Higher base opacity
+            className={`absolute ${borderRadius} ${color} ${glowClass} ${isDataStream ? 'opacity-90' : ''}`} // Higher base opacity
             style={{
-              width: isMobile ? size.width * 0.8 : size.width, // Slightly larger on mobile
-              height: isMobile ? size.height * 0.8 : size.height, // Slightly larger on mobile
+              width: isMobile ? size.width * 0.9 : size.width, // Larger on all devices
+              height: isMobile ? size.height * 0.9 : size.height, // Larger on all devices
               left: xPosition,
               top: yPosition,
-              opacity: isDataStream ? 0.8 : (isMobile ? 0.7 : 0.65), // Higher opacity overall
-              zIndex: 0 // Changed from -1 to 0 to make it more visible
+              opacity: isDataStream ? 0.9 : (isMobile ? 0.8 : 0.75), // Much higher opacity overall
+              zIndex: 1 // Increased from 0 to 1 to make it more visible
             }}
             animate={{
               x: [0, xMovement, 0],
               y: [0, yMovement, 0],
               opacity: isDataStream 
-                ? [0.8, 1, 0.8] // Higher opacity range
-                : [isMobile ? 0.7 : 0.65, 0.3, isMobile ? 0.7 : 0.65], // Higher opacity range
-              scale: hasGlow ? [1, 1.4, 1] : [1, 1.2, 1], // More pronounced scale effect
-              rotate: size.isSquare ? [0, 90, 0] : 0, // More rotation for square particles
+                ? [0.9, 1, 0.9] // Higher opacity range
+                : [isMobile ? 0.8 : 0.75, 0.4, isMobile ? 0.8 : 0.75], // Higher opacity range
+              scale: hasGlow ? [1, 1.6, 1] : [1, 1.3, 1], // More pronounced scale effect
+              rotate: size.isSquare ? [0, 180, 0] : 0, // More rotation for square particles
             }}
             transition={{
               duration: duration,
@@ -102,20 +101,20 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({ isMobile }) =
       })}
 
       {/* Additional digital circuit lines - enhanced and more visible */}
-      {!isMobile && Array.from({ length: 6 }).map((_, i) => ( // Increased from 4 to 6 lines
+      {!isMobile && Array.from({ length: 8 }).map((_, i) => ( // Increased to 8 lines
         <motion.div
           key={`circuit-line-${i}`}
-          className="absolute bg-gradient-to-r from-brand-cyan/10 via-brand-cyan/30 to-brand-cyan/10 z-0" // More visible
+          className="absolute bg-gradient-to-r from-brand-cyan/20 via-brand-cyan/50 to-brand-cyan/20 z-1" // More visible
           style={{
-            height: 1.5, // Slightly thicker
-            width: '50%', // Wider
+            height: 2, // Thicker
+            width: '60%', // Wider
             left: `${15 + Math.random() * 35}%`,
-            top: `${15 + i * 15}%`, // Better distribution
-            opacity: 0.5 // More visible
+            top: `${10 + i * 10}%`, // Better distribution
+            opacity: 0.7 // More visible
           }}
           animate={{
-            opacity: [0.5, 0.8, 0.5], // More visible
-            width: ['50%', '70%', '50%'], // Wider animation
+            opacity: [0.7, 0.9, 0.7], // More visible
+            width: ['60%', '80%', '60%'], // Wider animation
           }}
           transition={{
             duration: 7 + i * 1.5, // Slightly faster
@@ -128,20 +127,20 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({ isMobile }) =
       ))}
       
       {/* Vertical circuit lines - enhanced */}
-      {!isMobile && Array.from({ length: 5 }).map((_, i) => ( // Increased from 3 to 5 lines
+      {!isMobile && Array.from({ length: 7 }).map((_, i) => ( // Increased to 7 lines
         <motion.div
           key={`circuit-line-v-${i}`}
-          className="absolute bg-gradient-to-b from-brand-purple/10 via-brand-purple/30 to-brand-purple/10 z-0" // More visible
+          className="absolute bg-gradient-to-b from-brand-purple/20 via-brand-purple/50 to-brand-purple/20 z-1" // More visible
           style={{
-            width: 1.5, // Slightly thicker
-            height: '40%', // Taller
-            left: `${20 + i * 15}%`, // Better distribution
-            top: `${20 + Math.random() * 30}%`,
-            opacity: 0.5 // More visible
+            width: 2, // Thicker
+            height: '50%', // Taller
+            left: `${15 + i * 10}%`, // Better distribution
+            top: `${15 + Math.random() * 30}%`,
+            opacity: 0.7 // More visible
           }}
           animate={{
-            opacity: [0.5, 0.8, 0.5], // More visible
-            height: ['40%', '60%', '40%'], // Taller animation
+            opacity: [0.7, 0.9, 0.7], // More visible
+            height: ['50%', '70%', '50%'], // Taller animation
           }}
           transition={{
             duration: 9 + i * 1.5, // Slightly faster
@@ -153,22 +152,22 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({ isMobile }) =
         />
       ))}
       
-      {/* New: Diagonal data streams for a more dynamic effect */}
-      {!isMobile && Array.from({ length: 3 }).map((_, i) => (
+      {/* Diagonal data streams for a more dynamic effect */}
+      {Array.from({ length: isMobile ? 3 : 5 }).map((_, i) => ( // Added to mobile too
         <motion.div
           key={`data-stream-${i}`}
-          className="absolute bg-gradient-to-br from-amber-400/5 via-amber-400/20 to-amber-400/5 z-0"
+          className="absolute bg-gradient-to-br from-amber-400/15 via-amber-400/40 to-amber-400/15 z-1"
           style={{
-            height: 1,
-            width: '30%',
-            left: `${30 + i * 20}%`,
-            top: `${20 + i * 20}%`,
+            height: 2,
+            width: '40%',
+            left: `${20 + i * 15}%`,
+            top: `${15 + i * 15}%`,
             transform: 'rotate(45deg)',
-            opacity: 0.6
+            opacity: 0.8
           }}
           animate={{
-            opacity: [0.6, 0.9, 0.6],
-            width: ['30%', '50%', '30%'],
+            opacity: [0.8, 1, 0.8],
+            width: ['40%', '60%', '40%'],
           }}
           transition={{
             duration: 8 + i,
@@ -176,6 +175,31 @@ const BackgroundParticles: React.FC<BackgroundParticlesProps> = ({ isMobile }) =
             repeatType: "reverse",
             ease: "easeInOut",
             delay: i
+          }}
+        />
+      ))}
+      
+      {/* NEW: Add pulsing nodes at circuit intersections */}
+      {!isMobile && Array.from({ length: 6 }).map((_, i) => (
+        <motion.div
+          key={`node-${i}`}
+          className="absolute rounded-full bg-brand-cyan/70 shadow-glow-cyan z-1"
+          style={{
+            width: 6,
+            height: 6,
+            left: `${25 + i * 10}%`,
+            top: `${30 + (i % 3) * 15}%`,
+          }}
+          animate={{
+            scale: [1, 1.5, 1],
+            opacity: [0.7, 1, 0.7]
+          }}
+          transition={{
+            duration: 2 + (i % 3),
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+            delay: i * 0.7
           }}
         />
       ))}

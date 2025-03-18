@@ -15,17 +15,22 @@ const Index = () => {
   
   return (
     <MainLayout>
-      {/* Background particles container */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <BackgroundParticles isMobile={isMobile} />
+      {/* Background particles container - improved positioning and z-index */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-[1]">
+        <div className="absolute inset-0 opacity-100">
+          <BackgroundParticles isMobile={isMobile} />
+        </div>
       </div>
       
-      <Hero />
-      <Story />
-      <PassionSection />
-      <FollowingSection />
-      <TabbedContentSection />
-      <InterestForm />
+      {/* Content with higher z-index to be above particles */}
+      <div className="relative z-[2]">
+        <Hero />
+        <Story />
+        <PassionSection />
+        <FollowingSection />
+        <TabbedContentSection />
+        <InterestForm />
+      </div>
     </MainLayout>
   );
 };

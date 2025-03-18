@@ -16,14 +16,21 @@ export function useIsMobile() {
     checkMobile();
 
     // Set up event listener for window resize
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
-    mql.addEventListener("change", checkMobile);
+    const resizeHandler = () => {
+      checkMobile();
+    };
+    
+    window.addEventListener("resize", resizeHandler);
+    
+    // Also check on orientation change for mobile devices
+    window.addEventListener("orientationchange", checkMobile);
     
     // Forces a re-check after a small delay to ensure correct value
     const timer = setTimeout(checkMobile, 100);
 
     return () => {
-      mql.removeEventListener("change", checkMobile);
+      window.removeEventListener("resize", resizeHandler);
+      window.removeEventListener("orientationchange", checkMobile);
       clearTimeout(timer);
     }
   }, [])
