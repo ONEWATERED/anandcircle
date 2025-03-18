@@ -1,7 +1,79 @@
 
-/* Simplified backgrounds */
+/* Futuristic tech background styles */
 @layer utilities {
-  .bg-simple {
-    background-color: hsl(var(--background));
+  .bg-tech-gradient {
+    background: linear-gradient(135deg, 
+                rgba(13, 17, 23, 0.95) 0%, 
+                rgba(26, 35, 46, 0.95) 50%, 
+                rgba(13, 17, 23, 0.95) 100%);
   }
+  
+  .bg-cyber {
+    background: linear-gradient(45deg,
+                rgba(0, 0, 0, 0.9) 0%,
+                rgba(38, 38, 74, 0.9) 50%,
+                rgba(18, 18, 40, 0.9) 100%);
+    background-size: 200% 200%;
+    animation: gradient-shift 15s ease infinite;
+  }
+  
+  .bg-data-pattern {
+    background-color: rgba(16, 20, 30, 0.95);
+    background-image: 
+      radial-gradient(circle at 25px 25px, rgba(0, 204, 255, 0.15) 2%, transparent 0%),
+      radial-gradient(circle at 75px 75px, rgba(157, 102, 255, 0.1) 2%, transparent 0%);
+    background-size: 100px 100px;
+  }
+  
+  .bg-tech-mesh {
+    background: 
+      linear-gradient(rgba(25, 30, 40, 0.8) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(25, 30, 40, 0.8) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-color: rgba(10, 15, 25, 0.95);
+  }
+  
+  .bg-glowing-dots {
+    background-image: 
+      radial-gradient(rgba(0, 204, 255, 0.4) 1px, transparent 1px),
+      radial-gradient(rgba(157, 102, 255, 0.3) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: 0 0, 25px 25px;
+    background-color: rgba(10, 15, 25, 0.95);
+  }
+  
+  .bg-circuit {
+    background-color: rgba(16, 20, 30, 0.98);
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0z' fill='none'/%3E%3Cpath d='M11 18h1v1h-1z M13 20h1v1h-1z M15 22h1v1h-1z M17 24h1v1h-1z M18 26h1v1h-1z M20 28h1v1h-1z M22 30h1v1h-1z M24 32h1v1h-1z M26 34h1v1h-1z M28 36h1v1h-1z M30 38h1v1h-1z M32 40h1v1h-1z M34 42h1v1h-1z M36 44h1v1h-1z M38 46h1v1h-1z' stroke='rgba(0,204,255,0.2)' fill='none'/%3E%3Cpath d='M40 48h1v1h-1z M42 50h1v1h-1z M44 52h1v1h-1z M46 54h1v1h-1z M48 56h1v1h-1z M50 58h1v1h-1z M52 60h1v1h-1z M54 62h1v1h-1z M56 64h1v1h-1z M58 66h1v1h-1z M60 68h1v1h-1z M62 70h1v1h-1z M64 72h1v1h-1z' stroke='rgba(157,102,255,0.15)' fill='none'/%3E%3C/svg%3E");
+  }
+  
+  .bg-simple {
+    background-color: rgba(16, 20, 30, 0.98);
+  }
+  
+  .angular-border {
+    position: relative;
+  }
+  
+  .angular-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(0, 204, 255, 0.3) 0%, rgba(157, 102, 255, 0.3) 50%, rgba(236, 64, 122, 0.3) 100%);
+    clip-path: polygon(
+      0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% calc(100% - 10px), 
+      10px calc(100% - 10px), 10px 10px, calc(100% - 10px) 10px, 
+      calc(100% - 10px) calc(100% - 10px), 0% calc(100% - 10px)
+    );
+    z-index: -1;
+  }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
 }

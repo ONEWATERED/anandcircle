@@ -1,7 +1,139 @@
 
-/* Remove all animations and keep only basic transitions */
+/* Tech-inspired animations and transitions */
 @layer utilities {
   .transition-standard {
     transition: all 0.2s ease;
+  }
+  
+  /* Glow animations */
+  .glow-pulse {
+    animation: glow-pulse 2s ease-in-out infinite alternate;
+  }
+  
+  .neon-glow {
+    box-shadow: 0 0 5px theme('colors.cyan.400'), 
+                0 0 10px theme('colors.cyan.400'), 
+                0 0 15px theme('colors.purple.500');
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 2px theme('colors.white'), 
+                 0 0 10px theme('colors.cyan.400'), 
+                 0 0 20px theme('colors.purple.500');
+  }
+  
+  /* Scanline effect */
+  .scanline {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      transparent 100%
+    );
+    background-size: 100% 4px;
+    animation: scanline 8s linear infinite;
+  }
+  
+  /* Tech-inspired hover animations */
+  .tech-hover {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  .tech-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.25), 
+                0 5px 5px rgba(0, 0, 0, 0.22),
+                0 0 0 1px rgba(128, 226, 255, 0.1),
+                0 0 20px rgba(128, 226, 255, 0.2);
+  }
+
+  /* Data-flow animation */
+  .data-flow {
+    background: linear-gradient(
+      90deg, 
+      rgba(0, 0, 0, 0) 0%, 
+      rgba(157, 102, 255, 0.2) 20%, 
+      rgba(0, 204, 255, 0.2) 50%, 
+      rgba(157, 102, 255, 0.2) 80%, 
+      rgba(0, 0, 0, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: data-flow 3s linear infinite;
+  }
+  
+  /* Angular shape shine */
+  .angular-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .angular-shine::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(30deg);
+    animation: shine 6s linear infinite;
+  }
+}
+
+/* Keyframes for the animations */
+@keyframes glow-pulse {
+  0% {
+    opacity: 0.7;
+    box-shadow: 0 0 5px rgba(0, 204, 255, 0.5),
+                0 0 10px rgba(0, 204, 255, 0.3);
+  }
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 10px rgba(0, 204, 255, 0.8),
+                0 0 20px rgba(0, 204, 255, 0.5),
+                0 0 30px rgba(157, 102, 255, 0.3);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+@keyframes data-flow {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+    top: -100%;
+  }
+  100% {
+    left: 100%;
+    top: 100%;
+  }
+}
+
+@keyframes pulse-soft {
+  0% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
   }
 }

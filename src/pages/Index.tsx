@@ -15,30 +15,37 @@ const Index = () => {
   
   return (
     <MainLayout>
-      {/* Background particles container with reduced opacity */}
+      {/* Futuristic tech background with reduced opacity */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-[1]">
-        <div className="absolute inset-0 opacity-50">
+        <div className="absolute inset-0 bg-tech-mesh opacity-70">
           <BackgroundParticles isMobile={isMobile} />
+          <div className="absolute inset-0 bg-glowing-dots opacity-30"></div>
         </div>
       </div>
       
-      {/* Content with higher z-index and reduced spacing */}
+      {/* Content with higher z-index */}
       <div className="relative z-[2]">
         <Hero />
         <div className="reduced-gap">
           <Story />
         </div>
         <div className="reduced-gap">
-          <PassionSection />
+          <div className="bg-cyber py-16 bg-opacity-70">
+            <PassionSection />
+          </div>
         </div>
         <div className="tighter-gap">
-          <FollowingSection />
+          <div className="bg-data-pattern py-16">
+            <FollowingSection />
+          </div>
         </div>
         <div className="reduced-gap">
           <TabbedContentSection />
         </div>
         <div className="reduced-gap">
-          <InterestForm />
+          <div className="bg-tech-gradient py-16">
+            <InterestForm />
+          </div>
         </div>
       </div>
     </MainLayout>
