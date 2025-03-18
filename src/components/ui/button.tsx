@@ -10,16 +10,19 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default: "bg-gradient-tech text-primary-foreground hover:opacity-95 shadow-sm",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-secondary/10 text-secondary-foreground border border-secondary/20 hover:bg-secondary/20",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         success: "bg-success text-success-foreground hover:bg-success/90",
+        tech: "tech-gradient-border bg-background text-foreground hover:bg-muted/10 data-animation",
+        highlight: "bg-gradient-highlight text-primary-foreground hover:opacity-95 shadow-sm",
+        glass: "glass-tech text-foreground hover:bg-card/90",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -27,11 +30,31 @@ const buttonVariants = cva(
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
       },
+      glow: {
+        default: "",
+        cyan: "shadow-neon-cyan hover:shadow-neon-cyan",
+        purple: "shadow-neon-purple hover:shadow-neon-purple",
+        magenta: "shadow-neon-magenta hover:shadow-neon-magenta",
+        none: "",
+      }
     },
     defaultVariants: {
       variant: "default",
       size: "default",
+      glow: "none",
     },
+    compoundVariants: [
+      {
+        variant: "default",
+        glow: "cyan",
+        className: "shadow-neon-cyan hover:shadow-neon-cyan",
+      },
+      {
+        variant: "tech",
+        glow: "cyan",
+        className: "shadow-neon-cyan hover:shadow-neon-cyan",
+      },
+    ],
   }
 )
 
@@ -42,11 +65,11 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, glow, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size, glow, className }))}
         ref={ref}
         {...props}
       />

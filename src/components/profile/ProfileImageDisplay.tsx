@@ -38,20 +38,23 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
   return (
     <div className="w-full overflow-hidden">
       {isLoading ? (
-        <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-          <p className="text-gray-400 text-sm">Loading...</p>
+        <div className="w-full h-full bg-muted flex items-center justify-center">
+          <p className="text-muted-foreground text-sm">Loading...</p>
         </div>
       ) : (
         <div className="relative">
-          {/* Futuristic border with neon glow */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-brand-purple to-cyan-400 rounded-lg p-[2px] animate-pulse-soft">
-            {/* Scanline overlay effect */}
-            <div className="absolute inset-0 bg-scanlines opacity-10 mix-blend-overlay rounded-lg"></div>
-          </div>
+          {/* Futuristic tech frame with data flow border */}
+          <div className="absolute inset-0 tech-gradient-border animate-pulse-soft"></div>
           
-          {/* Image with tech overlay */}
-          <div className="relative border border-white/20 rounded-lg overflow-hidden bg-black/5 m-0.5">
-            <div className="absolute inset-0 bg-grid-overlay opacity-10 mix-blend-overlay"></div>
+          {/* Tech overlay and image container */}
+          <div className="relative angular-glass m-0.5 overflow-hidden">
+            {/* Grid overlay effect */}
+            <div className="absolute inset-0 bg-cyber-grid opacity-10 mix-blend-overlay"></div>
+            
+            {/* Scanning line effect */}
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-primary to-transparent animate-scanning-line"></div>
+            </div>
             
             <img 
               src={imageToDisplay} 
@@ -67,11 +70,15 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
               }}
             />
             
-            {/* Corner accent elements */}
-            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan-400/80 rounded-tl-sm"></div>
-            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-brand-purple/80 rounded-tr-sm"></div>
-            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-brand-purple/80 rounded-bl-sm"></div>
-            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan-400/80 rounded-br-sm"></div>
+            {/* Tech corner accents */}
+            <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary opacity-80"></div>
+            <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-secondary opacity-80"></div>
+            <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-secondary opacity-80"></div>
+            <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary opacity-80"></div>
+            
+            {/* Data visualization dots in corners */}
+            <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary animate-pulse-soft"></div>
+            <div className="absolute bottom-2 left-2 w-1.5 h-1.5 rounded-full bg-secondary animate-pulse-soft" style={{ animationDelay: '1s' }}></div>
           </div>
         </div>
       )}

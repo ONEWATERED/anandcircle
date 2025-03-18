@@ -1,41 +1,128 @@
 
-/* Reset effects to simple defaults */
+/* Tech-inspired effects */
 @layer utilities {
-  .simple-shadow {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  .tech-shadow {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(14, 165, 233, 0.1);
   }
   
-  .card-shadow {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  .data-shadow {
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
   }
   
-  .elevated-shadow {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-md border border-white/10 tech-shadow rounded-lg;
   }
   
-  .inner-shadow {
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  .tech-border {
+    @apply border border-tech-cyan/30 rounded-lg;
   }
   
-  .border-highlight {
-    border: 1px solid rgba(0, 0, 0, 0.1);
+  .tech-border-purple {
+    @apply border border-tech-purple/30 rounded-lg;
   }
   
-  .rounded-standard {
-    border-radius: 0.5rem;
+  .tech-border-magenta {
+    @apply border border-tech-magenta/30 rounded-lg;
   }
   
-  .content-accent {
+  .tech-gradient-border {
     position: relative;
+    border-radius: 0.5rem;
+    overflow: hidden;
   }
   
-  .content-accent::before {
+  .tech-gradient-border::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 2px;
-    height: 16px;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+    right: 0;
+    bottom: 0;
+    border-radius: 0.5rem;
+    padding: 1px;
+    background: linear-gradient(45deg, #0EA5E9, #9333EA);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  
+  .angular-card {
+    clip-path: polygon(
+      0 0.5rem,
+      0.5rem 0,
+      calc(100% - 0.5rem) 0,
+      100% 0.5rem,
+      100% calc(100% - 0.5rem),
+      calc(100% - 0.5rem) 100%,
+      0.5rem 100%,
+      0 calc(100% - 0.5rem)
+    );
+  }
+  
+  .scanning-line {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .scanning-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #0EA5E9, transparent);
+    animation: scanning-line 2s linear infinite;
+    opacity: 0.5;
+  }
+  
+  .data-flow-border {
+    position: relative;
+  }
+  
+  .data-flow-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 0.5rem;
+    padding: 1px;
+    background: linear-gradient(90deg, #0EA5E9, #9333EA, #0EA5E9);
+    background-size: 200% 100%;
+    animation: data-flow 5s linear infinite;
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  
+  .neon-glow {
+    box-shadow: 0 0 5px rgba(14, 165, 233, 0.3), 0 0 8px rgba(14, 165, 233, 0.2);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .neon-glow:hover {
+    box-shadow: 0 0 10px rgba(14, 165, 233, 0.5), 0 0 15px rgba(14, 165, 233, 0.3);
+  }
+  
+  .neon-glow-purple {
+    box-shadow: 0 0 5px rgba(147, 51, 234, 0.3), 0 0 8px rgba(147, 51, 234, 0.2);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .neon-glow-purple:hover {
+    box-shadow: 0 0 10px rgba(147, 51, 234, 0.5), 0 0 15px rgba(147, 51, 234, 0.3);
+  }
+  
+  .topographic-pattern {
+    background-color: #0F172A;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%231E293B' stroke-width='1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%232D3B53'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E");
   }
 }

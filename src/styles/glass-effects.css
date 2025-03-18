@@ -1,11 +1,78 @@
 
-/* Simplified basic card */
+/* Tech-inspired glass effects */
 @layer utilities {
-  .basic-card {
-    @apply bg-card border border-border shadow-sm rounded-md;
+  .tech-card {
+    @apply bg-card/90 backdrop-blur-lg border border-white/10 shadow-lg rounded-md;
   }
   
-  .basic-button {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-colors;
+  .tech-button {
+    @apply bg-tech-gradient text-primary-foreground hover:opacity-90 transition-all rounded-md;
+  }
+  
+  .data-card {
+    @apply bg-card/80 backdrop-blur-lg border border-primary/20 rounded-md shadow-neon-cyan;
+  }
+  
+  .glass-tech {
+    @apply backdrop-blur-xl bg-card/70 border border-white/10 rounded-md shadow-lg;
+  }
+  
+  .glass-panel {
+    @apply backdrop-blur-lg bg-card/30 border border-white/10 shadow-md rounded-md overflow-hidden;
+  }
+  
+  .glass-input {
+    @apply bg-background/50 backdrop-blur-md border border-white/10 focus:border-primary/30 rounded-md;
+  }
+  
+  .angular-glass {
+    @apply backdrop-blur-lg bg-card/30 shadow-lg overflow-hidden;
+    clip-path: polygon(
+      0 0.5rem,
+      0.5rem 0,
+      calc(100% - 0.5rem) 0,
+      100% 0.5rem,
+      100% calc(100% - 0.5rem),
+      calc(100% - 0.5rem) 100%,
+      0.5rem 100%,
+      0 calc(100% - 0.5rem)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .data-field {
+    @apply bg-background/80 backdrop-blur border border-primary/10 rounded-md;
+  }
+  
+  .tech-dialog {
+    @apply backdrop-blur-xl bg-card/90 border border-white/10 rounded-lg shadow-lg;
+  }
+  
+  .tech-tooltip {
+    @apply backdrop-blur-lg bg-card/80 border border-white/10 rounded-md shadow-lg px-3 py-1.5 text-xs;
+  }
+  
+  .tech-gradient-border {
+    position: relative;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .tech-gradient-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 0.5rem;
+    padding: 1px;
+    background: linear-gradient(45deg, #0EA5E9, #9333EA);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 }

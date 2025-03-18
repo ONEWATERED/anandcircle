@@ -15,27 +15,38 @@ const Index = () => {
   return (
     <MainLayout>
       <div className="relative z-[2]">
+        {/* Hero section with dark tech background */}
         <Hero />
+        
+        {/* Story section with tech gradient background */}
         <div className="py-12 md:py-16">
-          <div className="bg-white">
+          <div className="bg-card tech-gradient-border">
             <Story />
           </div>
         </div>
+        
+        {/* Passion section with topographic background */}
         <div className="py-12 md:py-16">
-          <div className="bg-gray-50 py-16">
+          <div className="bg-tech-topographic py-16">
             <PassionSection />
           </div>
         </div>
+        
+        {/* Following section with data grid background */}
         <div className="py-8 md:py-12">
-          <div className="py-16">
+          <div className="py-16 bg-tech-grid">
             <FollowingSection />
           </div>
         </div>
-        <div className="py-12 md:py-16">
+        
+        {/* Tabbed content with dark background */}
+        <div className="py-12 md:py-16 bg-tech-dark">
           <TabbedContentSection />
         </div>
+        
+        {/* Interest form with circuit background */}
         <div className="py-12 md:py-16">
-          <div className="bg-gray-50 py-16">
+          <div className="bg-tech-circuit py-16">
             <InterestForm />
           </div>
         </div>
