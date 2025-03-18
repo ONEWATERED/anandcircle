@@ -4,21 +4,25 @@
     text-wrap: balance;
   }
 
-  /* Updated gradient text utilities with brand colors */
+  /* Futuristic tech text effects */
   .text-gradient-primary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-blue to-brand-purple;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500;
   }
   
   .text-gradient-secondary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-cyan;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-500;
   }
   
   .text-gradient-accent {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-cyan to-brand-blue;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-red-500;
+  }
+  
+  .text-gradient-highlight {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-yellow-300;
   }
 
-  /* Neon text effect for headings */
-  .neon-text {
+  /* Neon text effects */
+  .neon-text-cyan {
     text-shadow: 
       0 0 5px rgba(0, 255, 255, 0.7),
       0 0 10px rgba(0, 255, 255, 0.5),
@@ -27,14 +31,21 @@
   
   .neon-text-purple {
     text-shadow: 
-      0 0 5px rgba(138, 43, 226, 0.7),
-      0 0 10px rgba(138, 43, 226, 0.5),
-      0 0 15px rgba(138, 43, 226, 0.3);
+      0 0 5px rgba(139, 92, 246, 0.7),
+      0 0 10px rgba(139, 92, 246, 0.5),
+      0 0 15px rgba(139, 92, 246, 0.3);
+  }
+  
+  .neon-text-magenta {
+    text-shadow: 
+      0 0 5px rgba(236, 72, 153, 0.7),
+      0 0 10px rgba(236, 72, 153, 0.5),
+      0 0 15px rgba(236, 72, 153, 0.3);
   }
 
   /* Terminal text animation */
   .terminal-text {
-    @apply border-r-2 border-primary animate-blink;
+    @apply border-r-2 border-cyan-400 animate-blink;
     padding-right: 0.1em;
   }
   
@@ -47,7 +58,7 @@
     animation: blink 1s step-end infinite;
   }
 
-  /* Font size utilities for responsive design */
+  /* Font size utilities */
   .text-3xs {
     font-size: 0.6rem;
     line-height: 0.8rem;
@@ -56,5 +67,18 @@
   .text-2xs {
     font-size: 0.7rem;
     line-height: 1rem;
+  }
+  
+  /* Tech-styled text */
+  .text-mono {
+    @apply font-mono tracking-tight;
+  }
+  
+  .text-tech {
+    @apply font-medium tracking-wide uppercase;
+  }
+  
+  .text-data {
+    @apply font-semibold tracking-tight;
   }
 }

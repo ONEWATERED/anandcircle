@@ -1,20 +1,21 @@
 
 @layer utilities {
+  /* Container utilities */
   .section-container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
   
   /* Hide scrollbar but keep functionality */
-  .hide-scrollbar {
+  .scrollbar-hidden {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
   
-  .hide-scrollbar::-webkit-scrollbar {
+  .scrollbar-hidden::-webkit-scrollbar {
     display: none;  /* Chrome, Safari and Opera */
   }
   
-  /* Tech geometric shape utilities */
+  /* Tech geometric shapes */
   .clip-hexagon {
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
   }
@@ -23,73 +24,105 @@
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   }
   
-  .clip-triangle {
-    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  .clip-pentagon {
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
   }
   
-  /* 3D transform utilities */
-  .perspective-1000 {
-    perspective: 1000px;
+  .clip-trapezoid {
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
   }
   
-  .transform-style-3d {
-    transform-style: preserve-3d;
+  /* Angular tech corners */
+  .tech-corners {
+    position: relative;
   }
   
-  .backface-hidden {
-    backface-visibility: hidden;
+  .tech-corners::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid rgba(0, 255, 255, 0.7);
+    border-left: 2px solid rgba(0, 255, 255, 0.7);
   }
   
-  .rotate-y-180 {
-    transform: rotateY(180deg);
+  .tech-corners::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.7);
+    border-right: 2px solid rgba(0, 255, 255, 0.7);
   }
   
-  .hover-flip:hover .transform-style-3d {
-    transform: rotateY(180deg);
+  /* Grid systems */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
   }
   
-  /* Mobile optimizations */
+  .tech-grid-tight {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  
+  /* Mobile adjustments */
   @media (max-width: 767px) {
-    .mobile-touch-target {
-      @apply min-h-11 min-w-11;
-    }
-    
-    .mobile-padding {
-      @apply px-3 py-2;
-    }
-    
-    .mobile-stack {
+    .mobile-tech-stack {
       @apply flex-col;
     }
     
-    .mobile-card {
-      @apply rounded-xl p-3;
+    .mobile-tech-touch {
+      @apply min-h-11 min-w-11;
     }
     
-    /* Adjust spacing for mobile */
-    .mobile-space-y {
-      @apply space-y-3;
-    }
-    
-    .mobile-space-x {
-      @apply space-x-2;
+    .mobile-tech-spacing {
+      @apply px-3 py-2;
     }
   }
   
-  /* Updated neon border with brand colors */
-  .neon-border {
-    @apply relative border border-transparent;
-    background-clip: padding-box;
+  /* Tech borders */
+  .border-tech {
+    @apply border border-cyan-400/30;
   }
   
-  .neon-border::before {
-    content: '';
-    @apply absolute inset-0 -z-10 rounded-md;
-    padding: 1px;
-    background: linear-gradient(to right, #1B3A57, #8A2BE2);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
+  .border-tech-purple {
+    @apply border border-purple-600/30;
+  }
+  
+  .border-tech-magenta {
+    @apply border border-pink-500/30;
+  }
+  
+  /* Tech UI layout elements */
+  .dash-border {
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(0, 255, 255, 0.3) 0px,
+      rgba(0, 255, 255, 0.3) 5px,
+      transparent 5px,
+      transparent 10px
+    );
+  }
+  
+  .tech-separator {
+    @apply relative h-px w-full my-4;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.5), transparent);
+  }
+  
+  .tech-separator-purple {
+    @apply relative h-px w-full my-4;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
+  }
+  
+  .tech-separator-magenta {
+    @apply relative h-px w-full my-4;
+    background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.5), transparent);
   }
 }
