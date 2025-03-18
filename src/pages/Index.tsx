@@ -14,43 +14,37 @@ const Index = () => {
   
   return (
     <MainLayout>
-      <div className="relative z-[2] w-full max-w-full">
+      <div className="flex flex-col items-center w-full">
         {/* Hero section with dark tech background */}
         <div className="w-full">
           <Hero />
         </div>
         
-        {/* Story section with tech gradient background */}
-        <div className="py-12 md:py-16 w-full">
-          <div className="bg-card tech-gradient-border max-w-7xl mx-auto">
+        {/* Story section with white background for contrast */}
+        <div className="w-full py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Story />
           </div>
         </div>
         
         {/* Passion section with topographic background */}
-        <div className="py-12 md:py-16 w-full">
-          <div className="bg-tech-topographic py-16 w-full">
-            <PassionSection />
-          </div>
+        <div className="w-full py-16 bg-slate-100">
+          <PassionSection />
         </div>
         
         {/* Following section with data grid background */}
-        <div className="py-8 md:py-12 w-full">
-          <div className="py-16 bg-tech-grid w-full">
-            <FollowingSection />
-          </div>
+        <div className="w-full py-16 bg-tech-dark" style={{ backgroundColor: '#1E293B' }}>
+          <FollowingSection />
         </div>
         
-        {/* Tabbed content with dark background */}
-        <div className="py-12 md:py-16 bg-tech-dark w-full">
+        {/* Tabbed content with dark tech background */}
+        <div className="w-full py-16 bg-tech-dark" style={{ backgroundColor: '#0F172A' }}>
           <TabbedContentSection />
         </div>
         
         {/* Interest form with circuit background */}
-        <div className="py-12 md:py-16 w-full">
-          <div className="bg-tech-circuit py-16 w-full">
-            <InterestForm />
-          </div>
+        <div className="w-full py-16 bg-tech-dark" style={{ backgroundColor: '#1E293B' }}>
+          <InterestForm />
         </div>
       </div>
     </MainLayout>

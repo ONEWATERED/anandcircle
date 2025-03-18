@@ -1,10 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { PersonalProfile } from '@/types/thought-leaders';
 import SocialMediaLinks from './profile/SocialMediaLinks';
 import AvatarDialog from './profile/AvatarDialog';
 import ProfileImageDisplay from './profile/ProfileImageDisplay';
-import DecorativeElements from './profile/DecorativeElements';
 import { supabase } from '@/integrations/supabase/client';
 import { ensureHttpProtocol } from '@/utils/databaseConnection';
 
@@ -41,39 +39,12 @@ const ProfileImage = () => {
           .single();
           
         if (!error && profileData?.photo_url) {
-          console.log('Found profile image in database:', profileData.photo_url);
-          
-          // For iOS devices, ensure the image URL is properly formatted
-          if (isIOS && profileData.photo_url.startsWith('data:image')) {
-            console.log('iOS device detected with data URL, using localStorage fallback');
-            const cachedImageUrl = localStorage.getItem('profileImageUrl');
-            if (cachedImageUrl && !cachedImageUrl.startsWith('data:image')) {
-              setProfileImage(cachedImageUrl);
-            } else {
-              // If data URL is too long, use default image for iOS
-              setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
-            }
-          } else {
-            setProfileImage(profileData.photo_url);
-            localStorage.setItem('profileImageUrl', profileData.photo_url);
-          }
+          setProfileImage(profileData.photo_url);
+          localStorage.setItem('profileImageUrl', profileData.photo_url);
         } else {
-          // If we can't get from database, try localStorage
+          // If we can't get from database, try localStorage or fallback to default
           const cachedImageUrl = localStorage.getItem('profileImageUrl');
-          
-          if (cachedImageUrl) {
-            console.log('Using cached profile image:', cachedImageUrl);
-            
-            // For iOS devices, avoid using data URLs which can be problematic
-            if (isIOS && cachedImageUrl.startsWith('data:image')) {
-              setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
-            } else {
-              setProfileImage(cachedImageUrl);
-            }
-          } else {
-            // Use default if nothing else is available
-            setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
-          }
+          setProfileImage(cachedImageUrl || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
         }
         
         // Load social links
@@ -84,13 +55,7 @@ const ProfileImage = () => {
             .eq('profile_id', 'hardeep');
             
           if (!error && socialLinksData && socialLinksData.length > 0) {
-            const links = {
-              linkedIn: socialLinks.linkedIn,
-              twitter: socialLinks.twitter,
-              youtube: socialLinks.youtube,
-              spotify: socialLinks.spotify,
-              anandCircle: socialLinks.anandCircle
-            };
+            const links = { ...socialLinks };
             
             socialLinksData.forEach(link => {
               const platform = link.platform.toLowerCase();
@@ -126,22 +91,9 @@ const ProfileImage = () => {
     setShowAvatarHint(false);
   };
 
-  // For iOS devices, render a smaller component to improve performance
-  if (isIOS) {
-    return (
-      <div className="relative my-4 max-w-xs mx-auto md:mx-0">
-        <div className="relative w-full">
-          <ProfileImageDisplay profileImage={profileImage} isLoading={isLoading} />
-        </div>
-        
-        <SocialMediaLinks links={socialLinks} />
-      </div>
-    );
-  }
-
   return (
-    <div className="relative my-4 max-w-xs mx-auto md:mx-0">
-      <div className="relative w-full">
+    <div className="relative max-w-xs mx-auto">
+      <div className="relative w-full overflow-hidden rounded-lg shadow-lg">
         <ProfileImageDisplay profileImage={profileImage} isLoading={isLoading} />
       </div>
       

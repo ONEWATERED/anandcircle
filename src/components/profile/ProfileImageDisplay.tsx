@@ -20,12 +20,8 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
   useEffect(() => {
     if (profileImage) {
       setImageError(false);
-      // Log profile image URL for debugging on iOS
-      if (isIOS) {
-        console.log("iOS device detected. Profile image URL:", profileImage);
-      }
     }
-  }, [profileImage, isIOS]);
+  }, [profileImage]);
   
   const handleImageError = () => {
     console.warn("Profile image failed to load:", profileImage);
@@ -36,20 +32,20 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
   const imageToDisplay = imageError || !profileImage ? defaultImage : profileImage;
   
   return (
-    <div className="w-full overflow-hidden">
+    <div className="w-full overflow-hidden rounded-lg">
       {isLoading ? (
-        <div className="w-full h-full bg-muted flex items-center justify-center">
-          <p className="text-muted-foreground text-sm">Loading...</p>
+        <div className="w-full h-full bg-slate-200 flex items-center justify-center p-8">
+          <p className="text-slate-500 text-sm">Loading...</p>
         </div>
       ) : (
         <div className="relative">
-          {/* Futuristic tech frame with data flow border */}
-          <div className="absolute inset-0 tech-gradient-border animate-pulse-soft"></div>
+          {/* Tech frame with data glowing border */}
+          <div className="absolute inset-0 tech-gradient-border rounded-lg"></div>
           
-          {/* Tech overlay and image container */}
-          <div className="relative angular-glass m-0.5 overflow-hidden">
+          {/* Image container */}
+          <div className="relative rounded-lg overflow-hidden">
             {/* Grid overlay effect */}
-            <div className="absolute inset-0 bg-cyber-grid opacity-10 mix-blend-overlay"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60 opacity-30 mix-blend-overlay"></div>
             
             {/* Scanning line effect */}
             <div className="absolute inset-0 overflow-hidden">
@@ -71,10 +67,10 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
             />
             
             {/* Tech corner accents */}
-            <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary opacity-80"></div>
-            <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-secondary opacity-80"></div>
-            <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-secondary opacity-80"></div>
-            <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary opacity-80"></div>
+            <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary"></div>
+            <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-secondary"></div>
+            <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-secondary"></div>
+            <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary"></div>
             
             {/* Data visualization dots in corners */}
             <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary animate-pulse-soft"></div>

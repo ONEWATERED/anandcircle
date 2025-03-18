@@ -14,7 +14,11 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     const resizeCanvas = () => {
       const { width, height } = canvas.getBoundingClientRect();
       
-      const pixelRatio = window.devicePixelRatio || 1;
+      // Set a default pixelRatio for safety
+      const pixelRatio = typeof window !== 'undefined' && window.devicePixelRatio 
+        ? window.devicePixelRatio 
+        : 1;
+      
       canvas.width = width * pixelRatio;
       canvas.height = height * pixelRatio;
       
@@ -24,12 +28,14 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
     
-    // Particle system configuration
-    const particleCount = isMobile ? 30 : 50;
+    // Particle system configuration - reduced for performance
+    const particleCount = isMobile ? 20 : 40;
     const particles: Particle[] = [];
     const colors = ['#0EA5E9', '#9333EA', '#DB2777'];
-    const connectionDistance = isMobile ? 100 : 150;
-    const pixelRatio = window.devicePixelRatio || 1;
+    const connectionDistance = isMobile ? 80 : 120;
+    const pixelRatio = typeof window !== 'undefined' && window.devicePixelRatio 
+      ? window.devicePixelRatio 
+      : 1;
     
     class Particle {
       x: number;
@@ -41,12 +47,12 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
       alpha: number;
       
       constructor() {
-        this.x = Math.random() * canvas.width / pixelRatio;
-        this.y = Math.random() * canvas.height / pixelRatio;
+        this.x = Math.random() * (canvas.width / pixelRatio);
+        this.y = Math.random() * (canvas.height / pixelRatio);
         this.radius = Math.random() * 1.5 + 0.5;
         this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.vx = (Math.random() - 0.5) * 0.3;
-        this.vy = (Math.random() - 0.5) * 0.3;
+        this.vx = (Math.random() - 0.5) * 0.2;
+        this.vy = (Math.random() - 0.5) * 0.2;
         this.alpha = Math.random() * 0.5 + 0.1;
       }
       
@@ -76,6 +82,8 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     }
     
     // Animation loop
+    let animationFrameId: number;
+    
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width / pixelRatio, canvas.height / pixelRatio);
       
@@ -86,7 +94,7 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
       });
       
       // Draw connections
-      ctx.lineWidth = 0.3;
+      ctx.lineWidth = 0.2;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -94,15 +102,10 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
           const distance = Math.sqrt(dx * dx + dy * dy);
           
           if (distance < connectionDistance) {
-            const opacity = 1 - (distance / connectionDistance);
-            const gradient = ctx.createLinearGradient(
-              particles[i].x, particles[i].y,
-              particles[j].x, particles[j].y
-            );
-            gradient.addColorStop(0, particles[i].color.replace(')', `, ${opacity})`).replace('rgb', 'rgba'));
-            gradient.addColorStop(1, particles[j].color.replace(')', `, ${opacity})`).replace('rgb', 'rgba'));
+            const opacity = 0.8 * (1 - (distance / connectionDistance));
             
-            ctx.strokeStyle = gradient;
+            // Use a simpler connection style for better performance
+            ctx.strokeStyle = `rgba(30, 144, 255, ${opacity})`;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -111,20 +114,21 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
         }
       }
       
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     };
     
     animate();
     
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationFrameId);
     };
   }, [isMobile]);
   
   return (
     <canvas 
       ref={canvasRef} 
-      className="absolute inset-0 w-full h-full z-0 opacity-30"
+      className="absolute inset-0 w-full h-full opacity-40"
       style={{ pointerEvents: 'none' }}
     />
   );
