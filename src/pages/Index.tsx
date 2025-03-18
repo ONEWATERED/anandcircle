@@ -14,9 +14,11 @@ const Index = () => {
   
   return (
     <MainLayout>
-      <div className="relative z-[2] w-full">
+      <div className="relative z-[2] w-full max-w-full">
         {/* Hero section with dark tech background */}
-        <Hero />
+        <div className="w-full">
+          <Hero />
+        </div>
         
         {/* Story section with tech gradient background */}
         <div className="py-12 md:py-16 w-full">

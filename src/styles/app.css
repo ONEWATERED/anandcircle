@@ -20,4 +20,32 @@ textarea:focus-visible {
 body {
   background-color: hsl(222, 47%, 11%);
   color: hsl(210, 40%, 98%);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Force content visibility */
+.section-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Emergency fallback for critical visibility issues */
+.bg-tech-dark {
+  background-color: #0F172A;
+}
+
+.bg-tech-topographic, 
+.bg-tech-grid, 
+.bg-tech-circuit {
+  background-color: #1E293B;
+}
+
+/* Force text visibility */
+h1, h2, h3, p {
+  color: #f8fafc;
 }
