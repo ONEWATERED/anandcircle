@@ -15,7 +15,7 @@ export function useIsMobile() {
     // Initial check
     checkMobile();
 
-    // Set up event listener
+    // Set up event listener for window resize
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
     mql.addEventListener("change", checkMobile);
     

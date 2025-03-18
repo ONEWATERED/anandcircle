@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -21,6 +20,7 @@ export default {
 		extend: {
 			fontFamily: {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
+				mono: ['Roboto Mono', 'monospace'],
 				display: ['SF Pro Display', 'Inter', 'system-ui', 'sans-serif'],
 			},
 			colors: {
@@ -66,6 +66,12 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				brand: {
+					blue: '#1B3A57',
+					cyan: '#00FFFF',
+					purple: '#8A2BE2',
+					gray: '#F5F7FA',
 				}
 			},
 			borderRadius: {
@@ -110,6 +116,20 @@ export default {
 					'0%': { transform: 'translateX(0)', opacity: '0.3' },
 					'50%': { transform: 'translateX(150%)', opacity: '0.8' },
 					'100%': { transform: 'translateX(300%)', opacity: '0.3' }
+				},
+				'glowing': {
+					'0%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' },
+					'100%': { backgroundPosition: '0% 50%' }
+				},
+				'float': {
+					'0%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' },
+					'100%': { transform: 'translateY(0px)' }
+				},
+				'pulse-soft': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.7' }
 				}
 			},
 			animation: {
@@ -121,7 +141,10 @@ export default {
 				'fade-left': 'fade-left 0.7s ease-out forwards',
 				'fade-right': 'fade-right 0.7s ease-out forwards',
 				'flip': 'flip 0.5s ease-out forwards',
-				'pulse-travel': 'pulse-travel 3s ease-in-out infinite'
+				'pulse-travel': 'pulse-travel 3s ease-in-out infinite',
+				'glowing': 'glowing 6s ease-in-out infinite',
+				'float': 'float 6s ease-in-out infinite',
+				'pulse-soft': 'pulse-soft 4s ease-in-out infinite'
 			}
 		}
 	},
@@ -144,6 +167,48 @@ export default {
 				'.hover-flip:hover .transform-style-3d': {
 					transform: 'rotateY(180deg)',
 				},
+				'.glass-morphism': {
+					backgroundColor: 'rgba(255, 255, 255, 0.05)',
+					backdropFilter: 'blur(16px)',
+					border: '1px solid rgba(255, 255, 255, 0.1)',
+					boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
+				},
+				'.glass-card': {
+					backgroundColor: 'rgba(255, 255, 255, 0.08)',
+					backdropFilter: 'blur(12px)',
+					border: '1px solid rgba(255, 255, 255, 0.12)',
+					boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+				},
+				'.text-gradient-blue-purple': {
+					background: 'linear-gradient(135deg, #1B3A57, #8A2BE2)',
+					WebkitBackgroundClip: 'text',
+					WebkitTextFillColor: 'transparent',
+					backgroundClip: 'text',
+					color: 'transparent'
+				},
+				'.text-gradient-purple-cyan': {
+					background: 'linear-gradient(135deg, #8A2BE2, #00FFFF)',
+					WebkitBackgroundClip: 'text',
+					WebkitTextFillColor: 'transparent',
+					backgroundClip: 'text',
+					color: 'transparent'
+				},
+				'.text-gradient-cyan-blue': {
+					background: 'linear-gradient(135deg, #00FFFF, #1B3A57)',
+					WebkitBackgroundClip: 'text',
+					WebkitTextFillColor: 'transparent',
+					backgroundClip: 'text',
+					color: 'transparent'
+				},
+				'.bg-gradient-blue-purple': {
+					background: 'linear-gradient(135deg, #1B3A57, #8A2BE2)'
+				},
+				'.bg-gradient-purple-cyan': {
+					background: 'linear-gradient(135deg, #8A2BE2, #00FFFF)'
+				},
+				'.bg-gradient-cyan-blue': {
+					background: 'linear-gradient(135deg, #00FFFF, #1B3A57)'
+				}
 			};
 			addUtilities(newUtilities);
 		},

@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -16,19 +17,19 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    /* AI-inspired primary color - deep blue with purple undertones */
-    --primary: 238 75% 50%;
+    /* Updated with brand colors - Deep Blue */
+    --primary: 210 55% 22%;
     --primary-foreground: 210 40% 98%;
 
-    /* Secondary color - cyan/teal for health tech feel */
-    --secondary: 172 80% 45%;
+    /* Updated with brand colors - Electric Cyan */
+    --secondary: 180 100% 50%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    /* Accent color - vibrant purple */
-    --accent: 270 75% 55%;
+    /* Updated with brand colors - Neon Purple */
+    --accent: 277 75% 52%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -77,22 +78,27 @@
     @apply bg-black/5 backdrop-blur-lg border border-white/10 shadow-md;
   }
   
+  /* Enhanced glass card with brand aesthetics */
   .glass-card {
-    @apply bg-white/90 backdrop-blur-lg border border-white/20 rounded-2xl shadow-md transition-all duration-300 hover:shadow-lg;
+    @apply bg-white/80 backdrop-blur-lg border border-white/20 rounded-2xl shadow-md transition-all duration-300 hover:shadow-lg;
   }
   
-  /* New futuristic glass card */
+  /* Updated futuristic glass card with brand colors */
   .neo-glass {
     @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl rounded-3xl;
   }
   
-  /* Gradient text utility */
+  /* Updated gradient text utilities with brand colors */
   .text-gradient-primary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-blue to-brand-purple;
   }
   
   .text-gradient-secondary {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary to-primary;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-cyan;
+  }
+  
+  .text-gradient-accent {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-cyan to-brand-blue;
   }
   
   .section-container {
@@ -120,7 +126,7 @@
     animation-delay: 500ms;
   }
   
-  /* New utilities for futuristic effects */
+  /* Enhanced futuristic effects */
   .glow {
     @apply relative;
   }
@@ -131,6 +137,7 @@
     background: inherit;
   }
   
+  /* Updated neon border with brand colors */
   .neon-border {
     @apply relative border border-transparent;
     background-clip: padding-box;
@@ -140,7 +147,7 @@
     content: '';
     @apply absolute inset-0 -z-10 rounded-md;
     padding: 1px;
-    background: linear-gradient(to right, theme('colors.primary'), theme('colors.secondary'));
+    background: linear-gradient(to right, #1B3A57, #8A2BE2);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
@@ -157,7 +164,7 @@
     display: none;  /* Chrome, Safari and Opera */
   }
   
-  /* Add extra small text size utility for very small mobile screens */
+  /* Font size utilities for responsive design */
   .text-3xs {
     font-size: 0.6rem;
     line-height: 0.8rem;
@@ -168,20 +175,38 @@
     line-height: 1rem;
   }
   
-  /* Add the pulse-travel animation for the connection line */
-  @keyframes pulse-travel {
-    0% {
-      transform: translateX(0);
-      opacity: 0.3;
-    }
-    50% {
-      transform: translateX(150%);
-      opacity: 0.8;
-    }
-    100% {
-      transform: translateX(300%);
-      opacity: 0.3;
-    }
+  /* Brand specific gradients */
+  .bg-brand-gradient-primary {
+    background: linear-gradient(135deg, #1B3A57, #8A2BE2);
+  }
+  
+  .bg-brand-gradient-secondary {
+    background: linear-gradient(135deg, #8A2BE2, #00FFFF);
+  }
+  
+  .bg-brand-gradient-accent {
+    background: linear-gradient(135deg, #00FFFF, #1B3A57);
+  }
+  
+  /* Glowing border effect */
+  .glow-border {
+    @apply relative;
+  }
+  
+  .glow-border::after {
+    content: '';
+    @apply absolute inset-0 -z-10 rounded-md opacity-60;
+    box-shadow: 0 0 15px 2px rgba(138, 43, 226, 0.5);
+  }
+  
+  /* Glass button styles */
+  .glass-button {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 transition-all duration-300;
+  }
+  
+  .glass-button:hover {
+    @apply bg-white/20 border-white/30 shadow-lg;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
   }
   
   /* Mobile optimizations */
