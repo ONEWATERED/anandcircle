@@ -37,8 +37,8 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
   const Icon = member.icon;
   const [isFlipped, setIsFlipped] = useState(false);
   
-  // Staggered animation delay based on index - faster on mobile
-  const animationDelay = isMobile ? 0.4 + (index * 0.08) : 0.6 + (index * 0.1);
+  // Simplified animation delay
+  const animationDelay = isMobile ? 0.2 + (index * 0.05) : 0.3 + (index * 0.05);
   
   // Handle click on node
   const handleClick = () => {
@@ -48,19 +48,20 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
   };
   
   // Scale factor for active node - smaller on mobile to prevent overlap
-  const activeScale = isMobile ? 1.1 : 1.15;
+  const activeScale = isMobile ? 1.05 : 1.1; // Reduced from 1.1/1.15
   
   // Adjust height based on mobile
   const nodeHeight = isMobile ? nodeWidth * 1.3 : nodeWidth * 1.5;
   
-  // Front content of the flip card
+  // Front content of the flip card - simplified
   const frontContent = (
     <motion.div
       className="w-full h-full flex flex-col items-center justify-center"
       animate={{ scale: isActive ? activeScale : 1 }}
+      transition={{ duration: 0.2 }} // Faster transition
     >
       {/* Circle with icon or image */}
-      <motion.div
+      <div
         className="relative rounded-full flex items-center justify-center shadow-md mb-2 overflow-hidden"
         style={{
           width: nodeIconSize,
@@ -68,7 +69,6 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
           backgroundColor: isActive ? `${member.color}` : `${member.color}CC`,
           border: isActive ? '3px solid white' : '2px solid rgba(255,255,255,0.7)',
         }}
-        whileHover={{ scale: 1.05 }}
       >
         {photoUrl ? (
           <Avatar className="h-full w-full border-0">
@@ -80,10 +80,10 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
         ) : (
           <Icon size={iconSize} className="text-white" />
         )}
-      </motion.div>
+      </div>
       
       {/* Member name */}
-      <motion.div className={`text-center flex flex-col items-center ${textWidth}`}>
+      <div className={`text-center flex flex-col items-center ${textWidth}`}>
         <span 
           className={`font-medium text-center mb-0.5 ${isMobile ? 'text-2xs' : 'text-sm'} ${isActive ? 'text-slate-800' : 'text-slate-700'}`}
         >
@@ -94,7 +94,7 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
         >
           {member.role}
         </span>
-      </motion.div>
+      </div>
     </motion.div>
   );
   
@@ -121,9 +121,11 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
         opacity: 1,
       }}
       transition={{ 
-        duration: 0.5, 
+        duration: 0.3, // Reduced from 0.5
         delay: animationDelay, 
-        type: "spring"
+        type: "spring",
+        stiffness: 200, // Faster spring
+        damping: 20
       }}
     >
       <FlipCard

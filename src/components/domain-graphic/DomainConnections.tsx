@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { DomainData } from '@/data/domainData';
@@ -28,8 +27,8 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
   
   const connections: JSX.Element[] = [];
   
-  // Faster animations on mobile for better UX
-  const animationDuration = isMobile ? 0.8 : 1.2;
+  // Simplified animations
+  const animationDuration = isMobile ? 0.5 : 0.8; // Reduced from 0.8/1.2
 
   // Calculate position from angle
   const getPosition = (angle: number) => {
@@ -61,14 +60,14 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
         }}
         transition={{ 
           duration: animationDuration, 
-          delay: 0.2 + (i * (isMobile ? 0.05 : 0.08)),
+          delay: 0.1 + (i * (isMobile ? 0.02 : 0.03)), // Reduced from 0.2 + 0.05/0.08
           ease: "easeInOut"
         }}
       />
     );
   });
 
-  // Connect adjacent nodes along the circle's circumference
+  // Connect adjacent nodes along the circle's circumference - simplified
   domains.forEach((domain, i) => {
     const nextIndex = (i + 1) % domains.length;
     const nextDomain = domains[nextIndex];
@@ -79,12 +78,11 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
     const isActive = activeNode === domain.id || activeNode === nextDomain.id;
     
     // Create curved connections along the circle's circumference
-    // We'll use bezier curves for smooth arcs between domains
     const pathData = createArcPath(
       position.x, position.y,
       nextPosition.x, nextPosition.y,
       centerX, centerY,
-      orbitRadius * 0.1 // Control point distance factor
+      orbitRadius * 0.1
     );
     
     connections.push(
@@ -103,7 +101,7 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
         }}
         transition={{ 
           duration: animationDuration, 
-          delay: 0.3 + (i * 0.07),
+          delay: 0.15 + (i * 0.03), // Reduced from 0.3 + 0.07
           ease: "easeInOut"
         }}
       />

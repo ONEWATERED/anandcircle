@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import RotatingDomainsContainer from './domain-graphic/RotatingDomainsContainer';
 import DomainTouchHandler from './domain-graphic/DomainTouchHandler';
@@ -10,13 +9,7 @@ const InterconnectedDomainsGraphic = () => {
   const isMobile = useIsMobile();
   
   return (
-    <motion.div 
-      className="w-full relative opacity-0 animate-fade-up"
-      style={{ 
-        animationDelay: '200ms', 
-        animationFillMode: 'forwards' 
-      }}
-    >
+    <div className="w-full relative">
       <RotatingDomainsContainer 
         activeNode={activeNode}
         setActiveNode={setActiveNode}
@@ -27,7 +20,7 @@ const InterconnectedDomainsGraphic = () => {
         isMobile={isMobile}
         setActiveNode={setActiveNode}
       />
-    </motion.div>
+    </div>
   );
 };
 

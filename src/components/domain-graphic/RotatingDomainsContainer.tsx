@@ -18,6 +18,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
   setActiveNode
 }) => {
   const [animationComplete, setAnimationComplete] = useState(false);
+  // Remove rotation animation
   const [rotationAngle, setRotationAngle] = useState(0);
   const isMobile = useIsMobile();
   const { 
@@ -31,39 +32,24 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     centerSize 
   } = useNodePositioning();
 
-  // Calculate orbit radius for a perfect circle
   // Increased orbit radius to create more space between center and nodes
   const orbitRadius = Math.min(width, height) * (isMobile ? 0.35 : 0.38);
 
-  // Set animation complete after initial load
+  // Set animation complete after initial load - faster timing
   useEffect(() => {
     const timer = setTimeout(() => {
       setAnimationComplete(true);
-    }, isMobile ? 600 : 1000);
+    }, isMobile ? 300 : 500); // Reduced from 600/1000
     
     return () => clearTimeout(timer);
   }, [isMobile]);
 
-  // Continuous rotation effect
-  useEffect(() => {
-    if (!animationComplete) return;
-    
-    const rotationSpeed = 0.008; // degrees per millisecond (slow rotation)
-    const rotationInterval = 20; // update every 20ms for smooth animation
-    
-    const rotationTimer = setInterval(() => {
-      setRotationAngle(angle => (angle + rotationSpeed * rotationInterval) % 360);
-    }, rotationInterval);
-    
-    return () => clearInterval(rotationTimer);
-  }, [animationComplete]);
+  // Remove continuous rotation effect
 
-  // Calculate node positions based on angle and rotation
+  // Calculate node positions based on initial angle only (no rotation)
   const getNodePosition = (initialAngle: number) => {
-    const angle = (initialAngle + rotationAngle) % 360;
-    const radians = (angle * Math.PI) / 180;
+    const radians = (initialAngle * Math.PI) / 180;
     
-    // Use trigonometry to position nodes in a perfect circle
     return {
       x: width / 2 + Math.sin(radians) * orbitRadius,
       y: height / 2 - Math.cos(radians) * orbitRadius
@@ -73,9 +59,9 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
   // Increase container height to provide more space
   const containerHeight = (() => {
     if (isMobile) {
-      if (width < 350) return 500; // Even more height for very small devices
-      if (width < 500) return 520; // More height for small devices
-      return 550; // More space for text on mobile
+      if (width < 350) return 500;
+      if (width < 500) return 520;
+      return 550;
     }
     return 600;
   })();
@@ -86,7 +72,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
       className="w-full relative overflow-hidden"
       style={{ height: containerHeight }}
     >
-      {/* Background particles */}
+      {/* Simplified background particles */}
       <BackgroundParticles isMobile={isMobile} />
       
       {/* Center Circle */}
@@ -96,7 +82,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
         height={height} 
       />
       
-      {/* Domain connections */}
+      {/* Domain connections - simplified */}
       <svg className="absolute top-0 left-0 w-full h-full">
         <DomainConnections
           domains={domains}
@@ -110,10 +96,10 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
         />
       </svg>
       
-      {/* Rotating Domain Nodes */}
+      {/* Static Domain Nodes */}
       <div className="absolute top-0 left-0 w-full h-full">
         {domains.map((domain, index) => {
-          // Calculate position on the orbit with equal spacing
+          // Calculate static position
           const position = getNodePosition(domain.initialAngle);
           
           return (
@@ -129,7 +115,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
               onNodeHover={setActiveNode}
               index={index}
               isMobile={isMobile}
-              rotationEnabled={true}
+              rotationEnabled={false} // Disable rotation
             />
           );
         })}
