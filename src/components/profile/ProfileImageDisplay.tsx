@@ -35,7 +35,7 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
           <img 
             src={imageToDisplay} 
             alt="Profile" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover max-w-full"
             onError={handleImageError}
           />
         </div>

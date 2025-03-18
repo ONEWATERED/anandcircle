@@ -7,14 +7,12 @@ import ProfileImageDisplay from './profile/ProfileImageDisplay';
 import DecorativeElements from './profile/DecorativeElements';
 import { supabase } from '@/integrations/supabase/client';
 import { ensureHttpProtocol } from '@/utils/databaseConnection';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 const ProfileImage = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [showAvatarHint, setShowAvatarHint] = useState(false);
   const [showAvatarDialog, setShowAvatarDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const isMobile = useIsMobile();
   
   const [socialLinks, setSocialLinks] = useState({
     linkedIn: 'https://linkedin.com/in/hardeepanand',
@@ -28,64 +26,26 @@ const ProfileImage = () => {
     const loadProfileData = async () => {
       setIsLoading(true);
       try {
-        // First try to get from localStorage as it's faster
-        const directProfileImage = localStorage.getItem('profileImageUrl');
-        
-        if (directProfileImage) {
-          console.log('Found profile image in localStorage:', directProfileImage);
-          setProfileImage(directProfileImage);
-        }
-
-        // Also try to fetch from database in case localStorage is outdated
-        try {
-          const { data: profileData, error } = await supabase
-            .from('personal_profile')
-            .select('photo_url')
-            .eq('id', 'hardeep')
-            .single();
-            
-          if (!error && profileData?.photo_url) {
-            console.log('Found profile image in database:', profileData.photo_url);
-            setProfileImage(profileData.photo_url);
-            localStorage.setItem('profileImageUrl', profileData.photo_url);
-          } else if (!directProfileImage) {
-            // Only try this if we didn't find anything in localStorage
-            const storedProfile = localStorage.getItem('personalProfile');
-            
-            if (storedProfile) {
-              try {
-                const profileData: PersonalProfile = JSON.parse(storedProfile);
-                
-                if (profileData.photo_url) {
-                  console.log('Found profile image in personalProfile:', profileData.photo_url);
-                  setProfileImage(profileData.photo_url);
-                  localStorage.setItem('profileImageUrl', profileData.photo_url);
-                } else {
-                  setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
-                }
-                
-                if (profileData.socialLinks) {
-                  const processedLinks = {
-                    linkedIn: ensureHttpProtocol(profileData.socialLinks.linkedin) || socialLinks.linkedIn,
-                    twitter: ensureHttpProtocol(profileData.socialLinks.twitter) || socialLinks.twitter,
-                    youtube: ensureHttpProtocol(profileData.socialLinks.youtube) || socialLinks.youtube,
-                    spotify: ensureHttpProtocol(profileData.socialLinks.spotify) || socialLinks.spotify,
-                    anandCircle: profileData.socialLinks.anandcircle || socialLinks.anandCircle
-                  };
-                  
-                  setSocialLinks(processedLinks);
-                }
-              } catch (parseError) {
-                console.error("Error parsing profile data:", parseError);
-                setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
-              }
-            } else {
-              setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
-            }
-          }
-        } catch (error) {
-          console.error("Error loading profile from Supabase:", error);
-          if (!profileImage) {
+        // First try to get directly from personal_profile table
+        const { data: profileData, error } = await supabase
+          .from('personal_profile')
+          .select('photo_url, name')
+          .eq('id', 'hardeep')
+          .single();
+          
+        if (!error && profileData?.photo_url) {
+          console.log('Found profile image in database:', profileData.photo_url);
+          setProfileImage(profileData.photo_url);
+          localStorage.setItem('profileImageUrl', profileData.photo_url);
+        } else {
+          // If we can't get from database, try localStorage
+          const cachedImageUrl = localStorage.getItem('profileImageUrl');
+          
+          if (cachedImageUrl) {
+            console.log('Using cached profile image:', cachedImageUrl);
+            setProfileImage(cachedImageUrl);
+          } else {
+            // Use default if nothing else is available
             setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
           }
         }
@@ -121,7 +81,8 @@ const ProfileImage = () => {
           console.error("Error loading social links from Supabase:", error);
         }
       } catch (error) {
-        console.error("Error loading profile image:", error);
+        console.error("Error loading profile data:", error);
+        // Use default image as fallback
         setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
       } finally {
         setIsLoading(false);
