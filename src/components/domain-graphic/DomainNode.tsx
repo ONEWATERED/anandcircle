@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { DomainData } from '@/data/domainData';
-import { motion } from 'framer-motion';
 
 interface DomainNodeProps {
   domain: DomainData;
@@ -33,30 +32,6 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   const Icon = domain.icon;
   const isActive = activeNode === domain.id;
 
-  // Animation variants for framer-motion
-  const nodeVariants = {
-    initial: { scale: 0, opacity: 0 },
-    animate: { 
-      scale: 1, 
-      opacity: 1, 
-      transition: { 
-        delay: index * 0.1,
-        duration: 0.3,
-        type: "spring",
-        stiffness: 260,
-        damping: 20
-      } 
-    },
-    hover: { 
-      scale: 1.05, 
-      transition: { duration: 0.2 } 
-    },
-    active: { 
-      scale: 1.1, 
-      transition: { duration: 0.2 } 
-    }
-  };
-
   // Handle interactions
   const handleInteraction = () => {
     if (isMobile) {
@@ -76,7 +51,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   const nodeHeight = nodeWidth * (isMobile ? 1.8 : 2.2);
 
   return (
-    <motion.div
+    <div
       className="absolute flex flex-col items-center justify-start cursor-pointer"
       data-domain-node="true"
       style={{ 
@@ -86,74 +61,57 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         height: nodeHeight,
         marginLeft: -nodeWidth/2,
         marginTop: -nodeWidth/2,
-        zIndex: isActive ? 10 : 1
+        zIndex: isActive ? 10 : 1,
+        transition: "transform 0.3s ease"
       }}
-      variants={nodeVariants}
-      initial="initial"
-      animate="animate"
-      whileHover={!isMobile && !isActive ? "hover" : undefined}
-      whileTap={isMobile ? "active" : undefined}
-      onHoverStart={!isMobile ? () => onNodeHover(domain.id) : undefined}
-      onHoverEnd={!isMobile ? () => onNodeHover(null) : undefined}
-      onTap={isMobile ? handleInteraction : undefined}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      onMouseEnter={!isMobile ? () => onNodeHover(domain.id) : undefined}
+      onMouseLeave={!isMobile ? () => onNodeHover(null) : undefined}
+      onClick={isMobile ? handleInteraction : undefined}
     >
       {/* Circle with icon */}
-      <motion.div 
-        className="rounded-2xl flex items-center justify-center shadow-sm mb-2"
+      <div 
+        className="rounded-lg flex items-center justify-center shadow-sm mb-2"
         style={{ 
-          backgroundColor: isActive ? "#f0f9ff" : "#ffffff",
-          border: `1px solid ${isActive ? '#0ea5e9' : '#e5e7eb'}`,
+          backgroundColor: isActive ? "#f0f0f0" : "#ffffff",
+          border: `1px solid ${isActive ? '#000000' : '#e0e0e0'}`,
           width: nodeIconSize,
           height: nodeIconSize,
           marginLeft: 'auto',
-          marginRight: 'auto'
+          marginRight: 'auto',
+          transition: "all 0.3s ease"
         }}
         onClick={domain.link ? handleClick : undefined}
-        animate={isActive ? {
-          boxShadow: "0 0 12px 3px rgba(14, 165, 233, 0.3)",
-        } : {
-          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-        }}
-        transition={{ duration: 0.3 }}
       >
         <Icon 
           size={iconSize} 
-          color="#0ea5e9" 
-          className={isActive ? "animate-pulse-soft" : ""} 
+          color="#000000"
         />
-      </motion.div>
+      </div>
 
       {/* Text area */}
-      <motion.div 
+      <div 
         className={`text-center ${textWidth} mx-auto text-center`}
         onClick={domain.link ? handleClick : undefined}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
       >
         <div 
-          className={`font-semibold ${isMobile ? 'text-[10px]' : 'text-xs md:text-sm'} text-center whitespace-nowrap`}
-          style={{ color: isActive ? "#0ea5e9" : "#d1d5db" }}
+          className={`font-normal ${isMobile ? 'text-[10px]' : 'text-xs md:text-sm'} text-center whitespace-nowrap`}
+          style={{ color: isActive ? "#000000" : "#666666" }}
         >
           {domain.title}
-          {domain.link && <span className="ml-1 text-primary">↗</span>}
+          {domain.link && <span className="ml-1 text-black">↗</span>}
         </div>
         
         {isActive && (
-          <motion.div 
-            className={`${isMobile ? 'text-[8px]' : 'text-[9px] md:text-xs'} mt-1 z-10 text-gray-100 bg-[#1E293B]/90 backdrop-blur-sm p-2 rounded-md shadow-sm`}
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-            transition={{ duration: 0.2 }}
+          <div 
+            className={`${isMobile ? 'text-[8px]' : 'text-[9px] md:text-xs'} mt-1 z-10 text-black bg-white p-2 rounded-md shadow-sm border border-gray-200`}
           >
             {isMobile 
               ? domain.description.split(' ').slice(0, 5).join(' ') + '...' 
               : domain.description}
-          </motion.div>
+          </div>
         )}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 };
 

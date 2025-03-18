@@ -25,20 +25,12 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
 }) => {
   // Animation states
   const [opacity, setOpacity] = useState(0);
-  const [flowOffset, setFlowOffset] = useState(0);
   
   // Animate connections
   useEffect(() => {
     if (animationComplete) {
       // Fade in the connections
       setOpacity(1);
-      
-      // Animate the flow
-      const interval = setInterval(() => {
-        setFlowOffset(prev => (prev + 1) % 16);
-      }, 100);
-      
-      return () => clearInterval(interval);
     }
   }, [animationComplete]);
   
@@ -67,10 +59,9 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
         <path
           key={`${domain.id}-center`}
           d={`M ${position.x} ${position.y} L ${centerX} ${centerY}`}
-          stroke={isActive ? "rgba(14, 165, 233, 0.6)" : "rgba(14, 165, 233, 0.2)"}
+          stroke={isActive ? "rgba(0, 0, 0, 0.6)" : "rgba(0, 0, 0, 0.2)"}
           strokeWidth={isActive ? 1.5 : 0.8}
           strokeDasharray={isActive ? "none" : "3,3"}
-          strokeDashoffset={flowOffset}
           fill="none"
           style={{
             transition: "stroke 0.3s ease, stroke-width 0.3s ease",
@@ -87,12 +78,12 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
               <path
                 key={`${domain.id}-${otherDomain.id}`}
                 d={`M ${position.x} ${position.y} Q ${centerX} ${centerY} ${otherPosition.x} ${otherPosition.y}`}
-                stroke="rgba(14, 165, 233, 0.3)"
+                stroke="rgba(0, 0, 0, 0.3)"
                 strokeWidth={0.8}
                 strokeDasharray="2,4"
                 fill="none"
                 style={{
-                  animation: "fadeIn 0.3s ease-in-out forwards"
+                  transition: "opacity 0.3s ease-in-out"
                 }}
               />
             );
@@ -102,21 +93,6 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
     });
     
     return connections;
-  };
-  
-  // Create pulse effects at the center
-  const renderPulse = () => {
-    return (
-      <circle
-        cx={centerX}
-        cy={centerY}
-        r={12}
-        fill="rgba(14, 165, 233, 0.1)"
-        style={{
-          animation: "pulse-soft 2s infinite ease-in-out"
-        }}
-      />
-    );
   };
   
   return (
@@ -132,19 +108,6 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
         transition: "opacity 1s ease"
       }}
     >
-      <defs>
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-      
-      {/* Pulse at center */}
-      {renderPulse()}
-      
       {/* Connection lines */}
       {renderConnections()}
       
@@ -159,8 +122,7 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
             cx={position.x}
             cy={position.y}
             r={isActive ? 4 : 3}
-            fill={isActive ? "rgba(14, 165, 233, 0.8)" : "rgba(14, 165, 233, 0.3)"}
-            filter={isActive ? "url(#glow)" : "none"}
+            fill={isActive ? "rgba(0, 0, 0, 0.8)" : "rgba(0, 0, 0, 0.3)"}
             style={{
               transition: "fill 0.3s ease, r 0.3s ease",
             }}

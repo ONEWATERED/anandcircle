@@ -15,41 +15,41 @@ const Index = () => {
   return (
     <MainLayout>
       <div className="flex flex-col items-center w-full">
-        {/* Hero section with dark tech background */}
+        {/* Hero section */}
         <div className="w-full">
           <Hero />
         </div>
         
-        {/* Story section with dark slate background for better contrast */}
-        <div className="w-full py-12 md:py-20 bg-[#1A2235]">
+        {/* Story section */}
+        <div className="w-full py-12 md:py-20 bg-white border-t border-gray-200">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Story />
           </div>
         </div>
         
-        {/* Passion section with slightly lighter background */}
-        <div className="w-full py-12 md:py-16 bg-[#1E293B]">
+        {/* Passion section */}
+        <div className="w-full py-12 md:py-16 bg-gray-50 border-t border-gray-200">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <PassionSection />
           </div>
         </div>
         
-        {/* Following section with consistent dark background */}
-        <div className="w-full py-12 md:py-16 bg-[#131c32]">
+        {/* Following section */}
+        <div className="w-full py-12 md:py-16 bg-white border-t border-gray-200">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <FollowingSection />
           </div>
         </div>
         
-        {/* Tabbed content with dark tech background */}
-        <div className="w-full py-12 md:py-16 bg-[#0F172A]">
+        {/* Tabbed content */}
+        <div className="w-full py-12 md:py-16 bg-gray-50 border-t border-gray-200">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <TabbedContentSection />
           </div>
         </div>
         
-        {/* Interest form with consistent dark background */}
-        <div className="w-full py-12 md:py-16 bg-[#131c32]">
+        {/* Interest form */}
+        <div className="w-full py-12 md:py-16 bg-white border-t border-gray-200">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <InterestForm />
           </div>

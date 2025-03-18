@@ -4,7 +4,6 @@ import { ArrowUpRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
-import { motion } from 'framer-motion';
 
 const Story = () => {
   const isMobile = useIsMobile();
@@ -100,7 +99,7 @@ const Story = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           <div className="space-y-6">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="relative pl-8 border-l-2 border-primary/50 pb-6">
+              <div key={i} className="relative pl-8 border-l-2 border-gray-300 pb-6">
                 <Skeleton className="h-4 w-full mb-2" />
                 <Skeleton className="h-16 w-full" />
                 <Skeleton className="h-3 w-20 mt-2" />
@@ -119,60 +118,38 @@ const Story = () => {
   return (
     <div id="story" className="py-8 md:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-8 md:mb-12">
-        <motion.h2 
-          className="text-2xl md:text-3xl font-bold tracking-tight text-white sm:text-4xl mb-2"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
+        <h2 className="text-2xl md:text-3xl font-normal tracking-tight text-black sm:text-4xl mb-2">
           My Story
-        </motion.h2>
-        <motion.p 
-          className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
+        </h2>
+        <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
           {profile.bio}
-        </motion.p>
+        </p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mt-8 md:mt-12">
         <div className="space-y-6">
-          {profile.positions.map((position, index) => {
-            // Determine color based on position
-            const colors = ['primary', 'secondary', 'accent'];
-            const color = colors[index % colors.length];
-            
-            return (
-              <motion.div 
-                key={position.id} 
-                className={`relative pl-8 border-l-2 border-${color}/50 pb-6`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <div className={`absolute -left-2 top-0 w-4 h-4 rounded-full bg-${color}`}></div>
-                <h3 className="text-lg md:text-xl font-bold text-white mb-2">{position.title}</h3>
-                <p className="text-sm md:text-base text-gray-300">
-                  {position.description}
-                </p>
-                <span className="block text-xs md:text-sm text-gray-400 mt-2">
-                  {/* Use position order as years (example) */}
-                  {2020 - position.order_position} - {position.order_position === 1 ? 'Present' : 2020 - position.order_position + 3}
-                </span>
-              </motion.div>
-            );
-          })}
+          {profile.positions.map((position, index) => (
+            <div 
+              key={position.id} 
+              className="relative pl-8 border-l-2 border-gray-300 pb-6"
+            >
+              <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-gray-300"></div>
+              <h3 className="text-lg md:text-xl font-medium text-black mb-2">{position.title}</h3>
+              <p className="text-sm md:text-base text-gray-600">
+                {position.description}
+              </p>
+              <span className="block text-xs md:text-sm text-gray-500 mt-2">
+                {/* Use position order as years (example) */}
+                {2020 - position.order_position} - {position.order_position === 1 ? 'Present' : 2020 - position.order_position + 3}
+              </span>
+            </div>
+          ))}
         </div>
         
         <div className="space-y-6 md:space-y-8">
           {/* Profile Image */}
-          <motion.div 
-            className="rounded-lg overflow-hidden shadow-xl shadow-blue-900/20 h-[450px] bg-gradient-to-b from-[#1A2235]/50 to-[#0F172A]/50 p-1"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
+          <div 
+            className="rounded-lg overflow-hidden border border-gray-200 h-[450px] bg-gray-50 p-1"
           >
             {profile.photo_url ? (
               <img 
@@ -181,53 +158,47 @@ const Story = () => {
                 className="w-full h-full object-cover rounded-lg"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-lg border border-blue-900/30">
+              <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
                 <p className="text-gray-400 text-center px-4">Profile image will appear here</p>
               </div>
             )}
-          </motion.div>
+          </div>
           
           {/* Education & Certifications */}
-          <motion.div 
-            className="bg-[#1E293B]/80 p-4 md:p-6 rounded-lg border border-primary/20 shadow-neon-cyan"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+          <div 
+            className="bg-gray-50 p-4 md:p-6 rounded-lg border border-gray-200"
           >
-            <h3 className="text-lg md:text-xl font-bold text-white mb-3">Education & Certifications</h3>
+            <h3 className="text-lg md:text-xl font-medium text-black mb-3">Education & Certifications</h3>
             <ul className="space-y-3">
               {profile.education.map((item, index) => (
                 <li key={index} className="flex items-start">
-                  <ArrowUpRight className="h-4 w-4 md:h-5 md:w-5 text-primary mt-0.5 mr-2 flex-shrink-0" />
+                  <ArrowUpRight className="h-4 w-4 md:h-5 md:w-5 text-gray-600 mt-0.5 mr-2 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-white text-sm md:text-base">{item.title}</p>
-                    <p className="text-xs md:text-sm text-gray-300">{item.description}</p>
+                    <p className="font-medium text-black text-sm md:text-base">{item.title}</p>
+                    <p className="text-xs md:text-sm text-gray-600">{item.description}</p>
                   </div>
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
           
           {/* Recognition & Awards */}
-          <motion.div 
-            className="bg-[#1E293B]/80 p-4 md:p-6 rounded-lg border border-secondary/20 shadow-neon-purple"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+          <div 
+            className="bg-gray-50 p-4 md:p-6 rounded-lg border border-gray-200"
           >
-            <h3 className="text-lg md:text-xl font-bold text-white mb-3">Recognition & Awards</h3>
+            <h3 className="text-lg md:text-xl font-medium text-black mb-3">Recognition & Awards</h3>
             <ul className="space-y-3">
               {profile.awards.map((item, index) => (
                 <li key={index} className="flex items-start">
-                  <ArrowUpRight className="h-4 w-4 md:h-5 md:w-5 text-secondary mt-0.5 mr-2 flex-shrink-0" />
+                  <ArrowUpRight className="h-4 w-4 md:h-5 md:w-5 text-gray-600 mt-0.5 mr-2 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-white text-sm md:text-base">{item.title}</p>
-                    <p className="text-xs md:text-sm text-gray-300">{item.description}</p>
+                    <p className="font-medium text-black text-sm md:text-base">{item.title}</p>
+                    <p className="text-xs md:text-sm text-gray-600">{item.description}</p>
                   </div>
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

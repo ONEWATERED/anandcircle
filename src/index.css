@@ -1,10 +1,5 @@
 
 /* Import all CSS modules */
 @import './styles/base.css';
-@import './styles/glass-effects.css';
-@import './styles/text-gradients.css';
-@import './styles/backgrounds.css';
-@import './styles/effects.css';
-@import './styles/animations.css';
-@import './styles/layouts.css';
 @import './styles/app.css';
+
