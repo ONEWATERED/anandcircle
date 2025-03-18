@@ -2,7 +2,6 @@
 import React from 'react';
 import { ChevronDown, ArrowRight, Droplet, BarChart2, Cpu } from 'lucide-react';
 import ResumeButton from './ResumeButton';
-import ProfileImageDisplay from './profile/ProfileImageDisplay';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -24,11 +23,11 @@ const Hero = () => {
       <div className="absolute top-20 -right-20 w-72 h-72 rounded-full bg-primary/5 blur-[100px] opacity-50"></div>
       <div className="absolute bottom-20 -left-20 w-96 h-96 rounded-full bg-secondary/5 blur-[120px] opacity-50" style={{ animationDelay: '2s' }}></div>
       
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-12">
-        {/* Hero content column */}
-        <div className="w-full lg:w-3/5 space-y-6 text-center lg:text-left">
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-between gap-12">
+        {/* Hero content column - centered */}
+        <div className="w-full max-w-3xl space-y-6 text-center">
           {/* Tech tags */}
-          <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-4">
+          <div className="flex flex-wrap justify-center gap-3 mb-4">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-white border border-primary/30">
               <Droplet className="w-3 h-3 text-primary" />
               Water Data Systems
@@ -51,12 +50,12 @@ const Hero = () => {
             Tech • Health • Community
           </h2>
           
-          <p className="text-lg text-gray-400 max-w-3xl">
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
             Executive. Innovator. Mentor. Bringing data-driven solutions to public service, 
             health challenges, and community needs.
           </p>
           
-          <div className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
+          <div className="flex flex-wrap gap-4 pt-4 justify-center">
             <Button size="lg" className="bg-primary text-white hover:bg-primary/80 shadow-lg">
               Discover My Story
               <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -70,19 +69,6 @@ const Hero = () => {
               size="lg"
               className="border-primary/50 text-primary hover:text-primary-foreground shadow-lg"
             />
-          </div>
-        </div>
-        
-        {/* Profile image with tech frame - properly positioned and sized */}
-        <div className="w-full lg:w-2/5 max-w-md flex justify-center lg:justify-end">
-          <div className="w-[280px] md:w-[320px] tech-gradient-border bg-black/30 p-1 rounded-lg shadow-neon-cyan">
-            {/* Profile image display */}
-            <div className="relative overflow-hidden rounded-md">
-              <ProfileImageDisplay 
-                profileImage="/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png" 
-                isLoading={false} 
-              />
-            </div>
           </div>
         </div>
       </div>
