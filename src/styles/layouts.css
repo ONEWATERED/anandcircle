@@ -1,0 +1,95 @@
+
+@layer utilities {
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Hide scrollbar but keep functionality */
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+  }
+  
+  /* Tech geometric shape utilities */
+  .clip-hexagon {
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  }
+  
+  .clip-diamond {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+  
+  .clip-triangle {
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  }
+  
+  /* 3D transform utilities */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+  
+  .hover-flip:hover .transform-style-3d {
+    transform: rotateY(180deg);
+  }
+  
+  /* Mobile optimizations */
+  @media (max-width: 767px) {
+    .mobile-touch-target {
+      @apply min-h-11 min-w-11;
+    }
+    
+    .mobile-padding {
+      @apply px-3 py-2;
+    }
+    
+    .mobile-stack {
+      @apply flex-col;
+    }
+    
+    .mobile-card {
+      @apply rounded-xl p-3;
+    }
+    
+    /* Adjust spacing for mobile */
+    .mobile-space-y {
+      @apply space-y-3;
+    }
+    
+    .mobile-space-x {
+      @apply space-x-2;
+    }
+  }
+  
+  /* Updated neon border with brand colors */
+  .neon-border {
+    @apply relative border border-transparent;
+    background-clip: padding-box;
+  }
+  
+  .neon-border::before {
+    content: '';
+    @apply absolute inset-0 -z-10 rounded-md;
+    padding: 1px;
+    background: linear-gradient(to right, #1B3A57, #8A2BE2);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}

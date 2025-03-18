@@ -1,0 +1,60 @@
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Updated gradient text utilities with brand colors */
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-blue to-brand-purple;
+  }
+  
+  .text-gradient-secondary {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-purple to-brand-cyan;
+  }
+  
+  .text-gradient-accent {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-cyan to-brand-blue;
+  }
+
+  /* Neon text effect for headings */
+  .neon-text {
+    text-shadow: 
+      0 0 5px rgba(0, 255, 255, 0.7),
+      0 0 10px rgba(0, 255, 255, 0.5),
+      0 0 15px rgba(0, 255, 255, 0.3);
+  }
+  
+  .neon-text-purple {
+    text-shadow: 
+      0 0 5px rgba(138, 43, 226, 0.7),
+      0 0 10px rgba(138, 43, 226, 0.5),
+      0 0 15px rgba(138, 43, 226, 0.3);
+  }
+
+  /* Terminal text animation */
+  .terminal-text {
+    @apply border-r-2 border-primary animate-blink;
+    padding-right: 0.1em;
+  }
+  
+  @keyframes blink {
+    0%, 100% { border-color: transparent; }
+    50% { border-color: currentColor; }
+  }
+  
+  .animate-blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  /* Font size utilities for responsive design */
+  .text-3xs {
+    font-size: 0.6rem;
+    line-height: 0.8rem;
+  }
+  
+  .text-2xs {
+    font-size: 0.7rem;
+    line-height: 1rem;
+  }
+}

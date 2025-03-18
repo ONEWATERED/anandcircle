@@ -1,0 +1,59 @@
+
+@layer utilities {
+  /* New Tech-inspired classes */
+  .bg-scanlines {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 100% 3px;
+  }
+  
+  .bg-grid-overlay {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Hexagon grid background - futuristic tech pattern */
+  .bg-hex-grid {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%239C92AC' fill-opacity='0.05' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* Brand specific gradients */
+  .bg-brand-gradient-primary {
+    background: linear-gradient(135deg, #1B3A57, #8A2BE2);
+  }
+  
+  .bg-brand-gradient-secondary {
+    background: linear-gradient(135deg, #8A2BE2, #00FFFF);
+  }
+  
+  .bg-brand-gradient-accent {
+    background: linear-gradient(135deg, #00FFFF, #1B3A57);
+  }
+
+  /* Data visualization bars effect */
+  .data-bars {
+    @apply relative h-16 w-full overflow-hidden;
+    background-image: 
+      linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 10px 10px;
+  }
+  
+  .data-bars::before {
+    content: '';
+    @apply absolute inset-0;
+    background: 
+      repeating-linear-gradient(
+        90deg,
+        rgba(138, 43, 226, 0.1),
+        rgba(138, 43, 226, 0.1) 5px,
+        transparent 5px,
+        transparent 10px,
+        rgba(0, 255, 255, 0.1) 10px,
+        rgba(0, 255, 255, 0.1) 15px,
+        transparent 15px,
+        transparent 20px
+      );
+  }
+}
