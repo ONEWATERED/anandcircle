@@ -17,7 +17,7 @@ const Index = () => {
     <MainLayout>
       {/* Background particles container with reduced opacity */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-[1]">
-        <div className="absolute inset-0 opacity-50">
+        <div className="absolute inset-0 opacity-30">
           <BackgroundParticles isMobile={isMobile} />
         </div>
       </div>
