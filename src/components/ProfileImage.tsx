@@ -13,6 +13,7 @@ const ProfileImage = () => {
   const [showAvatarHint, setShowAvatarHint] = useState(false);
   const [showAvatarDialog, setShowAvatarDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isIOS, setIsIOS] = useState(false);
   
   const [socialLinks, setSocialLinks] = useState({
     linkedIn: 'https://linkedin.com/in/hardeepanand',
@@ -21,6 +22,12 @@ const ProfileImage = () => {
     spotify: 'https://open.spotify.com/user/hardeepanand',
     anandCircle: 'https://www.circleso.com'
   });
+
+  // Detect iOS devices
+  useEffect(() => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    setIsIOS(/iphone|ipad|ipod/.test(userAgent));
+  }, []);
 
   useEffect(() => {
     const loadProfileData = async () => {
@@ -35,15 +42,34 @@ const ProfileImage = () => {
           
         if (!error && profileData?.photo_url) {
           console.log('Found profile image in database:', profileData.photo_url);
-          setProfileImage(profileData.photo_url);
-          localStorage.setItem('profileImageUrl', profileData.photo_url);
+          
+          // For iOS devices, ensure the image URL is properly formatted
+          if (isIOS && profileData.photo_url.startsWith('data:image')) {
+            console.log('iOS device detected with data URL, using localStorage fallback');
+            const cachedImageUrl = localStorage.getItem('profileImageUrl');
+            if (cachedImageUrl && !cachedImageUrl.startsWith('data:image')) {
+              setProfileImage(cachedImageUrl);
+            } else {
+              // If data URL is too long, use default image for iOS
+              setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+            }
+          } else {
+            setProfileImage(profileData.photo_url);
+            localStorage.setItem('profileImageUrl', profileData.photo_url);
+          }
         } else {
           // If we can't get from database, try localStorage
           const cachedImageUrl = localStorage.getItem('profileImageUrl');
           
           if (cachedImageUrl) {
             console.log('Using cached profile image:', cachedImageUrl);
-            setProfileImage(cachedImageUrl);
+            
+            // For iOS devices, avoid using data URLs which can be problematic
+            if (isIOS && cachedImageUrl.startsWith('data:image')) {
+              setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
+            } else {
+              setProfileImage(cachedImageUrl);
+            }
           } else {
             // Use default if nothing else is available
             setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
@@ -90,7 +116,7 @@ const ProfileImage = () => {
     };
 
     loadProfileData();
-  }, []);
+  }, [isIOS]);
 
   const handleAvatarHover = () => {
     setShowAvatarHint(true);
@@ -99,6 +125,19 @@ const ProfileImage = () => {
   const handleAvatarLeave = () => {
     setShowAvatarHint(false);
   };
+
+  // For iOS devices, render a smaller component to improve performance
+  if (isIOS) {
+    return (
+      <div className="relative my-4 max-w-xs mx-auto md:mx-0">
+        <div className="relative w-full">
+          <ProfileImageDisplay profileImage={profileImage} isLoading={isLoading} />
+        </div>
+        
+        <SocialMediaLinks links={socialLinks} />
+      </div>
+    );
+  }
 
   return (
     <div className="relative my-4 max-w-xs mx-auto md:mx-0">

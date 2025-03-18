@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface ProfileImageDisplayProps {
   profileImage: string | null;
@@ -8,13 +8,24 @@ interface ProfileImageDisplayProps {
 
 const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayProps) => {
   const [imageError, setImageError] = React.useState(false);
+  const [isIOS, setIsIOS] = React.useState(false);
   const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
   
-  React.useEffect(() => {
+  // Detect iOS devices
+  useEffect(() => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    setIsIOS(/iphone|ipad|ipod/.test(userAgent));
+  }, []);
+  
+  useEffect(() => {
     if (profileImage) {
       setImageError(false);
+      // Log profile image URL for debugging on iOS
+      if (isIOS) {
+        console.log("iOS device detected. Profile image URL:", profileImage);
+      }
     }
-  }, [profileImage]);
+  }, [profileImage, isIOS]);
   
   const handleImageError = () => {
     console.warn("Profile image failed to load:", profileImage);
@@ -37,6 +48,14 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
             alt="Profile" 
             className="w-full h-full object-cover max-w-full"
             onError={handleImageError}
+            // Add specific styling for iOS
+            style={{
+              maxHeight: '300px',
+              objectFit: 'cover',
+              // Force image redraw on iOS
+              transform: isIOS ? 'translateZ(0)' : 'none',
+              WebkitBackfaceVisibility: 'hidden',
+            }}
           />
         </div>
       )}

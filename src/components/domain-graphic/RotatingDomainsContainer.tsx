@@ -29,7 +29,8 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     textWidth, 
     centerSize,
     containerHeight: calculatedContainerHeight,
-    orbitRadius: calculatedOrbitRadius
+    orbitRadius: calculatedOrbitRadius,
+    isIOS,
   } = useNodePositioning();
 
   // Set animation complete after initial load - faster timing
@@ -41,7 +42,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
-  // Calculate node positions based on angle
+  // Calculate node positions based on angle with special handling for iOS
   const getNodePosition = (initialAngle: number) => {
     const radians = (initialAngle * Math.PI) / 180;
     
@@ -51,10 +52,32 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     };
   };
 
-  // Calculate adjusted angles for better mobile layout if needed
+  // Calculate adjusted angles for better mobile layout - with specific iOS adjustments
   const getAdjustedDomains = () => {
-    // On mobile, we might want to adjust domain positions for better distribution
-    if (isMobile && width < 370) {
+    // iOS-specific adjustments
+    if (isIOS && width < 390) {
+      return domains.map(domain => {
+        // Create a copy to avoid mutating the original
+        const adjustedDomain = { ...domain };
+        
+        // Adjust angles for better iOS spacing on small screens
+        if (domain.id === 'family') {
+          adjustedDomain.initialAngle = 0; // Top position
+        } else if (domain.id === 'health') {
+          adjustedDomain.initialAngle = 72; // Adjusted for iOS
+        } else if (domain.id === 'water') {
+          adjustedDomain.initialAngle = 144; // Adjusted for iOS
+        } else if (domain.id === 'ai') {
+          adjustedDomain.initialAngle = 216; // Adjusted for iOS
+        } else if (domain.id === 'mentoring') {
+          adjustedDomain.initialAngle = 288; // Adjusted for iOS
+        }
+        
+        return adjustedDomain;
+      });
+    }
+    // On other mobile devices
+    else if (isMobile && width < 370) {
       return domains.map(domain => {
         // Create a copy to avoid mutating the original
         const adjustedDomain = { ...domain };
@@ -86,9 +109,13 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     <div 
       ref={containerRef} 
       className="w-full relative overflow-hidden"
-      style={{ height: calculatedContainerHeight }}
+      style={{ 
+        height: calculatedContainerHeight,
+        // Add a minimum height to ensure display on iOS
+        minHeight: isMobile ? '350px' : '500px'
+      }}
     >
-      {/* Simplified background particles */}
+      {/* Background particles */}
       <BackgroundParticles isMobile={isMobile} />
       
       {/* Center Circle */}
