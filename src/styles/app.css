@@ -46,6 +46,27 @@ body {
 }
 
 /* Force text visibility */
-h1, h2, h3, p {
+h1, h2, h3, p, a, button, span {
   color: #f8fafc;
+}
+
+/* Ensure buttons are visible */
+button {
+  background-color: rgba(14, 165, 233, 0.8);
+  color: white;
+}
+
+/* Ensure that the main content is visible */
+main {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Force section visibility */
+section {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: 400px;
 }

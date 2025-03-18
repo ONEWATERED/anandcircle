@@ -29,6 +29,7 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
     const particles: Particle[] = [];
     const colors = ['#0EA5E9', '#9333EA', '#DB2777'];
     const connectionDistance = isMobile ? 100 : 150;
+    const pixelRatio = window.devicePixelRatio || 1;
     
     class Particle {
       x: number;
@@ -40,8 +41,8 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
       alpha: number;
       
       constructor() {
-        this.x = Math.random() * canvas.width / devicePixelRatio;
-        this.y = Math.random() * canvas.height / devicePixelRatio;
+        this.x = Math.random() * canvas.width / pixelRatio;
+        this.y = Math.random() * canvas.height / pixelRatio;
         this.radius = Math.random() * 1.5 + 0.5;
         this.color = colors[Math.floor(Math.random() * colors.length)];
         this.vx = (Math.random() - 0.5) * 0.3;
@@ -54,8 +55,8 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
         this.y += this.vy;
         
         // Bounce off walls
-        if (this.x < 0 || this.x > canvas.width / devicePixelRatio) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height / devicePixelRatio) this.vy *= -1;
+        if (this.x < 0 || this.x > canvas.width / pixelRatio) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height / pixelRatio) this.vy *= -1;
       }
       
       draw() {
@@ -74,11 +75,9 @@ const BackgroundParticles: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
       particles.push(new Particle());
     }
     
-    const devicePixelRatio = window.devicePixelRatio || 1;
-    
     // Animation loop
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
+      ctx.clearRect(0, 0, canvas.width / pixelRatio, canvas.height / pixelRatio);
       
       // Update and draw particles
       particles.forEach(particle => {

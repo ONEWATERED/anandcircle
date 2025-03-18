@@ -14,7 +14,9 @@ const Hero = () => {
     <section 
       id="home" 
       className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-tech-dark"
+      style={{ backgroundColor: '#0F172A' }} /* Fallback color */
     >
+      {/* Try/catch would be inappropriate here as it's React rendering, not an async operation */}
       <BackgroundParticles isMobile={isMobile} />
       
       {/* Animated gradient orbs */}
@@ -26,42 +28,42 @@ const Hero = () => {
       
       <div className="section-container z-10 flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12 py-12">
         {/* Hero content column */}
-        <div className="space-y-6 text-center lg:text-left lg:w-3/5 px-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.3s', animationFillMode: 'forwards' }}>
+        <div className="space-y-6 text-center lg:text-left lg:w-3/5 px-4" style={{ color: 'white' }}>
           {/* Tech tags */}
           <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-4">
-            <span className="tech-gradient-border inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-muted/30 text-foreground border-none">
-              <Droplet className="w-3 h-3 text-primary" />
+            <span className="tech-gradient-border inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-muted/30 text-foreground border-none" style={{ backgroundColor: 'rgba(30, 41, 59, 0.3)', color: 'white' }}>
+              <Droplet className="w-3 h-3 text-primary" style={{ color: '#0EA5E9' }} />
               Water Data Systems
             </span>
-            <span className="tech-gradient-border inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-muted/30 text-foreground border-none">
-              <BarChart2 className="w-3 h-3 text-secondary" />
+            <span className="tech-gradient-border inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-muted/30 text-foreground border-none" style={{ backgroundColor: 'rgba(30, 41, 59, 0.3)', color: 'white' }}>
+              <BarChart2 className="w-3 h-3 text-secondary" style={{ color: '#9333EA' }} />
               AI Analysis
             </span>
-            <span className="tech-gradient-border inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-muted/30 text-foreground border-none">
-              <Cpu className="w-3 h-3 text-accent" />
+            <span className="tech-gradient-border inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-muted/30 text-foreground border-none" style={{ backgroundColor: 'rgba(30, 41, 59, 0.3)', color: 'white' }}>
+              <Cpu className="w-3 h-3 text-accent" style={{ color: '#DB2777' }} />
               Tech Leadership
             </span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground" style={{ color: 'white' }}>
             Innovating at the <span className="text-gradient-tech">Intersection</span>
           </h1>
           
-          <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-muted-foreground">
+          <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-muted-foreground" style={{ color: '#94a3b8' }}>
             Tech • Health • Community
           </h2>
           
-          <p className="text-lg text-muted-foreground max-w-3xl">
+          <p className="text-lg text-muted-foreground max-w-3xl" style={{ color: '#94a3b8' }}>
             Executive. Innovator. Mentor. Bringing data-driven solutions to public service, 
             health challenges, and community needs.
           </p>
           
           <div className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
-            <Button size="lg" variant="default" className="tech-gradient-border hover-float group">
+            <Button size="lg" variant="default" className="hover:bg-primary-foreground/80 hover-float group" style={{ backgroundColor: '#0EA5E9', color: 'white' }}>
               Discover My Story
               <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button size="lg" variant="secondary" className="hover-float">
+            <Button size="lg" variant="secondary" className="hover-float" style={{ backgroundColor: '#9333EA', color: 'white' }}>
               Explore My Work
             </Button>
             
@@ -74,8 +76,8 @@ const Hero = () => {
         </div>
         
         {/* Profile image with tech frame */}
-        <div className="lg:w-2/5 max-w-md opacity-0 animate-fade-up" style={{ animationDelay: "0.6s", animationFillMode: "forwards" }}>
-          <div className="relative p-1 bg-muted/10 tech-gradient-border transition-all duration-300 hover-float">
+        <div className="lg:w-2/5 max-w-md">
+          <div className="relative p-1 bg-muted/10 transition-all duration-300 hover-float" style={{ border: '1px solid rgba(14, 165, 233, 0.5)' }}>
             {/* Profile image display */}
             <div className="relative z-20 overflow-hidden">
               <ProfileImageDisplay 
@@ -89,9 +91,9 @@ const Hero = () => {
       
       {/* Tech-styled scroll indicator */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20">
-        <a href="#story" className="flex flex-col items-center text-primary/70 hover:text-primary transition-colors">
-          <span className="text-sm font-medium mb-1 text-muted-foreground">Explore</span>
-          <div className="w-6 h-10 border border-primary/20 rounded-full flex items-start justify-center p-1">
+        <a href="#story" className="flex flex-col items-center text-primary/70 hover:text-primary transition-colors" style={{ color: 'rgba(14, 165, 233, 0.7)' }}>
+          <span className="text-sm font-medium mb-1 text-muted-foreground" style={{ color: '#94a3b8' }}>Explore</span>
+          <div className="w-6 h-10 border rounded-full flex items-start justify-center p-1" style={{ borderColor: 'rgba(14, 165, 233, 0.2)' }}>
             <ChevronDown size={16} className="animate-bounce mt-1" />
           </div>
         </a>
