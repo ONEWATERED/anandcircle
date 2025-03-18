@@ -1,11 +1,10 @@
 
-/* Clean animations and transitions inspired by Langflow */
+/* Reset animations to simple defaults */
 @layer utilities {
   .transition-standard {
     transition: all 0.2s ease;
   }
   
-  /* Subtle fade animations */
   .fade-in {
     animation: fade-in 0.3s ease-in-out forwards;
   }
@@ -15,8 +14,7 @@
   }
   
   .soft-shadow {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 
-                0 1px 1px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   }
   
   .hover-shadow {
@@ -25,15 +23,7 @@
   
   .hover-shadow:hover {
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06), 
-                0 1px 2px -1px rgba(0, 0, 0, 0.03);
-  }
-
-  /* Subtle connection line */
-  .connection-line {
-    stroke-dasharray: 3;
-    stroke-width: 1;
-    stroke: rgba(14, 165, 233, 0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
 

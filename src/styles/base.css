@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    /* Langflow color palette */
+    /* Reset to neutral color palette */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
@@ -17,11 +17,11 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 199 89% 48%; /* Langflow blue - #0EA5E9 */
+    --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 204 94% 33%; /* Darker blue - #0369A1 */
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -32,12 +32,12 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --success: 142.1 76.2% 36.3%; /* Accent green for success states */
+    --success: 142.1 76.2% 36.3%;
     --success-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 199 89% 48%;
+    --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
   }
@@ -49,11 +49,10 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-medium text-foreground tracking-tight;
+    @apply font-medium text-foreground;
   }
   
   h1 {
@@ -67,35 +66,5 @@
   h3 {
     @apply text-xl font-semibold;
   }
-
-  /* Langflow UI elements */
-  .langflow-card {
-    @apply bg-white border border-gray-200/50 rounded-lg overflow-hidden shadow-sm;
-  }
-
-  .langflow-button {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded-md transition-colors;
-  }
-
-  .langflow-glass {
-    @apply bg-white/70 backdrop-blur-md border border-white/20 rounded-lg;
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-
-  /* Light grid pattern overlay */
-  .bg-grid-light {
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-                     linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-
-  /* Text gradients */
-  .text-gradient-primary {
-    @apply bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text;
-  }
-
-  /* Section spacing */
-  .section-container {
-    @apply container mx-auto px-4 md:px-6;
-  }
 }
+

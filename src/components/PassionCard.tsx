@@ -23,7 +23,7 @@ const PassionCard = ({
 }: PassionCardProps) => {
   return (
     <div 
-      className="bg-white border border-gray-200/50 rounded-lg overflow-hidden shadow-sm hover-shadow opacity-0 animate-fade-up transition-all duration-300" 
+      className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover-shadow opacity-0 animate-fade-up transition-all duration-300" 
       style={{ animationDelay: `${200 + index * 100}ms`, animationFillMode: 'forwards' }}
     >
       <div className="flex flex-col h-full">
