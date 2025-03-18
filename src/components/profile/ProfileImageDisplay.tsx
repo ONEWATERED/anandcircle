@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { BrainCircuit } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ProfileImageDisplayProps {
@@ -11,7 +10,6 @@ interface ProfileImageDisplayProps {
 const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayProps) => {
   const [imageError, setImageError] = React.useState(false);
   const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
-  const isMobile = useIsMobile();
   
   // Reset image error if the profile image changes
   React.useEffect(() => {
@@ -35,21 +33,15 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
           <p className="text-gray-400 text-sm">Loading...</p>
         </div>
       ) : (
-        <div className="relative">
+        <div>
           {/* Simple static image display with minimal styling */}
-          <div className="p-1 md:p-2 rounded-2xl shadow-md overflow-hidden border-2 border-primary/20">
+          <div className="border border-gray-200 rounded-lg overflow-hidden">
             <img 
               src={imageToDisplay} 
               alt="Profile" 
-              className="w-full h-full object-cover rounded-xl"
+              className="w-full h-full object-cover"
               onError={handleImageError}
             />
-            
-            {/* Neural connection indicator with brain circuit icon - smaller on mobile */}
-            <div className="absolute top-2 right-2 w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary/10 
-                          flex items-center justify-center shadow-sm border border-white/30">
-              <BrainCircuit size={isMobile ? 10 : 14} className="text-primary" />
-            </div>
           </div>
         </div>
       )}

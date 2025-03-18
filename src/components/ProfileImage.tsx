@@ -129,8 +129,7 @@ const ProfileImage = () => {
     };
 
     loadProfileData();
-
-  }, [isMobile, socialLinks]);
+  }, [isMobile]);
 
   const handleAvatarHover = () => {
     setShowAvatarHint(true);
@@ -141,7 +140,7 @@ const ProfileImage = () => {
   };
 
   return (
-    <div className={`relative ${isMobile ? 'mt-4 mb-8' : ''}`}>
+    <div className="relative my-4">
       <div className="relative">
         <ProfileImageDisplay profileImage={profileImage} isLoading={isLoading} />
       </div>
@@ -154,8 +153,6 @@ const ProfileImage = () => {
         handleAvatarHover={handleAvatarHover}
         handleAvatarLeave={handleAvatarLeave}
       />
-      
-      <DecorativeElements />
       
       <SocialMediaLinks links={socialLinks} />
     </div>

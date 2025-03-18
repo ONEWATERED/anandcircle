@@ -35,57 +35,57 @@ const AvatarDialog = ({
       <DialogTrigger asChild>
         <Link 
           to="#"
-          className="absolute top-2 right-2 z-30 cursor-pointer"
+          className="absolute top-4 right-4 z-10"
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
-          <div className="p-1.5 rounded-full shadow-md ring-2 ring-primary/40 bg-white">
-            <Avatar className="h-10 w-10 border-2 border-white/60 bg-primary/10">
-              <AvatarFallback className="bg-primary text-white text-sm font-semibold">
+          <div className="bg-white p-1 rounded-full">
+            <Avatar className="h-8 w-8 bg-primary/10">
+              <AvatarFallback className="bg-primary text-white text-xs">
                 AI
               </AvatarFallback>
             </Avatar>
           </div>
           
-          {/* Message indicator - static */}
-          <div className="absolute -top-1 -right-1 bg-accent rounded-full p-0.5 shadow-md border border-white">
-            <MessageCircle size={14} className="text-white" fill="white" />
+          {/* Simple message indicator without animations */}
+          <div className="absolute -top-1 -right-1 bg-accent rounded-full p-0.5 border border-white">
+            <MessageCircle size={12} className="text-white" fill="white" />
           </div>
           
-          {/* Static tooltip that appears on hover */}
+          {/* Static tooltip */}
           {showAvatarHint && (
-            <div className="absolute right-0 top-12 bg-white p-3 rounded-xl shadow-lg min-w-56 z-50 border border-gray-100">
-              <Badge className="bg-primary mb-2">Digital Twin</Badge>
+            <div className="absolute right-0 top-10 bg-white p-2 rounded-lg shadow-sm min-w-48 z-50 border border-gray-100">
+              <Badge className="bg-primary mb-1">Digital Twin</Badge>
               <p className="text-xs text-foreground/90 mb-1">Chat with my AI-powered digital twin.</p>
-              <p className="text-[10px] text-foreground/70 italic">Trained on my knowledge & expertise</p>
+              <p className="text-[10px] text-foreground/70">Trained on my knowledge & expertise</p>
             </div>
           )}
         </Link>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md border-0 bg-primary text-white shadow-lg">
+      <DialogContent className="sm:max-w-md bg-primary text-white">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-white">Meet My Digital Avatar</DialogTitle>
+          <DialogTitle className="text-lg font-bold text-white">Meet My Digital Avatar</DialogTitle>
           <DialogDescription className="text-white/80">
-            Connect with my AI-powered digital twin to learn more about my work, interests, and vision.
+            Connect with my AI-powered digital twin to learn more about my work.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center gap-4 py-4">
-          <div className="p-3 rounded-full bg-white/10">
-            <Avatar className="h-24 w-24 border-2 border-white/60">
-              <AvatarFallback className="bg-white/20 text-white text-2xl font-bold">
+          <div className="bg-white/10 p-2 rounded-full">
+            <Avatar className="h-20 w-20">
+              <AvatarFallback className="bg-white/20 text-white text-xl">
                 AI
               </AvatarFallback>
             </Avatar>
           </div>
           
           <p className="text-center text-white/90 px-2">
-            My digital avatar can answer questions about my experience, projects, and vision for AI and healthcare. It's always learning and improving!
+            My digital avatar can answer questions about my experience, projects, and vision for AI and healthcare.
           </p>
           <div className="flex gap-3 mt-2">
-            <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-0" onClick={() => setShowAvatarDialog(false)}>
+            <Button variant="secondary" className="bg-white/20 text-white" onClick={() => setShowAvatarDialog(false)}>
               Maybe Later
             </Button>
-            <Button className="bg-white text-primary hover:bg-white/90 border-0">
+            <Button className="bg-white text-primary">
               Chat Now
             </Button>
           </div>
