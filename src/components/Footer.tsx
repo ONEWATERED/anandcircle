@@ -5,20 +5,23 @@ import ResumeButton from './ResumeButton';
 import { FileText, ExternalLink, Heart } from 'lucide-react';
 import NewsletterSubscription from './NewsletterSubscription';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Footer = () => {
+  const isMobile = useIsMobile();
+  
   return (
-    <footer id="connect" className="relative overflow-hidden">
+    <footer id="connect" className="relative overflow-hidden bg-[#0F172A]">
       <OneWaterPromo />
       
       {/* Main Footer Content */}
-      <div className="bg-gradient-to-b from-gray-50/80 to-gray-100/90 backdrop-blur-sm pt-16 pb-8 border-t border-white/20">
+      <div className="pt-12 pb-8 border-t border-primary/20">
         <div className="section-container">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {/* About */}
-            <div>
-              <h4 className="text-lg font-display font-semibold mb-4 text-gradient-primary">HARDEEP ANAND</h4>
-              <p className="text-muted-foreground mb-4">
+            <div className="px-4">
+              <h4 className="text-lg font-display font-semibold mb-4 text-white">HARDEEP ANAND</h4>
+              <p className="text-gray-400 mb-4">
                 Executive, innovator, and mentor focused on the intersection of technology, health, and community.
               </p>
               
@@ -27,41 +30,41 @@ const Footer = () => {
             </div>
             
             {/* Quick Links */}
-            <div>
-              <h4 className="text-lg font-display font-semibold mb-4 text-gradient-secondary">Quick Links</h4>
+            <div className="px-4">
+              <h4 className="text-lg font-display font-semibold mb-4 text-white">Quick Links</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="#home" className="text-muted-foreground hover:text-primary transition-colors flex items-center">
+                  <a href="#home" className="text-gray-400 hover:text-primary transition-colors flex items-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mr-2"></span>
                     Home
                   </a>
                 </li>
                 <li>
-                  <a href="#story" className="text-muted-foreground hover:text-primary transition-colors flex items-center">
+                  <a href="#story" className="text-gray-400 hover:text-primary transition-colors flex items-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mr-2"></span>
                     My Story
                   </a>
                 </li>
                 <li>
-                  <a href="#passions" className="text-muted-foreground hover:text-primary transition-colors flex items-center">
+                  <a href="#passions" className="text-gray-400 hover:text-primary transition-colors flex items-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mr-2"></span>
                     My Interests
                   </a>
                 </li>
                 <li>
-                  <a href="#articles" className="text-muted-foreground hover:text-primary transition-colors flex items-center">
+                  <a href="#articles" className="text-gray-400 hover:text-primary transition-colors flex items-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mr-2"></span>
                     Articles
                   </a>
                 </li>
                 <li>
-                  <a href="#digital-clone" className="text-muted-foreground hover:text-primary transition-colors flex items-center">
+                  <a href="#digital-clone" className="text-gray-400 hover:text-primary transition-colors flex items-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mr-2"></span>
                     Digital Clone
                   </a>
                 </li>
                 <li>
-                  <a href="#interest-form" className="text-muted-foreground hover:text-primary transition-colors flex items-center">
+                  <a href="#interest-form" className="text-gray-400 hover:text-primary transition-colors flex items-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mr-2"></span>
                     Create Your Own
                   </a>
@@ -70,13 +73,13 @@ const Footer = () => {
             </div>
             
             {/* One Water Initiatives */}
-            <div>
-              <h4 className="text-lg font-display font-semibold mb-4 text-gradient-secondary">One Water Initiatives</h4>
+            <div className="px-4">
+              <h4 className="text-lg font-display font-semibold mb-4 text-white">One Water Initiatives</h4>
               <ul className="space-y-2">
                 <li>
                   <a href="https://www.onewater.foundation" target="_blank" rel="noopener noreferrer" 
-                     className="flex items-center text-muted-foreground hover:text-primary transition-colors group">
-                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-white/40 group-hover:bg-white/80 mr-2 transition-colors">
+                     className="flex items-center text-gray-400 hover:text-primary transition-colors group">
+                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#131c32] group-hover:bg-[#1A2235] mr-2 transition-colors">
                       <ExternalLink className="h-3 w-3" />
                     </span>
                     One Water Foundation
@@ -84,8 +87,8 @@ const Footer = () => {
                 </li>
                 <li>
                   <a href="https://www.onewater.ai" target="_blank" rel="noopener noreferrer" 
-                     className="flex items-center text-muted-foreground hover:text-primary transition-colors group">
-                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-white/40 group-hover:bg-white/80 mr-2 transition-colors">
+                     className="flex items-center text-gray-400 hover:text-primary transition-colors group">
+                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#131c32] group-hover:bg-[#1A2235] mr-2 transition-colors">
                       <ExternalLink className="h-3 w-3" />
                     </span>
                     One Water AI
@@ -95,9 +98,9 @@ const Footer = () => {
             </div>
             
             {/* Connect */}
-            <div>
-              <h4 className="text-lg font-display font-semibold mb-4 text-gradient-primary">Connect</h4>
-              <p className="text-muted-foreground mb-4">
+            <div className="px-4">
+              <h4 className="text-lg font-display font-semibold mb-4 text-white">Connect</h4>
+              <p className="text-gray-400 mb-4">
                 Join our community for deeper insights and connections.
               </p>
               <a
@@ -112,7 +115,7 @@ const Footer = () => {
             </div>
           </div>
           
-          <div className="border-t border-gray-200/30 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
+          <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500 px-4">
             <p>© {new Date().getFullYear()} HARDEEP ANAND. All rights reserved.</p>
             <div className="mt-4 md:mt-0 space-x-4">
               <Link to="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>

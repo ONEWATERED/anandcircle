@@ -33,14 +33,14 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col bg-tech-dark text-foreground" 
+      className="min-h-screen flex flex-col bg-tech-dark text-foreground overflow-hidden" 
     >
       <OneWaterPromo />
       <Navbar />
       <main className="flex-grow w-full bg-gradient-to-b from-tech-dark to-[#131c32]">
         {children}
       </main>
-      <div className="flex justify-end p-2 border-t border-primary/20 relative z-[2]">
+      <div className="flex justify-end p-2 border-t border-primary/20 relative z-[2] bg-tech-dark">
         <AdminLink />
       </div>
       <Footer />

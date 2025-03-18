@@ -47,7 +47,8 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     }
   };
 
-  const nodeHeight = nodeWidth * (isMobile ? 2.0 : 3.0);
+  // Adjust node height based on mobile status
+  const nodeHeight = nodeWidth * (isMobile ? 1.8 : 2.5);
 
   return (
     <div
@@ -89,18 +90,18 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         onClick={domain.link ? handleClick : undefined}
       >
         <div 
-          className={`font-medium text-xs md:text-sm text-center whitespace-nowrap`}
-          style={{ color: isActive ? "#0ea5e9" : "#333333" }}
+          className={`font-medium ${isMobile ? 'text-[10px]' : 'text-xs md:text-sm'} text-center whitespace-nowrap`}
+          style={{ color: isActive ? "#0ea5e9" : "#d1d5db" }}
         >
           {domain.title}
           {domain.link && <span className="ml-1 text-primary">↗</span>}
         </div>
         
         {isActive && (
-          <div className="text-[7px] md:text-xs mt-1 z-10 text-muted-foreground bg-white/80 backdrop-blur-sm p-1 rounded-md">
+          <div className={`${isMobile ? 'text-[7px]' : 'text-[8px] md:text-xs'} mt-1 z-10 text-gray-200 bg-[#1E293B]/90 backdrop-blur-sm p-1 rounded-md`}>
             {isMobile 
               ? domain.description.split(' ').slice(0, 3).join(' ') + '...' 
-              : domain.description.split(' ').slice(0, 10).join(' ') + '...'}
+              : domain.description.split(' ').slice(0, 8).join(' ') + '...'}
           </div>
         )}
       </div>

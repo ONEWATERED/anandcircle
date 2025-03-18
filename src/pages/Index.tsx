@@ -21,35 +21,35 @@ const Index = () => {
         </div>
         
         {/* Story section with dark slate background for better contrast */}
-        <div className="w-full py-16 bg-[#1A2235]">
+        <div className="w-full py-12 md:py-16 bg-[#1A2235]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Story />
           </div>
         </div>
         
         {/* Passion section with slightly lighter background */}
-        <div className="w-full py-16 bg-[#1E293B]">
+        <div className="w-full py-12 md:py-16 bg-[#1E293B]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <PassionSection />
           </div>
         </div>
         
         {/* Following section with consistent dark background */}
-        <div className="w-full py-16 bg-[#131c32] text-white">
+        <div className="w-full py-12 md:py-16 bg-[#131c32]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <FollowingSection />
           </div>
         </div>
         
         {/* Tabbed content with dark tech background */}
-        <div className="w-full py-16 bg-[#0F172A] text-white">
+        <div className="w-full py-12 md:py-16 bg-[#0F172A]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <TabbedContentSection />
           </div>
         </div>
         
         {/* Interest form with consistent dark background */}
-        <div className="w-full py-16 bg-[#131c32] text-white">
+        <div className="w-full py-12 md:py-16 bg-[#131c32]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <InterestForm />
           </div>

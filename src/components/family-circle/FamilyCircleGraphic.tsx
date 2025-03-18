@@ -6,6 +6,7 @@ import CircleConnections from './CircleConnections';
 import { familyMembers, FamilyMember } from '@/data/familyData';
 import { useIsMobile } from '@/hooks/use-mobile';
 import FamilyCircleCenter from './FamilyCircleCenter';
+import { useNodePositioning } from '@/hooks/use-node-position';
 
 interface FamilyCircleGraphicProps {
   onSelectMember: (member: FamilyMember | null) => void;
@@ -17,58 +18,19 @@ const FamilyCircleGraphic: React.FC<FamilyCircleGraphicProps> = ({
   memberImages = {} 
 }) => {
   const [activeMember, setActiveMember] = useState<string | null>(null);
-  const [circleRadius, setCircleRadius] = useState<number>(180);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const isMobile = useIsMobile();
-  
-  // Adjust dimensions based on mobile or desktop
-  const nodeWidth = isMobile ? 75 : 120;
-  const nodeIconSize = isMobile ? 36 : 60;
-  const iconSize = isMobile ? 18 : 28;
-  const textWidth = isMobile ? 'w-16' : 'w-28';
-  const centerSize = isMobile ? 60 : 120;
-  
-  // Adjust circle radius based on screen size
-  useEffect(() => {
-    const calculateRadius = () => {
-      if (isMobile) {
-        const containerWidth = document.getElementById('family-circle-container')?.offsetWidth || 300;
-        // Smaller radius for mobile to prevent nodes from going off-screen
-        setCircleRadius(Math.min(130, containerWidth / 2 - nodeWidth / 2 - 10));
-      } else {
-        const containerWidth = document.getElementById('family-circle-container')?.offsetWidth || 400;
-        setCircleRadius(Math.min(180, containerWidth / 2 - nodeWidth / 2 - 20));
-      }
-    };
-    
-    const updateDimensions = () => {
-      const container = document.getElementById('family-circle-container');
-      if (container) {
-        setDimensions({
-          width: container.offsetWidth,
-          height: container.offsetHeight
-        });
-      }
-    };
-    
-    calculateRadius();
-    updateDimensions();
-    
-    const handleResize = () => {
-      calculateRadius();
-      updateDimensions();
-    };
-    
-    window.addEventListener('resize', handleResize);
-    
-    // Force another calculation after a small delay to ensure accurate dimensions
-    const timer = setTimeout(handleResize, 100);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(timer);
-    };
-  }, [isMobile, nodeWidth]);
+  const { 
+    containerRef, 
+    width, 
+    height, 
+    nodeWidth, 
+    nodeIconSize, 
+    iconSize, 
+    textWidth, 
+    centerSize, 
+    containerHeight,
+    orbitRadius
+  } = useNodePositioning();
   
   // Handle click on a family member node
   const handleNodeClick = (memberId: string) => {
@@ -81,32 +43,34 @@ const FamilyCircleGraphic: React.FC<FamilyCircleGraphicProps> = ({
   const getNodePosition = (angle: number) => {
     const radians = (angle * Math.PI) / 180;
     return {
-      x: dimensions.width / 2 + circleRadius * Math.cos(radians),
-      y: dimensions.height / 2 + circleRadius * Math.sin(radians)
+      x: width / 2 + orbitRadius * Math.cos(radians),
+      y: height / 2 + orbitRadius * Math.sin(radians)
     };
   };
   
-  // Calculate container height based on mobile/desktop
-  const containerHeight = isMobile ? '400px' : '500px';
-  
   return (
-    <div id="family-circle-container" className="relative w-full h-[500px] flex items-center justify-center" style={{ height: containerHeight }}>
+    <div 
+      id="family-circle-container" 
+      ref={containerRef}
+      className="relative w-full flex items-center justify-center" 
+      style={{ height: containerHeight }}
+    >
       {/* Center component */}
       <FamilyCircleCenter 
         centerSize={centerSize} 
-        width={dimensions.width} 
-        height={dimensions.height} 
+        width={width} 
+        height={height} 
       />
       
       {/* Connecting lines */}
       <CircleConnections 
         members={familyMembers}
-        centerX={dimensions.width / 2}
-        centerY={dimensions.height / 2}
-        orbitRadius={circleRadius}
+        centerX={width / 2}
+        centerY={height / 2}
+        orbitRadius={orbitRadius}
         activeMember={activeMember}
-        animationComplete={dimensions.width > 0}
-        width={dimensions.width}
+        animationComplete={width > 0}
+        width={width}
         isMobile={isMobile}
       />
       
