@@ -31,7 +31,7 @@ const Index = () => {
         <div className="reduced-gap">
           <PassionSection />
         </div>
-        <div className="reduced-gap">
+        <div className="tighter-gap">
           <FollowingSection />
         </div>
         <div className="reduced-gap">

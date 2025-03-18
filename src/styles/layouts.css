@@ -19,4 +19,9 @@
   .reduced-gap {
     @apply -mt-4 md:-mt-8;
   }
+  
+  /* Extra tight gap for specific section transitions */
+  .tighter-gap {
+    @apply -mt-8 md:-mt-16;
+  }
 }

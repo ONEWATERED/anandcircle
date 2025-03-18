@@ -59,7 +59,7 @@ export const FollowingSection: React.FC = () => {
   }, []);
 
   return (
-    <section className="py-10 bg-white">
+    <section className="pt-0 pb-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FollowingHeader 
           title="Network"
