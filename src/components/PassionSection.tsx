@@ -4,6 +4,7 @@ import PassionCard from './PassionCard';
 import InterconnectedDomainsGraphic from './InterconnectedDomainsGraphic';
 import { domains } from '@/data/domainData';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { motion } from 'framer-motion';
 
 // Updated passions array with more concise descriptions and links
 const passions = [
@@ -42,10 +43,42 @@ const passions = [
 const PassionSection = () => {
   const isMobile = useIsMobile();
   
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+  
   return (
-    <section id="passions" className="py-6 md:py-8">
-      <div className="section-container">
-        <div className="text-center mb-4 md:mb-6">
+    <section id="passions" className="py-6 md:py-16">
+      <motion.div 
+        className="section-container"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <motion.div 
+          className="text-center mb-4 md:mb-8"
+          variants={itemVariants}
+        >
           <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-2">My Domains</h2>
           <h3 className="text-xl md:text-4xl font-display font-bold mb-3 md:mb-4 text-white">Areas of Expertise & Innovation</h3>
           <div className="h-1 w-16 md:w-20 bg-primary mx-auto rounded-full"></div>
@@ -55,27 +88,35 @@ const PassionSection = () => {
               Check out related articles →
             </a>
           </p>
-        </div>
+        </motion.div>
         
-        {/* Interactive Graphic - reduced margin */}
-        <div className="mb-4 md:mb-6">
+        {/* Interactive Graphic */}
+        <motion.div 
+          className="mb-6 md:mb-10"
+          variants={itemVariants}
+        >
           <InterconnectedDomainsGraphic />
-        </div>
+        </motion.div>
         
         {/* Domain Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4 px-2 md:px-0 pb-4">
           {passions.map((passion, index) => (
-            <PassionCard
+            <motion.div
               key={passion.title}
-              title={passion.title}
-              description={passion.description}
-              colorAccent={passion.colorAccent}
-              index={index}
-              link={passion.link}
-            />
+              variants={itemVariants}
+              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+            >
+              <PassionCard
+                title={passion.title}
+                description={passion.description}
+                colorAccent={passion.colorAccent}
+                index={index}
+                link={passion.link}
+              />
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };
