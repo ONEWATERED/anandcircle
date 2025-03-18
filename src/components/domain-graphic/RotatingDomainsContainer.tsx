@@ -27,26 +27,16 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     nodeIconSize, 
     iconSize, 
     textWidth, 
-    centerSize 
+    centerSize,
+    containerHeight: calculatedContainerHeight,
+    orbitRadius: calculatedOrbitRadius
   } = useNodePositioning();
-
-  // Adjusted orbit radius based on mobile device size
-  const orbitRadius = (() => {
-    if (isMobile) {
-      // Smaller screens need more compact layout
-      if (width < 350) return Math.min(width, height) * 0.32;
-      if (width < 500) return Math.min(width, height) * 0.34;
-      return Math.min(width, height) * 0.36;
-    }
-    // Desktop gets more space
-    return Math.min(width, height) * 0.38;
-  })();
 
   // Set animation complete after initial load - faster timing
   useEffect(() => {
     const timer = setTimeout(() => {
       setAnimationComplete(true);
-    }, 100); // Reduced delay for faster rendering
+    }, 100);
     
     return () => clearTimeout(timer);
   }, []);
@@ -56,26 +46,16 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     const radians = (initialAngle * Math.PI) / 180;
     
     return {
-      x: width / 2 + Math.sin(radians) * orbitRadius,
-      y: height / 2 - Math.cos(radians) * orbitRadius
+      x: width / 2 + Math.sin(radians) * calculatedOrbitRadius,
+      y: height / 2 - Math.cos(radians) * calculatedOrbitRadius
     };
   };
-
-  // Determine appropriate container height based on screen size
-  const containerHeight = (() => {
-    if (isMobile) {
-      if (width < 350) return 400; // Very small screens
-      if (width < 500) return 450; // Small screens
-      return 480; // Medium screens
-    }
-    return 600; // Desktop
-  })();
 
   return (
     <div 
       ref={containerRef} 
       className="w-full relative overflow-hidden"
-      style={{ height: containerHeight }}
+      style={{ height: calculatedContainerHeight }}
     >
       {/* Simplified background particles */}
       <BackgroundParticles isMobile={isMobile} />
@@ -88,18 +68,20 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
       />
       
       {/* Domain connections */}
-      <svg className="absolute top-0 left-0 w-full h-full">
-        <DomainConnections
-          domains={domains}
-          centerX={width / 2}
-          centerY={height / 2}
-          orbitRadius={orbitRadius}
-          activeNode={activeNode}
-          animationComplete={animationComplete}
-          width={width}
-          isMobile={isMobile}
-        />
-      </svg>
+      {width > 0 && (
+        <svg className="absolute top-0 left-0 w-full h-full">
+          <DomainConnections
+            domains={domains}
+            centerX={width / 2}
+            centerY={height / 2}
+            orbitRadius={calculatedOrbitRadius}
+            activeNode={activeNode}
+            animationComplete={animationComplete}
+            width={width}
+            isMobile={isMobile}
+          />
+        </svg>
+      )}
       
       {/* Domain Nodes */}
       <div className="absolute top-0 left-0 w-full h-full">

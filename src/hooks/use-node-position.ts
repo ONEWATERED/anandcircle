@@ -31,74 +31,85 @@ export function useNodePositioning() {
 
   // Calculate responsive sizes based on screen dimensions
   const getResponsiveSizes = () => {
+    // Determine appropriate container height based on screen size
+    const getContainerHeight = () => {
+      if (isMobile) {
+        if (width < 350) return 380;
+        if (width < 500) return 400;
+        return 420;
+      }
+      return 600;
+    };
+    
     // Center circle size
     const getCenterSize = () => {
       if (isMobile) {
-        if (width < 350) return 50;  // Small screens
-        if (width < 500) return 60;  // Medium screens
-        return 70;                    // Larger mobile screens
+        if (width < 350) return 60;
+        if (width < 500) return 70;
+        return 80;
       }
-      return 120;                     // Desktop
-    };
-    
-    // Node icon container size 
-    const getNodeWidth = () => {
-      if (isMobile) {
-        if (width < 350) return 40;   // Smaller for very small screens
-        if (width < 500) return 45;   // Smaller for small screens
-        return 55;                    // Medium screens
-      }
-      return 100;                     // Desktop
+      return 120;
     };
     
     // Size of the circular node
     const getNodeIconSize = () => {
       if (isMobile) {
-        if (width < 350) return 24;   // Smaller for very small screens
-        if (width < 500) return 32;   // Smaller for small screens
-        return 36;                    // Medium screens
+        if (width < 350) return 32;
+        if (width < 500) return 40;
+        return 45;
       }
-      return 64;                      // Desktop
+      return 64;
+    };
+    
+    // Node icon container size 
+    const getNodeWidth = () => {
+      if (isMobile) {
+        if (width < 350) return 40;
+        if (width < 500) return 45;
+        return 55;
+      }
+      return 100;
     };
     
     // Size of the icon inside the node
     const getIconSize = () => {
       if (isMobile) {
-        if (width < 350) return 14;   // Smaller for very small screens
-        if (width < 500) return 16;   // Smaller for small screens
-        return 18;                    // Medium screens
+        if (width < 350) return 16;
+        if (width < 500) return 20;
+        return 22;
       }
-      return 30;                      // Desktop
+      return 30;
     };
     
     // Text width class
     const getTextWidth = () => {
       if (isMobile) {
-        if (width < 350) return 'w-16'; // Wider for better readability
-        if (width < 400) return 'w-20'; // Wider for small screens
-        return 'w-24';                  // Wider for medium screens
+        if (width < 350) return 'w-20';
+        if (width < 400) return 'w-24';
+        return 'w-28';
       }
-      return 'w-32';                    // Desktop
+      return 'w-32';
     };
-    
-    // Calculate a consistent container height for better proportions
-    const getContainerHeight = () => {
+
+    // Calculate orbit radius based on container dimensions
+    const getOrbitRadius = () => {
       if (isMobile) {
-        if (width < 350) return 300;    // Small screens
-        if (width < 500) return 350;    // Medium screens
-        return 400;                     // Larger mobile screens
+        if (width < 350) return Math.min(width, getContainerHeight()) * 0.34;
+        if (width < 500) return Math.min(width, getContainerHeight()) * 0.36;
+        return Math.min(width, getContainerHeight()) * 0.38;
       }
-      return 550;                       // Desktop
+      return Math.min(width, getContainerHeight()) * 0.40;
     };
 
     return {
       centerSize: getCenterSize(),
-      nodeSize: 12, // Fixed size for consistency
+      nodeSize: 12,
       iconSize: getIconSize(),
       nodeWidth: getNodeWidth(),
       nodeIconSize: getNodeIconSize(),
       textWidth: getTextWidth(),
       containerHeight: getContainerHeight(),
+      orbitRadius: getOrbitRadius(),
     };
   };
 

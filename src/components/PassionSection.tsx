@@ -42,11 +42,11 @@ const PassionSection = () => {
   return (
     <section id="passions" className="py-12 md:py-16 bg-gradient-to-b from-white to-gray-50">
       <div className="section-container">
-        <div className="text-center mb-10 opacity-0 animate-fade-up">
+        <div className="text-center mb-8 md:mb-10">
           <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-3">My Domains</h2>
-          <h3 className="text-3xl md:text-4xl font-display font-bold mb-6">Areas of Expertise & Innovation</h3>
+          <h3 className="text-2xl md:text-4xl font-display font-bold mb-4 md:mb-6">Areas of Expertise & Innovation</h3>
           <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
-          <p className="text-muted-foreground max-w-2xl mx-auto mt-6">
+          <p className="text-muted-foreground max-w-2xl mx-auto mt-4 md:mt-6 px-4">
             My work spans five interconnected domains where I drive innovation and deliver measurable impact.
             <a href="#articles" className="text-primary hover:underline ml-1">
               Check out related articles →
@@ -54,13 +54,13 @@ const PassionSection = () => {
           </p>
         </div>
         
-        {/* Interactive Animated Graphic */}
-        <div className="mb-12">
+        {/* Interactive Graphic */}
+        <div className="mb-8 md:mb-12">
           <InterconnectedDomainsGraphic />
         </div>
         
-        {/* Domain Cards - More compact horizontal layout on larger screens */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
+        {/* Domain Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 px-4 md:px-0">
           {passions.map((passion, index) => (
             <PassionCard
               key={passion.title}

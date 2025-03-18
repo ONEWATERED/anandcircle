@@ -32,8 +32,8 @@ const DomainNode: React.FC<DomainNodeProps> = ({
 }) => {
   const Icon = domain.icon;
   const isActive = activeNode === domain.id;
-  const width = window.innerWidth;
 
+  // Handle mouse and touch events
   const handleInteraction = () => {
     if (isMobile) {
       // For mobile, toggle active state
@@ -50,11 +50,8 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     }
   };
 
-  // Optimize for instant loading
-  const nodeDelay = 0;
-
   // Calculate proper height for better mobile display
-  const nodeHeight = nodeWidth * (isMobile ? 2.8 : 3.2);
+  const nodeHeight = nodeWidth * (isMobile ? 2.2 : 3.2);
 
   // Determine text color based on domain
   const getTextColor = () => {
@@ -82,7 +79,6 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         marginTop: -nodeWidth/2,
         transform: 'none' // No rotation
       }}
-      initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
       onMouseEnter={!isMobile ? () => onNodeHover(domain.id) : undefined}
@@ -91,7 +87,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     >
       {/* Circle with icon - centered horizontally */}
       <motion.div 
-        className={`rounded-full flex items-center justify-center shadow-md mb-3 ${domain.link ? 'cursor-pointer' : ''}`}
+        className={`rounded-full flex items-center justify-center shadow-md mb-2 ${domain.link ? 'cursor-pointer' : ''}`}
         style={{ 
           backgroundColor: domain.color,
           border: `2px solid ${isActive ? 'white' : 'transparent'}`,
@@ -117,7 +113,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         onClick={domain.link ? handleClick : undefined}
       >
         <div 
-          className={`font-bold ${width < 350 ? 'text-2xs' : 'text-xs'} md:text-sm text-center`}
+          className={`font-bold text-xs md:text-sm text-center`}
           style={{ 
             color: getTextColor(),
           }}
@@ -128,16 +124,15 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         
         {isActive && (
           <motion.div 
-            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs mt-1 z-10`}
+            className="text-2xs md:text-xs mt-1 z-10"
             style={{ 
               color: getTextColor(),
             }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
           >
-            {/* Shorter descriptions on mobile */}
-            {isMobile ? domain.description.split(' ').slice(0, 5).join(' ') + '...' : domain.description}
+            {/* Short descriptions on all devices for clarity */}
+            {isMobile 
+              ? domain.description.split(' ').slice(0, 6).join(' ') + '...' 
+              : domain.description.split(' ').slice(0, 10).join(' ') + '...'}
           </motion.div>
         )}
       </motion.div>

@@ -47,13 +47,12 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
         key={`${domain.id}-center`}
         d={`M ${position.x} ${position.y} L ${centerX} ${centerY}`}
         stroke={isActive ? "rgba(99, 102, 241, 0.9)" : "rgba(209, 213, 219, 0.4)"}
-        strokeWidth={isActive ? (isMobile ? 1.2 : 2) : (isMobile ? 0.6 : 1)}
-        strokeDasharray={isMobile ? "2,3" : "4,4"}
+        strokeWidth={isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.8 : 1)}
+        strokeDasharray={isMobile ? "3,3" : "4,4"}
         fill="none"
-        initial={{ opacity: 0 }}
         animate={{ 
           opacity: isActive ? 0.9 : (isMobile ? 0.5 : 0.6),
-          strokeWidth: isActive ? (isMobile ? 1.2 : 2) : (isMobile ? 0.6 : 1)
+          strokeWidth: isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.8 : 1)
         }}
         transition={{ duration: 0.3 }}
       />
@@ -83,13 +82,12 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
         key={`${domain.id}-to-${nextDomain.id}`}
         d={pathData}
         stroke={isActive ? "rgba(139, 92, 246, 0.9)" : "rgba(150, 150, 240, 0.7)"}
-        strokeWidth={isActive ? (isMobile ? 1.5 : 2.5) : (isMobile ? 0.8 : 1.5)}
-        strokeDasharray={isMobile ? "2,2" : "3,3"}
+        strokeWidth={isActive ? (isMobile ? 1.8 : 2.5) : (isMobile ? 1 : 1.5)}
+        strokeDasharray={isMobile ? "3,3" : "3,3"}
         fill="none"
-        initial={{ opacity: 0 }}
         animate={{ 
           opacity: isActive ? 0.9 : 0.7,
-          strokeWidth: isActive ? (isMobile ? 1.5 : 2.5) : (isMobile ? 0.8 : 1.5)
+          strokeWidth: isActive ? (isMobile ? 1.8 : 2.5) : (isMobile ? 1 : 1.5)
         }}
         transition={{ duration: 0.3 }}
       />

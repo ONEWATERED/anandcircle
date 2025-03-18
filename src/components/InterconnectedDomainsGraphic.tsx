@@ -9,7 +9,7 @@ const InterconnectedDomainsGraphic = () => {
   const isMobile = useIsMobile();
   
   return (
-    <div className="w-full relative">
+    <div className="w-full relative max-w-[800px] mx-auto">
       <RotatingDomainsContainer 
         activeNode={activeNode}
         setActiveNode={setActiveNode}
