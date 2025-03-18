@@ -42,21 +42,37 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
           <p className="text-gray-400 text-sm">Loading...</p>
         </div>
       ) : (
-        <div className="border border-gray-200 rounded-lg overflow-hidden">
-          <img 
-            src={imageToDisplay} 
-            alt="Profile" 
-            className="w-full h-full object-cover max-w-full"
-            onError={handleImageError}
-            // Add specific styling for iOS
-            style={{
-              maxHeight: '300px',
-              objectFit: 'cover',
-              // Force image redraw on iOS
-              transform: isIOS ? 'translateZ(0)' : 'none',
-              WebkitBackfaceVisibility: 'hidden',
-            }}
-          />
+        <div className="relative">
+          {/* Futuristic border with neon glow */}
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-brand-purple to-cyan-400 rounded-lg p-[2px] animate-pulse-soft">
+            {/* Scanline overlay effect */}
+            <div className="absolute inset-0 bg-scanlines opacity-10 mix-blend-overlay rounded-lg"></div>
+          </div>
+          
+          {/* Image with tech overlay */}
+          <div className="relative border border-white/20 rounded-lg overflow-hidden bg-black/5 m-0.5">
+            <div className="absolute inset-0 bg-grid-overlay opacity-10 mix-blend-overlay"></div>
+            
+            <img 
+              src={imageToDisplay} 
+              alt="Profile" 
+              className="w-full h-full object-cover max-w-full relative z-10"
+              onError={handleImageError}
+              style={{
+                maxHeight: '300px',
+                objectFit: 'cover',
+                // Force image redraw on iOS
+                transform: isIOS ? 'translateZ(0)' : 'none',
+                WebkitBackfaceVisibility: 'hidden',
+              }}
+            />
+            
+            {/* Corner accent elements */}
+            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan-400/80 rounded-tl-sm"></div>
+            <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-brand-purple/80 rounded-tr-sm"></div>
+            <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-brand-purple/80 rounded-bl-sm"></div>
+            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan-400/80 rounded-br-sm"></div>
+          </div>
         </div>
       )}
     </div>
