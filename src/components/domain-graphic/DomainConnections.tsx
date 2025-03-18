@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { DomainData } from '@/data/domainData';
@@ -27,9 +28,6 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
   
   const connections: JSX.Element[] = [];
   
-  // Simplified animations
-  const animationDuration = isMobile ? 0.5 : 0.8; // Reduced from 0.8/1.2
-
   // Calculate position from angle
   const getPosition = (angle: number) => {
     const radians = (angle * Math.PI) / 180;
@@ -39,7 +37,7 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
     };
   };
   
-  // Connect each node to the center with a connection line
+  // Connect each node to the center
   domains.forEach((domain, i) => {
     const position = getPosition(domain.initialAngle);
     const isActive = activeNode === domain.id;
@@ -49,25 +47,20 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
         key={`${domain.id}-center`}
         d={`M ${position.x} ${position.y} L ${centerX} ${centerY}`}
         stroke={isActive ? "rgba(99, 102, 241, 0.9)" : "rgba(209, 213, 219, 0.4)"}
-        strokeWidth={isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.75 : 1)}
-        strokeDasharray={isMobile ? "3,4" : "5,5"}
+        strokeWidth={isActive ? (isMobile ? 1.2 : 2) : (isMobile ? 0.6 : 1)}
+        strokeDasharray={isMobile ? "2,3" : "4,4"}
         fill="none"
-        initial={{ pathLength: 0, opacity: 0 }}
+        initial={{ opacity: 0 }}
         animate={{ 
-          pathLength: 1, 
           opacity: isActive ? 0.9 : (isMobile ? 0.5 : 0.6),
-          strokeWidth: isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.75 : 1)
+          strokeWidth: isActive ? (isMobile ? 1.2 : 2) : (isMobile ? 0.6 : 1)
         }}
-        transition={{ 
-          duration: animationDuration, 
-          delay: 0.1 + (i * (isMobile ? 0.02 : 0.03)), // Reduced from 0.2 + 0.05/0.08
-          ease: "easeInOut"
-        }}
+        transition={{ duration: 0.3 }}
       />
     );
   });
 
-  // Connect adjacent nodes along the circle's circumference - simplified
+  // Connect adjacent nodes along the circle's circumference
   domains.forEach((domain, i) => {
     const nextIndex = (i + 1) % domains.length;
     const nextDomain = domains[nextIndex];
@@ -89,21 +82,16 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
       <motion.path
         key={`${domain.id}-to-${nextDomain.id}`}
         d={pathData}
-        stroke={isActive ? "rgba(139, 92, 246, 0.95)" : "rgba(150, 150, 240, 0.85)"}
-        strokeWidth={isActive ? (isMobile ? 2 : 2.5) : (isMobile ? 1.2 : 1.8)}
-        strokeDasharray={isMobile ? "2,3" : "3,4"}
+        stroke={isActive ? "rgba(139, 92, 246, 0.9)" : "rgba(150, 150, 240, 0.7)"}
+        strokeWidth={isActive ? (isMobile ? 1.5 : 2.5) : (isMobile ? 0.8 : 1.5)}
+        strokeDasharray={isMobile ? "2,2" : "3,3"}
         fill="none"
-        initial={{ pathLength: 0, opacity: 0 }}
+        initial={{ opacity: 0 }}
         animate={{ 
-          pathLength: 1, 
-          opacity: isActive ? 0.95 : 0.85,
-          strokeWidth: isActive ? (isMobile ? 2 : 2.5) : (isMobile ? 1.2 : 1.8)
+          opacity: isActive ? 0.9 : 0.7,
+          strokeWidth: isActive ? (isMobile ? 1.5 : 2.5) : (isMobile ? 0.8 : 1.5)
         }}
-        transition={{ 
-          duration: animationDuration, 
-          delay: 0.15 + (i * 0.03), // Reduced from 0.3 + 0.07
-          ease: "easeInOut"
-        }}
+        transition={{ duration: 0.3 }}
       />
     );
   });

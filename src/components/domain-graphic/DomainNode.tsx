@@ -50,14 +50,13 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     }
   };
 
-  // Optimize transition delays for faster initial loading on mobile
-  const nodeDelay = isMobile ? 0.2 + (index * 0.05) : 0.3 + (index * 0.1);
+  // Optimize for instant loading
+  const nodeDelay = 0;
 
-  // Calculate additional height for text to prevent overlap with center circle
-  // Increased height multiplier for better visibility
-  const nodeHeight = nodeWidth * (isMobile ? 3.8 : 3.2);
+  // Calculate proper height for better mobile display
+  const nodeHeight = nodeWidth * (isMobile ? 2.8 : 3.2);
 
-  // Determine text color based on domain - make it vibrant and futuristic
+  // Determine text color based on domain
   const getTextColor = () => {
     switch(domain.id) {
       case 'family': return '#ff47c7'; // vibrant pink
@@ -81,26 +80,18 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         height: nodeHeight,
         marginLeft: -nodeWidth/2,
         marginTop: -nodeWidth/2,
-        // The text should always stay upright even as the node rotates around the circle
-        transform: rotationEnabled ? 'rotate(0deg)' : 'none'
+        transform: 'none' // No rotation
       }}
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ 
-        scale: 1, 
-        opacity: 1,
-      }}
-      transition={{ 
-        delay: nodeDelay, 
-        duration: 0.5, 
-        type: "spring" 
-      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
       onMouseEnter={!isMobile ? () => onNodeHover(domain.id) : undefined}
       onMouseLeave={!isMobile ? () => onNodeHover(null) : undefined}
       onTouchStart={isMobile ? handleInteraction : undefined}
     >
       {/* Circle with icon - centered horizontally */}
       <motion.div 
-        className={`rounded-full flex items-center justify-center shadow-md mb-4 ${domain.link ? 'cursor-pointer' : ''}`}
+        className={`rounded-full flex items-center justify-center shadow-md mb-3 ${domain.link ? 'cursor-pointer' : ''}`}
         style={{ 
           backgroundColor: domain.color,
           border: `2px solid ${isActive ? 'white' : 'transparent'}`,
@@ -109,29 +100,24 @@ const DomainNode: React.FC<DomainNodeProps> = ({
           marginLeft: 'auto',
           marginRight: 'auto'
         }}
-        whileHover={{ scale: 1.1 }}
         animate={{ 
           scale: isActive ? 1.1 : 1,
-          boxShadow: isActive ? '0 0 10px rgba(255,255,255,0.3)' : '0 2px 4px rgba(0,0,0,0.1)'
         }}
         onClick={domain.link ? handleClick : undefined}
       >
         <Icon size={iconSize} color="white" />
       </motion.div>
 
-      {/* Text area - perfectly centered under the icon with improved visibility */}
+      {/* Text area - optimized for mobile */}
       <motion.div 
         className={`text-center ${textWidth} mx-auto ${domain.link ? 'cursor-pointer' : ''}`}
-        initial={{ opacity: 0 }}
         animate={{ 
-          opacity: 1,
           scale: isActive ? 1.05 : 1
         }}
-        transition={{ delay: nodeDelay + 0.1 }}
         onClick={domain.link ? handleClick : undefined}
       >
         <div 
-          className={`font-bold ${width < 350 ? 'text-xs' : 'text-sm'} md:text-sm text-center`}
+          className={`font-bold ${width < 350 ? 'text-2xs' : 'text-xs'} md:text-sm text-center`}
           style={{ 
             color: getTextColor(),
           }}
@@ -142,15 +128,16 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         
         {isActive && (
           <motion.div 
-            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs mt-2 z-10`}
+            className={`${width < 350 ? 'text-3xs' : 'text-2xs'} md:text-xs mt-1 z-10`}
             style={{ 
               color: getTextColor(),
             }}
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
           >
-            {domain.description}
+            {/* Shorter descriptions on mobile */}
+            {isMobile ? domain.description.split(' ').slice(0, 5).join(' ') + '...' : domain.description}
           </motion.div>
         )}
       </motion.div>

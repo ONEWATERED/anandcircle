@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from 'react';
 import { useIsMobile } from './use-mobile';
 
@@ -28,112 +29,71 @@ export function useNodePositioning() {
     };
   }, []);
 
-  // Calculate position of a node based on its coordinates
-  const getNodePosition = (x: number, y: number) => {
-    const centerX = width / 2;
-    const centerY = height / 2;
-    
-    // Perfect circle radius based on container dimensions
-    // We use the same radius for all nodes to create perfect symmetry
-    let radius;
-    if (isMobile) {
-      // Consistent radius for mobile, scaled based on screen size
-      if (width < 350) {
-        radius = Math.min(width, height) * 0.28; // Small screens
-      } else if (width < 500) {
-        radius = Math.min(width, height) * 0.32; // Medium screens
-      } else {
-        radius = Math.min(width, height) * 0.36; // Larger mobile screens
-      }
-    } else {
-      // Larger radius for desktop (more space between nodes)
-      radius = Math.min(width, height) * 0.4;
-    }
-    
-    // Ensure nodes don't get too close to the edges
-    const maxRadius = Math.min(
-      centerX - (isMobile ? 40 : 60),
-      centerY - (isMobile ? 40 : 60)
-    );
-    
-    radius = Math.min(radius, maxRadius);
-    
-    return {
-      x: centerX + x * radius,
-      y: centerY + y * radius,
-    };
-  };
-
   // Calculate responsive sizes based on screen dimensions
   const getResponsiveSizes = () => {
-    // Responsive sizing based on screen size
+    // Center circle size
     const getCenterSize = () => {
       if (isMobile) {
-        if (width < 350) return 60;  // Small screens
-        if (width < 500) return 70;  // Medium screens
-        return 80;                    // Larger mobile screens
+        if (width < 350) return 50;  // Small screens
+        if (width < 500) return 60;  // Medium screens
+        return 70;                    // Larger mobile screens
       }
       return 120;                     // Desktop
     };
     
-    const getNodeSize = () => {
-      if (isMobile) {
-        if (width < 350) return 10;  // Smaller for very small screens
-        return 12;                   // Other mobile screens
-      }
-      return 16;                     // Desktop
-    };
-    
-    const getIconSize = () => {
-      if (isMobile) {
-        if (width < 350) return 16;  // Smaller for very small screens
-        if (width < 500) return 20;  // Smaller for small screens
-        return 22;                   // Medium screens
-      }
-      return 30;                     // Desktop
-    };
-    
+    // Node icon container size 
     const getNodeWidth = () => {
       if (isMobile) {
-        if (width < 350) return 42;  // Smaller for very small screens
-        if (width < 500) return 55;  // Smaller for small screens
-        return 65;                   // Medium screens
+        if (width < 350) return 40;   // Smaller for very small screens
+        if (width < 500) return 45;   // Smaller for small screens
+        return 55;                    // Medium screens
       }
-      return 100;                    // Desktop
+      return 100;                     // Desktop
     };
     
+    // Size of the circular node
     const getNodeIconSize = () => {
       if (isMobile) {
-        if (width < 350) return 28;  // Smaller for very small screens
-        if (width < 500) return 36;  // Smaller for small screens
-        return 44;                   // Medium screens
+        if (width < 350) return 24;   // Smaller for very small screens
+        if (width < 500) return 32;   // Smaller for small screens
+        return 36;                    // Medium screens
       }
-      return 64;                     // Desktop
+      return 64;                      // Desktop
     };
     
+    // Size of the icon inside the node
+    const getIconSize = () => {
+      if (isMobile) {
+        if (width < 350) return 14;   // Smaller for very small screens
+        if (width < 500) return 16;   // Smaller for small screens
+        return 18;                    // Medium screens
+      }
+      return 30;                      // Desktop
+    };
+    
+    // Text width class
     const getTextWidth = () => {
       if (isMobile) {
-        if (width < 350) return 'w-12'; // Narrower for very small screens
-        if (width < 400) return 'w-14'; // Narrower for small screens
-        return 'w-16';
+        if (width < 350) return 'w-16'; // Wider for better readability
+        if (width < 400) return 'w-20'; // Wider for small screens
+        return 'w-24';                  // Wider for medium screens
       }
-      return 'w-32';
+      return 'w-32';                    // Desktop
     };
     
-    // Calculate a consistent container height for better symmetry
+    // Calculate a consistent container height for better proportions
     const getContainerHeight = () => {
-      // Make height closer to width for better circle proportions
       if (isMobile) {
-        if (width < 350) return 280;  // Small screens
-        if (width < 500) return 320;  // Medium screens
-        return 380;                   // Larger mobile screens
+        if (width < 350) return 300;    // Small screens
+        if (width < 500) return 350;    // Medium screens
+        return 400;                     // Larger mobile screens
       }
-      return 550;                     // Desktop
+      return 550;                       // Desktop
     };
 
     return {
       centerSize: getCenterSize(),
-      nodeSize: getNodeSize(),
+      nodeSize: 12, // Fixed size for consistency
       iconSize: getIconSize(),
       nodeWidth: getNodeWidth(),
       nodeIconSize: getNodeIconSize(),
@@ -146,7 +106,6 @@ export function useNodePositioning() {
     containerRef,
     width,
     height,
-    getNodePosition,
     ...getResponsiveSizes(),
     isMobile,
   };

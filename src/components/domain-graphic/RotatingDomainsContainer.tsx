@@ -18,8 +18,6 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
   setActiveNode
 }) => {
   const [animationComplete, setAnimationComplete] = useState(false);
-  // Remove rotation animation
-  const [rotationAngle, setRotationAngle] = useState(0);
   const isMobile = useIsMobile();
   const { 
     containerRef, 
@@ -32,21 +30,28 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     centerSize 
   } = useNodePositioning();
 
-  // Increased orbit radius to create more space between center and nodes
-  const orbitRadius = Math.min(width, height) * (isMobile ? 0.35 : 0.38);
+  // Adjusted orbit radius based on mobile device size
+  const orbitRadius = (() => {
+    if (isMobile) {
+      // Smaller screens need more compact layout
+      if (width < 350) return Math.min(width, height) * 0.32;
+      if (width < 500) return Math.min(width, height) * 0.34;
+      return Math.min(width, height) * 0.36;
+    }
+    // Desktop gets more space
+    return Math.min(width, height) * 0.38;
+  })();
 
   // Set animation complete after initial load - faster timing
   useEffect(() => {
     const timer = setTimeout(() => {
       setAnimationComplete(true);
-    }, isMobile ? 300 : 500); // Reduced from 600/1000
+    }, 100); // Reduced delay for faster rendering
     
     return () => clearTimeout(timer);
-  }, [isMobile]);
+  }, []);
 
-  // Remove continuous rotation effect
-
-  // Calculate node positions based on initial angle only (no rotation)
+  // Calculate node positions based on angle
   const getNodePosition = (initialAngle: number) => {
     const radians = (initialAngle * Math.PI) / 180;
     
@@ -56,14 +61,14 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     };
   };
 
-  // Increase container height to provide more space
+  // Determine appropriate container height based on screen size
   const containerHeight = (() => {
     if (isMobile) {
-      if (width < 350) return 500;
-      if (width < 500) return 520;
-      return 550;
+      if (width < 350) return 400; // Very small screens
+      if (width < 500) return 450; // Small screens
+      return 480; // Medium screens
     }
-    return 600;
+    return 600; // Desktop
   })();
 
   return (
@@ -82,7 +87,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
         height={height} 
       />
       
-      {/* Domain connections - simplified */}
+      {/* Domain connections */}
       <svg className="absolute top-0 left-0 w-full h-full">
         <DomainConnections
           domains={domains}
@@ -96,10 +101,10 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
         />
       </svg>
       
-      {/* Static Domain Nodes */}
+      {/* Domain Nodes */}
       <div className="absolute top-0 left-0 w-full h-full">
         {domains.map((domain, index) => {
-          // Calculate static position
+          // Calculate position
           const position = getNodePosition(domain.initialAngle);
           
           return (
@@ -115,7 +120,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
               onNodeHover={setActiveNode}
               index={index}
               isMobile={isMobile}
-              rotationEnabled={false} // Disable rotation
+              rotationEnabled={false}
             />
           );
         })}
