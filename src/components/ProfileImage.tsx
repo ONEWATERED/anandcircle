@@ -142,7 +142,7 @@ const ProfileImage = () => {
 
   return (
     <div className={`relative ${isMobile ? 'mt-4 mb-8' : ''}`}>
-      <div className="relative z-10">
+      <div className="relative">
         <ProfileImageDisplay profileImage={profileImage} isLoading={isLoading} />
       </div>
       

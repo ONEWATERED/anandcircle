@@ -35,13 +35,13 @@ const AvatarDialog = ({
       <DialogTrigger asChild>
         <Link 
           to="#"
-          className="absolute top-0 right-0 z-30 cursor-pointer"
+          className="absolute top-2 right-2 z-30 cursor-pointer"
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
-          <div className="neo-glass p-1.5 rounded-full shadow-lg ring-2 ring-primary/40">
+          <div className="p-1.5 rounded-full shadow-md ring-2 ring-primary/40 bg-white">
             <Avatar className="h-10 w-10 border-2 border-white/60 bg-primary/10">
-              <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white text-sm font-semibold">
+              <AvatarFallback className="bg-primary text-white text-sm font-semibold">
                 AI
               </AvatarFallback>
             </Avatar>
@@ -54,7 +54,7 @@ const AvatarDialog = ({
           
           {/* Static tooltip that appears on hover */}
           {showAvatarHint && (
-            <div className="absolute right-0 top-12 glass-card p-3 rounded-xl shadow-lg min-w-56 z-50">
+            <div className="absolute right-0 top-12 bg-white p-3 rounded-xl shadow-lg min-w-56 z-50 border border-gray-100">
               <Badge className="bg-primary mb-2">Digital Twin</Badge>
               <p className="text-xs text-foreground/90 mb-1">Chat with my AI-powered digital twin.</p>
               <p className="text-[10px] text-foreground/70 italic">Trained on my knowledge & expertise</p>
@@ -62,7 +62,7 @@ const AvatarDialog = ({
           )}
         </Link>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md border-0 bg-gradient-to-br from-[#8B5CF6] to-[#6E59A5] text-white shadow-[0_0_30px_rgba(139,92,246,0.5)]">
+      <DialogContent className="sm:max-w-md border-0 bg-primary text-white shadow-lg">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-white">Meet My Digital Avatar</DialogTitle>
           <DialogDescription className="text-white/80">
@@ -70,9 +70,9 @@ const AvatarDialog = ({
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center gap-4 py-4">
-          <div className="neo-glass p-3 rounded-full bg-white/10 backdrop-blur-xl">
+          <div className="p-3 rounded-full bg-white/10">
             <Avatar className="h-24 w-24 border-2 border-white/60">
-              <AvatarFallback className="bg-gradient-to-br from-[#D6BCFA] to-[#9b87f5] text-white text-2xl font-bold">
+              <AvatarFallback className="bg-white/20 text-white text-2xl font-bold">
                 AI
               </AvatarFallback>
             </Avatar>
@@ -85,7 +85,7 @@ const AvatarDialog = ({
             <Button variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-0" onClick={() => setShowAvatarDialog(false)}>
               Maybe Later
             </Button>
-            <Button className="bg-white text-[#8B5CF6] hover:bg-white/90 border-0">
+            <Button className="bg-white text-primary hover:bg-white/90 border-0">
               Chat Now
             </Button>
           </div>

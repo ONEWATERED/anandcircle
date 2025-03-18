@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdminLink from '@/components/AdminLink';
@@ -11,18 +11,17 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   // Load Pinyon Script font for signature
-  React.useEffect(() => {
+  useEffect(() => {
     // Add Pinyon Script font for signature
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
     
-    // Simplified intersection observer - only observes elements without animating them
+    // Simple class toggling without animations
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // If the element is in the viewport, add visible class without animation
           if (entry.isIntersecting) {
             entry.target.classList.add('opacity-100');
             entry.target.classList.remove('opacity-0');

@@ -31,38 +31,24 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
   return (
     <div className="aspect-[3/4] overflow-hidden">
       {isLoading ? (
-        <div className="w-full h-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+        <div className="w-full h-full bg-gray-100 flex items-center justify-center">
           <p className="text-gray-400 text-sm">Loading...</p>
         </div>
       ) : (
         <div className="relative">
-          {/* Static background */}
-          <div 
-            className="absolute inset-0 -m-10 opacity-70"
-            style={{ 
-              backgroundImage: `url(${imageToDisplay})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              filter: 'blur(24px)'
-            }}
-          ></div>
-          
-          {/* Gradient overlay for better color blending with page background */}
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-gray-50 via-transparent to-gray-50 opacity-90"></div>
-          
-          {/* Main image with static glass effect */}
-          <div className="glass-card relative p-1 md:p-2 rounded-2xl shadow-xl overflow-hidden backdrop-blur-md border-2 border-primary/20">
+          {/* Simple static image display with minimal styling */}
+          <div className="p-1 md:p-2 rounded-2xl shadow-md overflow-hidden border-2 border-primary/20">
             <img 
               src={imageToDisplay} 
               alt="Profile" 
-              className="w-full h-full object-cover rounded-xl z-10"
+              className="w-full h-full object-cover rounded-xl"
               onError={handleImageError}
             />
             
             {/* Neural connection indicator with brain circuit icon - smaller on mobile */}
-            <div className="absolute top-2 right-2 w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 backdrop-blur-sm 
-                          flex items-center justify-center opacity-80 shadow-inner border border-white/30 z-20">
-              <BrainCircuit size={isMobile ? 10 : 14} className="text-white" />
+            <div className="absolute top-2 right-2 w-6 h-6 md:w-8 md:h-8 rounded-full bg-primary/10 
+                          flex items-center justify-center shadow-sm border border-white/30">
+              <BrainCircuit size={isMobile ? 10 : 14} className="text-primary" />
             </div>
           </div>
         </div>
