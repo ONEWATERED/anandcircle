@@ -12,17 +12,30 @@ interface FamilyCircleCenterProps {
 const FamilyCircleCenter: React.FC<FamilyCircleCenterProps> = ({ centerSize, width, height }) => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [name, setName] = useState<string>('Your Name');
+  const [imageError, setImageError] = useState(false);
+  const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
 
   useEffect(() => {
+    // First try to get directly from localStorage for speed
+    const directImageUrl = localStorage.getItem('profileImageUrl');
+    if (directImageUrl) {
+      setProfileImage(directImageUrl);
+      console.log("Using profile image from localStorage:", directImageUrl);
+    }
+    
     // Try to get the personal profile from localStorage
     const storedProfile = localStorage.getItem('personalProfile');
     
     if (storedProfile) {
       try {
         const profileData = JSON.parse(storedProfile);
-        if (profileData.photo_url) {
+        
+        // Only set the profile image if we don't already have one from localStorage
+        if (profileData.photo_url && !directImageUrl) {
           setProfileImage(profileData.photo_url);
+          console.log("Using profile image from personalProfile:", profileData.photo_url);
         }
+        
         if (profileData.name) {
           setName(profileData.name);
         }
@@ -31,6 +44,13 @@ const FamilyCircleCenter: React.FC<FamilyCircleCenterProps> = ({ centerSize, wid
       }
     }
   }, []);
+
+  const handleImageError = () => {
+    console.warn("Profile image failed to load in FamilyCircleCenter:", profileImage);
+    setImageError(true);
+  };
+
+  const imageToDisplay = imageError || !profileImage ? defaultImage : profileImage;
 
   return (
     <div
@@ -52,7 +72,11 @@ const FamilyCircleCenter: React.FC<FamilyCircleCenterProps> = ({ centerSize, wid
         }}
       >
         <Avatar className="h-20 w-20 mb-2 border-4 border-white/30">
-          <AvatarImage src={profileImage || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png'} alt={name} />
+          <AvatarImage 
+            src={imageToDisplay} 
+            alt={name} 
+            onError={handleImageError}
+          />
           <AvatarFallback>
             <Users size={32} />
           </AvatarFallback>

@@ -13,14 +13,17 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
   
   // Reset image error if the profile image changes
   React.useEffect(() => {
-    setImageError(false);
+    if (profileImage) {
+      setImageError(false);
+    }
   }, [profileImage]);
   
   const handleImageError = () => {
-    console.error("Image failed to load, falling back to default");
+    console.warn("Profile image failed to load:", profileImage);
     setImageError(true);
   };
   
+  // If there's an error loading the image or no profile image is provided, use the default image
   const imageToDisplay = imageError || !profileImage ? defaultImage : profileImage;
   
   return (
