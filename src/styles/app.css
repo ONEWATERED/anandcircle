@@ -1,10 +1,10 @@
 
 /* App-specific styles */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* Basic focus states */
@@ -14,4 +14,10 @@ input:focus-visible,
 select:focus-visible, 
 textarea:focus-visible {
   @apply outline-none ring-2 ring-primary ring-opacity-50;
+}
+
+/* Make sure background and text colors have enough contrast */
+body {
+  background-color: hsl(222, 47%, 11%);
+  color: hsl(210, 40%, 98%);
 }

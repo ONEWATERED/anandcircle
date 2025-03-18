@@ -57,7 +57,7 @@ const Hero = () => {
           </p>
           
           <div className="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
-            <Button size="lg" variant="tech" glow="cyan" className="tech-gradient-border hover-float group">
+            <Button size="lg" variant="default" className="tech-gradient-border hover-float group">
               Discover My Story
               <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
@@ -66,7 +66,7 @@ const Hero = () => {
             </Button>
             
             <ResumeButton 
-              variant="glass" 
+              variant="outline" 
               size="lg"
               className="hover-float"
             />

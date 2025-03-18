@@ -24,7 +24,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col relative">
+    <div className="min-h-screen flex flex-col relative bg-background text-foreground">
       <Navbar />
       <main className="flex-grow relative">{children}</main>
       <div className="flex justify-end p-2 border-t relative z-[2]">
