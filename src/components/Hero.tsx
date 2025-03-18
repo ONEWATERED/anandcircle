@@ -66,9 +66,9 @@ const Hero = () => {
         
         {/* Profile image with modern frame */}
         <div className="lg:w-2/5 max-w-md fade-up" style={{ animationDelay: "0.2s" }}>
-          <div className="relative p-3 bg-white rounded-xl card-shadow hover-shadow transition-all duration-300">
+          <div className="relative p-3 bg-white rounded-lg card-shadow hover-shadow transition-all duration-300">
             {/* Clean frame */}
-            <div className="absolute inset-0 border border-primary/10 rounded-xl overflow-hidden">
+            <div className="absolute inset-0 border border-primary/10 rounded-lg overflow-hidden">
               {/* Corner accents - subtle */}
               <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary"></div>
               <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-primary"></div>
