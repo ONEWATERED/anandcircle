@@ -24,7 +24,6 @@ interface AvatarDialogProps {
 }
 
 const AvatarDialog = ({
-  isAvatarPulsing,
   showAvatarHint,
   showAvatarDialog,
   setShowAvatarDialog,
@@ -36,19 +35,16 @@ const AvatarDialog = ({
       <DialogTrigger asChild>
         <Link 
           to="#"
-          className="absolute -top-2 -right-2 z-30 cursor-pointer"
+          className="absolute top-0 right-0 z-30 cursor-pointer"
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
           <div className="neo-glass p-1.5 rounded-full shadow-lg ring-2 ring-primary/40">
-            <Avatar className="h-12 w-12 border-2 border-white/60 bg-primary/10">
+            <Avatar className="h-10 w-10 border-2 border-white/60 bg-primary/10">
               <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white text-sm font-semibold">
                 AI
               </AvatarFallback>
             </Avatar>
-            
-            {/* Static glow effect */}
-            <div className="absolute inset-0 bg-primary/20 rounded-full blur-md -z-10"></div>
           </div>
           
           {/* Message indicator - static */}
@@ -58,7 +54,7 @@ const AvatarDialog = ({
           
           {/* Static tooltip that appears on hover */}
           {showAvatarHint && (
-            <div className="absolute right-0 top-14 glass-card p-3 rounded-xl shadow-lg min-w-56 z-50">
+            <div className="absolute right-0 top-12 glass-card p-3 rounded-xl shadow-lg min-w-56 z-50">
               <Badge className="bg-primary mb-2">Digital Twin</Badge>
               <p className="text-xs text-foreground/90 mb-1">Chat with my AI-powered digital twin.</p>
               <p className="text-[10px] text-foreground/70 italic">Trained on my knowledge & expertise</p>
@@ -80,7 +76,6 @@ const AvatarDialog = ({
                 AI
               </AvatarFallback>
             </Avatar>
-            <div className="absolute inset-0 bg-white/20 rounded-full blur-xl -z-10"></div>
           </div>
           
           <p className="text-center text-white/90 px-2">

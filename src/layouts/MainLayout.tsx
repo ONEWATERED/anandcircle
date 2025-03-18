@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdminLink from '@/components/AdminLink';
@@ -11,7 +11,7 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   // Load Pinyon Script font for signature
-  useEffect(() => {
+  React.useEffect(() => {
     // Add Pinyon Script font for signature
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap';

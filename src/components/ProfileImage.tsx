@@ -141,7 +141,7 @@ const ProfileImage = () => {
   };
 
   return (
-    <div className={`relative ${isMobile ? 'mt-8 mb-16' : ''}`}>
+    <div className={`relative ${isMobile ? 'mt-4 mb-8' : ''}`}>
       <div className="relative z-10">
         <ProfileImageDisplay profileImage={profileImage} isLoading={isLoading} />
       </div>
