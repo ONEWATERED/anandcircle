@@ -35,7 +35,7 @@ const AvatarDialog = ({
       <DialogTrigger asChild>
         <Link 
           to="#"
-          className="absolute top-4 right-4 z-10"
+          className="hidden md:block absolute top-4 right-4 z-10"
           onMouseEnter={handleAvatarHover}
           onMouseLeave={handleAvatarLeave}
         >
@@ -47,12 +47,10 @@ const AvatarDialog = ({
             </Avatar>
           </div>
           
-          {/* Simple message indicator without animations */}
           <div className="absolute -top-1 -right-1 bg-accent rounded-full p-0.5 border border-white">
             <MessageCircle size={12} className="text-white" fill="white" />
           </div>
           
-          {/* Static tooltip */}
           {showAvatarHint && (
             <div className="absolute right-0 top-10 bg-white p-2 rounded-lg shadow-sm min-w-48 z-50 border border-gray-100">
               <Badge className="bg-primary mb-1">Digital Twin</Badge>

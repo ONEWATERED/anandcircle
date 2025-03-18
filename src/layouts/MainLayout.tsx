@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -17,37 +18,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     link.rel = 'stylesheet';
     document.head.appendChild(link);
     
-    // Simple class toggling without animations
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('opacity-100');
-            entry.target.classList.remove('opacity-0');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        root: null,
-        threshold: 0.1,
-        rootMargin: '0px 0px -10% 0px'
-      }
-    );
-
-    // Get elements with the opacity-0 class
-    const elements = document.querySelectorAll('.opacity-0');
-    
-    // Observe each element
-    elements.forEach((element) => {
-      observer.observe(element);
-    });
-
-    // Cleanup
+    // Remove all animation and intersection observer code
     return () => {
-      elements.forEach((element) => {
-        observer.unobserve(element);
-      });
+      document.head.removeChild(link);
     };
   }, []);
 

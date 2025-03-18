@@ -1,8 +1,8 @@
 
 import React from 'react';
 
+// Completely empty component with no decorative elements or animations
 const DecorativeElements = () => {
-  // Completely empty component, no decorative elements or animations
   return null;
 };
 

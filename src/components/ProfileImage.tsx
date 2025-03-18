@@ -129,7 +129,7 @@ const ProfileImage = () => {
     };
 
     loadProfileData();
-  }, [isMobile]);
+  }, []);
 
   const handleAvatarHover = () => {
     setShowAvatarHint(true);
@@ -140,8 +140,8 @@ const ProfileImage = () => {
   };
 
   return (
-    <div className="relative my-4">
-      <div className="relative">
+    <div className="relative my-4 max-w-xs mx-auto md:mx-0">
+      <div className="relative w-full">
         <ProfileImageDisplay profileImage={profileImage} isLoading={isLoading} />
       </div>
       
