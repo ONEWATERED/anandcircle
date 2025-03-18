@@ -21,8 +21,8 @@ textarea:focus-visible {
 
 /* Make sure background and text colors have enough contrast */
 body {
-  background-color: hsl(222, 47%, 11%);
-  color: hsl(210, 40%, 98%);
+  background-color: #0F172A;
+  color: #f8fafc;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
@@ -30,6 +30,14 @@ body {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
+}
+
+/* Container utilities */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 /* Force content visibility */
@@ -42,14 +50,12 @@ body {
   z-index: 10;
 }
 
-/* Emergency fallback for critical visibility issues */
+/* Set fixed background colors */
 .bg-tech-dark {
   background-color: #0F172A !important;
 }
 
-.bg-tech-topographic, 
-.bg-tech-grid, 
-.bg-tech-circuit {
+.bg-tech-medium {
   background-color: #1E293B !important;
 }
 
@@ -76,7 +82,6 @@ section {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
-  min-height: 400px;
   position: relative;
   z-index: 1;
   width: 100%;
@@ -129,48 +134,6 @@ nav {
 }
 .hover-float:hover {
   transform: translateY(-5px);
-}
-
-/* Animation for scanning line */
-@keyframes scanning-line {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(100%);
-  }
-}
-
-.animate-scanning-line {
-  animation: scanning-line 2s linear infinite;
-}
-
-/* Pulse animation */
-@keyframes pulse-soft {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-.animate-pulse-soft {
-  animation: pulse-soft 3s infinite ease-in-out;
-}
-
-/* Float animation */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 6s infinite ease-in-out;
 }
 
 /* Shadow utility */

@@ -59,8 +59,8 @@ export const FollowingSection: React.FC = () => {
   }, []);
 
   return (
-    <section className="pt-0 pb-10 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="w-full py-16 text-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <FollowingHeader 
           title="Network"
           subtitle="People I Follow"
@@ -71,7 +71,15 @@ export const FollowingSection: React.FC = () => {
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
           </div>
         ) : (
-          <PersonList people={people} />
+          <div className="w-full mt-8">
+            {people.length === 0 ? (
+              <div className="text-center py-12 bg-black/20 rounded-lg border border-white/10">
+                <p className="text-gray-400">No connections available. Add connections from the admin panel.</p>
+              </div>
+            ) : (
+              <PersonList people={people} />
+            )}
+          </div>
         )}
       </div>
     </section>

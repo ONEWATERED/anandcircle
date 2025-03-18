@@ -39,18 +39,10 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
         </div>
       ) : (
         <div className="relative">
-          {/* Tech frame with data glowing border */}
-          <div className="absolute inset-0 tech-gradient-border rounded-lg"></div>
-          
           {/* Image container */}
           <div className="relative rounded-lg overflow-hidden">
             {/* Grid overlay effect */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60 opacity-30 mix-blend-overlay"></div>
-            
-            {/* Scanning line effect */}
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="h-px w-full bg-gradient-to-r from-transparent via-primary to-transparent animate-scanning-line"></div>
-            </div>
             
             <img 
               src={imageToDisplay} 
@@ -73,8 +65,8 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
             <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary"></div>
             
             {/* Data visualization dots in corners */}
-            <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary animate-pulse-soft"></div>
-            <div className="absolute bottom-2 left-2 w-1.5 h-1.5 rounded-full bg-secondary animate-pulse-soft" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
+            <div className="absolute bottom-2 left-2 w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" style={{ animationDelay: '1s' }}></div>
           </div>
         </div>
       )}

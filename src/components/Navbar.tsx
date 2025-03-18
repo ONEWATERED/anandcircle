@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Menu, X, Linkedin, Twitter, Youtube, Music, ChevronDown } from 'lucide-react';
+import { Menu, X, Linkedin, Twitter, Youtube, Music } from 'lucide-react';
 import ResumeButton from './ResumeButton';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
 import { Button } from '@/components/ui/button';
@@ -31,10 +31,10 @@ const Navbar = () => {
     <header className={cn(
       'fixed w-full z-50 transition-all duration-300 ease-in-out',
       isScrolled 
-        ? 'py-2 backdrop-blur-md bg-white/90 border-b border-gray-200/30 shadow-sm' 
+        ? 'py-2 bg-[#0F172A]/90 backdrop-blur-md border-b border-primary/10 shadow-md' 
         : 'py-4 bg-transparent'
     )}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <nav className="flex items-center justify-between">
           {/* Logo/Brand */}
           <div className="flex items-center">
@@ -43,7 +43,7 @@ const Navbar = () => {
               className={cn(
                 "font-medium tracking-tight transition-all duration-300",
                 isScrolled ? "text-xl" : "text-2xl md:text-3xl",
-                "text-foreground hover:text-primary"
+                "text-white hover:text-primary"
               )}
             >
               HARDEEP ANAND
@@ -51,21 +51,21 @@ const Navbar = () => {
             
             {/* Social Media Icons - Desktop */}
             <div className="ml-4 hidden md:flex items-center space-x-3">
-              <div className="flex space-x-2 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1.5 border border-gray-200/50 shadow-sm">
+              <div className="flex space-x-2 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/10 shadow-sm">
                 <a href="https://linkedin.com/in/hardeepanand" target="_blank" rel="noopener noreferrer" 
-                   className="text-muted-foreground hover:text-primary transition-colors" aria-label="LinkedIn">
+                   className="text-gray-400 hover:text-primary transition-colors" aria-label="LinkedIn">
                   <Linkedin size={16} className="hover:scale-110 transition-transform" />
                 </a>
                 <a href="https://twitter.com/hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-muted-foreground hover:text-primary transition-colors" aria-label="Twitter">
+                   className="text-gray-400 hover:text-primary transition-colors" aria-label="Twitter">
                   <Twitter size={16} className="hover:scale-110 transition-transform" />
                 </a>
                 <a href="https://youtube.com/@hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-muted-foreground hover:text-primary transition-colors" aria-label="YouTube">
+                   className="text-gray-400 hover:text-primary transition-colors" aria-label="YouTube">
                   <Youtube size={16} className="hover:scale-110 transition-transform" />
                 </a>
                 <a href="https://open.spotify.com/user/hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-muted-foreground hover:text-primary transition-colors" aria-label="Spotify">
+                   className="text-gray-400 hover:text-primary transition-colors" aria-label="Spotify">
                   <Music size={16} className="hover:scale-110 transition-transform" />
                 </a>
               </div>
@@ -82,7 +82,7 @@ const Navbar = () => {
                       href={link.href}
                       className={cn(
                         "text-sm font-medium px-3 py-2 rounded-md transition-colors duration-200",
-                        "hover:bg-primary/10 hover:text-primary"
+                        "text-gray-300 hover:bg-primary/10 hover:text-primary"
                       )}
                     >
                       {link.name}
@@ -96,7 +96,7 @@ const Navbar = () => {
                     variant="outline" 
                     size="sm"
                     showIcon={true} 
-                    className="ml-2 border-gray-200 rounded-md hover:border-primary/30 hover:bg-primary/5"
+                    className="ml-2 border-gray-700 rounded-md hover:border-primary/30 hover:bg-primary/5 text-gray-300"
                   />
                 </NavigationMenuItem>
               </NavigationMenuList>
@@ -107,7 +107,7 @@ const Navbar = () => {
           <div className="flex md:hidden">
             <button
               type="button"
-              className="rounded-md p-2 text-foreground bg-white/80 backdrop-blur-sm border border-gray-200/50 shadow-sm"
+              className="rounded-md p-2 text-white bg-black/30 backdrop-blur-sm border border-white/10 shadow-sm"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <span className="sr-only">Open main menu</span>
@@ -122,13 +122,13 @@ const Navbar = () => {
         
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white rounded-lg mt-2 border border-gray-200/50 shadow-md overflow-hidden animate-fade-in">
+          <div className="md:hidden bg-[#0F172A] rounded-lg mt-2 border border-primary/10 shadow-md overflow-hidden animate-fade-in">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
-                  className="block px-4 py-2.5 rounded-md text-base font-medium text-foreground hover:bg-primary/10 hover:text-primary transition-colors duration-200"
+                  className="block px-4 py-2.5 rounded-md text-base font-medium text-gray-300 hover:bg-primary/10 hover:text-primary transition-colors duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.name}
@@ -140,26 +140,26 @@ const Navbar = () => {
                 <ResumeButton 
                   variant="outline" 
                   size="default" 
-                  className="w-full justify-center rounded-md border-gray-200" 
+                  className="w-full justify-center rounded-md border-gray-700 text-gray-300" 
                 />
               </div>
               
               {/* Social Media Icons for Mobile */}
-              <div className="flex items-center justify-center space-x-6 px-3 py-3 mt-2 border-t border-gray-200/50">
+              <div className="flex items-center justify-center space-x-6 px-3 py-3 mt-2 border-t border-white/10">
                 <a href="https://linkedin.com/in/hardeepanand" target="_blank" rel="noopener noreferrer" 
-                   className="text-muted-foreground hover:text-primary transition-colors" aria-label="LinkedIn">
+                   className="text-gray-400 hover:text-primary transition-colors" aria-label="LinkedIn">
                   <Linkedin size={20} />
                 </a>
                 <a href="https://twitter.com/hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-muted-foreground hover:text-primary transition-colors" aria-label="Twitter">
+                   className="text-gray-400 hover:text-primary transition-colors" aria-label="Twitter">
                   <Twitter size={20} />
                 </a>
                 <a href="https://youtube.com/@hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-muted-foreground hover:text-primary transition-colors" aria-label="YouTube">
+                   className="text-gray-400 hover:text-primary transition-colors" aria-label="YouTube">
                   <Youtube size={20} />
                 </a>
                 <a href="https://open.spotify.com/user/hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-muted-foreground hover:text-primary transition-colors" aria-label="Spotify">
+                   className="text-gray-400 hover:text-primary transition-colors" aria-label="Spotify">
                   <Music size={20} />
                 </a>
               </div>

@@ -32,24 +32,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
   return (
     <div 
-      className="min-h-screen flex flex-col bg-tech-dark text-foreground" 
-      style={{ 
-        backgroundColor: '#0F172A', 
-        color: '#f8fafc', 
-        overflowX: 'hidden',
-        visibility: 'visible',
-        opacity: 1
-      }}
+      className="min-h-screen flex flex-col bg-gradient-to-b from-[#0F172A] to-[#1E293B] text-foreground" 
     >
       <Navbar />
-      <main 
-        className="flex-grow w-full"
-        style={{ 
-          display: 'block', 
-          visibility: 'visible', 
-          opacity: 1 
-        }}
-      >
+      <main className="flex-grow w-full">
         {children}
       </main>
       <div className="flex justify-end p-2 border-t border-primary/20 relative z-[2]">

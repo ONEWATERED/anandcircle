@@ -14,7 +14,7 @@ const Index = () => {
   
   return (
     <MainLayout>
-      <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center w-full bg-gradient-to-b from-[#0F172A] to-[#1E293B]">
         {/* Hero section with dark tech background */}
         <div className="w-full">
           <Hero />
@@ -22,29 +22,37 @@ const Index = () => {
         
         {/* Story section with white background for contrast */}
         <div className="w-full py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Story />
           </div>
         </div>
         
-        {/* Passion section with topographic background */}
+        {/* Passion section with slate background */}
         <div className="w-full py-16 bg-slate-100">
-          <PassionSection />
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <PassionSection />
+          </div>
         </div>
         
-        {/* Following section with data grid background */}
-        <div className="w-full py-16 bg-tech-dark" style={{ backgroundColor: '#1E293B' }}>
-          <FollowingSection />
+        {/* Following section with consistent dark background */}
+        <div className="w-full py-16 bg-[#1E293B] text-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <FollowingSection />
+          </div>
         </div>
         
         {/* Tabbed content with dark tech background */}
-        <div className="w-full py-16 bg-tech-dark" style={{ backgroundColor: '#0F172A' }}>
-          <TabbedContentSection />
+        <div className="w-full py-16 bg-[#0F172A] text-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <TabbedContentSection />
+          </div>
         </div>
         
-        {/* Interest form with circuit background */}
-        <div className="w-full py-16 bg-tech-dark" style={{ backgroundColor: '#1E293B' }}>
-          <InterestForm />
+        {/* Interest form with consistent dark background */}
+        <div className="w-full py-16 bg-[#1E293B] text-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <InterestForm />
+          </div>
         </div>
       </div>
     </MainLayout>
