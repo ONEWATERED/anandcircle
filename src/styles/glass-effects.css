@@ -1,107 +1,11 @@
 
+/* Simplified basic card */
 @layer utilities {
-  /* Modern tech glass effects */
-  .tech-glass {
-    @apply bg-black/20 backdrop-blur-md border border-white/10 shadow-md;
+  .basic-card {
+    @apply bg-card border border-border shadow-sm rounded-md;
   }
   
-  .tech-glass-dark {
-    @apply bg-black/40 backdrop-blur-md border border-white/5 shadow-md;
-  }
-  
-  .tech-panel {
-    @apply bg-black/30 backdrop-blur-lg border border-cyan-400/20 shadow-md;
-  }
-  
-  /* Angular tech cards */
-  .tech-card {
-    @apply bg-black/20 backdrop-blur-xl border border-white/10 rounded shadow-md transition-all duration-300;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .tech-card::before {
-    content: '';
-    @apply absolute top-0 left-0 w-5 h-px bg-cyan-400;
-  }
-  
-  .tech-card::after {
-    content: '';
-    @apply absolute top-0 left-0 w-px h-5 bg-cyan-400;
-  }
-  
-  /* Holographic card */
-  .holo-card {
-    @apply bg-black/30 backdrop-blur-xl border border-white/10 rounded-lg shadow-lg;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .holo-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      135deg,
-      transparent 0%,
-      rgba(0, 255, 255, 0.05) 25%,
-      rgba(139, 92, 246, 0.05) 50%,
-      rgba(236, 72, 153, 0.05) 75%,
-      transparent 100%
-    );
-    opacity: 0.5;
-    z-index: -1;
-    animation: holo-gradient 8s linear infinite;
-  }
-  
-  @keyframes holo-gradient {
-    0% {
-      background-position: 0% 0%;
-    }
-    100% {
-      background-position: 200% 200%;
-    }
-  }
-  
-  /* Cyber button */
-  .cyber-button {
-    @apply relative bg-black/20 backdrop-blur-md border border-cyan-400/30 transition-all duration-300 rounded;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .cyber-button::before {
-    content: '';
-    @apply absolute top-0 left-0 w-4 h-px bg-cyan-400;
-  }
-  
-  .cyber-button::after {
-    content: '';
-    @apply absolute top-0 left-0 w-px h-4 bg-cyan-400;
-  }
-  
-  .cyber-button:hover {
-    @apply bg-black/30 border-cyan-400/50 shadow-md;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-  }
-  
-  /* Neo cyberpunk interface */
-  .neo-cyber {
-    @apply relative bg-black/40 backdrop-blur-xl border border-white/5 shadow-xl rounded overflow-hidden;
-  }
-  
-  .neo-cyber::before {
-    content: '';
-    @apply absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-400/70 to-transparent;
-  }
-  
-  .neo-cyber-accent-purple::before {
-    content: '';
-    @apply absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-600/70 to-transparent;
-  }
-  
-  .neo-cyber-accent-magenta::before {
-    content: '';
-    @apply absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-pink-500/70 to-transparent;
+  .basic-button {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-colors;
   }
 }

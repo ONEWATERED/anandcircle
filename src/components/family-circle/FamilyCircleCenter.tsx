@@ -73,13 +73,13 @@ const FamilyCircleCenter: React.FC<FamilyCircleCenterProps> = ({ centerSize, wid
       }}
     >
       <div
-        className="rounded-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg p-3 md:p-4"
+        className="rounded-full flex flex-col items-center justify-center bg-primary shadow-sm p-3 md:p-4"
         style={{
           width: centerBoxSize,
           height: centerBoxSize,
         }}
       >
-        <Avatar className={`${avatarSize} mb-1 md:mb-2 border-4 border-white/30`}>
+        <Avatar className={`${avatarSize} mb-1 md:mb-2 border-2 border-white/30`}>
           <AvatarImage 
             src={imageToDisplay} 
             alt={name} 

@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button';
 
 const OneWaterPromo = () => {
   return (
-    <div className="py-6 bg-gradient-to-r from-primary to-accent">
+    <div className="py-6 bg-primary">
       <div className="section-container">
         <div className="flex flex-col md:flex-row items-center justify-center gap-4 text-center md:text-left">
           <div className="flex items-center gap-2">
             <HeartHandshake size={24} className="text-white" />
-            <span className="text-base font-bold text-white">
+            <span className="text-base font-medium text-white">
               All proceeds from services are donated to 
             </span>
           </div>
@@ -22,7 +22,7 @@ const OneWaterPromo = () => {
             <Button 
               variant="secondary" 
               size="sm" 
-              className="bg-white/20 hover:bg-white/30 text-white font-semibold border border-white/50"
+              className="bg-white/20 hover:bg-white/30 text-white font-medium"
               onClick={() => window.open('https://www.onewater.foundation', '_blank', 'noopener,noreferrer')}
             >
               <span>Foundation</span>
@@ -31,7 +31,7 @@ const OneWaterPromo = () => {
             <Button 
               variant="secondary" 
               size="sm" 
-              className="bg-white/20 hover:bg-white/30 text-white font-semibold border border-white/50"
+              className="bg-white/20 hover:bg-white/30 text-white font-medium"
               onClick={() => window.open('https://www.onewater.ai', '_blank', 'noopener,noreferrer')}
             >
               <span>One Water AI</span>
