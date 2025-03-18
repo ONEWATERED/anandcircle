@@ -21,7 +21,7 @@ const Index = () => {
         </div>
         
         {/* Story section with dark slate background for better contrast */}
-        <div className="w-full py-12 md:py-16 bg-[#1A2235]">
+        <div className="w-full py-12 md:py-20 bg-[#1A2235]">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Story />
           </div>

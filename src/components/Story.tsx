@@ -4,6 +4,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
+import { motion } from 'framer-motion';
 
 const Story = () => {
   const isMobile = useIsMobile();
@@ -11,6 +12,7 @@ const Story = () => {
   const [profile, setProfile] = useState({
     name: '',
     bio: '',
+    photo_url: '',
     positions: [],
     education: [],
     awards: []
@@ -47,6 +49,7 @@ const Story = () => {
         setProfile({
           name: profileData?.name || 'Hardeep Anand',
           bio: profileData?.bio || 'From innovative startups to public service leadership, my journey has been defined by a commitment to leveraging technology for positive change.',
+          photo_url: profileData?.photo_url || '',
           positions: milestones || [],
           education: [
             {
@@ -105,7 +108,7 @@ const Story = () => {
             ))}
           </div>
           <div className="space-y-6">
-            <Skeleton className="h-40 w-full rounded-lg" />
+            <Skeleton className="h-80 w-full rounded-lg" />
             <Skeleton className="h-40 w-full rounded-lg" />
           </div>
         </div>
@@ -116,12 +119,22 @@ const Story = () => {
   return (
     <div id="story" className="py-8 md:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-8 md:mb-12">
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white sm:text-4xl mb-2">
+        <motion.h2 
+          className="text-2xl md:text-3xl font-bold tracking-tight text-white sm:text-4xl mb-2"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           My Story
-        </h2>
-        <p className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto">
+        </motion.h2>
+        <motion.p 
+          className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           {profile.bio}
-        </p>
+        </motion.p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mt-8 md:mt-12">
@@ -132,9 +145,12 @@ const Story = () => {
             const color = colors[index % colors.length];
             
             return (
-              <div 
+              <motion.div 
                 key={position.id} 
                 className={`relative pl-8 border-l-2 border-${color}/50 pb-6`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className={`absolute -left-2 top-0 w-4 h-4 rounded-full bg-${color}`}></div>
                 <h3 className="text-lg md:text-xl font-bold text-white mb-2">{position.title}</h3>
@@ -145,13 +161,39 @@ const Story = () => {
                   {/* Use position order as years (example) */}
                   {2020 - position.order_position} - {position.order_position === 1 ? 'Present' : 2020 - position.order_position + 3}
                 </span>
-              </div>
+              </motion.div>
             );
           })}
         </div>
         
         <div className="space-y-6 md:space-y-8">
-          <div className="bg-[#1E293B]/80 p-4 md:p-6 rounded-lg border border-primary/20 shadow-neon-cyan">
+          {/* Profile Image */}
+          <motion.div 
+            className="rounded-lg overflow-hidden shadow-xl shadow-blue-900/20 h-[450px] bg-gradient-to-b from-[#1A2235]/50 to-[#0F172A]/50 p-1"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            {profile.photo_url ? (
+              <img 
+                src={profile.photo_url} 
+                alt={profile.name} 
+                className="w-full h-full object-cover rounded-lg"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#0F172A] to-[#1E293B] rounded-lg border border-blue-900/30">
+                <p className="text-gray-400 text-center px-4">Profile image will appear here</p>
+              </div>
+            )}
+          </motion.div>
+          
+          {/* Education & Certifications */}
+          <motion.div 
+            className="bg-[#1E293B]/80 p-4 md:p-6 rounded-lg border border-primary/20 shadow-neon-cyan"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <h3 className="text-lg md:text-xl font-bold text-white mb-3">Education & Certifications</h3>
             <ul className="space-y-3">
               {profile.education.map((item, index) => (
@@ -164,9 +206,15 @@ const Story = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
           
-          <div className="bg-[#1E293B]/80 p-4 md:p-6 rounded-lg border border-secondary/20 shadow-neon-purple">
+          {/* Recognition & Awards */}
+          <motion.div 
+            className="bg-[#1E293B]/80 p-4 md:p-6 rounded-lg border border-secondary/20 shadow-neon-purple"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
             <h3 className="text-lg md:text-xl font-bold text-white mb-3">Recognition & Awards</h3>
             <ul className="space-y-3">
               {profile.awards.map((item, index) => (
@@ -179,7 +227,7 @@ const Story = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
