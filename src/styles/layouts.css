@@ -4,4 +4,19 @@
   .section-container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
+  
+  /* Tighter section spacing */
+  .section-spacing {
+    @apply py-8 md:py-12;
+  }
+  
+  /* Compact content spacing */
+  .content-spacing {
+    @apply space-y-4 md:space-y-6;
+  }
+  
+  /* Reduce gap between sections */
+  .reduced-gap {
+    @apply -mt-4 md:-mt-8;
+  }
 }

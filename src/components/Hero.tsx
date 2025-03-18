@@ -7,13 +7,13 @@ const Hero = () => {
   return (
     <section 
       id="home" 
-      className="relative min-h-screen flex items-center justify-center"
+      className="relative min-h-[85vh] flex items-center justify-center"
     >
       {/* Plain background */}
       <div className="absolute inset-0 bg-gray-50 z-0"></div>
       
-      <div className="section-container z-10 text-center max-w-5xl mx-auto">
-        <div className="space-y-6 px-4">
+      <div className="section-container z-10 text-center max-w-5xl mx-auto py-12">
+        <div className="space-y-4 px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900">
             Innovating at the Intersection
           </h1>
@@ -49,8 +49,8 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Simple scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20">
+      {/* Simple scroll indicator moved up */}
+      <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 z-20">
         <a href="#story" className="flex flex-col items-center text-gray-500 hover:text-gray-800 transition-colors">
           <span className="text-sm font-medium mb-1">Scroll Down</span>
           <ChevronDown size={20} />

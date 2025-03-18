@@ -59,7 +59,7 @@ export const FollowingSection: React.FC = () => {
   }, []);
 
   return (
-    <section className="py-12 bg-white">
+    <section className="py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <FollowingHeader 
           title="Network"
@@ -67,7 +67,7 @@ export const FollowingSection: React.FC = () => {
           description="These are the thought leaders who shape my thinking and approach to business, politics, and life."
         />
         {isLoading ? (
-          <div className="flex justify-center py-10">
+          <div className="flex justify-center py-6">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
           </div>
         ) : (

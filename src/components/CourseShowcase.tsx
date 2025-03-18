@@ -5,7 +5,7 @@ import CoursesHeader from './courses/CoursesHeader';
 
 const CourseShowcase = () => {
   return (
-    <section className="py-10 md:py-16 relative overflow-hidden">
+    <section className="py-6 md:py-10 relative overflow-hidden">
       {/* Background effect */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white -z-10"></div>
       <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-blue-100/50 blur-3xl -z-10"></div>

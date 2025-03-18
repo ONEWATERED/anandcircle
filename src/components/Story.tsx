@@ -1,4 +1,3 @@
-
 import React from 'react';
 import ProfileImage from './ProfileImage';
 import ResumeButton from './ResumeButton';
@@ -27,20 +26,20 @@ const Story = () => {
   });
 
   return (
-    <section id="story" className="relative py-24">
+    <section id="story" className="relative py-12 md:py-16">
       {/* Simple white background */}
       <div className="absolute inset-0 bg-white z-0"></div>
       
       <div className="section-container relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Text content - spans 7 columns on desktop */}
-          <div className="lg:col-span-7 space-y-8">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-6">
+          <div className="lg:col-span-7 space-y-6">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
               My Story
             </h2>
             
             {/* Timeline element */}
-            <div className="relative border-l-2 border-primary/20 pl-8 pb-2 space-y-8">
+            <div className="relative border-l-2 border-primary/20 pl-6 pb-2 space-y-6">
               {loading ? (
                 <div className="flex items-center justify-center py-8">
                   <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -79,9 +78,9 @@ const Story = () => {
               )}
             </div>
             
-            <div className="w-24 h-0.5 bg-primary/20 my-6"></div>
+            <div className="w-24 h-0.5 bg-primary/20 my-4"></div>
             
-            <div className="pt-8 flex flex-wrap gap-4">
+            <div className="pt-4 flex flex-wrap gap-4">
               <a 
                 href="#passions" 
                 className="inline-flex items-center justify-center h-11 px-6 font-medium text-white transition-colors rounded-lg bg-primary hover:bg-primary/90"
@@ -99,7 +98,7 @@ const Story = () => {
           
           {/* Profile image - spans 5 columns on desktop */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <div className="p-4 rounded-xl border border-gray-200 shadow-sm">
+            <div className="p-3 rounded-xl border border-gray-200 shadow-sm">
               <ProfileImage />
             </div>
           </div>

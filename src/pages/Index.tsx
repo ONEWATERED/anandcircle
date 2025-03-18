@@ -15,21 +15,31 @@ const Index = () => {
   
   return (
     <MainLayout>
-      {/* Background particles container - improved positioning and z-index */}
+      {/* Background particles container with reduced opacity */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-[1]">
-        <div className="absolute inset-0 opacity-100">
+        <div className="absolute inset-0 opacity-50">
           <BackgroundParticles isMobile={isMobile} />
         </div>
       </div>
       
-      {/* Content with higher z-index to be above particles */}
+      {/* Content with higher z-index and reduced spacing */}
       <div className="relative z-[2]">
         <Hero />
-        <Story />
-        <PassionSection />
-        <FollowingSection />
-        <TabbedContentSection />
-        <InterestForm />
+        <div className="reduced-gap">
+          <Story />
+        </div>
+        <div className="reduced-gap">
+          <PassionSection />
+        </div>
+        <div className="reduced-gap">
+          <FollowingSection />
+        </div>
+        <div className="reduced-gap">
+          <TabbedContentSection />
+        </div>
+        <div className="reduced-gap">
+          <InterestForm />
+        </div>
       </div>
     </MainLayout>
   );
