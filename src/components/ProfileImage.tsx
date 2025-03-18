@@ -1,23 +1,19 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PersonalProfile } from '@/types/thought-leaders';
 import SocialMediaLinks from './profile/SocialMediaLinks';
 import AvatarDialog from './profile/AvatarDialog';
 import ProfileImageDisplay from './profile/ProfileImageDisplay';
 import DecorativeElements from './profile/DecorativeElements';
-import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { ensureHttpProtocol } from '@/utils/databaseConnection';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const ProfileImage = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  const [isAvatarPulsing, setIsAvatarPulsing] = useState(true);
   const [showAvatarHint, setShowAvatarHint] = useState(false);
   const [showAvatarDialog, setShowAvatarDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [showConnectionEffect, setShowConnectionEffect] = useState(false);
-  const [loadingAttempts, setLoadingAttempts] = useState(0);
   const isMobile = useIsMobile();
   
   const [socialLinks, setSocialLinks] = useState({
@@ -89,8 +85,7 @@ const ProfileImage = () => {
           }
         } catch (error) {
           console.error("Error loading profile from Supabase:", error);
-          if (!profileImage && loadingAttempts < 3) {
-            setLoadingAttempts(prev => prev + 1);
+          if (!profileImage) {
             setProfileImage('/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png');
           }
         }
@@ -135,31 +130,14 @@ const ProfileImage = () => {
 
     loadProfileData();
 
-    // Different pulse intervals for mobile vs desktop
-    const pulseInterval = setInterval(() => {
-      setIsAvatarPulsing(prev => !prev);
-    }, isMobile ? 1500 : 2000);
-
-    const connectionInterval = setInterval(() => {
-      setShowConnectionEffect(prev => !prev);
-    }, isMobile ? 4000 : 5000);
-
-    return () => {
-      clearInterval(pulseInterval);
-      clearInterval(connectionInterval);
-    };
-  }, [loadingAttempts, isMobile, socialLinks]);
+  }, [isMobile, socialLinks]);
 
   const handleAvatarHover = () => {
     setShowAvatarHint(true);
-    setShowConnectionEffect(true);
   };
 
   const handleAvatarLeave = () => {
     setShowAvatarHint(false);
-    setTimeout(() => {
-      setShowConnectionEffect(false);
-    }, 2000);
   };
 
   return (
@@ -168,14 +146,8 @@ const ProfileImage = () => {
         <ProfileImageDisplay profileImage={profileImage} isLoading={isLoading} />
       </div>
       
-      {showConnectionEffect && (
-        <div className="absolute top-0 left-0 w-full h-full z-20 pointer-events-none">
-          <div className="absolute top-[30%] left-[35%] w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary/10 animate-pulse blur-lg"></div>
-        </div>
-      )}
-      
       <AvatarDialog 
-        isAvatarPulsing={isAvatarPulsing}
+        isAvatarPulsing={false}
         showAvatarHint={showAvatarHint}
         showAvatarDialog={showAvatarDialog}
         setShowAvatarDialog={setShowAvatarDialog}

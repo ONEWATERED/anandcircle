@@ -36,27 +36,26 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
         </div>
       ) : (
         <div className="relative">
-          {/* Simplified blurred background - reduced animation */}
+          {/* Static background */}
           <div 
-            className="absolute inset-0 -m-10 scale-130 blur-3xl opacity-70"
+            className="absolute inset-0 -m-10 opacity-70"
             style={{ 
               backgroundImage: `url(${imageToDisplay})`,
               backgroundSize: 'cover',
-              backgroundPosition: 'center'
+              backgroundPosition: 'center',
+              filter: 'blur(24px)'
             }}
           ></div>
           
           {/* Gradient overlay for better color blending with page background */}
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-t from-gray-50 via-transparent to-gray-50 opacity-90"></div>
           
-          {/* Reduced glow effect - removed animation */}
+          {/* Static glow effect */}
           <div className="absolute inset-0 rounded-2xl">
             <div className="absolute inset-0 -m-1 rounded-2xl bg-gradient-to-tr from-primary/40 to-accent/40 blur-xl"></div>
           </div>
           
-          {/* Removed dynamic particles effect */}
-          
-          {/* Main image with simplified glass effect - removed animation */}
+          {/* Main image with static glass effect */}
           <div className="glass-card relative p-1 md:p-2 rounded-2xl shadow-xl overflow-hidden backdrop-blur-md border-2 border-primary/20">
             <img 
               src={imageToDisplay} 
@@ -74,14 +73,14 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
               <BrainCircuit size={isMobile ? 10 : 14} className="text-white" />
             </div>
             
-            {/* Simplified neural connection dots - reduced number and removed animation */}
+            {/* Static neural connection dots */}
             <div className="absolute -top-1 -right-1 w-3 h-3 md:w-5 md:h-5 rounded-full bg-primary/50 blur-sm"></div>
           </div>
           
-          {/* Simplified neural network overlay - removed animations */}
+          {/* Static neural network overlay */}
           <div className="absolute -top-16 -right-8 md:-top-20 md:-right-10 w-24 h-24 md:w-32 md:h-32 pointer-events-none opacity-50">
             <svg viewBox="0 0 100 100" className="w-full h-full">
-              {/* Simplified neural connection lines */}
+              {/* Static neural connection lines */}
               <path 
                 d="M50,90 Q55,70 60,50 Q70,30 80,20" 
                 fill="none" 
@@ -100,8 +99,6 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
               </defs>
             </svg>
           </div>
-          
-          {/* Removed inner shadow glow */}
         </div>
       )}
     </div>

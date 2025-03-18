@@ -22,8 +22,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // If the element is in the viewport, unobserve it
+          // If the element is in the viewport, add visible class without animation
           if (entry.isIntersecting) {
+            entry.target.classList.add('opacity-100');
+            entry.target.classList.remove('opacity-0');
             observer.unobserve(entry.target);
           }
         });
