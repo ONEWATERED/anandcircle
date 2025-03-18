@@ -51,6 +51,37 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
     };
   };
 
+  // Calculate adjusted angles for better mobile layout if needed
+  const getAdjustedDomains = () => {
+    // On mobile, we might want to adjust domain positions for better distribution
+    if (isMobile && width < 370) {
+      return domains.map(domain => {
+        // Create a copy to avoid mutating the original
+        const adjustedDomain = { ...domain };
+        
+        // Adjust angles for better spacing on very small screens
+        if (domain.id === 'family') {
+          adjustedDomain.initialAngle = 0; // Top position
+        } else if (domain.id === 'health') {
+          adjustedDomain.initialAngle = 65; // Slightly tighter spacing
+        } else if (domain.id === 'water') {
+          adjustedDomain.initialAngle = 135; // Adjusted for small screens
+        } else if (domain.id === 'ai') {
+          adjustedDomain.initialAngle = 225; // Adjusted for small screens
+        } else if (domain.id === 'mentoring') {
+          adjustedDomain.initialAngle = 295; // Slightly tighter spacing
+        }
+        
+        return adjustedDomain;
+      });
+    }
+    
+    // No adjustments needed for larger screens
+    return domains;
+  };
+
+  const displayDomains = getAdjustedDomains();
+
   return (
     <div 
       ref={containerRef} 
@@ -71,7 +102,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
       {width > 0 && (
         <svg className="absolute top-0 left-0 w-full h-full">
           <DomainConnections
-            domains={domains}
+            domains={displayDomains}
             centerX={width / 2}
             centerY={height / 2}
             orbitRadius={calculatedOrbitRadius}
@@ -85,7 +116,7 @@ const RotatingDomainsContainer: React.FC<RotatingDomainsContainerProps> = ({
       
       {/* Domain Nodes */}
       <div className="absolute top-0 left-0 w-full h-full">
-        {domains.map((domain, index) => {
+        {displayDomains.map((domain, index) => {
           // Calculate position
           const position = getNodePosition(domain.initialAngle);
           

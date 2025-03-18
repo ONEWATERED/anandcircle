@@ -42,21 +42,24 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
     const position = getPosition(domain.initialAngle);
     const isActive = activeNode === domain.id;
     
-    connections.push(
-      <motion.path
-        key={`${domain.id}-center`}
-        d={`M ${position.x} ${position.y} L ${centerX} ${centerY}`}
-        stroke={isActive ? "rgba(99, 102, 241, 0.9)" : "rgba(209, 213, 219, 0.4)"}
-        strokeWidth={isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.8 : 1)}
-        strokeDasharray={isMobile ? "3,3" : "4,4"}
-        fill="none"
-        animate={{ 
-          opacity: isActive ? 0.9 : (isMobile ? 0.5 : 0.6),
-          strokeWidth: isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.8 : 1)
-        }}
-        transition={{ duration: 0.3 }}
-      />
-    );
+    // On mobile, only show spokes for active node or when no node is active
+    if (!isMobile || isActive || activeNode === null) {
+      connections.push(
+        <motion.path
+          key={`${domain.id}-center`}
+          d={`M ${position.x} ${position.y} L ${centerX} ${centerY}`}
+          stroke={isActive ? "rgba(99, 102, 241, 0.9)" : "rgba(209, 213, 219, 0.4)"}
+          strokeWidth={isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.8 : 1)}
+          strokeDasharray={isMobile ? "2,2" : "4,4"}
+          fill="none"
+          animate={{ 
+            opacity: isActive ? 0.9 : (isMobile ? 0.4 : 0.6),
+            strokeWidth: isActive ? (isMobile ? 1.5 : 2) : (isMobile ? 0.8 : 1)
+          }}
+          transition={{ duration: 0.3 }}
+        />
+      );
+    }
   });
 
   // Connect adjacent nodes along the circle's circumference
@@ -69,29 +72,32 @@ const DomainConnections: React.FC<DomainConnectionsProps> = ({
     
     const isActive = activeNode === domain.id || activeNode === nextDomain.id;
     
-    // Create curved connections along the circle's circumference
-    const pathData = createArcPath(
-      position.x, position.y,
-      nextPosition.x, nextPosition.y,
-      centerX, centerY,
-      orbitRadius * 0.1
-    );
-    
-    connections.push(
-      <motion.path
-        key={`${domain.id}-to-${nextDomain.id}`}
-        d={pathData}
-        stroke={isActive ? "rgba(139, 92, 246, 0.9)" : "rgba(150, 150, 240, 0.7)"}
-        strokeWidth={isActive ? (isMobile ? 1.8 : 2.5) : (isMobile ? 1 : 1.5)}
-        strokeDasharray={isMobile ? "3,3" : "3,3"}
-        fill="none"
-        animate={{ 
-          opacity: isActive ? 0.9 : 0.7,
-          strokeWidth: isActive ? (isMobile ? 1.8 : 2.5) : (isMobile ? 1 : 1.5)
-        }}
-        transition={{ duration: 0.3 }}
-      />
-    );
+    // On mobile, only show circle connections in certain scenarios
+    if (!isMobile || isActive || activeNode === null) {
+      // Create curved connections along the circle's circumference
+      const pathData = createArcPath(
+        position.x, position.y,
+        nextPosition.x, nextPosition.y,
+        centerX, centerY,
+        orbitRadius * (isMobile ? 0.05 : 0.1) // Less curved on mobile
+      );
+      
+      connections.push(
+        <motion.path
+          key={`${domain.id}-to-${nextDomain.id}`}
+          d={pathData}
+          stroke={isActive ? "rgba(139, 92, 246, 0.9)" : "rgba(150, 150, 240, 0.7)"}
+          strokeWidth={isActive ? (isMobile ? 1.2 : 2.5) : (isMobile ? 0.8 : 1.5)}
+          strokeDasharray={isMobile ? "2,2" : "3,3"}
+          fill="none"
+          animate={{ 
+            opacity: isActive ? 0.9 : (isMobile ? 0.4 : 0.7),
+            strokeWidth: isActive ? (isMobile ? 1.2 : 2.5) : (isMobile ? 0.8 : 1.5)
+          }}
+          transition={{ duration: 0.3 }}
+        />
+      );
+    }
   });
 
   return <>{connections}</>;

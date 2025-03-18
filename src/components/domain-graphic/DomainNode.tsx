@@ -51,7 +51,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
   };
 
   // Calculate proper height for better mobile display
-  const nodeHeight = nodeWidth * (isMobile ? 2.2 : 3.2);
+  const nodeHeight = nodeWidth * (isMobile ? 2.0 : 3.2);
 
   // Determine text color based on domain
   const getTextColor = () => {
@@ -63,6 +63,17 @@ const DomainNode: React.FC<DomainNodeProps> = ({
       case 'mentoring': return '#F97316'; // bright orange
       default: return '#9b87f5'; // default purple
     }
+  };
+
+  // Adjust text size based on screen size
+  const getTextSizeClass = () => {
+    if (isMobile) {
+      if (position.x < 100 || position.x > (window.innerWidth - 100)) {
+        return 'text-[8px]';
+      }
+      return 'text-[9px]';
+    }
+    return 'text-xs md:text-sm';
   };
 
   return (
@@ -77,7 +88,8 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         height: nodeHeight,
         marginLeft: -nodeWidth/2,
         marginTop: -nodeWidth/2,
-        transform: 'none' // No rotation
+        transform: 'none', // No rotation
+        zIndex: isActive ? 10 : 1 // Bring active node to front
       }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
@@ -87,7 +99,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
     >
       {/* Circle with icon - centered horizontally */}
       <motion.div 
-        className={`rounded-full flex items-center justify-center shadow-md mb-2 ${domain.link ? 'cursor-pointer' : ''}`}
+        className={`rounded-full flex items-center justify-center shadow-md mb-1 ${domain.link ? 'cursor-pointer' : ''}`}
         style={{ 
           backgroundColor: domain.color,
           border: `2px solid ${isActive ? 'white' : 'transparent'}`,
@@ -113,7 +125,7 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         onClick={domain.link ? handleClick : undefined}
       >
         <div 
-          className={`font-bold text-xs md:text-sm text-center`}
+          className={`font-bold ${getTextSizeClass()} text-center whitespace-nowrap`}
           style={{ 
             color: getTextColor(),
           }}
@@ -124,14 +136,15 @@ const DomainNode: React.FC<DomainNodeProps> = ({
         
         {isActive && (
           <motion.div 
-            className="text-2xs md:text-xs mt-1 z-10"
+            className="text-[7px] md:text-xs mt-1 z-10"
             style={{ 
               color: getTextColor(),
+              textShadow: isMobile ? '0px 0px 2px rgba(0,0,0,0.5)' : 'none',
             }}
           >
             {/* Short descriptions on all devices for clarity */}
             {isMobile 
-              ? domain.description.split(' ').slice(0, 6).join(' ') + '...' 
+              ? domain.description.split(' ').slice(0, 3).join(' ') + '...' 
               : domain.description.split(' ').slice(0, 10).join(' ') + '...'}
           </motion.div>
         )}
