@@ -11,7 +11,7 @@ type PassionCardProps = {
   imageSrc?: string;
   colorAccent: string;
   index: number;
-  link?: string; // Added link prop
+  link?: string;
 };
 
 const PassionCard = ({
@@ -23,15 +23,15 @@ const PassionCard = ({
 }: PassionCardProps) => {
   return (
     <div 
-      className="bg-white border border-gray-200/50 rounded-lg overflow-hidden shadow-sm hover-shadow opacity-0 animate-fade-up" 
+      className="bg-white border border-gray-200/50 rounded-lg overflow-hidden shadow-sm hover-shadow opacity-0 animate-fade-up transition-all duration-300" 
       style={{ animationDelay: `${200 + index * 100}ms`, animationFillMode: 'forwards' }}
     >
       <div className="flex flex-col h-full">
         <div className="p-6 flex flex-col flex-grow relative">
           {/* Card accent line */}
-          <div className={cn('h-1 w-16 rounded-full mb-4', colorAccent)}></div>
+          <div className={cn('h-1 w-12 rounded-full mb-4', colorAccent)}></div>
           
-          <h3 className="text-xl font-semibold mb-3 text-foreground">{title}</h3>
+          <h3 className="text-lg font-medium mb-3 text-foreground">{title}</h3>
           
           <p className="text-muted-foreground text-sm">
             {description}

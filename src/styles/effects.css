@@ -2,29 +2,29 @@
 /* Clean effects and visual treatments inspired by Langflow */
 @layer utilities {
   .simple-shadow {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   }
   
   .card-shadow {
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 
-                0 1px 2px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 
+                0 1px 2px rgba(0, 0, 0, 0.03);
   }
   
   .elevated-shadow {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                0 1px 2px -1px rgba(0, 0, 0, 0.03);
   }
   
   .inner-shadow {
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
   }
   
   .border-highlight {
-    border: 1px solid rgba(14, 165, 233, 0.3);
+    border: 1px solid rgba(14, 165, 233, 0.2);
   }
   
-  .rounded-xl {
-    border-radius: 0.75rem;
+  .rounded-standard {
+    border-radius: 0.5rem;
   }
   
   .smooth-gradient {
@@ -33,22 +33,6 @@
       rgba(14, 165, 233, 0.05) 0%,
       rgba(3, 105, 161, 0.05) 100%
     );
-  }
-  
-  .subtle-noise {
-    position: relative;
-  }
-  
-  .subtle-noise::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-    opacity: 0.03;
-    pointer-events: none;
   }
   
   .content-accent {
@@ -60,32 +44,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 3px;
-    height: 20px;
+    width: 2px;
+    height: 16px;
     background: linear-gradient(to bottom, rgba(14, 165, 233, 1), rgba(3, 105, 161, 0.7));
   }
-  
-  .flow-line {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .flow-line::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 1px;
-    background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(14, 165, 233, 0.6) 50%, 
-                transparent 100%);
-    animation: flow-line-move 4s infinite;
-  }
-}
-
-@keyframes flow-line-move {
-  0% { left: -100%; }
-  100% { left: 200%; }
 }

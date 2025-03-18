@@ -9,49 +9,33 @@
   
   .bg-gradient-blue {
     background: linear-gradient(45deg,
-                rgba(14, 165, 233, 0.1) 0%,
-                rgba(3, 105, 161, 0.1) 100%);
+                rgba(14, 165, 233, 0.05) 0%,
+                rgba(3, 105, 161, 0.05) 100%);
   }
   
   .bg-dot-pattern {
     background-color: rgba(255, 255, 255, 1);
     background-image: 
-      radial-gradient(circle at 25px 25px, rgba(14, 165, 233, 0.1) 2%, transparent 0%),
-      radial-gradient(circle at 75px 75px, rgba(3, 105, 161, 0.07) 2%, transparent 0%);
+      radial-gradient(circle at 25px 25px, rgba(14, 165, 233, 0.05) 2%, transparent 0%),
+      radial-gradient(circle at 75px 75px, rgba(3, 105, 161, 0.03) 2%, transparent 0%);
     background-size: 100px 100px;
   }
   
   .bg-grid {
     background: 
-      linear-gradient(rgba(226, 232, 240, 0.5) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(226, 232, 240, 0.5) 1px, transparent 1px);
+      linear-gradient(rgba(226, 232, 240, 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(226, 232, 240, 0.3) 1px, transparent 1px);
     background-size: 20px 20px;
     background-color: rgba(255, 255, 255, 1);
   }
   
   .bg-subtle-dots {
     background-image: 
-      radial-gradient(rgba(14, 165, 233, 0.15) 1px, transparent 1px),
-      radial-gradient(rgba(3, 105, 161, 0.1) 1px, transparent 1px);
+      radial-gradient(rgba(14, 165, 233, 0.1) 1px, transparent 1px),
+      radial-gradient(rgba(3, 105, 161, 0.05) 1px, transparent 1px);
     background-size: 40px 40px;
     background-position: 0 0, 20px 20px;
     background-color: rgba(255, 255, 255, 1);
-  }
-  
-  .bg-flow-pattern {
-    background-color: rgba(248, 250, 252, 1);
-    position: relative;
-  }
-  
-  .bg-flow-pattern::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='none'/%3E%3Cpath d='M30 20h1v1h-1z M35 25h1v1h-1z M40 30h1v1h-1z M35 35h1v1h-1z M30 40h1v1h-1z M25 35h1v1h-1z M20 30h1v1h-1z M25 25h1v1h-1z' stroke='rgba(14,165,233,0.1)' fill='none'/%3E%3C/svg%3E");
-    opacity: 0.5;
   }
   
   .bg-simple {
@@ -59,7 +43,7 @@
   }
   
   .rounded-card {
-    border-radius: 0.75rem;
+    border-radius: 0.5rem;
     overflow: hidden;
   }
 }

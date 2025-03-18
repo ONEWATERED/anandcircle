@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Twitter, Instagram, Linkedin, Facebook } from 'lucide-react';
@@ -41,21 +42,21 @@ const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({
   
   return (
     <motion.div 
-      className="rounded-xl bg-white/90 backdrop-blur-sm flex flex-col items-center p-3 w-full h-full border-2 shadow-lg"
+      className="rounded-lg bg-white/95 backdrop-blur-sm flex flex-col items-center p-3 w-full h-full border shadow-sm"
       style={{ borderColor: member.color }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
       <div className="flex items-center justify-center mb-2">
-        <Avatar className="h-10 w-10 border-2" style={{ borderColor: member.color }}>
+        <Avatar className="h-10 w-10 border" style={{ borderColor: member.color }}>
           <AvatarImage src={memberPhotoUrl || undefined} alt={member.name} className="object-cover aspect-square" />
           <AvatarFallback style={{ backgroundColor: member.color }}>
             <Icon size={16} className="text-white" />
           </AvatarFallback>
         </Avatar>
         <div className="ml-2 text-left">
-          <h3 className="font-bold text-sm">{member.name}</h3>
+          <h3 className="font-medium text-sm">{member.name}</h3>
           <p className="text-xs text-slate-500">{member.role}</p>
         </div>
       </div>
@@ -69,7 +70,7 @@ const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({
               href={member.socialLinks.twitter} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-1.5 rounded-full hover:bg-blue-100 transition-colors"
+              className="p-1.5 rounded-full hover:bg-blue-50 transition-colors"
             >
               <Twitter size={14} className="text-blue-400" />
             </a>
@@ -80,7 +81,7 @@ const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({
               href={member.socialLinks.instagram} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-1.5 rounded-full hover:bg-pink-100 transition-colors"
+              className="p-1.5 rounded-full hover:bg-pink-50 transition-colors"
             >
               <Instagram size={14} className="text-pink-500" />
             </a>
@@ -91,7 +92,7 @@ const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({
               href={member.socialLinks.linkedin} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-1.5 rounded-full hover:bg-blue-100 transition-colors"
+              className="p-1.5 rounded-full hover:bg-blue-50 transition-colors"
             >
               <Linkedin size={14} className="text-blue-700" />
             </a>
@@ -102,7 +103,7 @@ const FamilyMemberCardBack: React.FC<FamilyMemberCardBackProps> = ({
               href={member.socialLinks.facebook} 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-1.5 rounded-full hover:bg-blue-100 transition-colors"
+              className="p-1.5 rounded-full hover:bg-blue-50 transition-colors"
             >
               <Facebook size={14} className="text-blue-600" />
             </a>

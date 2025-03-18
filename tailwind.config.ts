@@ -94,13 +94,6 @@ export default {
 					'0%': { 'background-position': '0% 50%' },
 					'100%': { 'background-position': '100% 50%' }
 				},
-				'pulse-soft': {
-					'0%': { opacity: '0.9' },
-					'100%': { opacity: '1' }
-				},
-				'dash': {
-					'to': { 'stroke-dashoffset': '100' }
-				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
