@@ -8,6 +8,7 @@ import DecorativeElements from './profile/DecorativeElements';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { ensureHttpProtocol } from '@/utils/databaseConnection';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const ProfileImage = () => {
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -17,6 +18,8 @@ const ProfileImage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showConnectionEffect, setShowConnectionEffect] = useState(false);
   const [loadingAttempts, setLoadingAttempts] = useState(0);
+  const isMobile = useIsMobile();
+  
   const [socialLinks, setSocialLinks] = useState({
     linkedIn: 'https://linkedin.com/in/hardeepanand',
     twitter: 'https://twitter.com/hardeepanand',
@@ -132,19 +135,20 @@ const ProfileImage = () => {
 
     loadProfileData();
 
+    // Different pulse intervals for mobile vs desktop
     const pulseInterval = setInterval(() => {
       setIsAvatarPulsing(prev => !prev);
-    }, 2000);
+    }, isMobile ? 1500 : 2000);
 
     const connectionInterval = setInterval(() => {
       setShowConnectionEffect(prev => !prev);
-    }, 5000);
+    }, isMobile ? 4000 : 5000);
 
     return () => {
       clearInterval(pulseInterval);
       clearInterval(connectionInterval);
     };
-  }, [loadingAttempts]);
+  }, [loadingAttempts, isMobile, socialLinks]);
 
   const handleAvatarHover = () => {
     setShowAvatarHint(true);
@@ -159,14 +163,14 @@ const ProfileImage = () => {
   };
 
   return (
-    <div className="relative">
+    <div className={`relative ${isMobile ? 'mt-8 mb-16' : ''}`}>
       <div className="relative z-10">
         <ProfileImageDisplay profileImage={profileImage} isLoading={isLoading} />
       </div>
       
       {showConnectionEffect && (
         <div className="absolute top-0 left-0 w-full h-full z-20 pointer-events-none">
-          <div className="absolute top-[30%] left-[35%] w-16 h-16 rounded-full bg-primary/10 animate-pulse blur-lg"></div>
+          <div className="absolute top-[30%] left-[35%] w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary/10 animate-pulse blur-lg"></div>
         </div>
       )}
       

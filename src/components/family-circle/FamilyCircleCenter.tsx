@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Users } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface FamilyCircleCenterProps {
   centerSize: number;
@@ -14,6 +15,7 @@ const FamilyCircleCenter: React.FC<FamilyCircleCenterProps> = ({ centerSize, wid
   const [name, setName] = useState<string>('Your Name');
   const [imageError, setImageError] = useState(false);
   const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // First try to get directly from localStorage for speed
@@ -52,41 +54,47 @@ const FamilyCircleCenter: React.FC<FamilyCircleCenterProps> = ({ centerSize, wid
 
   const imageToDisplay = imageError || !profileImage ? defaultImage : profileImage;
 
+  // Calculate responsive sizes based on mobile detection
+  const centerBoxSize = isMobile ? centerSize * 1.8 : centerSize * 2.2;
+  const avatarSize = isMobile ? "h-14 w-14" : "h-20 w-20";
+  const nameFontSize = isMobile ? "text-xs md:text-sm" : "text-sm md:text-lg";
+  const subtitleFontSize = isMobile ? "text-3xs md:text-2xs" : "text-3xs md:text-xs";
+
   return (
     <div
       className="absolute flex flex-col items-center justify-center z-10"
       style={{
         top: '50%',
         left: '50%',
-        width: centerSize * 2.2,
-        height: centerSize * 2.2,
-        marginLeft: -(centerSize * 2.2) / 2,
-        marginTop: -(centerSize * 2.2) / 2,
+        width: centerBoxSize,
+        height: centerBoxSize,
+        marginLeft: -centerBoxSize / 2,
+        marginTop: -centerBoxSize / 2,
       }}
     >
       <div
-        className="rounded-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg p-4"
+        className="rounded-full flex flex-col items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg p-3 md:p-4"
         style={{
-          width: centerSize * 2.2,
-          height: centerSize * 2.2,
+          width: centerBoxSize,
+          height: centerBoxSize,
         }}
       >
-        <Avatar className="h-20 w-20 mb-2 border-4 border-white/30">
+        <Avatar className={`${avatarSize} mb-1 md:mb-2 border-4 border-white/30`}>
           <AvatarImage 
             src={imageToDisplay} 
             alt={name} 
             onError={handleImageError}
           />
           <AvatarFallback>
-            <Users size={32} />
+            <Users size={isMobile ? 24 : 32} />
           </AvatarFallback>
         </Avatar>
         
-        <h3 className="text-white font-bold text-center mb-1 text-sm md:text-lg">
+        <h3 className={`text-white font-bold text-center mb-0.5 ${nameFontSize}`}>
           {name}
         </h3>
         
-        <p className="text-white/80 text-center mb-1 text-3xs md:text-xs max-w-[90%] mx-auto">
+        <p className={`text-white/80 text-center mb-0.5 ${subtitleFontSize} max-w-[90%] mx-auto`}>
           My Family Circle
         </p>
       </div>

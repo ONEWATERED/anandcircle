@@ -41,43 +41,43 @@ const SocialMediaLinks = ({ links }: SocialMediaLinksProps) => {
   // On mobile, display the social links horizontally at the bottom
   if (isMobile) {
     return (
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 flex flex-row gap-3 z-30">
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 flex flex-row gap-2 z-30">
         <a href={safeLinks.linkedIn} target="_blank" rel="noopener noreferrer" 
-           className="glass-card p-2.5 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-primary/20" 
+           className="glass-card p-2 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-primary/20" 
            aria-label="LinkedIn"
            onClick={(e) => handleLinkClick(safeLinks.linkedIn, e)}>
-          <Linkedin size={20} className="text-primary" />
+          <Linkedin size={16} className="text-primary" />
         </a>
         <a href={safeLinks.twitter} target="_blank" rel="noopener noreferrer"
-           className="glass-card p-2.5 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-blue-400/20" 
+           className="glass-card p-2 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-blue-400/20" 
            aria-label="Twitter"
            onClick={(e) => handleLinkClick(safeLinks.twitter, e)}>
-          <Twitter size={20} className="text-blue-400" />
+          <Twitter size={16} className="text-blue-400" />
         </a>
         <a href={safeLinks.youtube} target="_blank" rel="noopener noreferrer"
-           className="glass-card p-2.5 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-red-500/20" 
+           className="glass-card p-2 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-red-500/20" 
            aria-label="YouTube"
            onClick={(e) => handleLinkClick(safeLinks.youtube, e)}>
-          <Youtube size={20} className="text-red-500" />
+          <Youtube size={16} className="text-red-500" />
         </a>
         <a href={safeLinks.spotify} target="_blank" rel="noopener noreferrer"
-           className="glass-card p-2.5 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-green-500/20" 
+           className="glass-card p-2 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-green-500/20" 
            aria-label="Spotify"
            onClick={(e) => handleLinkClick(safeLinks.spotify, e)}>
-          <Music size={20} className="text-green-500" />
+          <Music size={16} className="text-green-500" />
         </a>
         {safeLinks.anandCircle.startsWith('/') || safeLinks.anandCircle.startsWith('#') ? (
           <Link to={safeLinks.anandCircle}
-                className="glass-card p-2.5 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-accent/20" 
+                className="glass-card p-2 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-accent/20" 
                 aria-label="ANAND Circle">
-            <Users size={20} className="text-accent" />
+            <Users size={16} className="text-accent" />
           </Link>
         ) : (
           <a href={safeLinks.anandCircle} target="_blank" rel="noopener noreferrer"
-             className="glass-card p-2.5 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-accent/20" 
+             className="glass-card p-2 rounded-full bg-white shadow-lg hover:shadow-xl transform hover:scale-110 border-2 border-accent/20" 
              aria-label="ANAND Circle"
              onClick={(e) => handleLinkClick(safeLinks.anandCircle, e)}>
-            <Users size={20} className="text-accent" />
+            <Users size={16} className="text-accent" />
           </a>
         )}
       </div>

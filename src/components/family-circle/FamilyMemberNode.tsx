@@ -37,8 +37,8 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
   const Icon = member.icon;
   const [isFlipped, setIsFlipped] = useState(false);
   
-  // Staggered animation delay based on index
-  const animationDelay = 0.6 + (index * 0.1);
+  // Staggered animation delay based on index - faster on mobile
+  const animationDelay = isMobile ? 0.4 + (index * 0.08) : 0.6 + (index * 0.1);
   
   // Handle click on node
   const handleClick = () => {
@@ -47,22 +47,28 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
     onNodeClick(member.id);
   };
   
+  // Scale factor for active node - smaller on mobile to prevent overlap
+  const activeScale = isMobile ? 1.1 : 1.15;
+  
+  // Adjust height based on mobile
+  const nodeHeight = isMobile ? nodeWidth * 1.3 : nodeWidth * 1.5;
+  
   // Front content of the flip card
   const frontContent = (
     <motion.div
       className="w-full h-full flex flex-col items-center justify-center"
-      animate={{ scale: isActive ? 1.15 : 1 }}
+      animate={{ scale: isActive ? activeScale : 1 }}
     >
       {/* Circle with icon or image */}
       <motion.div
-        className="relative rounded-full flex items-center justify-center shadow-md mb-3 overflow-hidden"
+        className="relative rounded-full flex items-center justify-center shadow-md mb-2 overflow-hidden"
         style={{
           width: nodeIconSize,
           height: nodeIconSize,
           backgroundColor: isActive ? `${member.color}` : `${member.color}CC`,
           border: isActive ? '3px solid white' : '2px solid rgba(255,255,255,0.7)',
         }}
-        whileHover={{ scale: 1.1 }}
+        whileHover={{ scale: 1.05 }}
       >
         {photoUrl ? (
           <Avatar className="h-full w-full border-0">
@@ -79,12 +85,12 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
       {/* Member name */}
       <motion.div className={`text-center flex flex-col items-center ${textWidth}`}>
         <span 
-          className={`font-medium text-center mb-0.5 ${isMobile ? 'text-xs' : 'text-sm'} ${isActive ? 'text-slate-800' : 'text-slate-700'}`}
+          className={`font-medium text-center mb-0.5 ${isMobile ? 'text-2xs' : 'text-sm'} ${isActive ? 'text-slate-800' : 'text-slate-700'}`}
         >
           {member.name}
         </span>
         <span 
-          className={`${isMobile ? 'text-2xs' : 'text-xs'} text-slate-500`}
+          className={`${isMobile ? 'text-3xs' : 'text-xs'} text-slate-500`}
         >
           {member.role}
         </span>
@@ -104,9 +110,9 @@ const FamilyMemberNode: React.FC<FamilyMemberNodeProps> = ({
         top: position.y,
         left: position.x,
         width: nodeWidth,
-        height: nodeWidth * 1.5,
+        height: nodeHeight,
         marginLeft: -nodeWidth / 2,
-        marginTop: -(nodeWidth * 1.5) / 2,
+        marginTop: -nodeHeight / 2,
         zIndex: isFlipped ? 20 : 10,
       }}
       initial={{ scale: 0, opacity: 0 }}
