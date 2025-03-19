@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import SocialMediaLinks from './profile/SocialMediaLinks';
 import { toast } from 'sonner';
-import { getProfileImage, getUserProfileData } from '@/utils/profileImages';
+import { getUserProfileData } from '@/utils/profileImages';
 
 const Story = () => {
   const isMobile = useIsMobile();
@@ -14,7 +14,6 @@ const Story = () => {
   const [profile, setProfile] = useState({
     name: '',
     bio: '',
-    photo_url: '',
     positions: [],
   });
   
@@ -32,8 +31,7 @@ const Story = () => {
         setLoading(true);
         setProfileError(false);
         
-        // Get profile image and data from dashboard
-        const imageUrl = await getProfileImage();
+        // Get profile data from dashboard
         const userData = await getUserProfileData();
         
         // Fetch profile data
@@ -51,7 +49,6 @@ const Story = () => {
           setProfile({
             name: 'Hardeep Anand',
             bio: 'From innovative startups to public service leadership, my journey has been defined by a commitment to leveraging technology for positive change.',
-            photo_url: imageUrl || '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
             positions: [],
           });
           return;
@@ -83,7 +80,6 @@ const Story = () => {
         setProfile({
           name: profileData?.name || 'Hardeep Anand',
           bio: profileData?.bio || 'From innovative startups to public service leadership, my journey has been defined by a commitment to leveraging technology for positive change.',
-          photo_url: imageUrl || profileData?.photo_url || '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
           positions: milestones || [],
         });
         
@@ -97,7 +93,6 @@ const Story = () => {
         setProfile({
           name: 'Hardeep Anand',
           bio: 'From innovative startups to public service leadership, my journey has been defined by a commitment to leveraging technology for positive change.',
-          photo_url: '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
           positions: [],
         });
       } finally {
@@ -125,9 +120,6 @@ const Story = () => {
               </div>
             ))}
           </div>
-          <div className="space-y-6">
-            <Skeleton className="h-80 w-full rounded-lg" />
-          </div>
         </div>
       </div>
     );
@@ -146,54 +138,37 @@ const Story = () => {
           </p>
         </div>
         
-        <div className="flex flex-col lg:flex-row items-start gap-12 md:gap-16">
-          {/* Timeline section */}
-          <div className="w-full lg:w-2/3 space-y-8">
-            {profile.positions.length > 0 ? (
-              profile.positions.map((position, index) => (
-                <div 
-                  key={position.id} 
-                  className="relative pl-8 border-l-2 border-primary/30 pb-8 hover:border-primary transition-colors"
-                >
-                  <div className="absolute -left-2.5 top-0 w-5 h-5 rounded-full bg-white border-2 border-primary flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-primary"></div>
-                  </div>
-                  <div className="p-6 rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
-                    <h3 className="text-xl font-semibold text-slate-900 mb-3">
-                      {position.title}
-                    </h3>
-                    <p className="text-slate-700">
-                      {position.description}
-                    </p>
-                  </div>
+        <div className="w-full space-y-8">
+          {profile.positions.length > 0 ? (
+            profile.positions.map((position, index) => (
+              <div 
+                key={position.id} 
+                className="relative pl-8 border-l-2 border-primary/30 pb-8 hover:border-primary transition-colors"
+              >
+                <div className="absolute -left-2.5 top-0 w-5 h-5 rounded-full bg-white border-2 border-primary flex items-center justify-center">
+                  <div className="w-2 h-2 rounded-full bg-primary"></div>
                 </div>
-              ))
-            ) : (
-              <div className="text-center py-10 px-6 border-2 border-dashed border-gray-200 rounded-lg">
-                <p className="text-gray-500">Career milestones will appear here</p>
+                <div className="p-6 rounded-lg bg-white shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+                  <h3 className="text-xl font-semibold text-slate-900 mb-3">
+                    {position.title}
+                  </h3>
+                  <p className="text-slate-700">
+                    {position.description}
+                  </p>
+                </div>
               </div>
-            )}
-          </div>
+            ))
+          ) : (
+            <div className="text-center py-10 px-6 border-2 border-dashed border-gray-200 rounded-lg">
+              <p className="text-gray-500">Career milestones will appear here</p>
+            </div>
+          )}
           
-          {/* Profile image and social media links */}
-          <div className="w-full lg:w-1/3 sticky top-24">
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
-              <div className="aspect-square relative rounded-xl overflow-hidden mb-6 shadow-md border-4 border-white">
-                <img 
-                  src={profile.photo_url} 
-                  alt="Profile" 
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png';
-                  }}
-                />
-              </div>
-              
-              {/* Social Media Links */}
-              <div className="mt-6">
-                <h4 className="text-sm font-medium text-slate-500 mb-3 uppercase tracking-wider">Connect With Me</h4>
-                <SocialMediaLinks links={socialLinks} />
-              </div>
+          {/* Social Media Links */}
+          <div className="pt-8 flex justify-center">
+            <div className="max-w-md w-full">
+              <h4 className="text-sm font-medium text-slate-500 mb-3 uppercase tracking-wider text-center">Connect With Me</h4>
+              <SocialMediaLinks links={socialLinks} />
             </div>
           </div>
         </div>

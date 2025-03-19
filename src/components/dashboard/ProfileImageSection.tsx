@@ -1,10 +1,9 @@
-
 import React, { useState, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { toast } from 'sonner';
-import { Upload, Camera, Save } from 'lucide-react';
+import { Upload, Camera, Save, User } from 'lucide-react';
 import { saveProfileImage, uploadImageToDatabase } from '@/utils/imageLoader';
 
 interface ProfileImageSectionProps {
@@ -13,7 +12,7 @@ interface ProfileImageSectionProps {
 
 const ProfileImageSection: React.FC<ProfileImageSectionProps> = ({ initialPreviewUrl }) => {
   const [profileImageUrl, setProfileImageUrl] = useState<string>('');
-  const [previewUrl, setPreviewUrl] = useState<string>(initialPreviewUrl);
+  const [previewUrl, setPreviewUrl] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   
@@ -95,8 +94,9 @@ const ProfileImageSection: React.FC<ProfileImageSectionProps> = ({ initialPrevie
       <div className="space-y-4">
         <div className="flex flex-col items-center justify-center mb-6 space-y-4">
           <Avatar className="w-32 h-32 border-2 border-primary/20">
-            <AvatarImage src={previewUrl} alt="Profile preview" />
-            <AvatarFallback className="text-lg">HA</AvatarFallback>
+            <AvatarFallback className="text-lg">
+              <User className="h-12 w-12 text-muted-foreground" />
+            </AvatarFallback>
           </Avatar>
           <span className="text-sm text-muted-foreground">Image Preview</span>
         </div>

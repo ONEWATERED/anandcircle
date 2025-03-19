@@ -6,7 +6,6 @@ import { getHardeepProfileImage } from "./databaseConnection";
 
 // Define the profile data interface
 export interface ProfileData {
-  imageUrl?: string;
   bio?: string;
   socialLinks?: {
     linkedIn: string;
@@ -17,70 +16,8 @@ export interface ProfileData {
   };
 }
 
-// Get profile image URL from Supabase or localStorage fallback
-export const getProfileImage = async (): Promise<string | null> => {
-  try {
-    // First try to get profile directly from personal_profile table
-    const directImageUrl = await getHardeepProfileImage();
-    
-    if (directImageUrl) {
-      console.log("Retrieved profile image from personal_profile table:", directImageUrl);
-      localStorage.setItem('profileImageUrl', directImageUrl);
-      return directImageUrl;
-    }
-    
-    // Next check if user is authenticated
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (session?.user) {
-      // User is authenticated, try to get profile from Supabase
-      const { data: profile, error } = await supabase
-        .from('profiles')
-        .select('profile_image_url')
-        .eq('id', session.user.id)
-        .single();
-      
-      if (error) {
-        console.error("Error fetching profile from Supabase:", error);
-        // Don't return early, try localStorage fallback
-      }
-      
-      if (profile?.profile_image_url) {
-        console.log("Retrieved profile image from Supabase:", profile.profile_image_url);
-        // Also update localStorage for offline access
-        localStorage.setItem('profileImageUrl', profile.profile_image_url);
-        return profile.profile_image_url;
-      }
-    }
-    
-    // Fallback to localStorage if no profile found or user not authenticated
-    const profileImage = localStorage.getItem('profileImageUrl');
-    console.log("Retrieved profile image from localStorage:", profileImage);
-    
-    if (profileImage) {
-      return profileImage;
-    }
-    
-    // Return default image if none is found
-    return '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
-  } catch (error) {
-    console.error("Error getting profile image:", error);
-    
-    // Final fallback to localStorage or default
-    try {
-      const profileImage = localStorage.getItem('profileImageUrl');
-      return profileImage || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
-    } catch (e) {
-      return '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
-    }
-  }
-};
-
-// Added this function to satisfy import in ProfileImage component
+// Get user profile data without images
 export const getUserProfileData = async (): Promise<ProfileData> => {
-  // Get the profile image URL
-  const imageUrl = await getProfileImage();
-  
   // Get bio from localStorage
   const bio = localStorage.getItem('userBio') || '';
   
@@ -131,7 +68,7 @@ export const getUserProfileData = async (): Promise<ProfileData> => {
     console.error("Error fetching social links from Supabase:", error);
   }
   
-  return { imageUrl, bio, socialLinks };
+  return { bio, socialLinks };
 };
 
 // Save profile image URL to Supabase and localStorage fallback
@@ -177,18 +114,8 @@ export const saveProfileImage = async (url: string): Promise<void> => {
     } else {
       console.log("User not authenticated, saving to localStorage only");
     }
-    
-    // Always save to localStorage as fallback
-    localStorage.setItem('profileImageUrl', url);
   } catch (error) {
     console.error("Error saving profile image:", error);
     toast.error("Failed to save profile image");
-    
-    // Try localStorage as final fallback
-    try {
-      localStorage.setItem('profileImageUrl', url);
-    } catch (e) {
-      console.error("Failed to save to localStorage:", e);
-    }
   }
 };

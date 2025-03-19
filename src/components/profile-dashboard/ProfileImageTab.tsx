@@ -141,7 +141,6 @@ const ProfileImageTab: React.FC<ProfileImageTabProps> = ({
         <CardContent className="space-y-4">
           <div className="flex items-center space-x-6">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={profile.photo_url || undefined} />
               <AvatarFallback>
                 <User className="h-12 w-12 text-muted-foreground" />
               </AvatarFallback>

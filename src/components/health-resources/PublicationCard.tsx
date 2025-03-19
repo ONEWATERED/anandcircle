@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Download, Play } from 'lucide-react';
+import { Download, Play, FileText } from 'lucide-react';
 import { Publication } from '@/types/publications';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,12 +24,8 @@ const PublicationCard = ({ publication }: PublicationCardProps) => {
   return (
     <div className="flex-[0_0_90%] md:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0 pl-4">
       <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 h-full">
-        <div className="aspect-[4/3] overflow-hidden">
-          <img 
-            src={publication.thumbnailUrl} 
-            alt={publication.title} 
-            className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
-          />
+        <div className="aspect-[4/3] overflow-hidden bg-slate-100 flex items-center justify-center">
+          <FileText className="h-12 w-12 text-slate-400" />
         </div>
         <CardHeader className="pb-2">
           <CardTitle className="text-lg">{publication.title}</CardTitle>

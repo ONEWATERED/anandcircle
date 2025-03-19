@@ -9,7 +9,6 @@ type PassionCardProps = {
   description: string;
   cta?: string;
   ctaLink?: string;
-  imageSrc?: string;
   colorAccent: string;
   index: number;
   link?: string;

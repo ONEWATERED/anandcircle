@@ -7,7 +7,7 @@ export const imageData = [
     title: 'Coastal Flooding Simulation',
     description: 'High-resolution visualization of coastal flooding impact on urban infrastructure',
     category: 'Climate Change',
-    url: '/placeholder.svg',
+    url: '',
     icon: CloudRain
   },
   {
@@ -15,7 +15,7 @@ export const imageData = [
     title: 'Water Data Visualization',
     description: 'Abstract representation of water quality data from IoT sensors',
     category: 'Data Sensors',
-    url: '/placeholder.svg',
+    url: '',
     icon: FileDigit
   },
   {
@@ -23,7 +23,7 @@ export const imageData = [
     title: 'Ocean Current Patterns',
     description: 'Detailed visualization of changing ocean current patterns due to climate change',
     category: 'Climate Change',
-    url: '/placeholder.svg',
+    url: '',
     icon: Waves
   },
   {
@@ -31,7 +31,7 @@ export const imageData = [
     title: 'Rainfall Distribution Model',
     description: 'AI-generated rainfall distribution model showing changing patterns over decades',
     category: 'Climate Data',
-    url: '/placeholder.svg',
+    url: '',
     icon: Droplets
   },
   {
@@ -39,7 +39,7 @@ export const imageData = [
     title: 'Glacier Retreat Timeline',
     description: 'Visual timeline showing the accelerated retreat of key global glaciers',
     category: 'Climate Change',
-    url: '/placeholder.svg',
+    url: '',
     icon: CloudRain
   },
 ];

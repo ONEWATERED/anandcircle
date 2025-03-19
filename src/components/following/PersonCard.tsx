@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Person } from '@/types/connections';
+import { User } from 'lucide-react';
 
 interface PersonCardProps {
   person: Person;
@@ -9,12 +10,8 @@ interface PersonCardProps {
 export const PersonCard: React.FC<PersonCardProps> = ({ person }) => {
   return (
     <div className="flex flex-col rounded-lg shadow-lg overflow-hidden">
-      <div className="flex-shrink-0">
-        <img
-          className="h-48 w-full object-cover"
-          src={person.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(person.name)}&background=random`}
-          alt={person.name}
-        />
+      <div className="flex-shrink-0 h-48 bg-slate-100 flex items-center justify-center">
+        <User className="h-16 w-16 text-slate-400" />
       </div>
       <div className="flex-1 bg-white p-6 flex flex-col justify-between">
         <div className="flex-1">

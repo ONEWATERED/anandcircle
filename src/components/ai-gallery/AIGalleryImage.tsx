@@ -24,12 +24,8 @@ const AIGalleryImage = ({ image }: AIGalleryImageProps) => {
   return (
     <div className="flex-[0_0_85%] sm:flex-[0_0_80%] md:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0 pl-4">
       <Card className="glass-card overflow-hidden border-0 transition-all duration-300 hover:shadow-xl h-full">
-        <div className="relative aspect-square overflow-hidden">
-          <img 
-            src={image.url} 
-            alt={image.title}
-            className="object-cover w-full h-full transition-transform duration-500 hover:scale-110"
-          />
+        <div className="relative aspect-square overflow-hidden bg-slate-100 flex items-center justify-center">
+          <Icon className="h-12 w-12 text-slate-400" />
           <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-gradient-to-r from-brand-blue/80 to-brand-purple/80 backdrop-blur-md text-white text-xs font-medium flex items-center">
             <Icon className="h-3 w-3 md:h-4 md:w-4" />
             <span className="ml-1 text-2xs md:text-xs">{image.category}</span>
