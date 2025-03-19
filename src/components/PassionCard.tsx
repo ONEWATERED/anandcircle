@@ -2,6 +2,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 type PassionCardProps = {
   title: string;
@@ -22,48 +23,45 @@ const PassionCard = ({
   link
 }: PassionCardProps) => {
   return (
-    <div 
-      className="tech-gradient-border angular-glass overflow-hidden shadow-lg hover-float opacity-0 animate-fade-up transition-all duration-300" 
-      style={{ animationDelay: `${200 + index * 100}ms`, animationFillMode: 'forwards' }}
+    <motion.div 
+      className="relative group bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      viewport={{ once: true, margin: "-50px" }}
     >
-      <div className="flex flex-col h-full">
-        <div className="p-6 flex flex-col flex-grow relative">
-          {/* Scanning line effect */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-primary to-transparent animate-scanning-line"></div>
-          </div>
-          
-          {/* Data point accent */}
-          <div className={cn('h-1 w-12 rounded-full mb-4', colorAccent)}></div>
-          
-          <h3 className="text-lg font-medium mb-3 text-foreground">{title}</h3>
-          
-          <p className="text-muted-foreground text-sm">
-            {description}
-          </p>
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-50 to-white opacity-50"></div>
+      
+      <div className="relative z-10 p-6 flex flex-col h-full">
+        {/* Top accent bar */}
+        <div className={cn('h-1 w-16 rounded-full mb-5', colorAccent)}></div>
+        
+        <h3 className="text-xl font-semibold mb-3 text-slate-900 group-hover:text-primary transition-colors duration-300">{title}</h3>
+        
+        <p className="text-slate-700 text-sm flex-grow mb-4">
+          {description}
+        </p>
 
-          {link && (
-            <div className="mt-4">
-              <a 
-                href={link} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-colors group"
-              >
-                Learn more <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </a>
-            </div>
-          )}
-          
-          {/* Tech corner accents */}
-          <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-primary/30"></div>
-          <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-primary/30"></div>
-          
-          {/* Data point */}
-          <div className="absolute bottom-3 right-3 w-1.5 h-1.5 rounded-full bg-primary animate-pulse-soft"></div>
-        </div>
+        {link && (
+          <div className="mt-auto pt-2">
+            <a 
+              href={link} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-colors group/link"
+            >
+              Learn more <ArrowRight className="ml-1 h-4 w-4 group-hover/link:translate-x-1 transition-transform" />
+            </a>
+          </div>
+        )}
+        
+        {/* Bottom design elements */}
+        <div className="absolute bottom-0 right-0 w-24 h-24 bg-primary/5 rounded-tl-full"></div>
       </div>
-    </div>
+      
+      {/* Border highlight effect */}
+      <div className="absolute inset-0 border border-transparent group-hover:border-primary/20 rounded-xl transition-colors duration-300"></div>
+    </motion.div>
   );
 };
 

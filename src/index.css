@@ -1,5 +1,18 @@
 
-/* Import all CSS modules */
+/* Import base styles first */
 @import './styles/base.css';
+
+/* Then app-specific styles */
 @import './styles/app.css';
 
+/* Layouts */
+@import './styles/layouts.css';
+
+/* Special effects */
+@import './styles/glass-effects.css';
+@import './styles/text-gradients.css';
+@import './styles/backgrounds.css';
+
+/* Animations should be last */
+@import './styles/animations.css';
+@import './styles/effects.css';

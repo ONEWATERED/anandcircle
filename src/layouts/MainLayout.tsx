@@ -10,13 +10,13 @@ interface MainLayoutProps {
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
-  // Load Pinyon Script font for signature
+  // Load fonts for better typography
   useEffect(() => {
     // Add Pinyon Script font for signature
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
+    const pinyonScript = document.createElement('link');
+    pinyonScript.href = 'https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap';
+    pinyonScript.rel = 'stylesheet';
+    document.head.appendChild(pinyonScript);
     
     // Add Inter font for main typography
     const interFont = document.createElement('link');
@@ -24,21 +24,28 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     interFont.rel = 'stylesheet';
     document.head.appendChild(interFont);
     
+    // Add Plus Jakarta Sans for headings
+    const jakartaFont = document.createElement('link');
+    jakartaFont.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap';
+    jakartaFont.rel = 'stylesheet';
+    document.head.appendChild(jakartaFont);
+    
     return () => {
-      document.head.removeChild(link);
+      document.head.removeChild(pinyonScript);
       document.head.removeChild(interFont);
+      document.head.removeChild(jakartaFont);
     };
   }, []);
 
   return (
     <div 
-      className="min-h-screen flex flex-col bg-tech-dark text-foreground overflow-hidden" 
+      className="min-h-screen flex flex-col bg-white text-slate-900 overflow-hidden" 
     >
       <Navbar />
-      <main className="flex-grow w-full bg-gradient-to-b from-tech-dark to-[#131c32]">
+      <main className="flex-grow w-full">
         {children}
       </main>
-      <div className="flex justify-end p-2 border-t border-primary/20 relative z-[2] bg-tech-dark">
+      <div className="flex justify-end p-2 border-t border-gray-200 relative z-[2] bg-white">
         <AdminLink />
       </div>
       <Footer />

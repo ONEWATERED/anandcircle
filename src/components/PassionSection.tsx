@@ -3,7 +3,7 @@ import React from 'react';
 import InterconnectedDomainsGraphic from './InterconnectedDomainsGraphic';
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
-import { Users } from 'lucide-react';
+import { Users, ExternalLink } from 'lucide-react';
 
 const PassionSection = () => {
   const containerVariants = {
@@ -30,45 +30,47 @@ const PassionSection = () => {
   };
   
   return (
-    <section id="passions" className="py-6 md:py-16">
+    <section id="passions" className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50">
       <motion.div 
-        className="section-container"
+        className="container mx-auto px-4 sm:px-6 lg:px-8"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
         <motion.div 
-          className="text-center mb-4 md:mb-8"
+          className="text-center mb-10 md:mb-16"
           variants={itemVariants}
         >
-          <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-2">Areas of Interest</h2>
-          <h3 className="text-xl md:text-4xl font-display font-bold mb-3 md:mb-4">My Areas of Interest</h3>
-          <div className="h-1 w-16 md:w-20 bg-primary mx-auto rounded-full"></div>
-          <p className="max-w-2xl mx-auto mt-3 md:mt-4 px-4 text-sm md:text-base text-gray-600">
+          <h2 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-4">My Areas of Interest</h2>
+          <div className="h-1 w-20 bg-gradient-to-r from-primary/70 to-secondary/70 mx-auto mb-6"></div>
+          <p className="max-w-2xl mx-auto px-4 text-lg text-slate-700">
             These domains are interconnected, creating a holistic approach to innovation and impact.
           </p>
         </motion.div>
         
-        {/* Simplified Domains Display */}
+        {/* Enhanced Domains Display */}
         <motion.div 
           variants={itemVariants}
-          className="mb-6 md:mb-10"
+          className="mb-16"
         >
           <InterconnectedDomainsGraphic />
         </motion.div>
 
         <motion.div
           variants={itemVariants}
-          className="text-center mt-8"
+          className="max-w-3xl mx-auto text-center mt-16 bg-white p-8 rounded-xl shadow-md border border-gray-100"
         >
-          <p className="max-w-2xl mx-auto px-4 text-sm md:text-base text-gray-600 mb-6">
+          <h3 className="text-2xl font-semibold text-slate-900 mb-4">Join My One Water Circle</h3>
+          <p className="text-slate-700 mb-8">
             Join my circle to explore more about these interconnected domains and how they create meaningful change.
+            Connect with like-minded individuals and be part of the solution.
           </p>
-          <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
-            <Button className="bg-gray-800 hover:bg-gray-700">
-              <Users className="mr-2" size={16} />
+          <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer" className="inline-block">
+            <Button className="bg-slate-900 hover:bg-slate-800 shadow-md hover:shadow-lg transition-all duration-300 rounded-lg text-white">
+              <Users className="mr-2" size={18} />
               Join One Water Circle
+              <ExternalLink className="ml-2" size={16} />
             </Button>
           </a>
         </motion.div>

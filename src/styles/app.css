@@ -10,28 +10,7 @@
   opacity: 1;
 }
 
-/* Basic focus states */
-button:focus-visible, 
-a:focus-visible, 
-input:focus-visible, 
-select:focus-visible, 
-textarea:focus-visible {
-  @apply outline-none ring-2 ring-black ring-opacity-50;
-}
-
-/* Make sure background and text colors have enough contrast */
-body {
-  background-color: white;
-  color: black;
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', sans-serif;
-  display: block;
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Container utilities */
+/* Enhanced Container utilities */
 .container {
   width: 100%;
   max-width: 1280px;
@@ -51,16 +30,26 @@ body {
 
 /* Set fixed background colors */
 .bg-dark {
-  background-color: #f8f8f8;
+  background-color: #0F172A;
 }
 
 .bg-light {
   background-color: white;
 }
 
-/* Simple borders */
-.border-simple {
-  border: 1px solid #eaeaea;
+/* Enhanced card styling */
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+}
+
+/* Glass effect */
+.glass-card {
+  @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-lg;
+}
+
+/* Gradient borders */
+.gradient-border {
+  @apply relative before:absolute before:inset-0 before:p-[1px] before:bg-gradient-to-r before:from-primary/60 before:to-secondary/60 before:rounded-lg before:-z-10;
 }
 
 /* Responsive improvements */
@@ -73,4 +62,66 @@ body {
     word-break: break-word;
     hyphens: auto;
   }
+}
+
+/* Button and interactive element enhancements */
+.btn {
+  @apply rounded-md px-4 py-2 font-medium transition-all duration-200;
+}
+
+.btn-primary {
+  @apply bg-primary text-white hover:bg-primary/90;
+}
+
+.btn-outline {
+  @apply border border-gray-300 hover:bg-gray-50;
+}
+
+/* Badge styling */
+.badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-primary {
+  @apply bg-primary/10 text-primary;
+}
+
+.badge-secondary {
+  @apply bg-secondary/30 text-secondary-foreground;
+}
+
+/* Improved section spacing */
+.section-spacing {
+  @apply py-12 md:py-20;
+}
+
+/* Animation utilities */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced hover effects */
+.hover-lift {
+  @apply transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-md;
+}
+
+/* Professional image styling */
+.image-rounded {
+  @apply rounded-lg overflow-hidden;
+}
+
+/* Subtle dividers */
+.divider {
+  @apply h-px w-full bg-gradient-to-r from-transparent via-gray-200 to-transparent my-8;
 }
