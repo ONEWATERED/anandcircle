@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { getProfileImage, getUserProfileData, checkDatabaseConnection } from '@/utils/imageLoader';
-import { SocialLinksFormValues } from '@/components/dashboard/SocialLinksSection';
+import { SocialLinksFormValues } from '@/components/dashboard/social/SocialLinksForm';
 import { toast } from 'sonner';
 
 export interface DashboardData {
