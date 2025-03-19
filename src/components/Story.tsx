@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
-import { Calendar, Briefcase, Award, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import SocialMediaLinks from './profile/SocialMediaLinks';
 import { toast } from 'sonner';
-import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
+import { getProfileImage, getUserProfileData } from '@/utils/profileImages';
 
 const Story = () => {
   const isMobile = useIsMobile();
@@ -30,12 +30,7 @@ const Story = () => {
   
   // Helper function to get milestone icon
   const getMilestoneIcon = (iconName) => {
-    switch (iconName?.toLowerCase()) {
-      case 'briefcase': return <Briefcase className="h-5 w-5 text-primary" />;
-      case 'award': return <Award className="h-5 w-5 text-primary" />;
-      case 'calendar': return <Calendar className="h-5 w-5 text-primary" />;
-      default: return <CheckCircle2 className="h-5 w-5 text-primary" />;
-    }
+    return <CheckCircle2 className="h-5 w-5 text-primary" />;
   };
   
   useEffect(() => {
@@ -44,12 +39,16 @@ const Story = () => {
         setLoading(true);
         setProfileError(false);
         
+        // Get profile image and data from dashboard
+        const imageUrl = await getProfileImage();
+        const userData = await getUserProfileData();
+        
         // Fetch profile data
         const { data: profileData, error: profileError } = await supabase
           .from('personal_profile')
           .select('*')
           .eq('id', 'hardeep')
-          .maybeSingle(); // Using maybeSingle instead of single to avoid errors if no data
+          .maybeSingle();
         
         if (profileError) {
           console.error('Error fetching profile:', profileError);
@@ -59,7 +58,7 @@ const Story = () => {
           setProfile({
             name: 'Hardeep Anand',
             bio: 'From innovative startups to public service leadership, my journey has been defined by a commitment to leveraging technology for positive change.',
-            photo_url: '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
+            photo_url: imageUrl || '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
             positions: [],
           });
           return;
@@ -76,32 +75,22 @@ const Story = () => {
           toast.error('Failed to load career milestones');
         }
         
-        // Fetch social links
-        const { data: socialLinksData, error: socialLinksError } = await supabase
-          .from('personal_social_links')
-          .select('platform, url')
-          .eq('profile_id', 'hardeep');
-          
-        if (!socialLinksError && socialLinksData) {
-          const links = { ...socialLinks };
-          
-          socialLinksData.forEach(link => {
-            const platform = link.platform.toLowerCase();
-            if (platform === 'linkedin') links.linkedIn = link.url;
-            if (platform === 'twitter') links.twitter = link.url;
-            if (platform === 'youtube') links.youtube = link.url;
-            if (platform === 'spotify') links.spotify = link.url;
-            if (platform === 'anandcircle') links.anandCircle = link.url;
+        // Update social links from dashboard data
+        if (userData?.socialLinks) {
+          setSocialLinks({
+            linkedIn: userData.socialLinks.linkedIn || socialLinks.linkedIn,
+            twitter: userData.socialLinks.twitter || socialLinks.twitter,
+            youtube: userData.socialLinks.youtube || socialLinks.youtube,
+            spotify: userData.socialLinks.spotify || socialLinks.spotify,
+            anandCircle: userData.socialLinks.anandCircle || socialLinks.anandCircle
           });
-          
-          setSocialLinks(links);
         }
         
         // Set profile data
         setProfile({
           name: profileData?.name || 'Hardeep Anand',
           bio: profileData?.bio || 'From innovative startups to public service leadership, my journey has been defined by a commitment to leveraging technology for positive change.',
-          photo_url: profileData?.photo_url || '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
+          photo_url: imageUrl || profileData?.photo_url || '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
           positions: milestones || [],
         });
         
@@ -174,19 +163,12 @@ const Story = () => {
                   {getMilestoneIcon(position.icon)}
                 </div>
                 <div className="p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-all border border-gray-100">
-                  <h3 className="text-lg md:text-xl font-medium text-black mb-2 flex items-center">
+                  <h3 className="text-lg md:text-xl font-medium text-black mb-2">
                     {position.title}
-                    <Badge variant="outline" className="ml-2 bg-primary/5">
-                      {position.order_position === 1 ? 'Current' : `Previous`}
-                    </Badge>
                   </h3>
                   <p className="text-sm md:text-base text-gray-600">
                     {position.description}
                   </p>
-                  <span className="block text-xs md:text-sm text-gray-500 mt-2">
-                    {/* Use position order as years (example) */}
-                    {2020 - position.order_position} - {position.order_position === 1 ? 'Present' : 2020 - position.order_position + 3}
-                  </span>
                 </div>
               </div>
             ))
@@ -197,9 +179,23 @@ const Story = () => {
           )}
         </div>
         
-        {/* Social Media Links */}
-        <div className="mt-8">
-          <SocialMediaLinks links={socialLinks} />
+        {/* Profile image and social media links */}
+        <div className="mt-12 w-full max-w-xs mx-auto">
+          <div className="aspect-square relative rounded-xl overflow-hidden shadow-2xl border-4 border-white">
+            <img 
+              src={profile.photo_url} 
+              alt="Profile" 
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.currentTarget.src = '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png';
+              }}
+            />
+          </div>
+          
+          {/* Social Media Links */}
+          <div className="mt-8">
+            <SocialMediaLinks links={socialLinks} />
+          </div>
         </div>
       </div>
     </div>
