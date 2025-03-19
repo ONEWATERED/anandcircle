@@ -41,7 +41,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, icon }) => {
         <Button className={`w-full bg-gradient-to-r ${course.color} text-white`}>
           View Course Details
         </Button>
-        <div className="flex items-center justify-center w-full gap-2 text-sm text-amber-600 font-semibold bg-amber-50 py-2 px-3 rounded-md">
+        <div className="flex items-center justify-center w-full gap-2 text-sm text-gray-800 font-semibold bg-gray-200 py-2 px-3 rounded-md">
           <Clock className="h-4 w-4" />
           COMING SOON
         </div>

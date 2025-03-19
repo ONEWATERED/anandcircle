@@ -20,7 +20,7 @@ export const courses = [
     difficulty: 'Intermediate' as const,
     duration: '6 weeks',
     students: '120+',
-    color: 'from-purple-600 to-indigo-500'
+    color: 'from-gray-800 to-gray-600'
   },
   {
     id: 'applied-ai',
@@ -29,7 +29,7 @@ export const courses = [
     difficulty: 'Beginner' as const,
     duration: '8 weeks',
     students: '180+',
-    color: 'from-blue-500 to-cyan-400'
+    color: 'from-gray-700 to-gray-500'
   },
   {
     id: 'data-certification',
@@ -38,6 +38,6 @@ export const courses = [
     difficulty: 'Beginner' as const,
     duration: '4 weeks',
     students: '150+',
-    color: 'from-emerald-500 to-teal-400'
+    color: 'from-gray-600 to-gray-400'
   }
 ];

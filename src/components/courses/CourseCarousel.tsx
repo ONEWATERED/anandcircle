@@ -10,13 +10,13 @@ const CourseCarousel = () => {
   const getCourseIcon = (courseId: string) => {
     switch (courseId) {
       case 'prompt-engineering':
-        return <Lightbulb className="h-5 w-5 text-purple-500" />;
+        return <Lightbulb className="h-5 w-5 text-gray-800" />;
       case 'applied-ai':
-        return <BrainCircuit className="h-5 w-5 text-blue-500" />;
+        return <BrainCircuit className="h-5 w-5 text-gray-800" />;
       case 'data-certification':
-        return <FileSpreadsheet className="h-5 w-5 text-emerald-500" />;
+        return <FileSpreadsheet className="h-5 w-5 text-gray-800" />;
       default:
-        return <Database className="h-5 w-5 text-indigo-500" />;
+        return <Database className="h-5 w-5 text-gray-800" />;
     }
   };
 
