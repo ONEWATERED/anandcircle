@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -6,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import SocialMediaLinks from './profile/SocialMediaLinks';
 import { toast } from 'sonner';
+import ProfileImageDisplay from './profile/ProfileImageDisplay';
 
 const Story = () => {
   const isMobile = useIsMobile();
@@ -92,6 +92,9 @@ const Story = () => {
           photo_url: profileData?.photo_url || '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
           positions: milestones || [],
         });
+        
+        console.log("Profile data loaded:", profileData);
+        console.log("Photo URL:", profileData?.photo_url);
       } catch (error) {
         console.error('Error in fetchProfileData:', error);
         setProfileError(true);
@@ -179,21 +182,10 @@ const Story = () => {
             <div 
               className="rounded-lg overflow-hidden border border-gray-200 h-[450px] bg-gray-50 p-1 shadow-md"
             >
-              {profile.photo_url ? (
-                <img 
-                  src={profile.photo_url} 
-                  alt={profile.name} 
-                  className="w-full h-full object-cover rounded-lg"
-                  onError={(e) => {
-                    // Fallback if image fails to load
-                    e.currentTarget.src = '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png';
-                  }}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
-                  <p className="text-gray-400 text-center px-4">Profile image will appear here</p>
-                </div>
-              )}
+              <ProfileImageDisplay 
+                profileImage={profile.photo_url} 
+                isLoading={loading} 
+              />
             </div>
             <SocialMediaLinks links={socialLinks} />
           </div>

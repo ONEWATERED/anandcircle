@@ -9,7 +9,7 @@ interface ProfileImageDisplayProps {
 const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayProps) => {
   const [imageError, setImageError] = React.useState(false);
   const [isIOS, setIsIOS] = React.useState(false);
-  const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+  const defaultImage = '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png';
   
   // Detect iOS devices
   useEffect(() => {
