@@ -15,26 +15,26 @@ export interface Course {
 export const courses = [
   {
     id: 'prompt-engineering',
-    title: 'AI Prompt Engineering Mastery',
-    description: 'Master the art of crafting effective prompts for different AI models. Learn advanced techniques to get consistently high-quality outputs for your specific use cases.',
+    title: 'Prompt Engineering',
+    description: 'Master the art of crafting effective prompts for AI models. Learn advanced techniques to consistently achieve high-quality outputs tailored to your specific use cases.',
     difficulty: 'Intermediate' as const,
     duration: '6 weeks',
     students: '120+',
     color: 'from-purple-600 to-indigo-500'
   },
   {
-    id: 'ai-foundations',
-    title: 'Applied AI for Professionals',
-    description: 'Understand key AI concepts and learn how to implement AI solutions in your organization. No coding experience required - focus on practical applications.',
+    id: 'applied-ai',
+    title: 'Applied AI',
+    description: 'Understand key AI concepts and implement practical AI solutions in your organization. No coding experience required - focused on real-world business applications.',
     difficulty: 'Beginner' as const,
     duration: '8 weeks',
     students: '180+',
     color: 'from-blue-500 to-cyan-400'
   },
   {
-    id: 'notion-mastery',
-    title: 'Notion System Design',
-    description: 'Build powerful knowledge management systems in Notion. Learn to create databases, automate workflows, and design systems that scale with your needs.',
+    id: 'data-certification',
+    title: 'Data Systems Certification',
+    description: 'Comprehensive training on data management, analytics and system integration. Learn to design, implement and maintain efficient data ecosystems for modern enterprises.',
     difficulty: 'Beginner' as const,
     duration: '4 weeks',
     students: '150+',

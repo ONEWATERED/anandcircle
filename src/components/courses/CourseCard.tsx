@@ -13,7 +13,7 @@ interface CourseCardProps {
 const CourseCard: React.FC<CourseCardProps> = ({ course, icon }) => {
   // Use the icon prop passed from parent component
   return (
-    <Card className="neo-glass border-0 overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full">
+    <Card className="neo-glass border-0 overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full flex flex-col">
       <div className={`h-2 w-full bg-gradient-to-r ${course.color}`}></div>
       <CardHeader>
         <div className="flex justify-between items-start">
@@ -31,13 +31,13 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, icon }) => {
           <div className="rounded-full p-2 bg-muted">{icon}</div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex-grow">
         <p className="text-sm text-muted-foreground">{course.description}</p>
         <div className="mt-4 inline-flex items-center justify-center px-3 py-1 text-xs font-medium rounded-full bg-muted">
-          Duration: {course.duration}
+          <Clock className="mr-1 h-3 w-3" /> Duration: {course.duration}
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col items-stretch gap-2">
+      <CardFooter className="flex flex-col items-stretch gap-2 mt-auto">
         <Button className={`w-full bg-gradient-to-r ${course.color} text-white`}>
           View Course Details
         </Button>

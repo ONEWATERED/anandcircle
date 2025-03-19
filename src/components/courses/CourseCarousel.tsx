@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Database, Lightbulb, BookOpen, SquareCode } from 'lucide-react';
+import { Database, BrainCircuit, Lightbulb, FileSpreadsheet } from 'lucide-react';
 import CourseCard from './CourseCard';
 import { courses } from '@/data/courseData';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -11,12 +11,12 @@ const CourseCarousel = () => {
     switch (courseId) {
       case 'prompt-engineering':
         return <Lightbulb className="h-5 w-5 text-purple-500" />;
-      case 'ai-foundations':
-        return <Database className="h-5 w-5 text-blue-500" />;
-      case 'notion-mastery':
-        return <SquareCode className="h-5 w-5 text-emerald-500" />;
+      case 'applied-ai':
+        return <BrainCircuit className="h-5 w-5 text-blue-500" />;
+      case 'data-certification':
+        return <FileSpreadsheet className="h-5 w-5 text-emerald-500" />;
       default:
-        return <BookOpen className="h-5 w-5 text-indigo-500" />;
+        return <Database className="h-5 w-5 text-indigo-500" />;
     }
   };
 
