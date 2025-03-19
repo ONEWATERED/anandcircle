@@ -4,6 +4,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
+import SocialMediaLinks from './profile/SocialMediaLinks';
 
 const Story = () => {
   const isMobile = useIsMobile();
@@ -15,6 +16,14 @@ const Story = () => {
     positions: [],
     education: [],
     awards: []
+  });
+  
+  const [socialLinks, setSocialLinks] = useState({
+    linkedIn: 'https://linkedin.com/in/hardeepanand',
+    twitter: 'https://twitter.com/hardeepanand',
+    youtube: 'https://youtube.com/@hardeepanand',
+    spotify: 'https://open.spotify.com/user/hardeepanand',
+    anandCircle: 'https://www.circleso.com'
   });
   
   useEffect(() => {
@@ -44,11 +53,32 @@ const Story = () => {
           console.error('Error fetching milestones:', milestonesError);
         }
         
+        // Fetch social links
+        const { data: socialLinksData, error: socialLinksError } = await supabase
+          .from('personal_social_links')
+          .select('platform, url')
+          .eq('profile_id', 'hardeep');
+          
+        if (!socialLinksError && socialLinksData) {
+          const links = { ...socialLinks };
+          
+          socialLinksData.forEach(link => {
+            const platform = link.platform.toLowerCase();
+            if (platform === 'linkedin') links.linkedIn = link.url;
+            if (platform === 'twitter') links.twitter = link.url;
+            if (platform === 'youtube') links.youtube = link.url;
+            if (platform === 'spotify') links.spotify = link.url;
+            if (platform === 'anandcircle') links.anandCircle = link.url;
+          });
+          
+          setSocialLinks(links);
+        }
+        
         // Set profile data
         setProfile({
           name: profileData?.name || 'Hardeep Anand',
           bio: profileData?.bio || 'From innovative startups to public service leadership, my journey has been defined by a commitment to leveraging technology for positive change.',
-          photo_url: profileData?.photo_url || '',
+          photo_url: profileData?.photo_url || '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
           positions: milestones || [],
           education: [
             {
@@ -148,25 +178,28 @@ const Story = () => {
         
         <div className="space-y-6 md:space-y-8">
           {/* Profile Image */}
-          <div 
-            className="rounded-lg overflow-hidden border border-gray-200 h-[450px] bg-gray-50 p-1"
-          >
-            {profile.photo_url ? (
-              <img 
-                src={profile.photo_url} 
-                alt={profile.name} 
-                className="w-full h-full object-cover rounded-lg"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
-                <p className="text-gray-400 text-center px-4">Profile image will appear here</p>
-              </div>
-            )}
+          <div className="relative">
+            <div 
+              className="rounded-lg overflow-hidden border border-gray-200 h-[450px] bg-gray-50 p-1 shadow-md"
+            >
+              {profile.photo_url ? (
+                <img 
+                  src={profile.photo_url} 
+                  alt={profile.name} 
+                  className="w-full h-full object-cover rounded-lg"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
+                  <p className="text-gray-400 text-center px-4">Profile image will appear here</p>
+                </div>
+              )}
+            </div>
+            <SocialMediaLinks links={socialLinks} />
           </div>
           
           {/* Education & Certifications */}
           <div 
-            className="bg-gray-50 p-4 md:p-6 rounded-lg border border-gray-200"
+            className="bg-gray-50 p-4 md:p-6 rounded-lg border border-gray-200 shadow-sm"
           >
             <h3 className="text-lg md:text-xl font-medium text-black mb-3">Education & Certifications</h3>
             <ul className="space-y-3">
@@ -184,7 +217,7 @@ const Story = () => {
           
           {/* Recognition & Awards */}
           <div 
-            className="bg-gray-50 p-4 md:p-6 rounded-lg border border-gray-200"
+            className="bg-gray-50 p-4 md:p-6 rounded-lg border border-gray-200 shadow-sm"
           >
             <h3 className="text-lg md:text-xl font-medium text-black mb-3">Recognition & Awards</h3>
             <ul className="space-y-3">

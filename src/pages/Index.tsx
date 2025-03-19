@@ -5,6 +5,7 @@ import Hero from '@/components/Hero';
 import PassionSection from '@/components/PassionSection';
 import InterestForm from '@/components/InterestForm';
 import TabbedContentSection from '@/components/TabbedContentSection';
+import Story from '@/components/Story';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
@@ -16,6 +17,11 @@ const Index = () => {
         {/* Hero section */}
         <div className="w-full">
           <Hero />
+        </div>
+        
+        {/* Story section */}
+        <div className="w-full py-12 md:py-16 bg-white">
+          <Story />
         </div>
         
         {/* Passion section */}
