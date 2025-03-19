@@ -2,6 +2,8 @@
 import React from 'react';
 import InterconnectedDomainsGraphic from './InterconnectedDomainsGraphic';
 import { motion } from 'framer-motion';
+import { Button } from './ui/button';
+import { Users } from 'lucide-react';
 
 const PassionSection = () => {
   const containerVariants = {
@@ -40,14 +42,11 @@ const PassionSection = () => {
           className="text-center mb-4 md:mb-8"
           variants={itemVariants}
         >
-          <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-2">My Domains</h2>
+          <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-2">Areas of Interest</h2>
           <h3 className="text-xl md:text-4xl font-display font-bold mb-3 md:mb-4">Areas of Expertise & Innovation</h3>
           <div className="h-1 w-16 md:w-20 bg-primary mx-auto rounded-full"></div>
           <p className="max-w-2xl mx-auto mt-3 md:mt-4 px-4 text-sm md:text-base text-gray-600">
-            My work spans five interconnected domains where I drive innovation and deliver measurable impact.
-            <a href="#articles" className="text-primary hover:underline ml-1">
-              Check out related articles →
-            </a>
+            These domains are interconnected, creating a holistic approach to innovation and impact.
           </p>
         </motion.div>
         
@@ -57,6 +56,21 @@ const PassionSection = () => {
           className="mb-6 md:mb-10"
         >
           <InterconnectedDomainsGraphic />
+        </motion.div>
+
+        <motion.div
+          variants={itemVariants}
+          className="text-center mt-8"
+        >
+          <p className="max-w-2xl mx-auto px-4 text-sm md:text-base text-gray-600 mb-6">
+            Join my circle to explore more about these interconnected domains and how they create meaningful change.
+          </p>
+          <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
+            <Button className="bg-gray-800 hover:bg-gray-700">
+              <Users className="mr-2" size={16} />
+              Join One Water Circle
+            </Button>
+          </a>
         </motion.div>
       </motion.div>
     </section>

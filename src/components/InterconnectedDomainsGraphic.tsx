@@ -3,6 +3,7 @@ import React from 'react';
 import { domains } from '@/data/domainData';
 import { Button } from './ui/button';
 import { ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const InterconnectedDomainsGraphic = () => {
   return (
@@ -29,16 +30,15 @@ const InterconnectedDomainsGraphic = () => {
                 {domain.description}
               </p>
               
-              {domain.link && (
+              <Link to={`/domains/${domain.id}`}>
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => window.open(domain.link, '_blank')}
                   className="w-full mt-2"
                 >
                   Learn More <ExternalLink className="ml-1" size={14} />
                 </Button>
-              )}
+              </Link>
             </div>
           );
         })}

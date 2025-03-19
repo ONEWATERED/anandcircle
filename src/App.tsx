@@ -14,6 +14,7 @@ import AdminFamilyMembers from '@/pages/AdminFamilyMembers';
 import ProfileDashboard from '@/pages/ProfileDashboard';
 import FamilyMembersDashboard from '@/pages/FamilyMembersDashboard';
 import PublicationsDashboard from '@/pages/PublicationsDashboard';
+import DomainPage from '@/pages/DomainPage';
 import './index.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/terms" element={<TermsOfService />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/domains/:domainId" element={<DomainPage />} />
       
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminAuth />} />
