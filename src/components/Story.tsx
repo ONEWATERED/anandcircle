@@ -6,7 +6,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import SocialMediaLinks from './profile/SocialMediaLinks';
 import { toast } from 'sonner';
-import ProfileImageDisplay from './profile/ProfileImageDisplay';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 
@@ -163,8 +162,8 @@ const Story = () => {
         </p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mt-8 md:mt-12">
-        <div className="space-y-6">
+      <div className="flex flex-col items-center">
+        <div className="w-full max-w-3xl space-y-6">
           {profile.positions.length > 0 ? (
             profile.positions.map((position, index) => (
               <div 
@@ -198,20 +197,9 @@ const Story = () => {
           )}
         </div>
         
-        <div className="space-y-6 md:space-y-8">
-          {/* Profile Image with improved styling */}
-          <div className="relative">
-            <Card className="overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-all p-1 bg-gradient-to-b from-white to-gray-50 rounded-xl">
-              <div className="relative w-full pb-[110%] md:pb-[100%] overflow-hidden">
-                <ProfileImageDisplay 
-                  profileImage={profile.photo_url} 
-                  isLoading={loading}
-                />
-              </div>
-            </Card>
-            {/* Social media links floating beside the image */}
-            <SocialMediaLinks links={socialLinks} />
-          </div>
+        {/* Social Media Links */}
+        <div className="mt-8">
+          <SocialMediaLinks links={socialLinks} />
         </div>
       </div>
     </div>
