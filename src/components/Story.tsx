@@ -5,10 +5,12 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import SocialMediaLinks from './profile/SocialMediaLinks';
+import { toast } from 'sonner';
 
 const Story = () => {
   const isMobile = useIsMobile();
   const [loading, setLoading] = useState(true);
+  const [profileError, setProfileError] = useState(false);
   const [profile, setProfile] = useState({
     name: '',
     bio: '',
@@ -28,6 +30,7 @@ const Story = () => {
     const fetchProfileData = async () => {
       try {
         setLoading(true);
+        setProfileError(false);
         
         // Fetch profile data
         const { data: profileData, error: profileError } = await supabase
@@ -38,6 +41,15 @@ const Story = () => {
         
         if (profileError) {
           console.error('Error fetching profile:', profileError);
+          setProfileError(true);
+          
+          // Set default values if profile fetch fails
+          setProfile({
+            name: 'Hardeep Anand',
+            bio: 'From innovative startups to public service leadership, my journey has been defined by a commitment to leveraging technology for positive change.',
+            photo_url: '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
+            positions: [],
+          });
           return;
         }
 
@@ -49,6 +61,7 @@ const Story = () => {
         
         if (milestonesError) {
           console.error('Error fetching milestones:', milestonesError);
+          toast.error('Failed to load career milestones');
         }
         
         // Fetch social links
@@ -81,6 +94,15 @@ const Story = () => {
         });
       } catch (error) {
         console.error('Error in fetchProfileData:', error);
+        setProfileError(true);
+        
+        // Set default values if something goes wrong
+        setProfile({
+          name: 'Hardeep Anand',
+          bio: 'From innovative startups to public service leadership, my journey has been defined by a commitment to leveraging technology for positive change.',
+          photo_url: '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png',
+          positions: [],
+        });
       } finally {
         setLoading(false);
       }
@@ -127,22 +149,28 @@ const Story = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mt-8 md:mt-12">
         <div className="space-y-6">
-          {profile.positions.map((position, index) => (
-            <div 
-              key={position.id} 
-              className="relative pl-8 border-l-2 border-gray-300 pb-6"
-            >
-              <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-gray-300"></div>
-              <h3 className="text-lg md:text-xl font-medium text-black mb-2">{position.title}</h3>
-              <p className="text-sm md:text-base text-gray-600">
-                {position.description}
-              </p>
-              <span className="block text-xs md:text-sm text-gray-500 mt-2">
-                {/* Use position order as years (example) */}
-                {2020 - position.order_position} - {position.order_position === 1 ? 'Present' : 2020 - position.order_position + 3}
-              </span>
+          {profile.positions.length > 0 ? (
+            profile.positions.map((position, index) => (
+              <div 
+                key={position.id} 
+                className="relative pl-8 border-l-2 border-gray-300 pb-6"
+              >
+                <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-gray-300"></div>
+                <h3 className="text-lg md:text-xl font-medium text-black mb-2">{position.title}</h3>
+                <p className="text-sm md:text-base text-gray-600">
+                  {position.description}
+                </p>
+                <span className="block text-xs md:text-sm text-gray-500 mt-2">
+                  {/* Use position order as years (example) */}
+                  {2020 - position.order_position} - {position.order_position === 1 ? 'Present' : 2020 - position.order_position + 3}
+                </span>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-gray-500">Career milestones will appear here</p>
             </div>
-          ))}
+          )}
         </div>
         
         <div className="space-y-6 md:space-y-8">
@@ -156,6 +184,10 @@ const Story = () => {
                   src={profile.photo_url} 
                   alt={profile.name} 
                   className="w-full h-full object-cover rounded-lg"
+                  onError={(e) => {
+                    // Fallback if image fails to load
+                    e.currentTarget.src = '/lovable-uploads/be1654f2-fca6-4e4d-995d-8a3f49df9249.png';
+                  }}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg">
