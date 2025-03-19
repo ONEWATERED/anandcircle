@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { familyMembers } from "@/data/familyData";
 import { defaultPeople } from "@/components/following/connectionUtils";
 import { saveConnectionImage } from "./connectionImages";
-import { SocialLink } from "@/types/thought-leaders";
+import { SocialLink } from "@/types/connections";
 
 // Function to sync family members data
 export const syncFamilyMembersWithDatabase = async () => {
@@ -28,7 +28,7 @@ export const syncFamilyMembersWithDatabase = async () => {
       // Update social links if available
       if (member.socialLinks) {
         const socialLinks: SocialLink[] = Object.entries(member.socialLinks).map(([platform, url]) => ({
-          platform: platform as 'instagram' | 'youtube' | 'twitter',
+          platform: platform as SocialLink['platform'],
           url: url
         }));
         

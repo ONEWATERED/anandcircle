@@ -1,6 +1,6 @@
 
 export interface SocialLink {
-  platform: 'instagram' | 'youtube' | 'twitter';
+  platform: 'instagram' | 'youtube' | 'twitter' | 'linkedin' | 'facebook' | 'spotify' | 'anandcircle';
   url: string;
 }
 
