@@ -12,7 +12,6 @@ import AdminSettings from '@/pages/AdminSettings';
 import AdminConnections from '@/pages/AdminConnections';
 import AdminFamilyMembers from '@/pages/AdminFamilyMembers';
 import ProfileDashboard from '@/pages/ProfileDashboard';
-import FamilyMembersDashboard from '@/pages/FamilyMembersDashboard';
 import PublicationsDashboard from '@/pages/PublicationsDashboard';
 import DomainPage from '@/pages/DomainPage';
 import './index.css';
@@ -36,7 +35,6 @@ function App() {
       
       {/* Dashboard Routes */}
       <Route path="/dashboard/profile" element={<ProfileDashboard />} />
-      <Route path="/dashboard/family" element={<FamilyMembersDashboard />} />
       <Route path="/dashboard/publications" element={<PublicationsDashboard />} />
       
       {/* 404 */}
