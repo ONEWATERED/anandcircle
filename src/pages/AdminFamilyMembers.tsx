@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { 
   Table, 
@@ -462,7 +463,7 @@ export default function AdminFamilyMembers() {
                 alt={editedMember?.name || 'Member'} 
               />
               <AvatarFallback style={{ backgroundColor: editedMember?.color || '#ccc' }}>
-                {editedMember?.name.substring(0, 2) || '??'}
+                {editedMember?.name?.substring(0, 2) || '??'}
               </AvatarFallback>
             </Avatar>
             <div>
