@@ -43,7 +43,7 @@ const PassionSection = () => {
           variants={itemVariants}
         >
           <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-2">Areas of Interest</h2>
-          <h3 className="text-xl md:text-4xl font-display font-bold mb-3 md:mb-4">Areas of Expertise & Innovation</h3>
+          <h3 className="text-xl md:text-4xl font-display font-bold mb-3 md:mb-4">My Areas of Interest</h3>
           <div className="h-1 w-16 md:w-20 bg-primary mx-auto rounded-full"></div>
           <p className="max-w-2xl mx-auto mt-3 md:mt-4 px-4 text-sm md:text-base text-gray-600">
             These domains are interconnected, creating a holistic approach to innovation and impact.
