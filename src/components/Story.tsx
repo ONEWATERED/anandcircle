@@ -1,12 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { Calendar, Briefcase, Award, ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
 import { Skeleton } from '@/components/ui/skeleton';
 import SocialMediaLinks from './profile/SocialMediaLinks';
 import { toast } from 'sonner';
 import ProfileImageDisplay from './profile/ProfileImageDisplay';
+import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
 
 const Story = () => {
   const isMobile = useIsMobile();
@@ -26,6 +28,16 @@ const Story = () => {
     spotify: 'https://open.spotify.com/user/hardeepanand',
     anandCircle: 'https://www.circleso.com'
   });
+  
+  // Helper function to get milestone icon
+  const getMilestoneIcon = (iconName) => {
+    switch (iconName?.toLowerCase()) {
+      case 'briefcase': return <Briefcase className="h-5 w-5 text-primary" />;
+      case 'award': return <Award className="h-5 w-5 text-primary" />;
+      case 'calendar': return <Calendar className="h-5 w-5 text-primary" />;
+      default: return <CheckCircle2 className="h-5 w-5 text-primary" />;
+    }
+  };
   
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -157,37 +169,47 @@ const Story = () => {
             profile.positions.map((position, index) => (
               <div 
                 key={position.id} 
-                className="relative pl-8 border-l-2 border-gray-300 pb-6"
+                className="relative pl-8 border-l-2 border-primary/30 pb-6 hover:border-primary transition-colors"
               >
-                <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-gray-300"></div>
-                <h3 className="text-lg md:text-xl font-medium text-black mb-2">{position.title}</h3>
-                <p className="text-sm md:text-base text-gray-600">
-                  {position.description}
-                </p>
-                <span className="block text-xs md:text-sm text-gray-500 mt-2">
-                  {/* Use position order as years (example) */}
-                  {2020 - position.order_position} - {position.order_position === 1 ? 'Present' : 2020 - position.order_position + 3}
-                </span>
+                <div className="absolute -left-2.5 top-0 w-5 h-5 rounded-full bg-white border-2 border-primary flex items-center justify-center">
+                  {getMilestoneIcon(position.icon)}
+                </div>
+                <div className="p-4 rounded-lg bg-white shadow-sm hover:shadow-md transition-all border border-gray-100">
+                  <h3 className="text-lg md:text-xl font-medium text-black mb-2 flex items-center">
+                    {position.title}
+                    <Badge variant="outline" className="ml-2 bg-primary/5">
+                      {position.order_position === 1 ? 'Current' : `Previous`}
+                    </Badge>
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-600">
+                    {position.description}
+                  </p>
+                  <span className="block text-xs md:text-sm text-gray-500 mt-2">
+                    {/* Use position order as years (example) */}
+                    {2020 - position.order_position} - {position.order_position === 1 ? 'Present' : 2020 - position.order_position + 3}
+                  </span>
+                </div>
               </div>
             ))
           ) : (
-            <div className="text-center py-8">
+            <div className="text-center py-8 px-4 border-2 border-dashed border-gray-200 rounded-lg">
               <p className="text-gray-500">Career milestones will appear here</p>
             </div>
           )}
         </div>
         
         <div className="space-y-6 md:space-y-8">
-          {/* Profile Image */}
+          {/* Profile Image with improved styling */}
           <div className="relative">
-            <div 
-              className="rounded-lg overflow-hidden border border-gray-200 h-[450px] bg-gray-50 p-1 shadow-md"
-            >
-              <ProfileImageDisplay 
-                profileImage={profile.photo_url} 
-                isLoading={loading} 
-              />
-            </div>
+            <Card className="overflow-hidden border border-gray-200 shadow-md hover:shadow-lg transition-all p-1 bg-gradient-to-b from-white to-gray-50 rounded-xl">
+              <div className="relative w-full pb-[110%] md:pb-[100%] overflow-hidden">
+                <ProfileImageDisplay 
+                  profileImage={profile.photo_url} 
+                  isLoading={loading}
+                />
+              </div>
+            </Card>
+            {/* Social media links floating beside the image */}
             <SocialMediaLinks links={socialLinks} />
           </div>
         </div>

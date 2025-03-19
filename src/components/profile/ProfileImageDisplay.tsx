@@ -33,26 +33,24 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
   const imageToDisplay = imageError || !profileImage ? defaultImage : profileImage;
   
   return (
-    <div className="w-full overflow-hidden rounded-lg">
+    <div className="absolute inset-0 w-full h-full rounded-lg overflow-hidden">
       {isLoading ? (
         <div className="w-full h-full bg-slate-200 flex items-center justify-center p-8">
           <p className="text-slate-500 text-sm">Loading...</p>
         </div>
       ) : (
-        <div className="relative">
+        <div className="relative h-full">
           {/* Image container */}
-          <div className="relative rounded-lg overflow-hidden">
+          <div className="relative rounded-lg overflow-hidden h-full">
             {/* Grid overlay effect */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60 opacity-30 mix-blend-overlay"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-black/10 to-black/40 opacity-40 mix-blend-overlay z-10"></div>
             
             <img 
               src={imageToDisplay} 
               alt="Profile" 
-              className="w-full h-full object-cover max-w-full relative z-10"
+              className="w-full h-full object-cover"
               onError={handleImageError}
               style={{
-                maxHeight: '300px',
-                objectFit: 'cover',
                 // Force image redraw on iOS
                 transform: isIOS ? 'translateZ(0)' : 'none',
                 WebkitBackfaceVisibility: 'hidden',
@@ -60,14 +58,14 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
             />
             
             {/* Tech corner accents */}
-            <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary"></div>
-            <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-secondary"></div>
-            <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-secondary"></div>
-            <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary"></div>
+            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-primary z-20"></div>
+            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-secondary z-20"></div>
+            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-secondary z-20"></div>
+            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-primary z-20"></div>
             
             {/* Data visualization dots in corners */}
-            <div className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
-            <div className="absolute bottom-2 left-2 w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" style={{ animationDelay: '1s' }}></div>
+            <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-primary animate-pulse z-20"></div>
+            <div className="absolute bottom-3 left-3 w-2 h-2 rounded-full bg-secondary animate-pulse z-20" style={{ animationDelay: '1s' }}></div>
           </div>
         </div>
       )}
