@@ -17,6 +17,7 @@ const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayPro
     setIsIOS(/iphone|ipad|ipod/.test(userAgent));
   }, []);
   
+  // Reset image error state when profileImage changes
   useEffect(() => {
     if (profileImage) {
       setImageError(false);
