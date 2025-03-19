@@ -9,7 +9,6 @@ import AdminAuth from '@/pages/AdminAuth';
 import AdminDashboard from '@/pages/AdminDashboard';
 import AdminStoryMilestones from '@/pages/AdminStoryMilestones';
 import AdminSettings from '@/pages/AdminSettings';
-import AdminConnections from '@/pages/AdminConnections';
 import AdminFamilyMembers from '@/pages/AdminFamilyMembers';
 import ProfileDashboard from '@/pages/ProfileDashboard';
 import PublicationsDashboard from '@/pages/PublicationsDashboard';
@@ -30,7 +29,6 @@ function App() {
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/milestones" element={<AdminStoryMilestones />} />
       <Route path="/admin/settings" element={<AdminSettings />} />
-      <Route path="/admin/connections" element={<AdminConnections />} />
       <Route path="/admin/family" element={<AdminFamilyMembers />} />
       
       {/* Dashboard Routes */}

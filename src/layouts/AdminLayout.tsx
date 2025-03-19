@@ -4,7 +4,6 @@ import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { Button } from '@/components/ui/button';
 import { 
-  Users, 
   LogOut, 
   Home,
   Settings,
@@ -62,7 +61,6 @@ export default function AdminLayout() {
         <nav className="flex-1 overflow-y-auto p-2">
           <div className="space-y-1">
             <NavItem to="/admin/dashboard" icon={Home} label="Dashboard" />
-            <NavItem to="/admin/connections" icon={Users} label="People I Follow" />
             <NavItem to="/admin/story" icon={BookOpen} label="My Story" />
             <NavItem to="/admin/publications" icon={FileText} label="Publications" />
             <NavItem to="/admin/settings" icon={Settings} label="Settings" />
