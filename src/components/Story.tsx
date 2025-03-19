@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -37,7 +38,7 @@ const Story = () => {
           .from('personal_profile')
           .select('*')
           .eq('id', 'hardeep')
-          .single();
+          .maybeSingle(); // Using maybeSingle instead of single to avoid errors if no data
         
         if (profileError) {
           console.error('Error fetching profile:', profileError);
@@ -94,7 +95,7 @@ const Story = () => {
         });
         
         console.log("Profile data loaded:", profileData);
-        console.log("Photo URL:", profileData?.photo_url);
+        console.log("Career milestones loaded:", milestones);
       } catch (error) {
         console.error('Error in fetchProfileData:', error);
         setProfileError(true);
