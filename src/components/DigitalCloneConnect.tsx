@@ -12,6 +12,16 @@ const DigitalCloneConnect = () => {
   const [showAvatarDialog, setShowAvatarDialog] = useState(false);
   const [isAvatarPulsing, setIsAvatarPulsing] = useState(true);
   
+  // Reordering the domains according to the specified order
+  const orderedDomains = [
+    domains.find(d => d.id === 'water'),     // 1. One Water
+    domains.find(d => d.id === 'ai'),        // 2. AI
+    domains.find(d => d.id === 'ai'),        // 3. Data (using AI for now as placeholder)
+    domains.find(d => d.id === 'mentoring'), // 4. Mentoring
+    domains.find(d => d.id === 'family'),    // 5. Nuclear Family
+    domains.find(d => d.id === 'health'),    // 6. Health
+  ].filter(Boolean); // Filter out any undefined values
+  
   const handleAvatarHover = () => {
     setShowAvatarHint(true);
     setIsAvatarPulsing(false);
@@ -102,7 +112,7 @@ const DigitalCloneConnect = () => {
           </Button>
         </motion.div>
 
-        {/* Domain expertise cards */}
+        {/* Domain expertise cards - updated to be more friendly and approachable */}
         <motion.div
           className="mt-16"
           initial={{ opacity: 0, y: 20 }}
@@ -114,30 +124,38 @@ const DigitalCloneConnect = () => {
             My Areas of <span className="text-gradient-cyan-purple">Expertise</span>
           </h3>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
             {domains.map((domain) => {
               const Icon = domain.icon;
+              const pastelColors = {
+                'water': '#D3E4FD', // soft blue
+                'ai': '#E5DEFF',    // soft purple
+                'mentoring': '#FDE1D3', // soft peach
+                'family': '#FFDEE2',  // soft pink
+                'health': '#D3FDDF',  // soft mint
+              };
+              const bgColor = pastelColors[domain.id] || '#F1F0FB'; // default soft gray
               
               return (
                 <motion.div 
                   key={domain.id}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 flex flex-col items-center text-center hover:bg-white/10 transition-colors shadow-lg"
+                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5 flex flex-col items-center text-center hover:bg-white/20 transition-all duration-300 w-40 md:w-48"
                   whileHover={{ 
-                    y: -5, 
+                    y: -5,
                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
                     transition: { duration: 0.2 }
                   }}
                 >
                   <div 
                     className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
-                    style={{ backgroundColor: `${domain.color}20` }}
+                    style={{ backgroundColor: `${domain.color}30` }}
                   >
                     <Icon size={24} color={domain.color} />
                   </div>
                   
-                  <h4 className="text-sm font-medium mb-1 text-white">{domain.title}</h4>
+                  <h4 className="text-base font-medium mb-1 text-white">{domain.title}</h4>
                   
-                  <p className="text-xs text-gray-400 line-clamp-2">
+                  <p className="text-xs text-gray-300 line-clamp-2">
                     {domain.description}
                   </p>
                 </motion.div>

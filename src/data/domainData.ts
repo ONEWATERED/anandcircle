@@ -1,5 +1,5 @@
 
-import { Users, HeartPulse, Droplet, Brain, GraduationCap } from 'lucide-react';
+import { Users, HeartPulse, Droplet, Brain, GraduationCap, Database } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
 export interface DomainData {
@@ -15,39 +15,30 @@ export interface DomainData {
 // Position domains evenly spaced around a perfect circle (72 degrees apart)
 export const domains: DomainData[] = [
   {
-    id: 'family',
-    title: 'Nuclear Family',
-    icon: Users,
-    color: 'rgb(244, 114, 182)', // rose-500
-    description: 'Strong families as the cornerstone of society',
-    initialAngle: 0, // Top position (12 o'clock)
-    link: 'https://www.circleso.com'
-  },
-  {
-    id: 'health',
-    title: 'Wellness',
-    icon: HeartPulse,
-    color: 'rgb(59, 130, 246)', // blue-500
-    description: 'Data-driven approaches to optimize wellness',
-    initialAngle: 72, // 72 degrees clockwise (about 2:30 position)
-    link: 'https://www.onewater.ai'
-  },
-  {
     id: 'water',
     title: 'One Water',
     icon: Droplet,
     color: 'rgb(6, 182, 212)', // cyan-500
-    description: 'Integrating technology with environmental sustainability',
-    initialAngle: 144, // 144 degrees clockwise (about 5 o'clock position)
+    description: 'Creating a world where clean water flows for everyone through smarter technology',
+    initialAngle: 0, // Top position (12 o'clock)
     link: 'https://www.onewater.ai'
   },
   {
     id: 'ai',
-    title: 'AI & Data',
+    title: 'AI & Innovation',
     icon: Brain,
     color: 'rgb(16, 185, 129)', // emerald-500
-    description: 'Transforming organizations through innovative technology',
-    initialAngle: 216, // 216 degrees clockwise (about 7:30 position)
+    description: 'Bringing AI magic to solve real problems in fun and creative ways',
+    initialAngle: 72, // 72 degrees clockwise (about 2:30 position)
+    link: 'https://www.onewater.ai'
+  },
+  {
+    id: 'data',
+    title: 'Data Science',
+    icon: Database,
+    color: 'rgb(139, 92, 246)', // violet-500
+    description: 'Turning complex data into friendly insights that actually make sense',
+    initialAngle: 144, // 144 degrees clockwise (about 5 o'clock position)
     link: 'https://www.onewater.ai'
   },
   {
@@ -55,8 +46,26 @@ export const domains: DomainData[] = [
     title: 'Mentoring',
     icon: GraduationCap,
     color: 'rgb(168, 85, 247)', // purple-500
-    description: 'Unlocking potential through guidance and development',
+    description: 'Helping others discover their superpowers through thoughtful guidance',
+    initialAngle: 216, // 216 degrees clockwise (about 7:30 position)
+    link: 'https://www.circleso.com'
+  },
+  {
+    id: 'family',
+    title: 'Nuclear Family',
+    icon: Users,
+    color: 'rgb(244, 114, 182)', // rose-500
+    description: 'Building happy, connected families as the heart of our communities',
     initialAngle: 288, // 288 degrees clockwise (about 10 o'clock position)
     link: 'https://www.circleso.com'
+  },
+  {
+    id: 'health',
+    title: 'Wellness',
+    icon: HeartPulse,
+    color: 'rgb(59, 130, 246)', // blue-500
+    description: 'Making health simple, fun and achievable for everyday life',
+    initialAngle: 360, // 360 degrees clockwise (back to 12 o'clock)
+    link: 'https://www.onewater.ai'
   },
 ];
