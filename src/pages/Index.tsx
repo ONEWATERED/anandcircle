@@ -1,7 +1,6 @@
 
 import React from 'react';
 import MainLayout from '@/layouts/MainLayout';
-import TabbedContentSection from '@/components/TabbedContentSection';
 import Story from '@/components/Story';
 import ProfileShowcase from '@/components/ProfileShowcase';
 import GalleryPreview from '@/components/GalleryPreview';
@@ -32,13 +31,6 @@ const Index = () => {
         {/* Gallery Preview section */}
         <div className="w-full">
           <GalleryPreview />
-        </div>
-        
-        {/* Tabbed content */}
-        <div className="w-full py-16 md:py-24 bg-tech-dark border-t border-[#0EA5E9]/10">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <TabbedContentSection />
-          </div>
         </div>
       </div>
     </MainLayout>
