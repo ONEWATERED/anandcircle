@@ -1,14 +1,30 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, Images } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { imageData } from './ai-gallery/gallery-data';
 import AIGalleryImage from './ai-gallery/AIGalleryImage';
+import { fetchGalleryImages } from '@/services/galleryService';
+import { GalleryItem } from './ai-gallery/gallery-data';
 
 const GalleryPreview = () => {
-  // Show only the first 3 images as a preview
-  const previewImages = imageData.slice(0, 3);
+  const [previewImages, setPreviewImages] = useState<GalleryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    const loadPreviewImages = async () => {
+      try {
+        const images = await fetchGalleryImages();
+        setPreviewImages(images.slice(0, 3)); // Show only first 3 images
+      } catch (error) {
+        console.error("Error loading preview images:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadPreviewImages();
+  }, []);
   
   return (
     <section className="py-16 md:py-24 bg-gradient-to-b from-white to-slate-50">
@@ -29,13 +45,20 @@ const GalleryPreview = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {previewImages.map((image) => (
-            <div key={image.id} className="w-full">
-              <AIGalleryImage image={image} />
-            </div>
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+            <p className="mt-4 text-muted-foreground">Loading gallery preview...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {previewImages.map((image) => (
+              <div key={image.id} className="w-full">
+                <AIGalleryImage image={image} />
+              </div>
+            ))}
+          </div>
+        )}
         
         <div className="text-center">
           <Link to="/gallery">

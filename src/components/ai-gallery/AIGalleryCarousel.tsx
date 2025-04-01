@@ -5,12 +5,16 @@ import { Button } from '@/components/ui/button';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import AIGalleryImage from './AIGalleryImage';
-import { imageData } from './gallery-data';
+import { galleryCategories } from './gallery-data';
 import GalleryCategoryFilter from './GalleryCategoryFilter';
+import { fetchGalleryImages } from '@/services/galleryService';
+import { useToast } from '@/components/ui/use-toast';
 
 const AIGalleryCarousel = () => {
   const [activeCategory, setActiveCategory] = useState('all');
-  const [filteredImages, setFilteredImages] = useState(imageData);
+  const [filteredImages, setFilteredImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
   
   // Reset the carousel when category changes
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -18,21 +22,34 @@ const AIGalleryCarousel = () => {
     [Autoplay({ delay: 4000, stopOnInteraction: true })]
   );
   
-  // Filter images when category changes
+  // Fetch images when category changes
   useEffect(() => {
-    if (activeCategory === 'all') {
-      setFilteredImages(imageData);
-    } else {
-      setFilteredImages(imageData.filter(image => image.category === activeCategory));
-    }
+    const loadImages = async () => {
+      setIsLoading(true);
+      try {
+        const images = await fetchGalleryImages(activeCategory === 'all' ? undefined : activeCategory);
+        setFilteredImages(images);
+        
+        // Reset carousel position when filter changes
+        if (emblaApi) {
+          emblaApi.scrollTo(0);
+        }
+      } catch (error) {
+        console.error("Error loading gallery images:", error);
+        toast({
+          title: "Error loading gallery",
+          description: "Failed to load gallery images. Please try again later.",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
     
-    // Reset carousel position when filter changes
-    if (emblaApi) {
-      emblaApi.scrollTo(0);
-    }
-  }, [activeCategory, emblaApi]);
+    loadImages();
+  }, [activeCategory, emblaApi, toast]);
 
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = (category) => {
     setActiveCategory(category);
   };
 
@@ -43,7 +60,12 @@ const AIGalleryCarousel = () => {
         onCategoryChange={handleCategoryChange} 
       />
       
-      {filteredImages.length > 0 ? (
+      {isLoading ? (
+        <div className="py-16 text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+          <p className="mt-4 text-muted-foreground">Loading gallery images...</p>
+        </div>
+      ) : filteredImages.length > 0 ? (
         <>
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
