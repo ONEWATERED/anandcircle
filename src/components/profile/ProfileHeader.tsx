@@ -21,7 +21,12 @@ const ProfileHeader: React.FC = () => {
       </h1>
       
       <h2 className="text-xl md:text-3xl font-medium tracking-tight text-gray-300">
-        <span className="text-[#0EA5E9]">Tech</span> • <span className="text-[#9333EA]">Health</span> • <span className="text-[#DB2777]">Community</span>
+        <span className="text-[#0EA5E9]">One Water</span> • 
+        <span className="text-[#9333EA]">AI</span> • 
+        <span className="text-[#06B6D4]">Data</span> • 
+        <span className="text-[#10B981]">Blockchain</span> • 
+        <span className="text-[#DB2777]">Community</span> • 
+        <span className="text-[#F59E0B]">Health</span>
       </h2>
       
       <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto">
