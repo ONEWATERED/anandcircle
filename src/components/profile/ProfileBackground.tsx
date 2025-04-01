@@ -32,8 +32,8 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
 
   return (
     <>
-      {/* Very light gradient overlay to ensure text readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-10 z-10" />
+      {/* Lighter background to improve contrast */}
+      <div className="absolute inset-0 bg-gray-800/50" />
       
       {/* Background image container */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -44,22 +44,23 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
               opacity: imageLoaded ? 1 : 0,
             }}
           >
-            {/* This div contains the full-size image */}
+            {/* This div contains the full-size image with improved visibility */}
             <div 
               className="absolute inset-0 w-full h-full"
               style={{
                 backgroundImage: `url(${profileImageUrl})`,
-                backgroundSize: 'contain',
+                backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
+                backgroundRepeat: 'no-repeat',
+                filter: 'brightness(1.2) contrast(1.1)'
               }}
             />
           </div>
         )}
       </div>
       
-      {/* Dark background base */}
-      <div className="absolute inset-0 bg-black/70" />
+      {/* Subtle gradient overlay for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/40 z-10" />
     </>
   );
 };

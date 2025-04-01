@@ -69,7 +69,7 @@ const ProfileShowcase = () => {
   return (
     <section 
       id="home" 
-      className="relative w-full min-h-screen overflow-hidden bg-tech-dark"
+      className="relative w-full min-h-screen overflow-hidden bg-slate-800" // Lighter background
     >
       <ProfileBackground profileImageUrl={profileData.profileImageUrl} />
       
