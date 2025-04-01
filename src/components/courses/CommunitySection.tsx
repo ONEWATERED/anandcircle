@@ -37,8 +37,8 @@ const CommunitySection = () => {
             </li>
           </ul>
           <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
-            <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white">
-              Join Our Circle for Free
+            <Button size="lg" className="bg-gradient-to-r from-tech-cyan to-tech-purple hover:from-tech-cyan/90 hover:to-tech-purple/90 text-white shadow-neon-cyan">
+              Join One Water Circle for Free
               <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
           </a>

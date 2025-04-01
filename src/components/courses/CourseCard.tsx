@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, GraduationCap, Clock } from 'lucide-react';
+import { GraduationCap, Clock } from 'lucide-react';
 import { Course } from '@/data/courseData';
 
 interface CourseCardProps {
@@ -20,9 +20,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, icon }) => {
           <div>
             <CardTitle className="text-xl font-bold">{course.title}</CardTitle>
             <CardDescription className="mt-2 text-xs">
-              <span className="inline-flex items-center mr-3">
-                <Users className="mr-1 h-3 w-3" /> {course.students} students
-              </span>
               <span className="inline-flex items-center">
                 <GraduationCap className="mr-1 h-3 w-3" /> {course.difficulty}
               </span>
