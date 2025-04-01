@@ -39,23 +39,24 @@ const GalleryPreview = () => {
         >
           <div className="inline-flex items-center justify-center px-4 py-1.5 mb-3 rounded-full bg-[#0EA5E9]/10 text-[#0EA5E9] font-medium border border-[#0EA5E9]/20">
             <Images className="mr-2 h-4 w-4" />
-            <span>Visual Resources</span>
+            <span>My Visual Inspirations</span>
           </div>
           
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-            Explore Our <span className="text-gradient-tech">Gallery Collection</span>
+            Peek Into <span className="text-gradient-tech">My Gallery</span>
           </h2>
           
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Discover our curated collection of visual resources across categories 
-            including water conservation, health data, and productivity frameworks.
+            Here's a glimpse of some visuals that inspire my work. I've collected these
+            from my journeys in water conservation, health data, and community projects.
+            Feel free to explore!
           </p>
         </motion.div>
         
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#0EA5E9] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
-            <p className="mt-4 text-gray-400">Loading gallery preview...</p>
+            <p className="mt-4 text-gray-400">Grabbing a few of my favorite visuals...</p>
           </div>
         ) : (
           <motion.div 
@@ -93,7 +94,7 @@ const GalleryPreview = () => {
               glow="cyan"
               className="text-white hover:text-white"
             >
-              View Full Gallery
+              See All My Visuals
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
