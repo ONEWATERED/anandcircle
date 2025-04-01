@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from 'react';
 
 interface ProfileBackgroundProps {
@@ -90,21 +89,19 @@ const ProfileBackground: React.FC<ProfileBackgroundProps> = ({ profileImageUrl }
       
       <div className="absolute inset-0 z-0 bg-tech-grid opacity-10"></div>
       
-      {profileImageUrl && (
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/30 via-tech-dark/30 to-tech-dark/50 z-10"></div>
-          <img 
-            src={profileImageUrl} 
-            alt="Profile Background" 
-            className="w-full h-full object-cover object-center"
-            onError={(e) => {
-              // Fallback to default image if loading fails
-              const target = e.target as HTMLImageElement;
-              target.src = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
-            }}
-          />
-        </div>
-      )}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/30 via-tech-dark/30 to-tech-dark/50 z-10"></div>
+        <img 
+          src={profileImageUrl || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png'} 
+          alt="Profile Background" 
+          className="w-full h-full object-cover object-center"
+          onError={(e) => {
+            // Fallback to default image if loading fails
+            const target = e.target as HTMLImageElement;
+            target.src = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+          }}
+        />
+      </div>
     </>
   );
 };
