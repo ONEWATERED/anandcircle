@@ -11,12 +11,12 @@ const PremiumVideosSection = () => {
         <Lock className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-2xl font-display font-semibold mb-4">Premium Video Content</h3>
         <p className="text-muted-foreground mb-6">
-          Get access to in-depth video content, workshops, and expert interviews on advanced health topics when you join the ANAND Circle.
+          I've created in-depth videos, workshops, and expert interviews on health topics that I'm excited to share with our community members.
         </p>
-        <Link to="#anand-circle">
+        <Link to="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
           <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8">
             <Users className="mr-2 h-4 w-4" />
-            Join the Community
+            Join Our Circle for Free
           </Button>
         </Link>
       </div>

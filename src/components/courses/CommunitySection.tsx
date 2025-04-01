@@ -10,36 +10,38 @@ const CommunitySection = () => {
       <div className="flex flex-col md:flex-row gap-8 items-center">
         <div className="md:w-1/2 text-left">
           <h3 className="text-2xl md:text-3xl font-bold mb-4">
-            Join the <span className="text-gradient-primary">Circle Community</span>
+            Join My <span className="text-gradient-primary">Circle Community</span>
           </h3>
           <p className="text-muted-foreground mb-6">
-            Connect with like-minded professionals, participate in exclusive events, 
-            and engage in meaningful discussions around data science, AI, and prompt engineering.
+            I'd love for you to join our community of like-minded people interested in AI, prompt engineering, and health. 
+            It's free to join, and you'll get early access to premium content later!
           </p>
           <ul className="space-y-3 mb-6">
             <li className="flex items-start">
               <div className="mr-3 rounded-full p-1 bg-primary/20">
                 <Users className="h-4 w-4 text-primary" />
               </div>
-              <span className="text-sm">Network with experts and industry professionals</span>
+              <span className="text-sm">Connect with me and other community members</span>
             </li>
             <li className="flex items-start">
               <div className="mr-3 rounded-full p-1 bg-primary/20">
                 <GraduationCap className="h-4 w-4 text-primary" />
               </div>
-              <span className="text-sm">Access exclusive workshops and learning resources</span>
+              <span className="text-sm">Get free access to exclusive workshops and resources</span>
             </li>
             <li className="flex items-start">
               <div className="mr-3 rounded-full p-1 bg-primary/20">
                 <MessageSquare className="h-4 w-4 text-primary" />
               </div>
-              <span className="text-sm">Participate in live Q&A sessions and discussions</span>
+              <span className="text-sm">Join our live Q&A sessions and discussions</span>
             </li>
           </ul>
-          <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white">
-            Join Circle Community
-            <ExternalLink className="ml-2 h-4 w-4" />
-          </Button>
+          <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
+            <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white">
+              Join Our Circle for Free
+              <ExternalLink className="ml-2 h-4 w-4" />
+            </Button>
+          </a>
         </div>
         
         <div className="md:w-1/2 space-y-6">

@@ -15,7 +15,7 @@ const HealthResourcesHeader = () => {
       </h2>
       
       <p className="text-muted-foreground max-w-2xl mx-auto">
-        I'm passionate about sharing what I've learned about optimizing health and wellness. 
+        I love sharing what I've learned about health and wellness along my journey. 
         Check out my research and join our Circle community for more personalized guidance!
       </p>
     </div>
