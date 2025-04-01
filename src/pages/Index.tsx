@@ -15,13 +15,8 @@ const Index = () => {
   
   return (
     <MainLayout>
-      <div className="flex flex-col items-center w-full">
-        {/* Hero section */}
-        <div className="w-full">
-          <Hero />
-        </div>
-        
-        {/* Profile showcase section - seamlessly integrated with Hero */}
+      <div className="flex flex-col items-center w-full bg-tech-dark text-white">
+        {/* Combined Hero + Profile showcase section */}
         <div className="w-full">
           <ProfileShowcase />
         </div>
@@ -42,14 +37,14 @@ const Index = () => {
         </div>
         
         {/* Tabbed content */}
-        <div className="w-full py-16 md:py-24 bg-gray-50">
+        <div className="w-full py-16 md:py-24 bg-tech-dark/90 border-t border-white/5">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <TabbedContentSection />
           </div>
         </div>
         
         {/* Interest form */}
-        <div className="w-full py-16 md:py-24 bg-white border-t border-gray-100">
+        <div className="w-full py-16 md:py-24 bg-tech-dark/80 border-t border-white/5">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <InterestForm />
           </div>

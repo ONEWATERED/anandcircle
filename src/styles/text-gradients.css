@@ -49,4 +49,25 @@
   .text-tech-title {
     @apply font-bold tracking-tight text-gradient-tech;
   }
+  
+  /* New text glow utilities */
+  .text-cosmic-glow {
+    text-shadow: 0 0 15px rgba(14, 165, 233, 0.7), 0 0 30px rgba(14, 165, 233, 0.5);
+  }
+  
+  .text-highlight-gold {
+    @apply text-[#F59E0B];
+  }
+  
+  .text-highlight-cyan {
+    @apply text-[#0EA5E9];
+  }
+  
+  .text-highlight-purple {
+    @apply text-[#9333EA];
+  }
+  
+  .text-highlight-magenta {
+    @apply text-[#DB2777];
+  }
 }
