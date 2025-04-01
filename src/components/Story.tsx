@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { supabase } from '@/integrations/supabase/client';
@@ -283,7 +282,7 @@ const Story = () => {
           <TabsTrigger 
             key={position.id} 
             value={position.id}
-            className="py-3 data-[state=active]:bg-[#0EA5E9]/20 data-[state=active]:text-[#0EA5E9] flex items-center gap-2"
+            className="py-3 data-[state=active]:bg-[#0EA5E9]/20 data-[state=active]:text-[#0EA5E9] text-gray-300 flex items-center gap-2"
           >
             <span className="hidden md:inline">{renderIcon(position.icon)}</span>
             <span className="text-xs md:text-sm whitespace-nowrap">
