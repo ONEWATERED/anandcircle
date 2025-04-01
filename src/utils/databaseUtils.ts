@@ -5,15 +5,17 @@
 
 export {
   checkDatabaseConnection,
-} from './databaseConnection';
+  ensureHttpProtocol,
+  getHardeepProfileImage,
+} from './database/databaseUtils';
 
 export {
   saveSocialLinks,
   updatePersonalSocialLinks,
-} from './socialLinksUtils';
+} from './social/socialLinks';
 
 export {
   uploadImageToDatabase,
   updatePersonalProfilePhoto,
   saveResumeToDatabase,
-} from './profileUtils';
+} from './profile';

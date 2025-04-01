@@ -1,0 +1,77 @@
+
+import { supabase } from "@/integrations/supabase/client";
+import { ProfileData } from '../types';
+
+// Define the profile data interface if not already defined elsewhere
+export interface ProfileData {
+  bio?: string;
+  photoUrl?: string;
+  socialLinks?: {
+    linkedIn: string;
+    twitter: string;
+    youtube: string;
+    spotify: string;
+    anandCircle: string;
+  };
+}
+
+// Get user profile data without images
+export const getUserProfileData = async (): Promise<ProfileData> => {
+  // Get bio from localStorage
+  const bio = localStorage.getItem('userBio') || '';
+  
+  // Get social links from localStorage as default values
+  let socialLinks = {
+    linkedIn: localStorage.getItem('linkedInUrl') || 'https://linkedin.com/in/hardeepanand',
+    twitter: localStorage.getItem('twitterUrl') || 'https://twitter.com/hardeepanand',
+    youtube: localStorage.getItem('youtubeUrl') || 'https://youtube.com/@hardeepanand',
+    spotify: localStorage.getItem('spotifyUrl') || 'https://open.spotify.com/user/hardeepanand',
+    anandCircle: localStorage.getItem('anandCircleUrl') || '#anand-circle'
+  };
+  
+  // Get profile image
+  let photoUrl = await getProfileImage();
+  
+  // Try to get social links from Supabase if user is authenticated
+  try {
+    // Get personal profile social links
+    const { data: socialLinksData, error } = await supabase
+      .from('personal_social_links')
+      .select('platform, url')
+      .eq('profile_id', 'hardeep');
+    
+    if (!error && socialLinksData && socialLinksData.length > 0) {
+      // Convert the array of social links to our expected format
+      const socialLinksMap: Record<string, string> = {};
+      
+      socialLinksData.forEach(link => {
+        // Map platform names to our expected keys
+        const platformMap: Record<string, keyof typeof socialLinks> = {
+          'linkedin': 'linkedIn',
+          'twitter': 'twitter',
+          'youtube': 'youtube',
+          'spotify': 'spotify',
+          'anandcircle': 'anandCircle'
+        };
+        
+        const key = platformMap[link.platform.toLowerCase()] || link.platform.toLowerCase();
+        if (key in socialLinks) {
+          socialLinksMap[key] = link.url;
+        }
+      });
+      
+      // Update our socialLinks object with the values from the database
+      socialLinks = {
+        ...socialLinks,
+        ...socialLinksMap
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching social links from Supabase:", error);
+  }
+  
+  return { bio, socialLinks, photoUrl };
+};
+
+// Import required function
+import { getProfileImage } from './profileImage';

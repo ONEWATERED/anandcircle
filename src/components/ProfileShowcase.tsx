@@ -1,14 +1,14 @@
 
 import React, { useEffect, useState } from 'react';
-import { getUserProfileData } from '@/utils/profileImages';
-import { ensureHttpProtocol } from '@/utils/databaseConnection';
+import { getUserProfileData } from '@/utils/profile';
+import { ensureHttpProtocol } from '@/utils/database';
 import ProfileBackground from './profile/ProfileBackground';
 import ProfileHeader from './profile/ProfileHeader';
 import SocialFooter from './profile/SocialFooter';
 import ScrollPrompt from './profile/ScrollPrompt';
 import { toast } from 'sonner';
 import { isValidImageUrl } from '@/utils/fileUtils';
-import { updatePersonalProfilePhoto } from '@/utils/profileUtils';
+import { updatePersonalProfilePhoto } from '@/utils/profile';
 import { supabase } from '@/integrations/supabase/client';
 
 const ProfileShowcase = () => {

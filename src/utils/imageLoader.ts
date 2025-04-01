@@ -3,17 +3,21 @@
 // This maintains backward compatibility with existing imports
 
 export {
-  // From profileImages.ts
+  // From profile/profileImage.ts
   getProfileImage,
-  getUserProfileData,
   saveProfileImage,
-} from './profileImages';
+} from './profile/profileImage';
 
 export {
-  // From connectionImages.ts
+  // From profile/profileData.ts
+  getUserProfileData,
+} from './profile/profileData';
+
+export {
+  // From connection/connectionImage.ts
   getConnectionImage,
   saveConnectionImage,
-} from './connectionImages';
+} from './connection/connectionImage';
 
 export {
   // From fileUtils.ts
@@ -23,16 +27,21 @@ export {
 } from './fileUtils';
 
 export {
-  // From databaseConnection.ts (was databaseUtils.ts)
+  // From database/databaseUtils.ts
   checkDatabaseConnection,
-} from './databaseConnection';
+  ensureHttpProtocol,
+  getHardeepProfileImage,
+} from './database/databaseUtils';
 
 export {
-  // From socialLinksUtils.ts (was databaseUtils.ts)
+  // From social/socialLinks.ts
   saveSocialLinks,
-} from './socialLinksUtils';
+  updatePersonalSocialLinks,
+} from './social/socialLinks';
 
 export {
-  // From profileUtils.ts (was databaseUtils.ts)
+  // From profile/imageUpload.ts and profile/profileUpdate.ts
   uploadImageToDatabase,
-} from './profileUtils';
+  updatePersonalProfilePhoto,
+  saveResumeToDatabase,
+} from './profile';
