@@ -107,4 +107,17 @@
       0 0 20px rgba(147, 51, 234, 0.3),
       0 0 40px rgba(147, 51, 234, 0.1);
   }
+  
+  /* Additional background gradients for buttons */
+  .bg-gradient-cyan-purple {
+    background: linear-gradient(135deg, #0EA5E9, #9333EA);
+  }
+  
+  .bg-gradient-purple-magenta {
+    background: linear-gradient(135deg, #9333EA, #DB2777);
+  }
+  
+  .bg-gradient-magenta-gold {
+    background: linear-gradient(135deg, #DB2777, #F59E0B);
+  }
 }

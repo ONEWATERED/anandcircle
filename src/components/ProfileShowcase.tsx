@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import SocialMediaLinks from './profile/SocialMediaLinks';
 import { getUserProfileData } from '@/utils/profileImages';
 import { ensureHttpProtocol } from '@/utils/databaseConnection';
-import { ArrowRight, ChevronDown, Sparkles, Bot } from 'lucide-react';
+import { ArrowRight, Sparkles, Bot, BookOpen, Rocket, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ResumeButton from './ResumeButton';
@@ -143,19 +143,6 @@ const ProfileShowcase = () => {
         </div>
       )}
       
-      <div className="absolute top-4 right-4 z-50">
-        <Button
-          onClick={() => document.getElementById('digital-avatar')?.scrollIntoView({ behavior: 'smooth' })}
-          variant="outline"
-          size="sm"
-          className="bg-[#0EA5E9]/20 hover:bg-[#0EA5E9]/40 text-white border-[#0EA5E9]/30 rounded-full px-3 shadow-neon-cyan hover-float"
-        >
-          <Bot className="mr-2 h-4 w-4 text-[#0EA5E9]" />
-          <span className="hidden sm:inline">Chat with my Digital Twin</span>
-          <span className="sm:hidden">Digital Twin</span>
-        </Button>
-      </div>
-      
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center py-20 md:py-24">
           <motion.div 
@@ -185,29 +172,35 @@ const ProfileShowcase = () => {
             >
               <Button 
                 size={isMobile ? "default" : "lg"} 
-                variant="tech"
-                glow="cyan"
-                className="text-white hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base rounded-lg"
+                variant="default"
+                className="bg-gradient-tech text-white font-medium rounded-xl shadow-neon-cyan hover:shadow-lg hover:scale-105 transition-all duration-300"
                 onClick={() => {
                   document.getElementById('story')?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
+                <BookOpen className="mr-2 h-5 w-5" />
                 My Story
-                <ArrowRight className="ml-1 h-3 w-3 md:h-4 md:w-4" />
               </Button>
+              
               <Button 
                 size={isMobile ? "default" : "lg"} 
-                variant="glass"
-                className="text-white hover:text-white shadow-neon-cyan transition-all duration-300 text-sm md:text-base rounded-lg bg-[#0EA5E9]/20 hover:bg-[#0EA5E9]/30"
+                variant="default"
+                className="bg-gradient-purple-magenta text-white font-medium rounded-xl shadow-neon-purple hover:shadow-lg hover:scale-105 transition-all duration-300"
+                onClick={() => {
+                  document.getElementById('passions')?.scrollIntoView({ behavior: 'smooth' });
+                }}
               >
-                Explore My Work
+                <Rocket className="mr-2 h-5 w-5" />
+                Areas of Interest
               </Button>
               
               <ResumeButton 
-                variant="outline" 
                 size={isMobile ? "default" : "lg"}
-                className="glass-tech text-white hover:text-white shadow-neon-magenta bg-[#DB2777]/20 hover:bg-[#DB2777]/30 border-[#DB2777]/40 transition-all duration-300 text-sm md:text-base rounded-lg"
-              />
+                className="bg-gradient-magenta-gold text-white font-medium rounded-xl shadow-neon-magenta hover:shadow-lg hover:scale-105 transition-all duration-300"
+              >
+                <FileText className="mr-2 h-5 w-5" />
+                Resume
+              </ResumeButton>
             </motion.div>
             
             <motion.div
@@ -218,11 +211,11 @@ const ProfileShowcase = () => {
             >
               <Button 
                 size={isMobile ? "default" : "lg"} 
-                variant="outline"
+                variant="default"
                 onClick={() => document.getElementById('digital-avatar')?.scrollIntoView({ behavior: 'smooth' })}
-                className="group bg-gradient-to-r from-[#0EA5E9]/20 to-[#9333EA]/20 text-white hover:text-white border border-[#0EA5E9]/30 shadow-neon-purple rounded-xl px-6"
+                className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white font-medium shadow-neon-purple rounded-xl px-6 hover:shadow-lg hover:scale-105 transition-all duration-300"
               >
-                <Bot className="mr-2 h-5 w-5 text-[#0EA5E9] group-hover:text-white transition-colors" />
+                <Bot className="mr-2 h-5 w-5" />
                 <span>Chat with my AI-powered Digital Twin</span>
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -241,22 +234,6 @@ const ProfileShowcase = () => {
             <p className="text-gray-100 text-lg max-w-2xl mx-auto">
               Connect with me on social platforms to explore collaborations and stay updated on my latest initiatives.
             </p>
-            
-            <div className="pt-6 flex flex-wrap gap-4 justify-center">
-              <a 
-                href="#story" 
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-tech text-white rounded-lg transition-colors duration-300 shadow-neon-cyan hover-float"
-              >
-                <span>Explore My Story</span>
-                <ArrowRight className="h-4 w-4" />
-              </a>
-              <a 
-                href="#passions" 
-                className="inline-flex items-center gap-2 px-6 py-3 glass-tech text-white bg-[#9333EA]/20 hover:bg-[#9333EA]/30 border border-white/20 rounded-lg transition-colors duration-300 shadow-neon-purple"
-              >
-                <span>My Areas of Interest</span>
-              </a>
-            </div>
             
             {!isLoading && (
               <div className="pt-6">
@@ -282,8 +259,8 @@ const ProfileShowcase = () => {
           className="flex flex-col items-center text-gray-400 hover:text-white transition-colors"
         >
           <span className="text-xs md:text-sm font-medium mb-2 tracking-wider">EXPLORE</span>
-          <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center animate-bounce glass-tech">
-            <ChevronDown className="h-5 w-5" />
+          <div className="w-10 h-10 rounded-full border border-[#0EA5E9]/30 flex items-center justify-center animate-bounce bg-[#0EA5E9]/20 shadow-neon-cyan">
+            <ArrowRight className="h-5 w-5 rotate-90" />
           </div>
         </a>
       </motion.div>
