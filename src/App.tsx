@@ -15,6 +15,7 @@ import ProfileDashboard from '@/pages/ProfileDashboard';
 import PublicationsDashboard from '@/pages/PublicationsDashboard';
 import DomainPage from '@/pages/DomainPage';
 import Gallery from '@/pages/Gallery';
+import AdminLayout from '@/layouts/AdminLayout';
 import './index.css';
 
 function App() {
@@ -27,13 +28,17 @@ function App() {
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/domains/:domainId" element={<DomainPage />} />
       
-      {/* Admin Routes */}
-      <Route path="/admin" element={<AdminAuth />} />
-      <Route path="/admin/dashboard" element={<AdminDashboard />} />
-      <Route path="/admin/milestones" element={<AdminStoryMilestones />} />
-      <Route path="/admin/settings" element={<AdminSettings />} />
-      <Route path="/admin/family" element={<AdminFamilyMembers />} />
-      <Route path="/admin/gallery" element={<AdminGallery />} />
+      {/* Admin Authentication */}
+      <Route path="/admin/login" element={<AdminAuth />} />
+      
+      {/* Admin Routes - Nested under AdminLayout */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="milestones" element={<AdminStoryMilestones />} />
+        <Route path="settings" element={<AdminSettings />} />
+        <Route path="family" element={<AdminFamilyMembers />} />
+        <Route path="gallery" element={<AdminGallery />} />
+      </Route>
       
       {/* Dashboard Routes */}
       <Route path="/dashboard/profile" element={<ProfileDashboard />} />

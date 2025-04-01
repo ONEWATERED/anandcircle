@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import AdminLayout from '@/layouts/AdminLayout';
 import { useToast } from '@/hooks/use-toast';
 import { fetchGalleryImages, deleteGalleryImage } from '@/services/galleryService';
 import UploadForm from '@/components/admin-gallery/UploadForm';
@@ -52,22 +51,20 @@ const AdminGallery = () => {
   };
 
   return (
-    <AdminLayout>
-      <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold mb-8">Gallery Management</h1>
-        
-        {/* Upload Form */}
-        <UploadForm onUploadSuccess={loadImages} />
-        
-        {/* Gallery Images */}
-        <h2 className="text-2xl font-semibold mb-4">Gallery Images</h2>
-        <GalleryGrid 
-          images={images} 
-          isLoading={isLoading} 
-          onDeleteImage={handleDelete} 
-        />
-      </div>
-    </AdminLayout>
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold mb-8">Gallery Management</h1>
+      
+      {/* Upload Form */}
+      <UploadForm onUploadSuccess={loadImages} />
+      
+      {/* Gallery Images */}
+      <h2 className="text-2xl font-semibold mb-4">Gallery Images</h2>
+      <GalleryGrid 
+        images={images} 
+        isLoading={isLoading} 
+        onDeleteImage={handleDelete} 
+      />
+    </div>
   );
 };
 
