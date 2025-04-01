@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import SocialMediaLinks from './profile/SocialMediaLinks';
 import { getUserProfileData } from '@/utils/profileImages';
 import { ensureHttpProtocol } from '@/utils/databaseConnection';
-import { ArrowRight, ChevronDown, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronDown, Sparkles, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ResumeButton from './ResumeButton';
@@ -22,6 +22,7 @@ const ProfileShowcase = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const particlesRef = useRef(null);
+  const [showAvatarDialog, setShowAvatarDialog] = useState(false);
 
   useEffect(() => {
     if (!particlesRef.current) return;
@@ -143,6 +144,19 @@ const ProfileShowcase = () => {
         </div>
       )}
       
+      <div className="absolute top-4 right-4 z-50">
+        <Button
+          onClick={() => document.getElementById('digital-avatar')?.scrollIntoView({ behavior: 'smooth' })}
+          variant="outline"
+          size="sm"
+          className="bg-[#0EA5E9]/20 hover:bg-[#0EA5E9]/40 text-white border-[#0EA5E9]/30 rounded-full px-3 shadow-neon-cyan hover-float"
+        >
+          <Bot className="mr-2 h-4 w-4 text-[#0EA5E9]" />
+          <span className="hidden sm:inline">Chat with my Digital Twin</span>
+          <span className="sm:hidden">Digital Twin</span>
+        </Button>
+      </div>
+      
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center py-20 md:py-24">
           <motion.div 
@@ -195,6 +209,24 @@ const ProfileShowcase = () => {
                 size={isMobile ? "default" : "lg"}
                 className="glass-tech text-white hover:text-white shadow-neon-magenta bg-[#DB2777]/20 hover:bg-[#DB2777]/30 border-[#DB2777]/40 transition-all duration-300 text-sm md:text-base rounded-lg"
               />
+            </motion.div>
+            
+            <motion.div
+              className="mt-8"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+            >
+              <Button 
+                size={isMobile ? "default" : "lg"} 
+                variant="outline"
+                onClick={() => document.getElementById('digital-avatar')?.scrollIntoView({ behavior: 'smooth' })}
+                className="group bg-gradient-to-r from-[#0EA5E9]/20 to-[#9333EA]/20 text-white hover:text-white border border-[#0EA5E9]/30 shadow-neon-purple rounded-xl px-6"
+              >
+                <Bot className="mr-2 h-5 w-5 text-[#0EA5E9] group-hover:text-white transition-colors" />
+                <span>Chat with my AI-powered Digital Twin</span>
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
             </motion.div>
           </motion.div>
 
