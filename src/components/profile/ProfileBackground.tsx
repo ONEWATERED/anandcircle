@@ -14,7 +14,7 @@ const ProfileBackground: React.FC<ProfileBackgroundProps> = ({ profileImageUrl }
   // Guaranteed default image that we know exists
   const fallbackImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
   
-  // Try the provided image first, fallback if not provided
+  // Try the provided image first, fallback if not provided or on error
   const imageUrl = profileImageUrl || fallbackImage;
 
   useEffect(() => {
@@ -88,11 +88,12 @@ const ProfileBackground: React.FC<ProfileBackgroundProps> = ({ profileImageUrl }
     createParticles();
   }, [particlesRef]);
 
-  // Reset error state when image URL changes
+  // Reset error state and preload images when image URL changes
   useEffect(() => {
     setImageError(false);
+    console.log("ProfileBackground: Initializing with image URL:", imageUrl);
     
-    // Preload the fallback image to ensure it's in cache
+    // Always preload the fallback image to ensure it's ready
     const preloadFallback = new Image();
     preloadFallback.onload = () => {
       console.log("Fallback image preloaded successfully:", fallbackImage);
@@ -103,17 +104,28 @@ const ProfileBackground: React.FC<ProfileBackgroundProps> = ({ profileImageUrl }
     };
     preloadFallback.src = fallbackImage;
     
-    // Also preload the main image
+    // Also preload the main image if it's different from fallback
     if (profileImageUrl && profileImageUrl !== fallbackImage) {
       const preloadMain = new Image();
       preloadMain.onload = () => {
         console.log("Main image preloaded successfully:", profileImageUrl);
+        setImageLoaded(true);
+      };
+      preloadMain.onerror = () => {
+        console.error("Main image failed to preload:", profileImageUrl);
+        setImageError(true);
       };
       preloadMain.src = profileImageUrl;
     }
-  }, [profileImageUrl]);
+  }, [profileImageUrl, fallbackImage]);
 
-  console.log("ProfileBackground rendering with image:", imageUrl, "Error:", imageError, "Fallback loaded:", fallbackLoaded);
+  console.log("ProfileBackground rendering with:", {
+    imageUrl,
+    profileImageUrl,
+    fallbackImage,
+    imageError,
+    fallbackLoaded
+  });
 
   return (
     <>
@@ -129,38 +141,37 @@ const ProfileBackground: React.FC<ProfileBackgroundProps> = ({ profileImageUrl }
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/30 via-tech-dark/30 to-tech-dark/50 z-10"></div>
         
-        {/* Fallback image - always render but initially hidden */}
+        {/* Fallback image - ALWAYS render but conditionally show */}
         <img 
           src={fallbackImage} 
-          alt="Profile Background"
-          className={`w-full h-full object-cover object-center opacity-100 transition-opacity duration-300 ${imageError || !profileImageUrl ? 'block' : 'hidden'}`}
+          alt="Profile Background Fallback"
+          className={`w-full h-full object-cover object-center transition-opacity duration-300 ${imageError || !profileImageUrl || !imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          style={{position: 'absolute', zIndex: 5}}
           onLoad={() => {
-            console.log("Fallback image loaded successfully in DOM");
+            console.log("Fallback image loaded in DOM");
             setFallbackLoaded(true);
           }}
           onError={() => {
-            console.error("Critical DOM error: Fallback image failed to load in DOM", fallbackImage);
+            console.error("Critical: Fallback image failed to load in DOM");
           }}
-          style={{zIndex: 5}}
         />
         
-        {/* Main image - only render if we have a URL and it's not the fallback */}
+        {/* Main image - only try to load if we have a non-fallback URL */}
         {profileImageUrl && profileImageUrl !== fallbackImage && (
           <img 
             src={profileImageUrl} 
             alt="Profile Background" 
-            className={`w-full h-full object-cover object-center opacity-100 transition-opacity duration-300 ${imageError ? 'hidden' : 'block'}`}
+            className={`w-full h-full object-cover object-center transition-opacity duration-300 ${imageError ? 'opacity-0' : 'opacity-100'}`}
+            style={{position: 'absolute', zIndex: 4}}
             onLoad={() => {
-              console.log("Main image loaded successfully:", profileImageUrl);
+              console.log("Main image loaded successfully in DOM:", profileImageUrl);
               setImageLoaded(true);
               setImageError(false);
             }}
-            onError={(e) => {
-              console.error("Main image failed to load:", profileImageUrl);
+            onError={() => {
+              console.error("Main image failed to load in DOM:", profileImageUrl);
               setImageError(true);
-              // Don't need to set the fallback src here since we're already rendering the fallback separately
             }}
-            style={{zIndex: 4}}
           />
         )}
       </div>

@@ -7,6 +7,7 @@ import ProfileHeader from './profile/ProfileHeader';
 import SocialFooter from './profile/SocialFooter';
 import ScrollPrompt from './profile/ScrollPrompt';
 import { toast } from 'sonner';
+import { isValidImageUrl } from '@/utils/fileUtils';
 
 const ProfileShowcase = () => {
   // Guaranteed default image that we know exists
@@ -23,10 +24,13 @@ const ProfileShowcase = () => {
     }
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     const loadProfileData = async () => {
       try {
+        console.log("ProfileShowcase: Loading user profile data");
+        
         // Verify the default image exists before proceeding
         try {
           const defaultImageResponse = await fetch(defaultImage, { method: 'HEAD' });
@@ -34,6 +38,7 @@ const ProfileShowcase = () => {
             console.error("Default image is not accessible:", defaultImage);
           } else {
             console.log("Default image is accessible and valid");
+            setImageLoaded(true);
           }
         } catch (imgErr) {
           console.error("Error checking default image:", imgErr);
@@ -47,12 +52,12 @@ const ProfileShowcase = () => {
           // Always ensure we have a valid image URL
           let photoUrl = data.photoUrl || defaultImage;
           
-          // Don't validate external URLs to prevent CORS issues
-          if (photoUrl !== defaultImage && photoUrl.startsWith('/')) {
+          // Check if we need to validate the URL
+          if (photoUrl !== defaultImage && !photoUrl.startsWith('http')) {
             try {
               // Quick validation of the image URL for local images
-              const imageCheck = await fetch(photoUrl, { method: 'HEAD' });
-              if (!imageCheck.ok) {
+              const isValid = await isValidImageUrl(photoUrl);
+              if (!isValid) {
                 console.warn("Retrieved photo URL is not accessible, using default:", photoUrl);
                 photoUrl = defaultImage;
               }
@@ -104,7 +109,6 @@ const ProfileShowcase = () => {
     <section 
       id="home" 
       className="relative w-full min-h-screen overflow-hidden bg-tech-dark"
-      style={{ position: 'relative' }}
     >
       <ProfileBackground profileImageUrl={profileData.profileImageUrl} />
       

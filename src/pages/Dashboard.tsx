@@ -10,6 +10,8 @@ import DatabaseStatusSection from '@/components/dashboard/DatabaseStatusSection'
 const Dashboard = () => {
   const { profileImageUrl, resumeUrl, socialLinks, isDatabaseConnected, isLoading } = useDashboardData();
 
+  console.log("Dashboard rendering with profile image:", profileImageUrl);
+
   return (
     <MainLayout>
       <section className="py-20">
