@@ -40,25 +40,25 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
           <div 
             className="w-full h-full transition-opacity duration-500"
             style={{ 
-              opacity: imageLoaded ? 0.7 : 0, // Increased opacity from 0.3 to 0.7
+              opacity: imageLoaded ? 1 : 0, // Set to full opacity (was 0.7)
             }}
           >
             <div 
               className="absolute inset-0 w-full h-full"
               style={{
                 backgroundImage: `url(${profileImageUrl})`,
-                backgroundSize: 'cover', // Changed from 'contain' to 'cover'
-                backgroundPosition: 'center center', // Changed to center for better visibility
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
                 backgroundRepeat: 'no-repeat',
-                filter: 'brightness(1.1) contrast(1.2)' // Increased brightness and contrast
+                filter: 'brightness(1.2) contrast(1.3) saturate(1.1)' // Increased brightness, contrast and saturation
               }}
             />
           </div>
         </div>
       )}
       
-      {/* Gradient overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-tech-dark/80 via-tech-dark/60 to-tech-dark/50 z-10" />
+      {/* Lighter gradient overlay for better text readability but more image visibility */}
+      <div className="absolute inset-0 bg-gradient-to-r from-tech-dark/70 via-tech-dark/50 to-tech-dark/30 z-10" />
     </>
   );
 };
