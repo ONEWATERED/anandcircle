@@ -104,10 +104,9 @@ const DigitalCloneConnect = () => {
         >
           <Button 
             size="lg" 
-            variant="tech"
-            glow="purple"
+            variant="default"
             onClick={() => setShowAvatarDialog(true)}
-            className="text-white hover:text-white cursor-pointer"
+            className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white shadow-neon-purple hover:shadow-neon-cyan hover:opacity-90 cursor-pointer transition-all duration-300"
           >
             Connect with My Digital Twin
           </Button>
