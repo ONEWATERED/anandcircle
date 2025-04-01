@@ -46,21 +46,21 @@ const ProfileShowcase = () => {
   }, []);
 
   return (
-    <section id="profile-section" className="relative py-16 md:py-24 overflow-hidden">
+    <section id="profile-section" className="relative min-h-screen overflow-hidden -mt-20 pt-20">
       {/* Full screen background image */}
       {profileData.profileImageUrl && (
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/80 to-gray-900/50 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/80 via-gray-900/70 to-gray-900/90 z-10"></div>
           <img 
             src={profileData.profileImageUrl} 
             alt="Profile Background" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
         </div>
       )}
       
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-7xl mx-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 h-full flex items-center">
+        <div className="max-w-7xl mx-auto w-full py-40 md:py-52">
           <motion.div 
             className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16"
             initial={{ opacity: 0 }}

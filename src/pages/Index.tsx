@@ -21,7 +21,7 @@ const Index = () => {
           <Hero />
         </div>
         
-        {/* Profile showcase section */}
+        {/* Profile showcase section - seamlessly integrated with Hero */}
         <div className="w-full">
           <ProfileShowcase />
         </div>

@@ -1,352 +1,270 @@
 
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/layouts/AdminLayout';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { galleryCategories } from '@/components/ai-gallery/gallery-data';
-import { Plus, Trash2, Upload, Image, Save } from 'lucide-react';
-import { uploadGalleryImage, fetchGalleryImages } from '@/services/galleryService';
-import { GalleryItem } from '@/components/ai-gallery/gallery-data';
-import { toast } from 'sonner';
-
-interface FormData {
-  title: string;
-  description: string;
-  category: string;
-  url: string;
-  selectedIcon: string;
-}
+import { Label } from '@/components/ui/label';
+import { Plus, Trash2, Upload, Image as ImageIcon } from 'lucide-react';
+import { useToast } from '@/components/ui/use-toast';
+import { uploadGalleryImage, getGalleryImages, deleteGalleryImage } from '@/services/galleryService';
 
 const AdminGallery = () => {
-  const [galleryImages, setGalleryImages] = useState<GalleryItem[]>([]);
+  const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('water');
   const [isUploading, setIsUploading] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  
-  const [formData, setFormData] = useState<FormData>({
-    title: '',
-    description: '',
-    category: 'data',
-    url: '',
-    selectedIcon: 'Brain'
-  });
+  const { toast } = useToast();
 
-  // Load gallery images
   useEffect(() => {
-    const loadGalleryImages = async () => {
-      try {
-        const images = await fetchGalleryImages();
-        setGalleryImages(images);
-      } catch (error) {
-        console.error("Error loading gallery images:", error);
-        toast.error("Failed to load gallery images");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    loadGalleryImages();
+    loadImages();
   }, []);
 
-  // Handle image selection
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    
-    setSelectedFile(file);
-    
-    // Create preview
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImagePreview(reader.result as string);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  // Handle form input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  // Handle select changes
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!selectedFile) {
-      toast.error("Please select an image to upload");
-      return;
-    }
-    
-    if (!formData.title || !formData.description || !formData.category) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-    
-    setIsUploading(true);
-    
+  const loadImages = async () => {
+    setIsLoading(true);
     try {
-      // Create gallery item
-      const newItem: Omit<GalleryItem, 'id' | 'imagePath'> = {
-        title: formData.title,
-        description: formData.description,
-        category: formData.category,
-        url: formData.url,
-        icon: formData.selectedIcon as any, // Will be converted in the service
-      };
-      
-      const success = await uploadGalleryImage(selectedFile, newItem);
-      
-      if (success) {
-        toast.success("Gallery item uploaded successfully!");
-        // Reset form
-        setFormData({
-          title: '',
-          description: '',
-          category: 'data',
-          url: '',
-          selectedIcon: 'Brain'
-        });
-        setSelectedFile(null);
-        setImagePreview(null);
-        
-        // Refresh gallery images
-        const images = await fetchGalleryImages();
-        setGalleryImages(images);
-      }
+      const galleryImages = await getGalleryImages();
+      setImages(galleryImages);
     } catch (error) {
-      console.error("Error uploading gallery item:", error);
-      toast.error("Failed to upload gallery item");
+      console.error('Failed to load gallery images:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load gallery images',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!selectedFile || !title || !description || !category) {
+      toast({
+        title: 'Missing information',
+        description: 'Please fill in all fields and select an image',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      await uploadGalleryImage({
+        file: selectedFile,
+        title,
+        description,
+        category,
+        icon_name: 'Droplet'
+      });
+      
+      toast({
+        title: 'Success',
+        description: 'Image uploaded successfully',
+      });
+      
+      // Reset form
+      setSelectedFile(null);
+      setPreviewUrl('');
+      setTitle('');
+      setDescription('');
+      setCategory('water');
+      
+      // Reload images
+      await loadImages();
+    } catch (error) {
+      console.error('Failed to upload image:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to upload image',
+        variant: 'destructive',
+      });
     } finally {
       setIsUploading(false);
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await deleteGalleryImage(id);
+      toast({
+        title: 'Success',
+        description: 'Image deleted successfully',
+      });
+      await loadImages();
+    } catch (error) {
+      console.error('Failed to delete image:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to delete image',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <AdminLayout>
-      <div className="container mx-auto p-6">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold">Gallery Management</h1>
-          <Button variant="default">
-            <Plus className="mr-2 h-4 w-4" />
-            Add New Item
-          </Button>
-        </div>
+      <div className="container mx-auto py-8">
+        <h1 className="text-3xl font-bold mb-8">Gallery Management</h1>
         
         {/* Upload Form */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>Add Gallery Item</CardTitle>
-            <CardDescription>Upload new images to the gallery</CardDescription>
+            <CardTitle>Upload New Image</CardTitle>
+            <CardDescription>Add a new image to your gallery</CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <label htmlFor="title" className="text-sm font-medium">Title *</label>
-                    <Input 
-                      id="title" 
-                      name="title" 
-                      value={formData.title} 
-                      onChange={handleInputChange} 
-                      placeholder="Enter title" 
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <Label htmlFor="title">Title</Label>
+                <Input 
+                  id="title" 
+                  value={title} 
+                  onChange={(e) => setTitle(e.target.value)} 
+                  placeholder="Enter image title" 
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="category">Category</Label>
+                <Select value={category} onValueChange={setCategory}>
+                  <SelectTrigger id="category">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="water">Water</SelectItem>
+                    <SelectItem value="climate">Climate</SelectItem>
+                    <SelectItem value="technology">Technology</SelectItem>
+                    <SelectItem value="community">Community</SelectItem>
+                    <SelectItem value="health">Health</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            
+            <div>
+              <Label htmlFor="description">Description</Label>
+              <Textarea 
+                id="description" 
+                value={description} 
+                onChange={(e) => setDescription(e.target.value)} 
+                placeholder="Enter image description" 
+              />
+            </div>
+            
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <Label htmlFor="image">Image</Label>
+                <div className="mt-1 flex items-center">
+                  <label className="block w-full">
+                    <span className="sr-only">Choose file</span>
+                    <input 
+                      id="image"
+                      type="file" 
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleFileChange}
                     />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="description" className="text-sm font-medium">Description *</label>
-                    <Textarea 
-                      id="description" 
-                      name="description" 
-                      value={formData.description} 
-                      onChange={handleInputChange} 
-                      placeholder="Enter description" 
-                      rows={3} 
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="category" className="text-sm font-medium">Category *</label>
-                    <Select 
-                      value={formData.category} 
-                      onValueChange={(value) => handleSelectChange('category', value)}
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      className="w-full flex items-center justify-center gap-2"
+                      onClick={() => document.getElementById('image').click()}
                     >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {galleryCategories.map(category => (
-                          category.id !== 'all' && (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.label}
-                            </SelectItem>
-                          )
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="url" className="text-sm font-medium">URL (Optional)</label>
-                    <Input 
-                      id="url" 
-                      name="url" 
-                      value={formData.url} 
-                      onChange={handleInputChange} 
-                      placeholder="Enter URL" 
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label htmlFor="icon" className="text-sm font-medium">Icon</label>
-                    <Select 
-                      value={formData.selectedIcon} 
-                      onValueChange={(value) => handleSelectChange('selectedIcon', value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select icon" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Brain">Brain</SelectItem>
-                        <SelectItem value="CloudRain">CloudRain</SelectItem>
-                        <SelectItem value="FileDigit">FileDigit</SelectItem>
-                        <SelectItem value="Waves">Waves</SelectItem>
-                        <SelectItem value="Droplets">Droplets</SelectItem>
-                        <SelectItem value="HeartPulse">HeartPulse</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center h-[300px]">
-                    {imagePreview ? (
-                      <div className="relative w-full h-full">
-                        <img 
-                          src={imagePreview} 
-                          alt="Preview" 
-                          className="w-full h-full object-cover rounded-lg" 
-                        />
-                        <button 
-                          type="button"
-                          onClick={() => {
-                            setSelectedFile(null);
-                            setImagePreview(null);
-                          }}
-                          className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="bg-gray-100 p-4 rounded-full mb-4">
-                          <Image className="h-10 w-10 text-gray-500" />
-                        </div>
-                        <p className="text-sm text-gray-500 mb-4 text-center">
-                          Click to upload or drag and drop
-                        </p>
-                        <Button type="button" variant="outline" onClick={() => document.getElementById('image-upload')?.click()}>
-                          <Upload className="mr-2 h-4 w-4" />
-                          Upload Image
-                        </Button>
-                        <input 
-                          id="image-upload" 
-                          type="file" 
-                          className="hidden" 
-                          accept="image/*" 
-                          onChange={handleFileChange} 
-                        />
-                      </>
-                    )}
-                  </div>
+                      <Upload size={16} />
+                      Select Image
+                    </Button>
+                  </label>
                 </div>
               </div>
               
-              <div className="flex justify-end">
-                <Button type="submit" disabled={isUploading}>
-                  {isUploading ? (
-                    <>
-                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
-                      Uploading...
-                    </>
-                  ) : (
-                    <>
-                      <Save className="mr-2 h-4 w-4" />
-                      Save Gallery Item
-                    </>
-                  )}
-                </Button>
-              </div>
-            </form>
+              {previewUrl && (
+                <div className="flex items-center justify-center">
+                  <div className="relative w-32 h-32 overflow-hidden rounded-md">
+                    <img 
+                      src={previewUrl} 
+                      alt="Preview" 
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
           </CardContent>
+          <CardFooter>
+            <Button 
+              onClick={handleUpload} 
+              disabled={isUploading || !selectedFile}
+              className="flex items-center gap-2"
+            >
+              <Plus size={16} />
+              Upload Image
+            </Button>
+          </CardFooter>
         </Card>
         
-        {/* Gallery Items List */}
-        <div className="mt-8">
-          <h2 className="text-xl font-semibold mb-4">Existing Gallery Items</h2>
-          
-          {isLoading ? (
-            <div className="flex justify-center my-8">
-              <div className="animate-spin h-8 w-8 border-4 border-primary rounded-full border-t-transparent"></div>
-            </div>
-          ) : galleryImages.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-lg">
-              <Image className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900">No gallery items</h3>
-              <p className="mt-2 text-sm text-gray-500">Get started by creating a new gallery item</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {galleryImages.map((item) => (
-                <Card key={item.id} className="overflow-hidden">
-                  <div className="h-48 relative bg-gray-100">
-                    {item.imagePath ? (
-                      <img 
-                        src={item.imagePath} 
-                        alt={item.title} 
-                        className="w-full h-full object-cover" 
-                      />
-                    ) : (
-                      <div className="h-full w-full flex items-center justify-center">
-                        <div className="h-16 w-16 flex items-center justify-center bg-gray-200 rounded-full">
-                          {React.createElement(item.icon, { className: "h-8 w-8 text-gray-500" })}
-                        </div>
-                      </div>
-                    )}
-                    <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-xs">
-                      {item.category}
-                    </div>
+        {/* Gallery Images */}
+        <h2 className="text-2xl font-semibold mb-4">Gallery Images</h2>
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-pulse">Loading gallery images...</div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {images.length > 0 ? (
+              images.map((image) => (
+                <Card key={image.id} className="overflow-hidden">
+                  <div className="relative aspect-video overflow-hidden">
+                    <img 
+                      src={image.imagePath} 
+                      alt={image.title}
+                      className="object-cover w-full h-full"
+                    />
                   </div>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">{item.title}</CardTitle>
+                  <CardHeader className="p-4">
+                    <CardTitle className="text-lg">{image.title}</CardTitle>
+                    <CardDescription className="line-clamp-2">
+                      {image.description}
+                    </CardDescription>
                   </CardHeader>
-                  <CardContent className="pb-2">
-                    <CardDescription className="line-clamp-2">{item.description}</CardDescription>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <Button variant="outline" size="sm">
-                      Edit
-                    </Button>
-                    <Button variant="destructive" size="sm">
-                      <Trash2 className="h-4 w-4" />
+                  <CardFooter className="p-4 pt-0 flex justify-between">
+                    <div className="text-sm font-medium px-2 py-1 rounded-full bg-primary/10 text-primary">
+                      {image.category}
+                    </div>
+                    <Button 
+                      size="sm" 
+                      variant="destructive"
+                      onClick={() => handleDelete(image.id)}
+                    >
+                      <Trash2 size={16} />
                     </Button>
                   </CardFooter>
                 </Card>
-              ))}
-            </div>
-          )}
-        </div>
+              ))
+            ) : (
+              <div className="col-span-full flex flex-col items-center justify-center py-12 text-center">
+                <ImageIcon size={48} className="text-muted-foreground mb-4" />
+                <h3 className="text-xl font-medium mb-2">No images yet</h3>
+                <p className="text-muted-foreground">
+                  Upload your first gallery image to get started.
+                </p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </AdminLayout>
   );

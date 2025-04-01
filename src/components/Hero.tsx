@@ -12,7 +12,7 @@ const Hero = () => {
   return (
     <section 
       id="home" 
-      className="relative w-full flex items-center min-h-[90vh] pt-20 md:pt-24 pb-12 md:pb-16 overflow-hidden bg-gradient-to-b from-white to-gray-50"
+      className="relative w-full flex items-center min-h-[100vh] pt-20 md:pt-24 pb-12 md:pb-16 overflow-hidden"
     >
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -20,7 +20,7 @@ const Hero = () => {
         <div className="absolute bottom-20 -right-32 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
       </div>
       
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-between gap-8 md:gap-12">
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center gap-8 md:gap-12">
         {/* Hero content column - centered */}
         <motion.div 
           className="w-full max-w-3xl space-y-6 md:space-y-8 text-center"
