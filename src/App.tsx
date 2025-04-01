@@ -10,6 +10,7 @@ import AdminDashboard from '@/pages/AdminDashboard';
 import AdminStoryMilestones from '@/pages/AdminStoryMilestones';
 import AdminSettings from '@/pages/AdminSettings';
 import AdminFamilyMembers from '@/pages/AdminFamilyMembers';
+import AdminGallery from '@/pages/AdminGallery';
 import ProfileDashboard from '@/pages/ProfileDashboard';
 import PublicationsDashboard from '@/pages/PublicationsDashboard';
 import DomainPage from '@/pages/DomainPage';
@@ -32,6 +33,7 @@ function App() {
       <Route path="/admin/milestones" element={<AdminStoryMilestones />} />
       <Route path="/admin/settings" element={<AdminSettings />} />
       <Route path="/admin/family" element={<AdminFamilyMembers />} />
+      <Route path="/admin/gallery" element={<AdminGallery />} />
       
       {/* Dashboard Routes */}
       <Route path="/dashboard/profile" element={<ProfileDashboard />} />

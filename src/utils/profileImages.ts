@@ -1,4 +1,3 @@
-
 // Module for profile image management
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -7,6 +6,7 @@ import { getHardeepProfileImage } from "./databaseConnection";
 // Define the profile data interface
 export interface ProfileData {
   bio?: string;
+  photoUrl?: string;
   socialLinks?: {
     linkedIn: string;
     twitter: string;
@@ -72,6 +72,9 @@ export const getUserProfileData = async (): Promise<ProfileData> => {
     anandCircle: localStorage.getItem('anandCircleUrl') || '#anand-circle'
   };
   
+  // Get profile image
+  let photoUrl = await getProfileImage();
+  
   // Try to get social links from Supabase if user is authenticated
   try {
     // Get personal profile social links
@@ -110,7 +113,7 @@ export const getUserProfileData = async (): Promise<ProfileData> => {
     console.error("Error fetching social links from Supabase:", error);
   }
   
-  return { bio, socialLinks };
+  return { bio, socialLinks, photoUrl };
 };
 
 // Save profile image URL to Supabase and localStorage fallback

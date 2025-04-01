@@ -8,7 +8,8 @@ import {
   Home,
   Settings,
   FileText,
-  BookOpen
+  BookOpen,
+  Image
 } from 'lucide-react';
 
 interface NavItemProps {
@@ -63,6 +64,7 @@ export default function AdminLayout() {
             <NavItem to="/admin/dashboard" icon={Home} label="Dashboard" />
             <NavItem to="/admin/story" icon={BookOpen} label="My Story" />
             <NavItem to="/admin/publications" icon={FileText} label="Publications" />
+            <NavItem to="/admin/gallery" icon={Image} label="Gallery" />
             <NavItem to="/admin/settings" icon={Settings} label="Settings" />
           </div>
         </nav>
