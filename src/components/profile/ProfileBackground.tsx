@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 interface ProfileBackgroundProps {
@@ -42,7 +43,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
           <div 
             className="w-full h-full transition-opacity duration-500"
             style={{ 
-              opacity: imageLoaded ? 1 : 0, // Full opacity
+              opacity: imageLoaded ? 0.3 : 0, // Reduced to 30% opacity as requested
             }}
           >
             <div 
