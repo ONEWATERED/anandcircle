@@ -7,7 +7,7 @@ interface ProfileImageDisplayProps {
   isLoading: boolean;
 }
 
-const ProfileImageDisplay = ({ isLoading }: ProfileImageDisplayProps) => {
+const ProfileImageDisplay = ({ profileImage, isLoading }: ProfileImageDisplayProps) => {
   return (
     <div className="absolute inset-0 w-full h-full rounded-lg overflow-hidden">
       {isLoading ? (
@@ -16,16 +16,30 @@ const ProfileImageDisplay = ({ isLoading }: ProfileImageDisplayProps) => {
         </div>
       ) : (
         <div className="relative h-full">
-          {/* Placeholder container */}
-          <div className="relative rounded-lg overflow-hidden h-full bg-slate-100 flex items-center justify-center">
-            <User className="h-16 w-16 text-slate-400" />
-            
-            {/* Tech corner accents */}
-            <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-primary z-20"></div>
-            <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-secondary z-20"></div>
-            <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-secondary z-20"></div>
-            <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-primary z-20"></div>
-          </div>
+          {profileImage ? (
+            <div className="relative rounded-lg overflow-hidden h-full">
+              <div className="h-full w-full bg-slate-100 flex items-center justify-center">
+                <p className="text-slate-500">Image removed</p>
+              </div>
+              
+              {/* Tech corner accents */}
+              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-primary z-20"></div>
+              <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-secondary z-20"></div>
+              <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-secondary z-20"></div>
+              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-primary z-20"></div>
+            </div>
+          ) : (
+            /* Placeholder container */
+            <div className="relative rounded-lg overflow-hidden h-full bg-slate-100 flex items-center justify-center">
+              <User className="h-16 w-16 text-slate-400" />
+              
+              {/* Tech corner accents */}
+              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-primary z-20"></div>
+              <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-secondary z-20"></div>
+              <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-secondary z-20"></div>
+              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-primary z-20"></div>
+            </div>
+          )}
         </div>
       )}
     </div>

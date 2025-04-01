@@ -16,6 +16,48 @@ export interface ProfileData {
   };
 }
 
+// Get profile image from Supabase or localStorage
+export const getProfileImage = async (): Promise<string | null> => {
+  try {
+    console.log("Getting profile image");
+    
+    // Try to get from Hardeep profile first
+    const hardeepImageUrl = await getHardeepProfileImage();
+    if (hardeepImageUrl) {
+      console.log("Retrieved Hardeep profile image:", hardeepImageUrl);
+      return hardeepImageUrl;
+    }
+    
+    // Check if user is authenticated
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session?.user) {
+      // User is authenticated, get profile image from Supabase profiles table
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('profile_image_url')
+        .eq('id', session.user.id)
+        .single();
+      
+      if (error) {
+        console.error("Error fetching profile image from Supabase:", error);
+      } else if (data?.profile_image_url) {
+        console.log("Retrieved profile image from profiles table:", data.profile_image_url);
+        return data.profile_image_url;
+      }
+    }
+    
+    // As a final fallback, try to get from localStorage
+    const localStorageImage = localStorage.getItem('profileImageUrl');
+    console.log("Retrieved profile image from localStorage:", localStorageImage);
+    
+    return localStorageImage;
+  } catch (error) {
+    console.error("Error getting profile image:", error);
+    return null;
+  }
+};
+
 // Get user profile data without images
 export const getUserProfileData = async (): Promise<ProfileData> => {
   // Get bio from localStorage
