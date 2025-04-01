@@ -15,6 +15,7 @@ import ProfileDashboard from '@/pages/ProfileDashboard';
 import PublicationsDashboard from '@/pages/PublicationsDashboard';
 import DomainPage from '@/pages/DomainPage';
 import Gallery from '@/pages/Gallery';
+import CreateYourOwn from '@/pages/CreateYourOwn';
 import AdminLayout from '@/layouts/AdminLayout';
 import './index.css';
 
@@ -27,6 +28,7 @@ function App() {
       <Route path="/terms" element={<TermsOfService />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/domains/:domainId" element={<DomainPage />} />
+      <Route path="/create-your-own" element={<CreateYourOwn />} />
       
       {/* Admin Authentication */}
       <Route path="/admin/login" element={<AdminAuth />} />

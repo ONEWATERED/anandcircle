@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -8,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { 
   Bot, 
   UserRound, 
@@ -172,9 +174,11 @@ const InterestForm = () => {
                 <Droplet className="text-cyan-500 mr-2" size={16} />
                 <p>100% of proceeds donated to <a href="https://onewater.foundation" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">One Water Foundation</a></p>
               </div>
-              <Button onClick={redirectToPayment} className="w-full flex items-center justify-center gap-2">
-                Get Started <ExternalLink size={16} />
-              </Button>
+              <Link to="/create-your-own">
+                <Button className="w-full flex items-center justify-center gap-2">
+                  Get Started <ExternalLink size={16} />
+                </Button>
+              </Link>
             </motion.div>
             
             {/* Professional Profile Card */}
@@ -199,9 +203,11 @@ const InterestForm = () => {
                 <Droplet className="text-cyan-500 mr-2" size={16} />
                 <p>100% of proceeds donated to <a href="https://onewater.foundation" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">One Water Foundation</a></p>
               </div>
-              <Button onClick={redirectToPayment} className="w-full flex items-center justify-center gap-2">
-                Get Started <ExternalLink size={16} />
-              </Button>
+              <Link to="/create-your-own">
+                <Button className="w-full flex items-center justify-center gap-2">
+                  Get Started <ExternalLink size={16} />
+                </Button>
+              </Link>
             </motion.div>
           </div>
           
