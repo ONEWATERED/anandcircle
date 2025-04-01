@@ -57,7 +57,14 @@ export const fetchGalleryImages = async (category?: string): Promise<GalleryItem
 };
 
 // Upload a new gallery image
-export const uploadGalleryImage = async (file: File, item: Omit<GalleryItem, 'id' | 'imagePath'>): Promise<boolean> => {
+export const uploadGalleryImage = async ({file, title, description, category, icon_name, url}: {
+  file: File;
+  title: string;
+  description: string;
+  category: string;
+  icon_name: string;
+  url?: string;
+}): Promise<boolean> => {
   try {
     // Upload the image to storage
     const fileExt = file.name.split('.').pop();
@@ -83,11 +90,11 @@ export const uploadGalleryImage = async (file: File, item: Omit<GalleryItem, 'id
     
     // Insert the gallery item into the database using 'any' type temporarily
     const { error: insertError } = await (supabase.from('gallery_images') as any).insert({
-      title: item.title,
-      description: item.description,
-      category: item.category,
-      url: item.url || null,
-      icon_name: item.icon.toString().split('.')[1] || 'Brain', // Store icon name as string
+      title,
+      description,
+      category,
+      url: url || null,
+      icon_name: icon_name || 'Brain', // Store icon name as string
       image_path: imagePath
     });
     
@@ -102,6 +109,57 @@ export const uploadGalleryImage = async (file: File, item: Omit<GalleryItem, 'id
   } catch (error) {
     console.error("Error in uploadGalleryImage:", error);
     toast.error("Failed to upload gallery item");
+    return false;
+  }
+};
+
+// Delete a gallery image
+export const deleteGalleryImage = async (id: string): Promise<boolean> => {
+  try {
+    // Get the image path first to delete from storage
+    const { data: imageData, error: fetchError } = await (supabase.from('gallery_images') as any)
+      .select('image_path')
+      .eq('id', id)
+      .single();
+    
+    if (fetchError) {
+      console.error("Error fetching image to delete:", fetchError);
+      toast.error("Failed to delete image");
+      return false;
+    }
+    
+    // Delete the image from the database
+    const { error: deleteError } = await (supabase.from('gallery_images') as any)
+      .delete()
+      .eq('id', id);
+      
+    if (deleteError) {
+      console.error("Error deleting gallery item:", deleteError);
+      toast.error("Failed to delete image");
+      return false;
+    }
+    
+    // If there's an image path, delete from storage too
+    if (imageData?.image_path) {
+      // Extract filename from the URL
+      const urlParts = imageData.image_path.split('/');
+      const fileName = urlParts[urlParts.length - 1];
+      
+      const { error: storageError } = await supabase.storage
+        .from('gallery-images')
+        .remove([fileName]);
+        
+      if (storageError) {
+        console.error("Error deleting image from storage:", storageError);
+        // Continue anyway since the database record is deleted
+      }
+    }
+    
+    toast.success("Gallery item deleted successfully!");
+    return true;
+  } catch (error) {
+    console.error("Error in deleteGalleryImage:", error);
+    toast.error("Failed to delete gallery item");
     return false;
   }
 };

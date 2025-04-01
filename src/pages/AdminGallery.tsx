@@ -8,8 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Plus, Trash2, Upload, Image as ImageIcon } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
-import { uploadGalleryImage, getGalleryImages, deleteGalleryImage } from '@/services/galleryService';
+import { useToast } from '@/hooks/use-toast';
+import { fetchGalleryImages, uploadGalleryImage, deleteGalleryImage } from '@/services/galleryService';
 
 const AdminGallery = () => {
   const [images, setImages] = useState([]);
@@ -29,7 +29,7 @@ const AdminGallery = () => {
   const loadImages = async () => {
     setIsLoading(true);
     try {
-      const galleryImages = await getGalleryImages();
+      const galleryImages = await fetchGalleryImages();
       setImages(galleryImages);
     } catch (error) {
       console.error('Failed to load gallery images:', error);
