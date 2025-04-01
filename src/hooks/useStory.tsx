@@ -15,7 +15,6 @@ export interface SocialLinks {
   linkedIn: string;
   twitter: string;
   youtube: string;
-  spotify: string;
   anandCircle: string;
 }
 
@@ -31,9 +30,8 @@ export function useStory() {
   
   const [socialLinks, setSocialLinks] = useState<SocialLinks>({
     linkedIn: 'https://linkedin.com/in/hardeepanand',
-    twitter: 'https://twitter.com/hardeepanand',
+    twitter: 'https://x.com/HardeepAnandd',
     youtube: 'https://youtube.com/@hardeepanand',
-    spotify: 'https://open.spotify.com/user/hardeepanand',
     anandCircle: 'https://www.circleso.com'
   });
   
@@ -82,7 +80,6 @@ export function useStory() {
           linkedIn: userData.socialLinks.linkedIn || socialLinks.linkedIn,
           twitter: userData.socialLinks.twitter || socialLinks.twitter,
           youtube: userData.socialLinks.youtube || socialLinks.youtube,
-          spotify: userData.socialLinks.spotify || socialLinks.spotify,
           anandCircle: userData.socialLinks.anandCircle || socialLinks.anandCircle
         });
       }

@@ -1,3 +1,4 @@
+
 // Profile types module
 
 // Profile data interface
@@ -8,7 +9,6 @@ export interface ProfileData {
     linkedIn: string;
     twitter: string;
     youtube: string;
-    spotify: string;
     anandCircle: string;
   };
 }

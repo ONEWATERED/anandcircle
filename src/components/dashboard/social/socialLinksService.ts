@@ -6,7 +6,7 @@ export interface SocialLinksData {
   linkedIn: string;
   twitter: string;
   youtube: string;
-  spotify: string;
+  spotify: string; // Keep for backward compatibility
   anandCircle: string;
 }
 
@@ -39,7 +39,7 @@ export const saveSocialLinks = async (links: SocialLinksData) => {
           { user_id: session.user.id, platform: 'linkedin', url: ensureHttpProtocol(links.linkedIn) },
           { user_id: session.user.id, platform: 'twitter', url: ensureHttpProtocol(links.twitter) },
           { user_id: session.user.id, platform: 'youtube', url: ensureHttpProtocol(links.youtube) },
-          { user_id: session.user.id, platform: 'spotify', url: ensureHttpProtocol(links.spotify) },
+          // Spotify link is no longer saved
           { user_id: session.user.id, platform: 'anandcircle', url: links.anandCircle }
         ];
         
@@ -76,13 +76,11 @@ export const saveSocialLinks = async (links: SocialLinksData) => {
     // Always save to localStorage as fallback
     try {
       // Save links individually to avoid quota issues
-      Object.entries(links).forEach(([key, value]) => {
-        try {
-          localStorage.setItem(`${key}Url`, value);
-        } catch (e) {
-          console.warn(`Could not save ${key} to localStorage:`, e);
-        }
-      });
+      localStorage.setItem('linkedInUrl', links.linkedIn);
+      localStorage.setItem('twitterUrl', links.twitter);
+      localStorage.setItem('youtubeUrl', links.youtube);
+      // No longer saving Spotify to localStorage
+      localStorage.setItem('anandCircleUrl', links.anandCircle);
       success.localStorage = true;
     } catch (error) {
       console.error("Error saving links to localStorage:", error);
@@ -103,7 +101,7 @@ export const updatePersonalSocialLinks = async (links: SocialLinksData) => {
       { profile_id: 'hardeep', platform: 'linkedin', url: ensureHttpProtocol(links.linkedIn) },
       { profile_id: 'hardeep', platform: 'twitter', url: ensureHttpProtocol(links.twitter) },
       { profile_id: 'hardeep', platform: 'youtube', url: ensureHttpProtocol(links.youtube) },
-      { profile_id: 'hardeep', platform: 'spotify', url: ensureHttpProtocol(links.spotify) },
+      // Spotify link is no longer saved
       { profile_id: 'hardeep', platform: 'anandcircle', url: links.anandCircle }
     ];
     

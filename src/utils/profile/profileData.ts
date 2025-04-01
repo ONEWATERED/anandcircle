@@ -13,9 +13,8 @@ export const getUserProfileData = async (): Promise<ProfileData> => {
   // Get social links from localStorage as default values
   let socialLinks = {
     linkedIn: localStorage.getItem('linkedInUrl') || 'https://linkedin.com/in/hardeepanand',
-    twitter: localStorage.getItem('twitterUrl') || 'https://twitter.com/hardeepanand',
+    twitter: localStorage.getItem('twitterUrl') || 'https://x.com/HardeepAnandd',
     youtube: localStorage.getItem('youtubeUrl') || 'https://youtube.com/@hardeepanand',
-    spotify: localStorage.getItem('spotifyUrl') || 'https://open.spotify.com/user/hardeepanand',
     anandCircle: localStorage.getItem('anandCircleUrl') || '#anand-circle'
   };
   
@@ -40,7 +39,6 @@ export const getUserProfileData = async (): Promise<ProfileData> => {
           'linkedin': 'linkedIn',
           'twitter': 'twitter',
           'youtube': 'youtube',
-          'spotify': 'spotify',
           'anandcircle': 'anandCircle'
         };
         

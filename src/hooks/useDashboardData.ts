@@ -18,9 +18,9 @@ export const useDashboardData = () => {
     resumeUrl: '',
     socialLinks: {
       linkedInUrl: 'https://linkedin.com/in/hardeepanand',
-      twitterUrl: 'https://twitter.com/hardeepanand',
+      twitterUrl: 'https://x.com/HardeepAnandd',
       youtubeUrl: 'https://youtube.com/@hardeepanand',
-      spotifyUrl: 'https://open.spotify.com/user/hardeepanand',
+      spotifyUrl: '', // Keep this for backward compatibility with the form
       anandCircleUrl: '#anand-circle',
     },
     isDatabaseConnected: false,
@@ -49,7 +49,7 @@ export const useDashboardData = () => {
             linkedInUrl: userData.socialLinks.linkedIn,
             twitterUrl: userData.socialLinks.twitter,
             youtubeUrl: userData.socialLinks.youtube,
-            spotifyUrl: userData.socialLinks.spotify,
+            spotifyUrl: '', // Keep this for backward compatibility with the form
             anandCircleUrl: userData.socialLinks.anandCircle,
           } : data.socialLinks,
           isDatabaseConnected: isConnected,
