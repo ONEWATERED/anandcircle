@@ -1,7 +1,6 @@
 
 import React from 'react';
 import MainLayout from '@/layouts/MainLayout';
-import PassionSection from '@/components/PassionSection';
 import InterestForm from '@/components/InterestForm';
 import TabbedContentSection from '@/components/TabbedContentSection';
 import Story from '@/components/Story';
@@ -34,11 +33,6 @@ const Index = () => {
         {/* Gallery Preview section */}
         <div className="w-full">
           <GalleryPreview />
-        </div>
-        
-        {/* Passion section */}
-        <div className="w-full">
-          <PassionSection />
         </div>
         
         {/* Tabbed content */}
