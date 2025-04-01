@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, Rocket, Bot, FileText } from 'lucide-react';
+import { ArrowRight, BookOpen, Rocket, Bot } from 'lucide-react';
 import ResumeButton from '@/components/ResumeButton';
 import { useIsMobile } from '@/hooks/use-mobile';
 
