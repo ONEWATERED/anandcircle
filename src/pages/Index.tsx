@@ -5,7 +5,6 @@ import TabbedContentSection from '@/components/TabbedContentSection';
 import Story from '@/components/Story';
 import ProfileShowcase from '@/components/ProfileShowcase';
 import GalleryPreview from '@/components/GalleryPreview';
-import DigitalCloneConnect from '@/components/DigitalCloneConnect';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
@@ -22,11 +21,6 @@ const Index = () => {
         {/* Story section */}
         <div className="w-full">
           <Story />
-        </div>
-        
-        {/* Digital Twin section */}
-        <div className="w-full">
-          <DigitalCloneConnect />
         </div>
         
         {/* Gallery Preview section */}
