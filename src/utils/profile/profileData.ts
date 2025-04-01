@@ -1,21 +1,11 @@
 
+// Profile data management module
 import { supabase } from "@/integrations/supabase/client";
-import { ProfileData } from '../types';
+import { ProfileData } from './types';
+import { getProfileImage } from './profileImage';
+import { ensureHttpProtocol } from '../database/databaseUtils';
 
-// Define the profile data interface if not already defined elsewhere
-export interface ProfileData {
-  bio?: string;
-  photoUrl?: string;
-  socialLinks?: {
-    linkedIn: string;
-    twitter: string;
-    youtube: string;
-    spotify: string;
-    anandCircle: string;
-  };
-}
-
-// Get user profile data without images
+// Get user profile data
 export const getUserProfileData = async (): Promise<ProfileData> => {
   // Get bio from localStorage
   const bio = localStorage.getItem('userBio') || '';
@@ -73,5 +63,5 @@ export const getUserProfileData = async (): Promise<ProfileData> => {
   return { bio, socialLinks, photoUrl };
 };
 
-// Import required function
-import { getProfileImage } from './profileImage';
+// Re-export the ProfileData type
+export type { ProfileData };

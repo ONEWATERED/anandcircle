@@ -30,12 +30,10 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
     };
   }, [profileImageUrl]);
 
-  console.log("ProfileBackground rendering with image:", profileImageUrl, "Loaded:", imageLoaded);
-
   return (
     <>
-      {/* Colored background layer for better visibility */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900 to-slate-800" />
+      {/* Dark background layer to match the site's color scheme */}
+      <div className="absolute inset-0 bg-tech-dark" />
       
       {/* Background image container */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -43,7 +41,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
           <div 
             className="w-full h-full transition-opacity duration-500"
             style={{ 
-              opacity: imageLoaded ? 0.8 : 0,
+              opacity: imageLoaded ? 0.3 : 0, // Lower opacity for a more subtle background
             }}
           >
             {/* This div contains the full-size image with enhanced visibility */}
@@ -51,21 +49,18 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
               className="absolute inset-0 w-full h-full"
               style={{
                 backgroundImage: `url(${profileImageUrl})`,
-                backgroundSize: 'cover',  // Cover the entire area
+                backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
-                filter: 'brightness(1.5) contrast(1.2) saturate(1.2)'  // Significantly increase brightness
+                filter: 'brightness(0.7) contrast(1.2)'  // Darker filter to match site's dark theme
               }}
             />
           </div>
         )}
       </div>
       
-      {/* Add a colored overlay to enhance visibility */}
-      <div className="absolute inset-0 bg-blue-500/10 z-5" />
-      
-      {/* Gradient overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 z-10" />
+      {/* Dark gradient overlay for better text readability and to match site theme */}
+      <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/80 via-tech-dark/70 to-tech-dark/60 z-10" />
     </>
   );
 };
