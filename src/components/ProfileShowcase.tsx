@@ -9,7 +9,7 @@ import ScrollPrompt from './profile/ScrollPrompt';
 import { updatePersonalProfilePhoto } from '@/utils/profile';
 
 const ProfileShowcase = () => {
-  // Use the uploaded profile image
+  // Use the uploaded profile image - ensure this path is correct
   const profileImage = '/lovable-uploads/ec1e9051-5d60-4193-8ed2-401ee4998f6c.png';
   
   const [profileData, setProfileData] = useState({
@@ -28,6 +28,7 @@ const ProfileShowcase = () => {
     const loadProfileData = async () => {
       try {
         console.log("ProfileShowcase: Loading user profile data");
+        console.log("Using profile image:", profileImage);
         
         // Save the full-length profile image to the database
         await updatePersonalProfilePhoto(profileImage);
@@ -62,7 +63,7 @@ const ProfileShowcase = () => {
   return (
     <section 
       id="home" 
-      className="relative w-full min-h-screen overflow-hidden bg-tech-dark" // Match site's dark theme
+      className="relative w-full min-h-screen overflow-hidden bg-tech-dark" 
     >
       <ProfileBackground profileImageUrl={profileImage} />
       

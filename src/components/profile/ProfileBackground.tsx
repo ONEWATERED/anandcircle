@@ -41,7 +41,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
           <div 
             className="w-full h-full transition-opacity duration-500"
             style={{ 
-              opacity: imageLoaded ? 0.15 : 0, // Very subtle opacity for background presence
+              opacity: imageLoaded ? 0.25 : 0, // Increased opacity slightly for better visibility
             }}
           >
             {/* This div contains the full-length image styled for visibility */}
@@ -49,18 +49,18 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
               className="absolute inset-0 w-full h-full"
               style={{
                 backgroundImage: `url(${profileImageUrl})`,
-                backgroundSize: 'contain', // Changed to 'contain' to show full-length
-                backgroundPosition: 'right center', // Position to right side for better visibility
+                backgroundSize: 'contain', // Keep 'contain' to show full-length
+                backgroundPosition: 'right center', // Position to right side
                 backgroundRepeat: 'no-repeat',
-                filter: 'brightness(0.6) contrast(1.1)'  // Subtle filter for dark theme
+                filter: 'brightness(0.8) contrast(1.2)'  // Adjusted filter for better visibility
               }}
             />
           </div>
         )}
       </div>
       
-      {/* Dark gradient overlay for better text readability and to match site theme */}
-      <div className="absolute inset-0 bg-gradient-to-r from-tech-dark via-tech-dark/95 to-tech-dark/80 z-10" />
+      {/* Adjusted gradient overlay to allow more image visibility on the right side */}
+      <div className="absolute inset-0 bg-gradient-to-r from-tech-dark via-tech-dark/90 to-tech-dark/70 z-10" />
     </>
   );
 };
