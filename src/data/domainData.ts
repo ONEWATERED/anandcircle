@@ -19,7 +19,7 @@ export const domains: DomainData[] = [
     title: 'One Water',
     icon: Droplet,
     color: 'rgb(6, 182, 212)', // cyan-500
-    description: 'Creating a world where clean water flows for everyone through smarter technology',
+    description: 'I work on creating a world where clean water flows for everyone through innovative technology and community engagement.',
     initialAngle: 0, // Top position (12 o'clock)
     link: 'https://www.onewater.ai'
   },
@@ -28,7 +28,7 @@ export const domains: DomainData[] = [
     title: 'AI & Innovation',
     icon: Brain,
     color: 'rgb(16, 185, 129)', // emerald-500
-    description: 'Bringing AI magic to solve real problems in fun and creative ways',
+    description: 'I love bringing AI to solve real-world problems in creative ways that make a positive impact on communities.',
     initialAngle: 72, // 72 degrees clockwise (about 2:30 position)
     link: 'https://www.onewater.ai'
   },
@@ -37,7 +37,7 @@ export const domains: DomainData[] = [
     title: 'Data Science',
     icon: Database,
     color: 'rgb(139, 92, 246)', // violet-500
-    description: 'Turning complex data into friendly insights that actually make sense',
+    description: 'I enjoy turning complex data into meaningful insights that help people make better decisions in their everyday lives.',
     initialAngle: 144, // 144 degrees clockwise (about 5 o'clock position)
     link: 'https://www.onewater.ai'
   },
@@ -46,7 +46,7 @@ export const domains: DomainData[] = [
     title: 'Mentoring',
     icon: GraduationCap,
     color: 'rgb(168, 85, 247)', // purple-500
-    description: 'Helping others discover their superpowers through thoughtful guidance',
+    description: 'I'm passionate about helping others discover their potential through guidance and sharing what I've learned along my journey.',
     initialAngle: 216, // 216 degrees clockwise (about 7:30 position)
     link: 'https://www.circleso.com'
   },
@@ -55,7 +55,7 @@ export const domains: DomainData[] = [
     title: 'Nuclear Family',
     icon: Users,
     color: 'rgb(244, 114, 182)', // rose-500
-    description: 'Building happy, connected families as the heart of our communities',
+    description: 'I believe in nurturing strong family connections as the foundation for healthy communities and personal wellbeing.',
     initialAngle: 288, // 288 degrees clockwise (about 10 o'clock position)
     link: 'https://www.circleso.com'
   },
@@ -64,7 +64,7 @@ export const domains: DomainData[] = [
     title: 'Wellness',
     icon: HeartPulse,
     color: 'rgb(59, 130, 246)', // blue-500
-    description: 'Making health simple, fun and achievable for everyday life',
+    description: 'I focus on making health simple and achievable for everyone through holistic approaches to physical and mental wellbeing.',
     initialAngle: 360, // 360 degrees clockwise (back to 12 o'clock)
     link: 'https://www.onewater.ai'
   },

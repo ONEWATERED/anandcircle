@@ -17,15 +17,39 @@ import {
 const DigitalCloneConnect = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   
-  // Reordering the domains according to the specified order
-  const orderedDomains = [
-    domains.find(d => d.id === 'water'),     // 1. One Water
-    domains.find(d => d.id === 'ai'),        // 2. AI
-    domains.find(d => d.id === 'data'),      // 3. Data
-    domains.find(d => d.id === 'mentoring'), // 4. Mentoring
-    domains.find(d => d.id === 'family'),    // 5. Nuclear Family
-    domains.find(d => d.id === 'health'),    // 6. Health
-  ].filter(Boolean); // Filter out any undefined values
+  // Reordering and grouping the domains
+  const groupedDomains = [
+    // Group 1: AI & Data
+    {
+      id: 'tech',
+      domains: [
+        domains.find(d => d.id === 'ai'),        // AI
+        domains.find(d => d.id === 'data'),      // Data
+      ].filter(Boolean)
+    },
+    // Group 2: One Water
+    {
+      id: 'water',
+      domains: [
+        domains.find(d => d.id === 'water'),     // One Water
+      ].filter(Boolean)
+    },
+    // Group 3: Mentoring & Family
+    {
+      id: 'people',
+      domains: [
+        domains.find(d => d.id === 'mentoring'), // Mentoring
+        domains.find(d => d.id === 'family'),    // Nuclear Family
+      ].filter(Boolean)
+    },
+    // Group 4: Health
+    {
+      id: 'health',
+      domains: [
+        domains.find(d => d.id === 'health'),    // Health
+      ].filter(Boolean)
+    }
+  ];
   
   const handleOpenDelphi = () => {
     window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer');
@@ -160,26 +184,15 @@ const DigitalCloneConnect = () => {
           transition={{ duration: 0.5, delay: 0.6 }}
         >
           <h3 className="text-xl md:text-2xl font-medium text-center mb-8 text-white">
-            My Areas of <span className="text-gradient-cyan-purple">Expertise</span>
+            What I'm <span className="text-gradient-cyan-purple">Passionate About</span>
           </h3>
           
-          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-            {orderedDomains.map((domain) => {
-              const Icon = domain.icon;
-              const pastelColors = {
-                'water': '#D3E4FD', // soft blue
-                'ai': '#E5DEFF',    // soft purple
-                'data': '#E5DEFF',  // soft purple (matching AI for now)
-                'mentoring': '#FDE1D3', // soft peach
-                'family': '#FFDEE2',  // soft pink
-                'health': '#D3FDDF',  // soft mint
-              };
-              const bgColor = pastelColors[domain.id] || '#F1F0FB'; // default soft gray
-              
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mx-auto max-w-5xl">
+            {groupedDomains.map((group) => {
               return (
                 <motion.div 
-                  key={domain.id}
-                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5 flex flex-col items-center text-center hover:bg-white/20 transition-all duration-300 w-40 md:w-48 cursor-pointer"
+                  key={group.id}
+                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5 hover:bg-white/20 transition-all duration-300 cursor-pointer"
                   whileHover={{ 
                     y: -5,
                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
@@ -187,18 +200,30 @@ const DigitalCloneConnect = () => {
                   }}
                   onClick={() => setDialogOpen(true)}
                 >
-                  <div 
-                    className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
-                    style={{ backgroundColor: `${domain.color}30` }}
-                  >
-                    <Icon size={24} color={domain.color} />
+                  <div className="flex flex-col h-full">
+                    {group.domains.map((domain, index) => {
+                      if (!domain) return null;
+                      const Icon = domain.icon;
+                      
+                      return (
+                        <div key={domain.id} className={`${index > 0 ? 'mt-4 pt-4 border-t border-white/10' : ''}`}>
+                          <div className="flex items-center mb-2">
+                            <div 
+                              className="w-8 h-8 rounded-full flex items-center justify-center mr-3"
+                              style={{ backgroundColor: `${domain.color}30` }}
+                            >
+                              <Icon size={16} color={domain.color} />
+                            </div>
+                            <h4 className="text-base font-medium text-white">{domain.title}</h4>
+                          </div>
+                          
+                          <p className="text-xs text-gray-300">
+                            {domain.description}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
-                  
-                  <h4 className="text-base font-medium mb-1 text-white">{domain.title}</h4>
-                  
-                  <p className="text-xs text-gray-300 line-clamp-2">
-                    {domain.description}
-                  </p>
                 </motion.div>
               );
             })}
