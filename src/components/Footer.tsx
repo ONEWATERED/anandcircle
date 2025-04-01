@@ -46,18 +46,6 @@ const Footer = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#passions" className="text-gray-400 hover:text-primary transition-colors flex items-center">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mr-2"></span>
-                    My Interests
-                  </a>
-                </li>
-                <li>
-                  <a href="#articles" className="text-gray-400 hover:text-primary transition-colors flex items-center">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mr-2"></span>
-                    Articles
-                  </a>
-                </li>
-                <li>
                   <a href="#digital-clone" className="text-gray-400 hover:text-primary transition-colors flex items-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mr-2"></span>
                     Digital Clone
