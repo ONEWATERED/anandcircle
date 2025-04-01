@@ -12,7 +12,7 @@ const CoursesHeader = () => {
         <span>Join Our Circle Community</span>
       </div>
       
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6">
+      <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6 text-white">
         Learn With Me in the <span className="text-gradient-cyan-purple">One Water Circle</span>
       </h2>
       

@@ -10,8 +10,8 @@ const HealthResourcesHeader = () => {
         <span>Health & Wellness</span>
       </div>
       
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6">
-        My <span className="text-gradient-primary">Health Journey</span> & Research
+      <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6 text-white">
+        My <span className="text-gradient-cyan-purple">Health Journey</span> & Research
       </h2>
       
       <p className="text-muted-foreground max-w-2xl mx-auto">

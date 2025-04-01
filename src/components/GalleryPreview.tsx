@@ -43,7 +43,7 @@ const GalleryPreview = () => {
           </div>
           
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-            Peek Into <span className="text-gradient-tech">My Gallery</span>
+            Peek Into <span className="text-gradient-cyan-purple">My Gallery</span>
           </h2>
           
           <p className="text-gray-300 max-w-2xl mx-auto">

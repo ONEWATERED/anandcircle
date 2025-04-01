@@ -10,8 +10,8 @@ const AIGalleryHeader = () => {
         <span>My Visual Collection</span>
       </div>
       
-      <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6">
-        Peek Into <span className="text-gradient-primary">My Gallery</span>
+      <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6 text-white">
+        Peek Into <span className="text-gradient-cyan-purple">My Gallery</span>
       </h2>
       
       <p className="text-muted-foreground max-w-2xl mx-auto">
