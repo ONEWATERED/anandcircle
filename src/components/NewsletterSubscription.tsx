@@ -46,7 +46,7 @@ const NewsletterSubscription = () => {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-full">
+        <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-full cursor-pointer">
           Subscribe to Newsletter
         </Button>
       </PopoverTrigger>
@@ -79,7 +79,7 @@ const NewsletterSubscription = () => {
               
               <Button 
                 type="submit" 
-                className="w-full bg-primary hover:bg-primary/90 text-white"
+                className="w-full bg-primary hover:bg-primary/90 text-white cursor-pointer"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Subscribing..." : "Subscribe"}

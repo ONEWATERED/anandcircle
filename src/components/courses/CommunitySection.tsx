@@ -36,12 +36,14 @@ const CommunitySection = () => {
               <span className="text-sm">Join our live Q&A sessions and discussions</span>
             </li>
           </ul>
-          <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
-            <Button size="lg" className="bg-gradient-to-r from-tech-cyan to-tech-purple hover:from-tech-cyan/90 hover:to-tech-purple/90 text-white shadow-neon-cyan">
-              Join One Water Circle for Free
-              <ExternalLink className="ml-2 h-4 w-4" />
-            </Button>
-          </a>
+          <Button 
+            size="lg" 
+            className="bg-gradient-to-r from-tech-cyan to-tech-purple hover:from-tech-cyan/90 hover:to-tech-purple/90 text-white shadow-neon-cyan cursor-pointer"
+            onClick={() => window.open('https://www.circleso.com', '_blank', 'noopener,noreferrer')}
+          >
+            Join One Water Circle for Free
+            <ExternalLink className="ml-2 h-4 w-4" />
+          </Button>
         </div>
         
         <div className="md:w-1/2 space-y-6">

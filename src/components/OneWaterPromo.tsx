@@ -22,7 +22,7 @@ const OneWaterPromo = () => {
             <Button 
               variant="outline" 
               size="sm" 
-              className="bg-white/20 hover:bg-white/30 text-white border-white/30 font-medium"
+              className="bg-white/20 hover:bg-white/30 text-white border-white/30 font-medium cursor-pointer"
               onClick={() => window.open('https://www.onewater.foundation', '_blank', 'noopener,noreferrer')}
             >
               <span>Foundation</span>
@@ -31,7 +31,7 @@ const OneWaterPromo = () => {
             <Button 
               variant="outline" 
               size="sm" 
-              className="bg-white/20 hover:bg-white/30 text-white border-white/30 font-medium"
+              className="bg-white/20 hover:bg-white/30 text-white border-white/30 font-medium cursor-pointer"
               onClick={() => window.open('https://www.onewater.ai', '_blank', 'noopener,noreferrer')}
             >
               <span>One Water AI</span>

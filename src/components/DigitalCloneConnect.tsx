@@ -16,7 +16,7 @@ const DigitalCloneConnect = () => {
   const orderedDomains = [
     domains.find(d => d.id === 'water'),     // 1. One Water
     domains.find(d => d.id === 'ai'),        // 2. AI
-    domains.find(d => d.id === 'ai'),        // 3. Data (using AI for now as placeholder)
+    domains.find(d => d.id === 'data'),      // 3. Data
     domains.find(d => d.id === 'mentoring'), // 4. Mentoring
     domains.find(d => d.id === 'family'),    // 5. Nuclear Family
     domains.find(d => d.id === 'health'),    // 6. Health
@@ -74,11 +74,12 @@ const DigitalCloneConnect = () => {
           />
           
           <motion.div 
-            className="relative"
+            className="relative cursor-pointer"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 100, damping: 15 }}
+            onClick={() => setShowAvatarDialog(true)}
           >
             <div className="bg-white p-1 rounded-full">
               <Avatar className="h-24 w-24 bg-primary/10">
@@ -106,7 +107,7 @@ const DigitalCloneConnect = () => {
             variant="tech"
             glow="purple"
             onClick={() => setShowAvatarDialog(true)}
-            className="text-white hover:text-white"
+            className="text-white hover:text-white cursor-pointer"
           >
             Connect with My Digital Twin
           </Button>
@@ -125,11 +126,12 @@ const DigitalCloneConnect = () => {
           </h3>
           
           <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-            {domains.map((domain) => {
+            {orderedDomains.map((domain) => {
               const Icon = domain.icon;
               const pastelColors = {
                 'water': '#D3E4FD', // soft blue
                 'ai': '#E5DEFF',    // soft purple
+                'data': '#E5DEFF',  // soft purple (matching AI for now)
                 'mentoring': '#FDE1D3', // soft peach
                 'family': '#FFDEE2',  // soft pink
                 'health': '#D3FDDF',  // soft mint
@@ -139,11 +141,16 @@ const DigitalCloneConnect = () => {
               return (
                 <motion.div 
                   key={domain.id}
-                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5 flex flex-col items-center text-center hover:bg-white/20 transition-all duration-300 w-40 md:w-48"
+                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5 flex flex-col items-center text-center hover:bg-white/20 transition-all duration-300 w-40 md:w-48 cursor-pointer"
                   whileHover={{ 
                     y: -5,
                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
                     transition: { duration: 0.2 }
+                  }}
+                  onClick={() => {
+                    if (domain.link) {
+                      window.open(domain.link, '_blank', 'noopener,noreferrer');
+                    }
                   }}
                 >
                   <div 

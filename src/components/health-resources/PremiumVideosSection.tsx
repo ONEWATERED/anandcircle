@@ -2,7 +2,6 @@
 import React from 'react';
 import { Lock, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 
 const PremiumVideosSection = () => {
   return (
@@ -13,12 +12,13 @@ const PremiumVideosSection = () => {
         <p className="text-muted-foreground mb-6">
           I've created in-depth videos, workshops, and expert interviews on health topics that I'm excited to share with our community members.
         </p>
-        <Link to="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
-          <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8">
-            <Users className="mr-2 h-4 w-4" />
-            Join Our Circle for Free
-          </Button>
-        </Link>
+        <Button 
+          className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8 cursor-pointer"
+          onClick={() => window.open('https://www.circleso.com', '_blank', 'noopener,noreferrer')}
+        >
+          <Users className="mr-2 h-4 w-4" />
+          Join Our Circle for Free
+        </Button>
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ const CoursesHeader = () => {
         Join our free Circle community first and get early access to these premium courses when they launch!
       </p>
       
-      <Link to="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
+      <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
         <Button 
           size="lg" 
           className="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:opacity-90 text-white mb-8"
@@ -29,7 +29,7 @@ const CoursesHeader = () => {
           <Users className="mr-2 h-4 w-4" />
           Join One Water Circle for Free
         </Button>
-      </Link>
+      </a>
     </div>
   );
 };

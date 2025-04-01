@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Download, Play, FileText } from 'lucide-react';
 import { Publication } from '@/types/publications';
@@ -13,7 +14,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Lock, Users } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 interface PublicationCardProps {
   publication: Publication;
@@ -33,15 +33,20 @@ const PublicationCard = ({ publication }: PublicationCardProps) => {
           <CardDescription>{publication.description}</CardDescription>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button variant="outline" size="sm">
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="cursor-pointer"
+            onClick={() => window.open(publication.pdfUrl, '_blank', 'noopener,noreferrer')}
+          >
             <Download className="mr-2 h-4 w-4" />
-            <a href={publication.pdfUrl} download>Download PDF</a>
+            Download PDF
           </Button>
           
           {publication.hasVideo && (
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="cursor-pointer">
                   <Play className="mr-2 h-4 w-4" />
                   Preview
                 </Button>
@@ -62,12 +67,13 @@ const PublicationCard = ({ publication }: PublicationCardProps) => {
                   </div>
                 </div>
                 <DialogFooter className="sm:justify-center">
-                  <Link to="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
-                    <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white">
-                      <Users className="mr-2 h-4 w-4" />
-                      Join Our Circle Community
-                    </Button>
-                  </Link>
+                  <Button 
+                    className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white cursor-pointer"
+                    onClick={() => window.open('https://www.circleso.com', '_blank', 'noopener,noreferrer')}
+                  >
+                    <Users className="mr-2 h-4 w-4" />
+                    Join Our Circle Community
+                  </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
