@@ -24,10 +24,10 @@ const CoursesHeader = () => {
       <Link to="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
         <Button 
           size="lg" 
-          className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white mb-8"
+          className="bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 hover:opacity-90 text-white mb-8"
         >
           <Users className="mr-2 h-4 w-4" />
-          Join Our Circle for Free
+          Join One Water Circle for Free
         </Button>
       </Link>
     </div>
