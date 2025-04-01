@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, Rocket, Bot } from 'lucide-react';
+import { ArrowRight, BookOpen, Rocket, MessageCircle } from 'lucide-react';
 import ResumeButton from '@/components/ResumeButton';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -82,8 +82,8 @@ const ProfileHeader: React.FC = () => {
           onClick={() => document.getElementById('digital-avatar')?.scrollIntoView({ behavior: 'smooth' })}
           className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white font-medium shadow-neon-purple rounded-xl px-6 hover:shadow-lg hover:scale-105 transition-all duration-300"
         >
-          <Bot className="mr-2 h-5 w-5" />
-          <span>Chat with my AI-powered Digital Twin</span>
+          <MessageCircle className="mr-2 h-5 w-5" />
+          <span>Let's Have a Conversation</span>
           <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </Button>
       </motion.div>

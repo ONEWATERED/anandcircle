@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, MessageSquare, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +30,12 @@ const AvatarDialog = ({
   handleAvatarHover,
   handleAvatarLeave
 }: AvatarDialogProps) => {
+  const handleChatNow = () => {
+    // Open the Delphi chat in a new tab
+    window.open('https://www.delphi.co', '_blank', 'noopener,noreferrer');
+    setShowAvatarDialog(false);
+  };
+  
   return (
     <Dialog open={showAvatarDialog} onOpenChange={setShowAvatarDialog}>
       <DialogTrigger asChild>
@@ -53,38 +59,57 @@ const AvatarDialog = ({
           
           {showAvatarHint && (
             <div className="absolute right-0 top-10 bg-white p-2 rounded-lg shadow-sm min-w-48 z-50 border border-gray-100">
-              <Badge className="bg-primary mb-1">Digital Twin</Badge>
-              <p className="text-xs text-foreground/90 mb-1">Chat with my AI-powered digital twin.</p>
-              <p className="text-[10px] text-foreground/70">Trained on my knowledge & expertise</p>
+              <Badge className="bg-primary mb-1">Let's Chat</Badge>
+              <p className="text-xs text-foreground/90 mb-1">Have a conversation with me!</p>
+              <p className="text-[10px] text-foreground/70">Ask me anything about my work</p>
             </div>
           )}
         </Link>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md bg-primary text-white">
+      <DialogContent className="sm:max-w-md bg-gradient-to-br from-[#0EA5E9] to-[#9333EA] text-white">
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold text-white">Meet My Digital Avatar</DialogTitle>
-          <DialogDescription className="text-white/80">
-            Connect with my AI-powered digital twin to learn more about my work.
+          <DialogTitle className="text-xl font-bold text-white">Let's Have a Conversation</DialogTitle>
+          <DialogDescription className="text-white/90">
+            I'm here to chat with you about my work, ideas, and experiences
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center gap-4 py-4">
-          <div className="bg-white/10 p-2 rounded-full">
-            <Avatar className="h-20 w-20">
-              <AvatarFallback className="bg-white/20 text-white text-xl">
-                AI
+          <div className="bg-white/20 p-3 rounded-full">
+            <Avatar className="h-24 w-24">
+              <AvatarFallback className="bg-white/30 text-white text-2xl font-bold">
+                HA
               </AvatarFallback>
             </Avatar>
           </div>
           
-          <p className="text-center text-white/90 px-2">
-            My digital avatar can answer questions about my experience, projects, and vision for AI and healthcare.
+          <p className="text-center text-white px-4 text-lg">
+            Hi there! I'm excited to chat with you. What would you like to know about my work in water, AI, health, or anything else?
           </p>
-          <div className="flex gap-3 mt-2">
-            <Button variant="secondary" className="bg-white/20 text-white" onClick={() => setShowAvatarDialog(false)}>
+          
+          <div className="grid grid-cols-2 gap-3 w-full mt-2">
+            <div className="bg-white/10 rounded-lg p-3 text-center">
+              <MessageSquare className="h-6 w-6 mx-auto mb-2" />
+              <p className="text-sm">Ask about my projects</p>
+            </div>
+            <div className="bg-white/10 rounded-lg p-3 text-center">
+              <MessageCircle className="h-6 w-6 mx-auto mb-2" />
+              <p className="text-sm">Discuss industry trends</p>
+            </div>
+          </div>
+          
+          <div className="flex gap-3 mt-4 w-full">
+            <Button 
+              variant="secondary" 
+              className="bg-white/20 text-white hover:bg-white/30 flex-1" 
+              onClick={() => setShowAvatarDialog(false)}
+            >
               Maybe Later
             </Button>
-            <Button className="bg-white text-primary">
-              Chat Now
+            <Button 
+              className="bg-white text-primary hover:bg-white/90 flex-1 flex items-center justify-center"
+              onClick={handleChatNow}
+            >
+              Start Chatting <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </div>

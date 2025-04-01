@@ -50,16 +50,16 @@ const DigitalCloneConnect = () => {
         >
           <div className="inline-flex items-center justify-center px-4 py-1.5 mb-3 rounded-full bg-[#0EA5E9]/10 text-[#0EA5E9] font-medium border border-[#0EA5E9]/20">
             <MessageCircle className="mr-2 h-4 w-4" />
-            <span>Digital Twin</span>
+            <span>Let's Chat</span>
           </div>
           
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-            Chat With My <span className="text-gradient-cyan-purple">Digital Twin</span>
+            Have a Conversation <span className="text-gradient-cyan-purple">With Me</span>
           </h2>
           
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Interact with my AI-powered digital avatar, trained on my knowledge and experience. 
-            Ask questions, explore my projects, and get insights into my vision for the future.
+            Let's chat! My AI assistant is ready to answer your questions about my work, 
+            ideas, and experiences. Feel free to ask me anything you're curious about.
           </p>
         </motion.div>
         
@@ -108,7 +108,7 @@ const DigitalCloneConnect = () => {
             onClick={() => setShowAvatarDialog(true)}
             className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white shadow-neon-purple hover:shadow-neon-cyan hover:opacity-90 cursor-pointer transition-all duration-300"
           >
-            Connect with My Digital Twin
+            Chat With Me Now
           </Button>
         </motion.div>
 
@@ -146,11 +146,7 @@ const DigitalCloneConnect = () => {
                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
                     transition: { duration: 0.2 }
                   }}
-                  onClick={() => {
-                    if (domain.link) {
-                      window.open(domain.link, '_blank', 'noopener,noreferrer');
-                    }
-                  }}
+                  onClick={() => setShowAvatarDialog(true)}
                 >
                   <div 
                     className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
