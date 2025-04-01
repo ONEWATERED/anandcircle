@@ -15,7 +15,10 @@ import {
   ArrowUpRight,
   Sparkles,
   UserRound,
-  CreditCard
+  CreditCard,
+  MessageSquare,
+  PhoneCall,
+  Blocks // Import Blocks icon for Blockchain
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -29,6 +32,20 @@ const DigitalCloneConnect = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const isMobile = useIsMobile();
 
+  // Add Blockchain domain if it's not already in the domains list
+  const allDomains = [...domains];
+  const hasBlockchainDomain = domains.some(domain => domain.id === 'blockchain');
+  
+  if (!hasBlockchainDomain) {
+    allDomains.push({
+      id: 'blockchain',
+      title: 'Blockchain',
+      description: 'Digital ledger technologies, decentralized applications, and innovations in Web3 and cryptocurrency ecosystems.',
+      icon: Blocks,
+      color: '#10B981' // Using the same green color as in the header
+    });
+  }
+
   const handleConnectClick = (domainId: string) => {
     setSelectedDomain(domainId);
     setDialogOpen(true);
@@ -37,7 +54,7 @@ const DigitalCloneConnect = () => {
   // External direct link to Delphi
   const delphiBaseUrl = "https://www.delphi.ai/hardeepanand";
   const domainUrl = selectedDomain ? `${delphiBaseUrl}?domain=${selectedDomain}` : delphiBaseUrl;
-  const domain = selectedDomain ? domains.find(d => d.id === selectedDomain) : null;
+  const domain = selectedDomain ? allDomains.find(d => d.id === selectedDomain) : null;
 
   return (
     <section id="digital-avatar" className="py-16 md:py-24 bg-gradient-to-b from-tech-dark to-tech-dark/90 border-t border-[#0EA5E9]/20">
@@ -96,7 +113,7 @@ const DigitalCloneConnect = () => {
             
             {/* Grid display for domains with improved design */}
             <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${isExpanded ? '' : 'md:grid-rows-1 overflow-hidden'}`}>
-              {domains.slice(0, isExpanded ? domains.length : 3).map((domain, index) => {
+              {allDomains.slice(0, isExpanded ? allDomains.length : 3).map((domain, index) => {
                 const Icon = domain.icon;
                 
                 return (
@@ -124,7 +141,11 @@ const DigitalCloneConnect = () => {
                         {domain.description}
                       </p>
                       <Button variant="default" size={isMobile ? "sm" : "default"} className="w-full justify-between mt-2 bg-gradient-to-r from-[#0EA5E9]/20 to-[#9333EA]/20 hover:from-[#0EA5E9]/40 hover:to-[#9333EA]/40 text-white border border-[#0EA5E9]/30 group-hover:border-[#0EA5E9]/60 shadow-neon-cyan group-hover:shadow-neon-purple transition-all duration-300">
-                        <span>Chat About This</span>
+                        <div className="flex items-center">
+                          <MessageSquare className="h-4 w-4 mr-2" />
+                          <PhoneCall className="h-4 w-4 mr-2" />
+                          <span>Connect</span>
+                        </div>
                         <ExternalLink className="h-4 w-4 group-hover:rotate-12 transition-transform" />
                       </Button>
                     </div>
