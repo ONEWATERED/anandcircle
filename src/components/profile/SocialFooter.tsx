@@ -8,7 +8,6 @@ interface SocialFooterProps {
     linkedIn: string;
     twitter: string;
     youtube: string;
-    spotify: string;
     anandCircle: string;
   };
   isLoading: boolean;

@@ -1,13 +1,12 @@
 
 import React from 'react';
-import { Twitter, Linkedin, Youtube, Music, ExternalLink } from 'lucide-react';
+import { Twitter, Linkedin, Youtube, ExternalLink } from 'lucide-react';
 
 interface SocialMediaLinksProps {
   links: {
     linkedIn: string;
     twitter: string;
     youtube: string;
-    spotify: string;
     anandCircle: string;
   };
   className?: string;
@@ -58,18 +57,6 @@ const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({
           className="hover:scale-110 transition-transform"
         >
           <Youtube className={iconClasses} />
-        </a>
-      )}
-      
-      {links.spotify && (
-        <a 
-          href={links.spotify} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          aria-label="Spotify"
-          className="hover:scale-110 transition-transform"
-        >
-          <Music className={iconClasses} />
         </a>
       )}
       

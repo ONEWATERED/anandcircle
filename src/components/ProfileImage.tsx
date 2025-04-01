@@ -14,7 +14,6 @@ const ProfileImage = () => {
     linkedIn: 'https://linkedin.com/in/hardeepanand',
     twitter: 'https://x.com/HardeepAnandd',
     youtube: 'https://youtube.com/@hardeepanand',
-    spotify: 'https://open.spotify.com/user/hardeepanand',
     anandCircle: 'https://www.circleso.com'
   });
 
@@ -43,7 +42,6 @@ const ProfileImage = () => {
               if (platform === 'linkedin') links.linkedIn = ensureHttpProtocol(link.url);
               if (platform === 'twitter') links.twitter = ensureHttpProtocol(link.url);
               if (platform === 'youtube') links.youtube = ensureHttpProtocol(link.url);
-              if (platform === 'spotify') links.spotify = ensureHttpProtocol(link.url);
               if (platform === 'anandcircle') links.anandCircle = link.url;
             });
             
