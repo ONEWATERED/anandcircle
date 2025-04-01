@@ -1,9 +1,11 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { MessageCircle } from 'lucide-react';
 import AvatarDialog from '@/components/profile/AvatarDialog';
+import { domains } from '@/data/domainData';
 
 const DigitalCloneConnect = () => {
   const [showAvatarHint, setShowAvatarHint] = useState(false);
@@ -98,6 +100,50 @@ const DigitalCloneConnect = () => {
           >
             Connect with My Digital Twin
           </Button>
+        </motion.div>
+
+        {/* Domain expertise cards */}
+        <motion.div
+          className="mt-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <h3 className="text-xl md:text-2xl font-medium text-center mb-8 text-white">
+            My Areas of <span className="text-gradient-cyan-purple">Expertise</span>
+          </h3>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {domains.map((domain) => {
+              const Icon = domain.icon;
+              
+              return (
+                <motion.div 
+                  key={domain.id}
+                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 flex flex-col items-center text-center hover:bg-white/10 transition-colors shadow-lg"
+                  whileHover={{ 
+                    y: -5, 
+                    boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                    transition: { duration: 0.2 }
+                  }}
+                >
+                  <div 
+                    className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
+                    style={{ backgroundColor: `${domain.color}20` }}
+                  >
+                    <Icon size={24} color={domain.color} />
+                  </div>
+                  
+                  <h4 className="text-sm font-medium mb-1 text-white">{domain.title}</h4>
+                  
+                  <p className="text-xs text-gray-400 line-clamp-2">
+                    {domain.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
         </motion.div>
       </div>
     </section>
