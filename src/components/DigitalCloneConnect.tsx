@@ -18,7 +18,7 @@ import {
   CreditCard,
   MessageSquare,
   PhoneCall,
-  Blocks // Import Blocks icon for Blockchain
+  Blocks
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -42,7 +42,8 @@ const DigitalCloneConnect = () => {
       title: 'Blockchain',
       description: 'Digital ledger technologies, decentralized applications, and innovations in Web3 and cryptocurrency ecosystems.',
       icon: Blocks,
-      color: '#10B981' // Using the same green color as in the header
+      color: '#10B981', // Using the same green color as in the header
+      initialAngle: 270 // Adding the required initialAngle property
     });
   }
 
@@ -60,12 +61,12 @@ const DigitalCloneConnect = () => {
     <section id="digital-avatar" className="py-16 md:py-24 bg-gradient-to-b from-tech-dark to-tech-dark/90 border-t border-[#0EA5E9]/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 animate-fade-up">
-          <h2 className="text-sm font-medium tracking-widest text-[#0EA5E9] uppercase mb-3">Digital Experience</h2>
-          <h3 className="text-3xl md:text-5xl font-display font-bold mb-6 text-white">Interact With My AI Avatar</h3>
+          <h2 className="text-sm font-medium tracking-widest text-[#0EA5E9] uppercase mb-3">Let's Connect</h2>
+          <h3 className="text-3xl md:text-5xl font-display font-bold mb-6 text-white">Chat With My Digital Twin</h3>
           <div className="h-1 w-24 bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] mx-auto rounded-full my-6"></div>
           <p className="text-gray-300 max-w-2xl mx-auto mt-6">
-            Experience a conversation with my AI-powered digital twin. Ask me anything about technology, 
-            healthcare, community initiatives, or my personal journey - powered by advanced AI.
+            Hey there! I've created a virtual version of myself that you can chat with anytime. 
+            Ask me anything about my work with water sustainability, AI, healthcare, or just about life in general!
           </p>
           
           <div className="mt-8 flex flex-col md:flex-row items-center justify-center gap-4">
@@ -75,7 +76,7 @@ const DigitalCloneConnect = () => {
               size="lg"
             >
               <Bot className="h-6 w-6 mr-3" />
-              <span>Start Chatting with My Digital Twin</span>
+              <span>Say Hi to My Digital Twin</span>
               <ArrowUpRight className="ml-3 h-5 w-5 group-hover:translate-x-1 group-hover:translate-y-[-4px] transition-transform" />
             </Button>
             
@@ -86,7 +87,7 @@ const DigitalCloneConnect = () => {
                 size="lg"
               >
                 <UserRound className="h-6 w-6 mr-3" />
-                <span>Create Your Own Digital Twin</span>
+                <span>Create Your Own Twin</span>
                 <ArrowUpRight className="ml-3 h-5 w-5 group-hover:translate-x-1 group-hover:translate-y-[-4px] transition-transform" />
               </Button>
             </Link>
@@ -99,14 +100,14 @@ const DigitalCloneConnect = () => {
             <div className="flex justify-between items-center mb-6">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-[#0EA5E9]" />
-                <h4 className="text-xl font-semibold text-white">Specialized Topics</h4>
+                <h4 className="text-xl font-semibold text-white">What I Love Talking About</h4>
               </div>
               <Button 
                 variant="outline" 
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="border-[#0EA5E9]/40 text-white bg-[#0EA5E9]/10 hover:bg-[#0EA5E9]/30 shadow-neon-cyan transition-all duration-300"
               >
-                {isExpanded ? 'Show Less' : 'Show All Topics'}
+                {isExpanded ? 'Show Less' : 'See All Topics'}
                 <ChevronDown className={`ml-2 h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
               </Button>
             </div>
@@ -170,23 +171,23 @@ const DigitalCloneConnect = () => {
         >
           <div className="flex flex-col md:flex-row gap-8 items-center">
             <div className="md:w-3/5">
-              <h4 className="text-2xl md:text-3xl font-bold text-white mb-4">Create Your Own Digital Experience</h4>
+              <h4 className="text-2xl md:text-3xl font-bold text-white mb-4">Want Your Own Digital Twin?</h4>
               <p className="text-gray-300 mb-6">
-                Elevate your personal brand or business with a custom AI avatar or professional profile.
-                All proceeds are donated to One Water Foundation supporting global water solutions.
+                I'd love to help you create your own AI twin! It's a great way to connect with your audience.
+                Plus, I donate all proceeds to the One Water Foundation supporting global water solutions.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center px-4 py-2 rounded-full bg-[#0EA5E9]/10 border border-[#0EA5E9]/30">
                   <Bot className="h-5 w-5 text-[#0EA5E9] mr-2" />
-                  <span className="text-white font-medium">AI-Powered Conversations</span>
+                  <span className="text-white font-medium">24/7 Conversations</span>
                 </div>
                 <div className="flex items-center px-4 py-2 rounded-full bg-[#9333EA]/10 border border-[#9333EA]/30">
                   <Droplet className="h-5 w-5 text-cyan-500 mr-2" />
-                  <span className="text-white font-medium">Support Water Sustainability</span>
+                  <span className="text-white font-medium">Support Clean Water</span>
                 </div>
                 <div className="flex items-center px-4 py-2 rounded-full bg-white/10 border border-white/30">
                   <CreditCard className="h-5 w-5 text-white mr-2" />
-                  <span className="text-white font-medium">Premium Services</span>
+                  <span className="text-white font-medium">Affordable Options</span>
                 </div>
               </div>
             </div>
@@ -195,11 +196,11 @@ const DigitalCloneConnect = () => {
               <Link to="/create-your-own" className="block w-full">
                 <Button className="w-full bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white py-6 rounded-xl shadow-neon-purple hover:shadow-neon-cyan transition-all duration-300 text-lg hover:scale-105">
                   <Bot className="mr-2 h-5 w-5" />
-                  Learn More & Get Started
+                  Let's Create Your Twin
                   <ArrowUpRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <p className="text-sm text-center text-gray-400">From $500 for professional profiles</p>
+              <p className="text-sm text-center text-gray-400">Starting at just $500</p>
             </div>
           </div>
         </motion.div>
@@ -215,10 +216,10 @@ const DigitalCloneConnect = () => {
                   {domain?.icon && <domain.icon size={16} style={{ color: domain?.color || '#0EA5E9' }} />}
                   {!domain?.icon && <Bot size={16} className="text-[#0EA5E9]" />}
                 </div>
-                <span>{domain?.title || 'Digital Avatar'}</span>
+                <span>Chatting about {domain?.title || 'Everything'}</span>
               </DialogTitle>
               <DialogDescription className="text-gray-300">
-                {domain ? domain.description : 'Ask me anything about my expertise and experiences.'}
+                {domain ? domain.description : "Hey there! I'm Hardeep's digital twin. What would you like to talk about today?"}
               </DialogDescription>
             </div>
             <Button variant="ghost" size="icon" onClick={() => setDialogOpen(false)} className="h-8 w-8 text-white hover:bg-white/10">
