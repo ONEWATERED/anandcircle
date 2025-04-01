@@ -23,6 +23,9 @@ const ProfileShowcase = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
 
+  // Add debug logging
+  console.log("ProfileShowcase: Using profile image:", profileImage);
+
   useEffect(() => {
     const loadProfileData = async () => {
       try {
@@ -59,8 +62,9 @@ const ProfileShowcase = () => {
   return (
     <section 
       id="home" 
-      className="relative w-full min-h-screen overflow-hidden bg-tech-dark" 
+      className="relative w-full min-h-screen overflow-hidden bg-black" 
     >
+      {/* Pass the profile image directly to ensure it's being used */}
       <ProfileBackground profileImageUrl={profileImage} />
       
       <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">

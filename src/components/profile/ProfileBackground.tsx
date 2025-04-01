@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 interface ProfileBackgroundProps {
@@ -29,10 +28,13 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
     };
   }, [profileImageUrl]);
 
+  // Log the image URL to debug
+  console.log("Rendering background with image URL:", profileImageUrl);
+
   return (
     <>
-      {/* Dark background layer for base color */}
-      <div className="absolute inset-0 bg-tech-dark" />
+      {/* Base dark background layer */}
+      <div className="absolute inset-0 bg-black" />
       
       {/* Full-length profile image container */}
       {profileImageUrl && (
@@ -40,7 +42,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
           <div 
             className="w-full h-full transition-opacity duration-500"
             style={{ 
-              opacity: imageLoaded ? 1 : 0, // Set to full opacity (was 0.7)
+              opacity: imageLoaded ? 1 : 0, // Full opacity
             }}
           >
             <div 
@@ -50,15 +52,16 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center center',
                 backgroundRepeat: 'no-repeat',
-                filter: 'brightness(1.2) contrast(1.3) saturate(1.1)' // Increased brightness, contrast and saturation
+                filter: 'brightness(1.4) contrast(1.5) saturate(1.2)', // Enhanced brightness, contrast and saturation
+                mixBlendMode: 'normal' // Using normal blend mode instead of overlay
               }}
             />
           </div>
         </div>
       )}
       
-      {/* Lighter gradient overlay for better text readability but more image visibility */}
-      <div className="absolute inset-0 bg-gradient-to-r from-tech-dark/70 via-tech-dark/50 to-tech-dark/30 z-10" />
+      {/* Very light gradient overlay to maintain text readability while keeping image visible */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/30 to-black/20 z-10" />
     </>
   );
 };
