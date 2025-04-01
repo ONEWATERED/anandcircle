@@ -8,13 +8,15 @@ import SocialFooter from './profile/SocialFooter';
 import ScrollPrompt from './profile/ScrollPrompt';
 import { toast } from 'sonner';
 import { isValidImageUrl } from '@/utils/fileUtils';
+import { updatePersonalProfilePhoto } from '@/utils/profileUtils';
+import { supabase } from '@/integrations/supabase/client';
 
 const ProfileShowcase = () => {
-  // Use the uploaded image as the default
-  const defaultImage = '/lovable-uploads/af889e4e-763b-4091-8c89-3427066e5f65.png';
+  // Set the new profile image as the default
+  const newProfileImage = '/lovable-uploads/06d1abbd-f2e3-4aa4-b1c8-695498518158.png';
   
   const [profileData, setProfileData] = useState({
-    profileImageUrl: defaultImage,
+    profileImageUrl: newProfileImage,
     socialLinks: {
       linkedIn: 'https://linkedin.com/in/hardeepanand',
       twitter: 'https://twitter.com/hardeepanand',
@@ -30,10 +32,13 @@ const ProfileShowcase = () => {
       try {
         console.log("ProfileShowcase: Loading user profile data");
         
+        // Save the new image to the database
+        await updatePersonalProfilePhoto(newProfileImage);
+        
         // Always use the provided image by default
         setProfileData(prev => ({
           ...prev,
-          profileImageUrl: defaultImage
+          profileImageUrl: newProfileImage
         }));
         
         // Get user profile data for social links only
@@ -69,7 +74,7 @@ const ProfileShowcase = () => {
   return (
     <section 
       id="home" 
-      className="relative w-full min-h-screen overflow-hidden bg-slate-800" // Lighter background
+      className="relative w-full min-h-screen overflow-hidden bg-gray-900" // Darker background to make image stand out
     >
       <ProfileBackground profileImageUrl={profileData.profileImageUrl} />
       
