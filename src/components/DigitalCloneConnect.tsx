@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { 
   Users, 
   HeartPulse, 
@@ -12,7 +13,9 @@ import {
   ChevronDown,
   Bot,
   ArrowUpRight,
-  Sparkles
+  Sparkles,
+  UserRound,
+  CreditCard
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -48,7 +51,7 @@ const DigitalCloneConnect = () => {
             healthcare, community initiatives, or my personal journey - powered by advanced AI.
           </p>
           
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex flex-col md:flex-row items-center justify-center gap-4">
             <Button
               onClick={() => handleConnectClick('general')}
               className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white font-medium rounded-xl px-8 py-6 text-lg shadow-neon-purple hover:scale-105 transition-all duration-300 group"
@@ -58,6 +61,18 @@ const DigitalCloneConnect = () => {
               <span>Start Chatting with My Digital Twin</span>
               <ArrowUpRight className="ml-3 h-5 w-5 group-hover:translate-x-1 group-hover:translate-y-[-4px] transition-transform" />
             </Button>
+            
+            <Link to="/create-your-own">
+              <Button
+                variant="outline"
+                className="border-[#0EA5E9] text-white bg-[#0EA5E9]/10 hover:bg-[#0EA5E9]/30 shadow-neon-cyan transition-all duration-300 px-8 py-6 text-lg rounded-xl group"
+                size="lg"
+              >
+                <UserRound className="h-6 w-6 mr-3" />
+                <span>Create Your Own Digital Twin</span>
+                <ArrowUpRight className="ml-3 h-5 w-5 group-hover:translate-x-1 group-hover:translate-y-[-4px] transition-transform" />
+              </Button>
+            </Link>
           </div>
         </div>
         
@@ -124,6 +139,49 @@ const DigitalCloneConnect = () => {
             </div>
           </div>
         </div>
+        
+        {/* Create Your Own Digital Experience CTA */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="max-w-5xl mx-auto mt-16 p-8 rounded-2xl border border-[#0EA5E9]/40 shadow-neon-cyan bg-gradient-to-r from-[#0F172A] to-[#0B1121]"
+        >
+          <div className="flex flex-col md:flex-row gap-8 items-center">
+            <div className="md:w-3/5">
+              <h4 className="text-2xl md:text-3xl font-bold text-white mb-4">Create Your Own Digital Experience</h4>
+              <p className="text-gray-300 mb-6">
+                Elevate your personal brand or business with a custom AI avatar or professional profile.
+                All proceeds are donated to One Water Foundation supporting global water solutions.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center px-4 py-2 rounded-full bg-[#0EA5E9]/10 border border-[#0EA5E9]/30">
+                  <Bot className="h-5 w-5 text-[#0EA5E9] mr-2" />
+                  <span className="text-white font-medium">AI-Powered Conversations</span>
+                </div>
+                <div className="flex items-center px-4 py-2 rounded-full bg-[#9333EA]/10 border border-[#9333EA]/30">
+                  <Droplet className="h-5 w-5 text-cyan-500 mr-2" />
+                  <span className="text-white font-medium">Support Water Sustainability</span>
+                </div>
+                <div className="flex items-center px-4 py-2 rounded-full bg-white/10 border border-white/30">
+                  <CreditCard className="h-5 w-5 text-white mr-2" />
+                  <span className="text-white font-medium">Premium Services</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="md:w-2/5 space-y-4">
+              <Link to="/create-your-own" className="block w-full">
+                <Button className="w-full bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white py-6 rounded-xl shadow-neon-purple hover:shadow-neon-cyan transition-all duration-300 text-lg hover:scale-105">
+                  <Bot className="mr-2 h-5 w-5" />
+                  Learn More & Get Started
+                  <ArrowUpRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <p className="text-sm text-center text-gray-400">From $500 for professional profiles</p>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
       {/* Avatar Dialog */}
