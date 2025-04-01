@@ -146,11 +146,11 @@ const ProfileShowcase = () => {
       {/* Full screen background image with optimized overlay */}
       {profileData.profileImageUrl && (
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/70 via-tech-dark/50 to-tech-dark/80 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/30 via-tech-dark/30 to-tech-dark/50 z-10"></div>
           <img 
             src={profileData.profileImageUrl} 
             alt="Profile Background" 
-            className="w-full h-full object-cover object-center opacity-80"
+            className="w-full h-full object-cover object-center opacity-90"
           />
         </div>
       )}
@@ -212,47 +212,20 @@ const ProfileShowcase = () => {
             </motion.div>
           </motion.div>
 
-          {/* Profile content with enhanced visibility */}
+          {/* Profile content with enhanced visibility - removed smaller profile image */}
           <motion.div 
-            className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 glass-panel p-8 rounded-xl border border-[#0EA5E9]/30 shadow-neon-cyan w-full max-w-5xl mx-auto"
+            className="flex flex-col items-center gap-10 glass-panel p-8 rounded-xl border border-[#0EA5E9]/30 shadow-neon-cyan w-full max-w-5xl mx-auto"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
             id="profile-section"
           >
-            {/* Profile image area */}
-            <motion.div
-              className="flex-shrink-0 w-48 h-48 md:w-64 md:h-64 relative rounded-xl overflow-hidden border-2 border-[#0EA5E9]/50 shadow-neon-cyan"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              {profileData.profileImageUrl ? (
-                <img 
-                  src={profileData.profileImageUrl} 
-                  alt="Hardeep Anand" 
-                  className="w-full h-full object-cover object-center"
-                />
-              ) : (
-                <div className="w-full h-full bg-tech-dark/80 flex items-center justify-center">
-                  <p className="text-[#0EA5E9]">Loading image...</p>
-                </div>
-              )}
-              
-              {/* Tech corner accents */}
-              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#0EA5E9] z-20"></div>
-              <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[#9333EA] z-20"></div>
-              <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[#9333EA] z-20"></div>
-              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#0EA5E9] z-20"></div>
-            </motion.div>
-            
             {/* Text content */}
             <motion.div 
-              className="flex-1 space-y-6 text-center lg:text-left text-white"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              className="flex-1 space-y-6 text-center text-white"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
               viewport={{ once: true }}
             >
@@ -267,14 +240,14 @@ const ProfileShowcase = () => {
                 Executive • Innovator • Mentor
               </p>
               
-              <div className="h-1 w-20 md:w-32 bg-gradient-tech mx-auto lg:mx-0 my-6 rounded-full"></div>
+              <div className="h-1 w-20 md:w-32 bg-gradient-tech mx-auto my-6 rounded-full"></div>
               
-              <p className="text-gray-100 text-lg max-w-2xl mx-auto lg:mx-0">
+              <p className="text-gray-100 text-lg max-w-2xl mx-auto">
                 Bringing data-driven solutions to public service, health challenges, and community needs.
                 Connect with me on social platforms to explore collaborations and stay updated on my latest initiatives.
               </p>
               
-              <div className="pt-6 flex flex-wrap gap-4 justify-center lg:justify-start">
+              <div className="pt-6 flex flex-wrap gap-4 justify-center">
                 <a 
                   href="#story" 
                   className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-tech text-white rounded-lg transition-colors duration-300 shadow-neon-cyan hover-float"

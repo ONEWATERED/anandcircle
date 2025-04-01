@@ -1,7 +1,6 @@
 
 import React from 'react';
 import MainLayout from '@/layouts/MainLayout';
-import Hero from '@/components/Hero';
 import PassionSection from '@/components/PassionSection';
 import InterestForm from '@/components/InterestForm';
 import TabbedContentSection from '@/components/TabbedContentSection';
@@ -16,7 +15,7 @@ const Index = () => {
   return (
     <MainLayout>
       <div className="flex flex-col items-center w-full bg-tech-dark text-white">
-        {/* Combined Hero + Profile showcase section */}
+        {/* ProfileShowcase section with full-screen background image */}
         <div className="w-full">
           <ProfileShowcase />
         </div>
