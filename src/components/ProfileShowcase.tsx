@@ -23,7 +23,6 @@ const ProfileShowcase = () => {
   const [isLoading, setIsLoading] = useState(true);
   const particlesRef = useRef(null);
 
-  // Particle animation effect
   useEffect(() => {
     if (!particlesRef.current) return;
 
@@ -36,7 +35,6 @@ const ProfileShowcase = () => {
       const particleCount = 100;
       const colors = ['#0EA5E9', '#9333EA', '#DB2777', '#F59E0B'];
 
-      // Resize canvas to match parent
       const resizeCanvas = () => {
         if (canvas.parentElement) {
           canvas.width = canvas.parentElement.offsetWidth;
@@ -47,7 +45,6 @@ const ProfileShowcase = () => {
       resizeCanvas();
       window.addEventListener('resize', resizeCanvas);
 
-      // Create particles
       for (let i = 0; i < particleCount; i++) {
         particles.push({
           x: Math.random() * canvas.width,
@@ -60,7 +57,6 @@ const ProfileShowcase = () => {
         });
       }
 
-      // Animation loop
       const animate = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
@@ -70,17 +66,14 @@ const ProfileShowcase = () => {
           ctx.fillStyle = particle.color + Math.floor(particle.opacity * 255).toString(16).padStart(2, '0');
           ctx.fill();
           
-          // Update position
           particle.x += particle.speedX;
           particle.y += particle.speedY;
           
-          // Wrap around edges
           if (particle.x < 0) particle.x = canvas.width;
           if (particle.x > canvas.width) particle.x = 0;
           if (particle.y < 0) particle.y = canvas.height;
           if (particle.y > canvas.height) particle.y = 0;
           
-          // Randomly change opacity for twinkling effect
           particle.opacity += Math.random() * 0.02 - 0.01;
           if (particle.opacity < 0.1) particle.opacity = 0.1;
           if (particle.opacity > 0.6) particle.opacity = 0.6;
@@ -130,19 +123,15 @@ const ProfileShowcase = () => {
       id="home" 
       className="relative w-full min-h-screen overflow-hidden bg-tech-dark"
     >
-      {/* Particle background */}
       <canvas 
         ref={particlesRef} 
         className="absolute inset-0 z-0 opacity-40"
       />
       
-      {/* Grid overlay */}
       <div className="absolute inset-0 z-0 bg-data-dots mix-blend-screen opacity-5"></div>
       
-      {/* Tech grid background */}
       <div className="absolute inset-0 z-0 bg-tech-grid opacity-10"></div>
       
-      {/* Full screen background image with optimized overlay */}
       {profileData.profileImageUrl && (
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/30 via-tech-dark/30 to-tech-dark/50 z-10"></div>
@@ -154,10 +143,8 @@ const ProfileShowcase = () => {
         </div>
       )}
       
-      {/* Content container */}
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center py-20 md:py-24">
-          {/* Hero section (previously separate) now integrated here */}
           <motion.div 
             className="w-full max-w-3xl space-y-6 md:space-y-8 text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
@@ -198,7 +185,7 @@ const ProfileShowcase = () => {
               <Button 
                 size={isMobile ? "default" : "lg"} 
                 variant="glass"
-                className="text-white hover:text-white transition-all duration-300 text-sm md:text-base rounded-lg"
+                className="text-white hover:text-white shadow-neon-cyan transition-all duration-300 text-sm md:text-base rounded-lg bg-[#0EA5E9]/20 hover:bg-[#0EA5E9]/30"
               >
                 Explore My Work
               </Button>
@@ -206,12 +193,11 @@ const ProfileShowcase = () => {
               <ResumeButton 
                 variant="outline" 
                 size={isMobile ? "default" : "lg"}
-                className="glass-tech text-white hover:text-white transition-all duration-300 text-sm md:text-base rounded-lg"
+                className="glass-tech text-white hover:text-white shadow-neon-magenta bg-[#DB2777]/20 hover:bg-[#DB2777]/30 border-[#DB2777]/40 transition-all duration-300 text-sm md:text-base rounded-lg"
               />
             </motion.div>
           </motion.div>
 
-          {/* Profile content with enhanced visibility - removed smaller profile image */}
           <motion.div 
             className="flex-1 space-y-6 text-center text-white max-w-5xl mx-auto mt-16"
             initial={{ opacity: 0 }}
@@ -235,13 +221,12 @@ const ProfileShowcase = () => {
               </a>
               <a 
                 href="#passions" 
-                className="inline-flex items-center gap-2 px-6 py-3 glass-tech text-white border border-white/10 hover:bg-white/10 rounded-lg transition-colors duration-300 shadow-sm hover:shadow-md"
+                className="inline-flex items-center gap-2 px-6 py-3 glass-tech text-white bg-[#9333EA]/20 hover:bg-[#9333EA]/30 border border-white/20 rounded-lg transition-colors duration-300 shadow-neon-purple"
               >
                 <span>My Areas of Interest</span>
               </a>
             </div>
             
-            {/* Social Media Links */}
             {!isLoading && (
               <div className="pt-6">
                 <SocialMediaLinks 
@@ -255,7 +240,6 @@ const ProfileShowcase = () => {
         </div>
       </div>
       
-      {/* Enhanced scroll indicator */}
       <motion.div 
         className="absolute bottom-6 md:bottom-10 left-1/2 transform -translate-x-1/2 z-20"
         initial={{ opacity: 0 }}
