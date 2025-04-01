@@ -6,14 +6,11 @@ import ProfileBackground from './profile/ProfileBackground';
 import ProfileHeader from './profile/ProfileHeader';
 import SocialFooter from './profile/SocialFooter';
 import ScrollPrompt from './profile/ScrollPrompt';
-import { updatePersonalProfilePhoto } from '@/utils/profile';
 
 const ProfileShowcase = () => {
-  // Use the uploaded profile image - ensure this path is correct
-  const profileImage = '/lovable-uploads/ec1e9051-5d60-4193-8ed2-401ee4998f6c.png';
-  
+  // Remove specific profile image reference
   const [profileData, setProfileData] = useState({
-    profileImageUrl: profileImage,
+    profileImageUrl: '',
     socialLinks: {
       linkedIn: 'https://linkedin.com/in/hardeepanand',
       twitter: 'https://twitter.com/hardeepanand',
@@ -28,10 +25,6 @@ const ProfileShowcase = () => {
     const loadProfileData = async () => {
       try {
         console.log("ProfileShowcase: Loading user profile data");
-        console.log("Using profile image:", profileImage);
-        
-        // Save the full-length profile image to the database
-        await updatePersonalProfilePhoto(profileImage);
         
         // Get user profile data for social links only
         const data = await getUserProfileData();
@@ -65,7 +58,7 @@ const ProfileShowcase = () => {
       id="home" 
       className="relative w-full min-h-screen overflow-hidden bg-tech-dark" 
     >
-      <ProfileBackground profileImageUrl={profileImage} />
+      <ProfileBackground profileImageUrl="" />
       
       <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center py-20 md:py-24">
