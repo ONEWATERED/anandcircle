@@ -9,7 +9,7 @@ import ScrollPrompt from './profile/ScrollPrompt';
 
 const ProfileShowcase = () => {
   const [profileData, setProfileData] = useState({
-    profileImageUrl: null,
+    profileImageUrl: '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png', // Set default initially
     socialLinks: {
       linkedIn: 'https://linkedin.com/in/hardeepanand',
       twitter: 'https://twitter.com/hardeepanand',
