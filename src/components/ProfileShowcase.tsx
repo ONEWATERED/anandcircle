@@ -143,14 +143,14 @@ const ProfileShowcase = () => {
       {/* Tech grid background */}
       <div className="absolute inset-0 z-0 bg-tech-grid opacity-10"></div>
       
-      {/* Full screen background image with overlay */}
+      {/* Full screen background image with optimized overlay */}
       {profileData.profileImageUrl && (
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/90 via-tech-dark/70 to-tech-dark/95 z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/70 via-tech-dark/50 to-tech-dark/80 z-10"></div>
           <img 
             src={profileData.profileImageUrl} 
             alt="Profile Background" 
-            className="w-full h-full object-cover object-center opacity-60"
+            className="w-full h-full object-cover object-center opacity-80"
           />
         </div>
       )}
@@ -212,15 +212,42 @@ const ProfileShowcase = () => {
             </motion.div>
           </motion.div>
 
-          {/* Profile content */}
+          {/* Profile content with enhanced visibility */}
           <motion.div 
-            className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 glass-panel p-8 rounded-xl w-full max-w-5xl mx-auto"
+            className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 glass-panel p-8 rounded-xl border border-[#0EA5E9]/30 shadow-neon-cyan w-full max-w-5xl mx-auto"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.7 }}
             viewport={{ once: true }}
             id="profile-section"
           >
+            {/* Profile image area */}
+            <motion.div
+              className="flex-shrink-0 w-48 h-48 md:w-64 md:h-64 relative rounded-xl overflow-hidden border-2 border-[#0EA5E9]/50 shadow-neon-cyan"
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              {profileData.profileImageUrl ? (
+                <img 
+                  src={profileData.profileImageUrl} 
+                  alt="Hardeep Anand" 
+                  className="w-full h-full object-cover object-center"
+                />
+              ) : (
+                <div className="w-full h-full bg-tech-dark/80 flex items-center justify-center">
+                  <p className="text-[#0EA5E9]">Loading image...</p>
+                </div>
+              )}
+              
+              {/* Tech corner accents */}
+              <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#0EA5E9] z-20"></div>
+              <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[#9333EA] z-20"></div>
+              <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[#9333EA] z-20"></div>
+              <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#0EA5E9] z-20"></div>
+            </motion.div>
+            
             {/* Text content */}
             <motion.div 
               className="flex-1 space-y-6 text-center lg:text-left text-white"

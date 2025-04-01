@@ -22,29 +22,29 @@ const Index = () => {
         </div>
         
         {/* Story section */}
-        <div className="w-full">
+        <div className="w-full bg-tech-dark border-t border-[#0EA5E9]/10">
           <Story />
         </div>
         
         {/* Gallery Preview section */}
-        <div className="w-full">
+        <div className="w-full bg-tech-dark border-t border-[#0EA5E9]/10">
           <GalleryPreview />
         </div>
         
         {/* Passion section */}
-        <div className="w-full">
+        <div className="w-full bg-tech-dark border-t border-[#0EA5E9]/10">
           <PassionSection />
         </div>
         
         {/* Tabbed content */}
-        <div className="w-full py-16 md:py-24 bg-tech-dark/90 border-t border-white/5">
+        <div className="w-full py-16 md:py-24 bg-tech-dark border-t border-[#0EA5E9]/10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <TabbedContentSection />
           </div>
         </div>
         
         {/* Interest form */}
-        <div className="w-full py-16 md:py-24 bg-tech-dark/80 border-t border-white/5">
+        <div className="w-full py-16 md:py-24 bg-tech-dark border-t border-[#0EA5E9]/10">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <InterestForm />
           </div>

@@ -14,11 +14,11 @@
   }
   
   .glass-tech {
-    @apply backdrop-blur-xl bg-card/70 border border-white/10 rounded-md shadow-lg;
+    @apply backdrop-blur-xl bg-black/40 border border-[#0EA5E9]/20 rounded-md shadow-lg;
   }
   
   .glass-panel {
-    @apply backdrop-blur-lg bg-card/30 border border-white/10 shadow-md rounded-md overflow-hidden;
+    @apply backdrop-blur-lg bg-black/30 border border-[#0EA5E9]/20 shadow-md rounded-md overflow-hidden;
   }
   
   .glass-input {
@@ -26,7 +26,7 @@
   }
   
   .angular-glass {
-    @apply backdrop-blur-lg bg-card/30 shadow-lg overflow-hidden;
+    @apply backdrop-blur-lg bg-black/30 shadow-lg overflow-hidden;
     clip-path: polygon(
       0 0.5rem,
       0.5rem 0,
@@ -37,7 +37,7 @@
       0.5rem 100%,
       0 calc(100% - 0.5rem)
     );
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(14, 165, 233, 0.2);
   }
   
   .data-field {
@@ -45,11 +45,11 @@
   }
   
   .tech-dialog {
-    @apply backdrop-blur-xl bg-card/90 border border-white/10 rounded-lg shadow-lg;
+    @apply backdrop-blur-xl bg-black/80 border border-[#0EA5E9]/20 rounded-lg shadow-lg;
   }
   
   .tech-tooltip {
-    @apply backdrop-blur-lg bg-card/80 border border-white/10 rounded-md shadow-lg px-3 py-1.5 text-xs;
+    @apply backdrop-blur-lg bg-black/80 border border-[#0EA5E9]/20 rounded-md shadow-lg px-3 py-1.5 text-xs;
   }
   
   .tech-gradient-border {
@@ -74,5 +74,41 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
+  }
+  
+  /* New cyberpunk-inspired panel effect */
+  .cyber-panel {
+    @apply backdrop-blur-lg bg-black/40 rounded-md overflow-hidden;
+    position: relative;
+    border: 1px solid rgba(14, 165, 233, 0.3);
+    box-shadow: 
+      0 0 10px rgba(14, 165, 233, 0.2),
+      inset 0 0 15px rgba(14, 165, 233, 0.1);
+  }
+  
+  /* Tech card with scanning line effect */
+  .scan-card {
+    @apply relative overflow-hidden rounded-md bg-black/50 backdrop-blur-lg border border-[#0EA5E9]/20;
+  }
+  
+  .scan-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #0EA5E9, transparent);
+    animation: scanning-line 2s linear infinite;
+    opacity: 0.5;
+  }
+}
+
+@keyframes scanning-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(1000%);
   }
 }

@@ -30,22 +30,29 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     jakartaFont.rel = 'stylesheet';
     document.head.appendChild(jakartaFont);
     
+    // Add JetBrains Mono for monospace/code text
+    const jetBrainsMono = document.createElement('link');
+    jetBrainsMono.href = 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap';
+    jetBrainsMono.rel = 'stylesheet';
+    document.head.appendChild(jetBrainsMono);
+    
     return () => {
       document.head.removeChild(pinyonScript);
       document.head.removeChild(interFont);
       document.head.removeChild(jakartaFont);
+      document.head.removeChild(jetBrainsMono);
     };
   }, []);
 
   return (
     <div 
-      className="min-h-screen flex flex-col bg-white text-slate-900 overflow-hidden" 
+      className="min-h-screen flex flex-col bg-tech-dark text-white overflow-hidden" 
     >
       <Navbar />
       <main className="flex-grow w-full">
         {children}
       </main>
-      <div className="flex justify-end p-2 border-t border-gray-200 relative z-[2] bg-white">
+      <div className="flex justify-end p-2 border-t border-[#0EA5E9]/10 relative z-[2] bg-tech-dark">
         <AdminLink />
       </div>
       <Footer />

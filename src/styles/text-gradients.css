@@ -50,7 +50,7 @@
     @apply font-bold tracking-tight text-gradient-tech;
   }
   
-  /* New text glow utilities */
+  /* Enhanced text glow utilities with more intensity */
   .text-cosmic-glow {
     text-shadow: 0 0 15px rgba(14, 165, 233, 0.7), 0 0 30px rgba(14, 165, 233, 0.5);
   }
@@ -69,5 +69,42 @@
   
   .text-highlight-magenta {
     @apply text-[#DB2777];
+  }
+  
+  /* New gradient text combinations */
+  .text-gradient-cyan-purple {
+    background: linear-gradient(135deg, #0EA5E9, #9333EA);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .text-gradient-purple-magenta {
+    background: linear-gradient(135deg, #9333EA, #DB2777);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .text-gradient-magenta-gold {
+    background: linear-gradient(135deg, #DB2777, #F59E0B);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  /* Enhanced glow effects for text */
+  .text-glow-cosmic {
+    text-shadow: 
+      0 0 5px rgba(14, 165, 233, 0.3),
+      0 0 15px rgba(14, 165, 233, 0.2),
+      0 0 25px rgba(14, 165, 233, 0.1);
+  }
+  
+  .text-glow-intense {
+    text-shadow: 
+      0 0 8px rgba(147, 51, 234, 0.5),
+      0 0 20px rgba(147, 51, 234, 0.3),
+      0 0 40px rgba(147, 51, 234, 0.1);
   }
 }
