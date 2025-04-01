@@ -30,8 +30,8 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
             className="w-full h-full bg-cover bg-center transition-opacity duration-1000"
             style={{ 
               backgroundImage: `url(${profileImageUrl})`,
-              backgroundPosition: 'center 30%', // Adjust this value to move the image up or down
-              opacity: imageLoaded ? 0.7 : 0,
+              backgroundPosition: 'center 20%', // Adjusted this value to show more of the top of the image
+              opacity: imageLoaded ? 1 : 0, // Increased opacity from 0.7 to 1
             }}
           />
         )}
