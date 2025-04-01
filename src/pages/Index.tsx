@@ -21,6 +21,11 @@ const Index = () => {
           <ProfileShowcase />
         </div>
         
+        {/* Digital Twin section - Moved here for more prominence */}
+        <div className="w-full">
+          <DigitalCloneConnect />
+        </div>
+        
         {/* Story section */}
         <div className="w-full">
           <Story />
@@ -29,11 +34,6 @@ const Index = () => {
         {/* Gallery Preview section */}
         <div className="w-full">
           <GalleryPreview />
-        </div>
-        
-        {/* Digital Clone Connect Section - Added here */}
-        <div className="w-full">
-          <DigitalCloneConnect />
         </div>
         
         {/* Passion section */}

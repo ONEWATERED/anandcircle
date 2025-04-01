@@ -22,7 +22,6 @@ const ProfileShowcase = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const particlesRef = useRef(null);
-  const [showAvatarDialog, setShowAvatarDialog] = useState(false);
 
   useEffect(() => {
     if (!particlesRef.current) return;

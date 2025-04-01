@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -8,7 +9,8 @@ import {
   GraduationCap,
   ExternalLink,
   X,
-  ChevronDown
+  ChevronDown,
+  Bot
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -25,137 +27,99 @@ const DigitalCloneConnect = () => {
     setDialogOpen(true);
   };
 
+  // External direct link to Delphi
+  const delphiBaseUrl = "https://www.delphi.ai/hardeepanand";
+  const domainUrl = selectedDomain ? `${delphiBaseUrl}?domain=${selectedDomain}` : delphiBaseUrl;
   const domain = selectedDomain ? domains.find(d => d.id === selectedDomain) : null;
-  const domainUrl = selectedDomain ? `https://www.delphi.ai/hardeepanand?domain=${selectedDomain}` : 'https://www.delphi.ai/hardeepanand';
 
   return (
-    <section id="digital-avatar" className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-gray-100">
-      <div className="section-container">
-        <div className="text-center mb-10 opacity-0 animate-fade-up">
-          <h2 className="text-sm font-medium tracking-widest text-primary uppercase mb-3">Connect with My Digital Avatar</h2>
-          <h3 className="text-3xl md:text-4xl font-display font-bold mb-6">Ask Me Anything</h3>
-          <div className="h-1 w-20 bg-primary mx-auto rounded-full"></div>
-          <p className="text-muted-foreground max-w-2xl mx-auto mt-6">
-            Experience a conversation with my digital avatar powered by AI. Choose a domain you'd like to discuss 
-            and start a meaningful interaction based on my expertise and perspectives.
+    <section id="digital-avatar" className="py-16 md:py-24 bg-gradient-to-b from-tech-dark to-tech-dark/90 border-t border-[#0EA5E9]/10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-10 animate-fade-up">
+          <h2 className="text-sm font-medium tracking-widest text-[#0EA5E9] uppercase mb-3">My Digital Twin</h2>
+          <h3 className="text-3xl md:text-5xl font-display font-bold mb-6 text-white">Chat with My AI Avatar</h3>
+          <div className="h-1 w-24 bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] mx-auto rounded-full my-6"></div>
+          <p className="text-gray-300 max-w-2xl mx-auto mt-6">
+            Experience a conversation with my AI-powered digital twin. Ask me anything about technology, 
+            healthcare, community initiatives, or my personal journey - powered by advanced AI.
           </p>
           
-          <div className="mt-6 flex justify-center">
+          <div className="mt-8 flex justify-center">
             <Button
               onClick={() => handleConnectClick('general')}
-              className="group"
-              variant="outline"
+              className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white rounded-xl px-8 py-6 text-lg shadow-neon-purple hover-float group"
+              size="lg"
             >
-              <span>Visit My Full Digital Avatar</span>
-              <ExternalLink className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
+              <Bot className="h-6 w-6 mr-3" />
+              <span>Start Chatting with My Digital Twin</span>
+              <ExternalLink className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>
         </div>
         
-        {/* Collapsible Domain Topics */}
-        <div className="max-w-3xl mx-auto">
-          <Collapsible
-            open={isExpanded}
-            onOpenChange={setIsExpanded}
-            className="bg-white rounded-xl border border-gray-200 shadow-sm"
-          >
-            <div className="p-5 flex justify-between items-center">
-              <h4 className="font-semibold">Browse Topics</h4>
-              <CollapsibleTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full">
-                  <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-                  <span className="sr-only">Toggle</span>
-                </Button>
-              </CollapsibleTrigger>
+        {/* Domain topics showcase */}
+        <div className="max-w-5xl mx-auto mt-12">
+          <div className="glass-card bg-white/5 border border-white/10 rounded-2xl p-6 shadow-lg">
+            <div className="flex justify-between items-center mb-6">
+              <h4 className="text-xl font-semibold text-white">Specialized Topics</h4>
+              <Button 
+                variant="outline" 
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="border-[#0EA5E9]/30 text-white"
+              >
+                {isExpanded ? 'Show Less' : 'Show All Topics'}
+                <ChevronDown className={`ml-2 h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+              </Button>
             </div>
             
-            <CollapsibleContent>
-              <div className="p-5 pt-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {domains.map((domain, index) => {
-                  const Icon = domain.icon;
-                  
-                  return (
-                    <motion.div
-                      key={domain.id}
-                      className="flex items-center p-3 rounded-xl hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-all cursor-pointer"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.05 * index, duration: 0.3 }}
-                      onClick={() => handleConnectClick(domain.id)}
-                    >
+            {/* Grid display for popular domains */}
+            <div className={`grid grid-cols-1 md:grid-cols-3 gap-4 ${isExpanded ? '' : 'md:grid-rows-1 overflow-hidden'}`}>
+              {domains.slice(0, isExpanded ? domains.length : 3).map((domain, index) => {
+                const Icon = domain.icon;
+                
+                return (
+                  <motion.div
+                    key={domain.id}
+                    className="glass-card p-4 rounded-xl border border-white/10 hover:border-[#0EA5E9]/30 transition-all cursor-pointer bg-white/5 hover:bg-white/10"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.05 * index, duration: 0.3 }}
+                    onClick={() => handleConnectClick(domain.id)}
+                  >
+                    <div className="flex items-center mb-3">
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white mr-3`} style={{ backgroundColor: domain.color }}>
                         <Icon size={18} />
                       </div>
-                      <div className="flex-1">
-                        <h5 className="font-medium text-sm">{domain.title}</h5>
-                        <p className="text-xs text-muted-foreground line-clamp-1">{domain.description}</p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-              
-              <div className="p-5 pt-0 border-t border-gray-100 flex justify-center">
-                <Button size="sm" className="w-full md:w-auto" onClick={() => handleConnectClick('general')}>
-                  Chat About Any Topic
-                </Button>
-              </div>
-            </CollapsibleContent>
-          </Collapsible>
-          
-          {/* Domain cards in horizontal scrolling container (when collapsed) */}
-          {!isExpanded && (
-            <div className="mt-6 overflow-x-auto pb-4 hide-scrollbar">
-              <div className="flex space-x-4 px-2 min-w-max">
-                {domains.map((domain, index) => {
-                  const Icon = domain.icon;
-                  
-                  return (
-                    <motion.div
-                      key={domain.id}
-                      className="flex-shrink-0 w-[200px] glass-card px-4 py-4 rounded-xl border border-gray-200 hover:border-primary/20 transition-all hover:shadow-lg cursor-pointer"
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 * index, duration: 0.3 }}
-                      onClick={() => handleConnectClick(domain.id)}
-                    >
-                      <div className="flex items-center mb-3">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white mr-3`} style={{ backgroundColor: domain.color }}>
-                          <Icon size={18} />
-                        </div>
-                        <h4 className="font-medium">{domain.title}</h4>
-                      </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
-                        {domain.description}
-                      </p>
-                      <Button variant="ghost" size="sm" className="w-full text-xs justify-start px-2">
-                        <span>Chat About This Topic</span>
-                        <ExternalLink className="ml-auto h-3 w-3" />
-                      </Button>
-                    </motion.div>
-                  );
-                })}
-              </div>
+                      <h5 className="font-medium text-white">{domain.title}</h5>
+                    </div>
+                    <p className="text-sm text-gray-300 mb-3 line-clamp-2">
+                      {domain.description}
+                    </p>
+                    <Button variant="outline" size="sm" className="w-full justify-between mt-2 border-white/10 text-white hover:bg-white/10">
+                      <span>Chat About This</span>
+                      <ExternalLink className="h-3 w-3" />
+                    </Button>
+                  </motion.div>
+                );
+              })}
             </div>
-          )}
+          </div>
         </div>
       </div>
 
       {/* Avatar Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="w-full max-w-4xl h-[80vh] p-0">
-          <DialogHeader className="p-6 border-b">
-            <div className="flex items-start justify-between w-full">
-              <div>
-                <DialogTitle className="text-xl mb-2">Digital Avatar - {domain?.title || 'General Chat'}</DialogTitle>
-                <DialogDescription>
-                  {domain ? domain.description : 'Ask me anything about my expertise and experiences.'}
-                </DialogDescription>
-              </div>
-              <Button variant="ghost" size="icon" onClick={() => setDialogOpen(false)} className="h-8 w-8">
-                <X className="h-4 w-4" />
-              </Button>
+          <DialogHeader className="p-6 border-b flex-row justify-between items-start">
+            <div>
+              <DialogTitle className="text-xl mb-2">Digital Avatar - {domain?.title || 'General Chat'}</DialogTitle>
+              <DialogDescription>
+                {domain ? domain.description : 'Ask me anything about my expertise and experiences.'}
+              </DialogDescription>
             </div>
+            <Button variant="ghost" size="icon" onClick={() => setDialogOpen(false)} className="h-8 w-8">
+              <X className="h-4 w-4" />
+            </Button>
           </DialogHeader>
           <div className="h-full">
             <iframe 
