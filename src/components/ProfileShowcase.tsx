@@ -15,7 +15,7 @@ const ProfileShowcase = () => {
     profileImageUrl: profileImage,
     socialLinks: {
       linkedIn: 'https://linkedin.com/in/hardeepanand',
-      twitter: 'https://twitter.com/hardeepanand',
+      twitter: 'https://x.com/HardeepAnandd',
       youtube: 'https://youtube.com/@hardeepanand',
       spotify: 'https://open.spotify.com/user/hardeepanand',
       anandCircle: '#anand-circle'

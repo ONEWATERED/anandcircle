@@ -12,7 +12,7 @@ const ProfileImage = () => {
   
   const [socialLinks, setSocialLinks] = useState({
     linkedIn: 'https://linkedin.com/in/hardeepanand',
-    twitter: 'https://twitter.com/hardeepanand',
+    twitter: 'https://x.com/HardeepAnandd',
     youtube: 'https://youtube.com/@hardeepanand',
     spotify: 'https://open.spotify.com/user/hardeepanand',
     anandCircle: 'https://www.circleso.com'
