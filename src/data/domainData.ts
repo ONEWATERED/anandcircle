@@ -67,5 +67,5 @@ export const domains: DomainData[] = [
     description: 'I focus on making health simple and achievable for everyone through holistic approaches to physical and mental wellbeing.',
     initialAngle: 360, // 360 degrees clockwise (back to 12 o'clock)
     link: 'https://www.onewater.ai'
-  },
+  }
 ];

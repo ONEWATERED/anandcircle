@@ -3,53 +3,13 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { MessageCircle, ArrowRight, Mic } from 'lucide-react';
-import { domains } from '@/data/domainData';
-import { 
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { MessageCircle, ArrowRight } from 'lucide-react';
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import CloneConnectDialog from './connect/CloneConnectDialog';
+import DomainSection from './connect/DomainSection';
 
 const DigitalCloneConnect = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  
-  // Reordering and grouping the domains
-  const groupedDomains = [
-    // Group 1: AI & Data
-    {
-      id: 'tech',
-      domains: [
-        domains.find(d => d.id === 'ai'),        // AI
-        domains.find(d => d.id === 'data'),      // Data
-      ].filter(Boolean)
-    },
-    // Group 2: One Water
-    {
-      id: 'water',
-      domains: [
-        domains.find(d => d.id === 'water'),     // One Water
-      ].filter(Boolean)
-    },
-    // Group 3: Mentoring & Family
-    {
-      id: 'people',
-      domains: [
-        domains.find(d => d.id === 'mentoring'), // Mentoring
-        domains.find(d => d.id === 'family'),    // Nuclear Family
-      ].filter(Boolean)
-    },
-    // Group 4: Health
-    {
-      id: 'health',
-      domains: [
-        domains.find(d => d.id === 'health'),    // Health
-      ].filter(Boolean)
-    }
-  ];
   
   const handleOpenDelphi = () => {
     window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer');
@@ -112,47 +72,13 @@ const DigitalCloneConnect = () => {
         
         {/* Dialog that opens instead of navigating away */}
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-md bg-gradient-to-br from-[#0EA5E9] to-[#9333EA] text-white border-none">
-            <DialogHeader>
-              <DialogTitle className="text-xl font-bold text-white">Connect with My Digital Clone</DialogTitle>
-              <DialogDescription className="text-white/90">
-                Choose how you'd like to interact with my AI assistant
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="flex flex-col items-center gap-4 py-4">
-              <div className="bg-white/20 p-3 rounded-full">
-                <Avatar className="h-24 w-24">
-                  <AvatarFallback className="bg-white/30 text-white text-2xl font-bold">
-                    HA
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-              
-              <p className="text-center text-white px-4 text-lg">
-                You can have a text chat or voice conversation with my digital clone on Delphi.ai
-              </p>
-              
-              <div className="grid grid-cols-2 gap-3 w-full mt-2">
-                <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-all" onClick={handleOpenDelphi}>
-                  <MessageCircle className="h-6 w-6 mx-auto mb-2" />
-                  <p className="text-sm">Text Chat</p>
-                </div>
-                <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-all" onClick={handleOpenDelphi}>
-                  <Mic className="h-6 w-6 mx-auto mb-2" />
-                  <p className="text-sm">Voice Conversation</p>
-                </div>
-              </div>
-              
-              <Button 
-                className="w-full mt-4 bg-white text-primary hover:bg-white/90 flex items-center justify-center"
-                onClick={handleOpenDelphi}
-              >
-                Connect Now
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </DialogContent>
+          <DialogTrigger asChild>
+            <div className="hidden">Trigger</div>
+          </DialogTrigger>
+          <CloneConnectDialog 
+            onOpenDelphi={handleOpenDelphi} 
+            setDialogOpen={setDialogOpen} 
+          />
         </Dialog>
         
         {/* Single button that opens the dialog */}
@@ -175,60 +101,8 @@ const DigitalCloneConnect = () => {
           </Button>
         </motion.div>
 
-        {/* Domain expertise cards - updated to be more friendly and approachable */}
-        <motion.div
-          className="mt-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-        >
-          <h3 className="text-xl md:text-2xl font-medium text-center mb-8 text-white">
-            What I'm <span className="text-gradient-cyan-purple">Passionate About</span>
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mx-auto max-w-5xl">
-            {groupedDomains.map((group) => {
-              return (
-                <motion.div 
-                  key={group.id}
-                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-5 hover:bg-white/20 transition-all duration-300 cursor-pointer"
-                  whileHover={{ 
-                    y: -5,
-                    boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-                    transition: { duration: 0.2 }
-                  }}
-                  onClick={() => setDialogOpen(true)}
-                >
-                  <div className="flex flex-col h-full">
-                    {group.domains.map((domain, index) => {
-                      if (!domain) return null;
-                      const Icon = domain.icon;
-                      
-                      return (
-                        <div key={domain.id} className={`${index > 0 ? 'mt-4 pt-4 border-t border-white/10' : ''}`}>
-                          <div className="flex items-center mb-2">
-                            <div 
-                              className="w-8 h-8 rounded-full flex items-center justify-center mr-3"
-                              style={{ backgroundColor: `${domain.color}30` }}
-                            >
-                              <Icon size={16} color={domain.color} />
-                            </div>
-                            <h4 className="text-base font-medium text-white">{domain.title}</h4>
-                          </div>
-                          
-                          <p className="text-xs text-gray-300">
-                            {domain.description}
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
+        {/* Domain expertise cards */}
+        <DomainSection onCardClick={() => setDialogOpen(true)} />
       </div>
     </section>
   );
