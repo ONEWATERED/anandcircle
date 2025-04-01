@@ -24,24 +24,22 @@ const ProfileShowcase = () => {
     }
   });
   const [isLoading, setIsLoading] = useState(true);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     const loadProfileData = async () => {
       try {
         console.log("ProfileShowcase: Loading user profile data");
         
-        // Verify the default image exists before proceeding
-        try {
-          const defaultImageResponse = await fetch(defaultImage, { method: 'HEAD' });
-          if (!defaultImageResponse.ok) {
-            console.error("Default image is not accessible:", defaultImage);
-          } else {
-            console.log("Default image is accessible and valid");
-            setImageLoaded(true);
-          }
-        } catch (imgErr) {
-          console.error("Error checking default image:", imgErr);
+        // First check if default image is accessible
+        const isDefaultImageValid = await isValidImageUrl(defaultImage);
+        if (!isDefaultImageValid) {
+          console.error("Default image is inaccessible:", defaultImage);
+          // Try using an alternative default image
+          const alternativeDefault = 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7';
+          setProfileData(prev => ({
+            ...prev,
+            profileImageUrl: alternativeDefault
+          }));
         }
         
         // Get user profile data
@@ -52,22 +50,13 @@ const ProfileShowcase = () => {
           // Always ensure we have a valid image URL
           let photoUrl = data.photoUrl || defaultImage;
           
-          // Check if we need to validate the URL
-          if (photoUrl !== defaultImage && !photoUrl.startsWith('http')) {
-            try {
-              // Quick validation of the image URL for local images
-              const isValid = await isValidImageUrl(photoUrl);
-              if (!isValid) {
-                console.warn("Retrieved photo URL is not accessible, using default:", photoUrl);
-                photoUrl = defaultImage;
-              }
-            } catch (imgErr) {
-              console.warn("Error validating photo URL, using default:", imgErr);
-              photoUrl = defaultImage;
-            }
-          }
+          // Log the URL we're about to use
+          console.log("Using photo URL:", photoUrl);
           
-          console.log("Final photo URL to be used:", photoUrl);
+          // If URL is relative, make it absolute
+          if (photoUrl && !photoUrl.startsWith('http') && !photoUrl.startsWith('/')) {
+            photoUrl = '/' + photoUrl;
+          }
           
           setProfileData({
             profileImageUrl: photoUrl,
@@ -81,19 +70,20 @@ const ProfileShowcase = () => {
           });
         } else {
           console.warn("No profile data retrieved, using defaults");
-          // Make sure to set profileData explicitly with the default image if no data
-          setProfileData(prevData => ({
-            ...prevData,
-            profileImageUrl: defaultImage
+          // Try using Unsplash placeholder as a test
+          const placeholderImage = 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7';
+          setProfileData(prev => ({
+            ...prev,
+            profileImageUrl: placeholderImage
           }));
         }
       } catch (error) {
         console.error("Error loading profile data:", error);
         toast.error("There was an issue loading your profile data");
-        // Explicitly set default image on error
-        setProfileData(prevData => ({
-          ...prevData,
-          profileImageUrl: defaultImage
+        // Use a known working image URL as fallback
+        setProfileData(prev => ({
+          ...prev,
+          profileImageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7'
         }));
       } finally {
         setIsLoading(false);

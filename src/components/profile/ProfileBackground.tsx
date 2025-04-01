@@ -32,18 +32,19 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
 
   return (
     <>
-      {/* Dark gradient overlay - reduced opacity to make image more visible */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60 z-10" />
+      {/* No gradient overlay to ensure full image visibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-30 z-10" />
       
-      {/* Background image with adjusted positioning */}
+      {/* Background image with larger size and position adjusted to show top of head */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         {profileImageUrl && (
           <div 
-            className="w-full h-full bg-cover bg-center transition-opacity duration-1000"
+            className="w-full h-full bg-cover bg-center transition-opacity duration-300"
             style={{ 
               backgroundImage: `url(${profileImageUrl})`,
-              backgroundPosition: 'center 15%', // Move image up to show head better
-              opacity: imageLoaded ? 1 : 0, 
+              backgroundPosition: 'center 40%', // Position adjusted to show more of the top
+              opacity: imageLoaded ? 1 : 0,
+              transform: 'scale(1.1)', // Slightly enlarge the image
             }}
           />
         )}
@@ -51,6 +52,13 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
       
       {/* Fallback background color */}
       <div className="absolute inset-0 bg-black" />
+
+      {/* Debug information during development */}
+      {!imageLoaded && profileImageUrl && (
+        <div className="absolute bottom-4 right-4 bg-red-500 text-white px-2 py-1 text-xs rounded z-50">
+          Loading image: {profileImageUrl.substring(0, 30)}...
+        </div>
+      )}
     </>
   );
 };
