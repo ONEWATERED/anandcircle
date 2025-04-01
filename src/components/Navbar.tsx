@@ -1,25 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
-import { Menu, X, Linkedin, Twitter, Youtube, Music } from 'lucide-react';
-import ResumeButton from './ResumeButton';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
+import { NavLink } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { GraduationCap, Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
-
-const navLinks = [
-  { name: 'Home', href: '#home' },
-  { name: 'My Story', href: '#story' },
-  { name: 'My Interests', href: '#passions' },
-  { name: 'Articles', href: '#articles' },
-  { name: 'Connect', href: '#connect' }
-];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
-
+  
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -28,148 +19,110 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
+  
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
+  
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Gallery', path: '/gallery' },
+    { name: 'Domains', path: '/#passions' },
+    { name: 'Courses', path: '/#courses' },
+  ];
+  
   return (
-    <header className={cn(
-      'fixed w-full z-50 transition-all duration-300 ease-in-out',
-      isScrolled 
-        ? 'py-2 bg-[#0F172A]/90 backdrop-blur-md border-b border-primary/10 shadow-md' 
-        : 'py-3 md:py-4 bg-transparent'
-    )}>
-      <div className="container mx-auto px-3 sm:px-6 lg:px-8">
-        <nav className="flex items-center justify-between">
-          {/* Logo/Brand */}
-          <div className="flex items-center">
-            <a 
-              href="#" 
-              className={cn(
-                "font-medium tracking-tight transition-all duration-300",
-                isScrolled ? "text-lg md:text-xl" : "text-xl md:text-3xl",
-                "text-white hover:text-primary"
-              )}
-            >
-              HARDEEP ANAND
-            </a>
-            
-            {/* Social Media Icons - Desktop */}
-            <div className="ml-3 md:ml-4 hidden md:flex items-center space-x-2 md:space-x-3">
-              <div className="flex space-x-2 bg-black/30 backdrop-blur-sm rounded-full px-2 md:px-3 py-1 md:py-1.5 border border-white/10 shadow-sm">
-                <a href="https://linkedin.com/in/hardeepanand" target="_blank" rel="noopener noreferrer" 
-                   className="text-gray-400 hover:text-primary transition-colors" aria-label="LinkedIn">
-                  <Linkedin size={16} className="hover:scale-110 transition-transform" />
-                </a>
-                <a href="https://twitter.com/hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-gray-400 hover:text-primary transition-colors" aria-label="Twitter">
-                  <Twitter size={16} className="hover:scale-110 transition-transform" />
-                </a>
-                <a href="https://youtube.com/@hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-gray-400 hover:text-primary transition-colors" aria-label="YouTube">
-                  <Youtube size={16} className="hover:scale-110 transition-transform" />
-                </a>
-                <a href="https://open.spotify.com/user/hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-gray-400 hover:text-primary transition-colors" aria-label="Spotify">
-                  <Music size={16} className="hover:scale-110 transition-transform" />
-                </a>
-              </div>
-            </div>
+    <nav className={`fixed top-0 left-0 right-0 py-4 z-50 transition-all duration-300 ${isScrolled ? 'backdrop-blur-md bg-white/80 shadow-sm' : 'bg-transparent'}`}>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          <NavLink to="/" className="flex items-center">
+            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">HARDEEP</span>
+          </NavLink>
+          
+          <div className="hidden md:flex space-x-8">
+            {navLinks.map((link) => (
+              <NavLink 
+                key={link.name}
+                to={link.path}
+                className={({ isActive }) =>
+                  `font-medium ${isActive ? 'text-primary' : 'text-slate-700 hover:text-primary'} transition-colors`
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
           </div>
           
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-1">
-            <NavigationMenu>
-              <NavigationMenuList>
-                {navLinks.map((link) => (
-                  <NavigationMenuItem key={link.name}>
-                    <NavigationMenuLink 
-                      href={link.href}
-                      className={cn(
-                        "text-sm font-medium px-3 py-2 rounded-md transition-colors duration-200",
-                        "text-gray-300 hover:bg-primary/10 hover:text-primary"
-                      )}
-                    >
-                      {link.name}
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
-                
-                {/* Resume Button */}
-                <NavigationMenuItem>
-                  <ResumeButton 
-                    variant="outline" 
-                    size="sm"
-                    showIcon={true} 
-                    className="ml-2 border-gray-700 rounded-md hover:border-primary/30 hover:bg-primary/5 text-gray-300"
-                  />
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+          <div className="hidden md:flex items-center space-x-4">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="text-primary border-primary hover:bg-primary hover:text-white"
+              onClick={() => window.open('https://www.circleso.com', '_blank', 'noopener,noreferrer')}
+            >
+              <GraduationCap className="mr-2 h-4 w-4" />
+              Join Circle
+            </Button>
           </div>
           
-          {/* Mobile menu button */}
-          <div className="flex md:hidden">
-            <button
-              type="button"
-              className="rounded-md p-1.5 text-white bg-black/30 backdrop-blur-sm border border-white/10 shadow-sm"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <span className="sr-only">Open main menu</span>
-              {mobileMenuOpen ? (
-                <X className="h-5 w-5" aria-hidden="true" />
-              ) : (
-                <Menu className="h-5 w-5" aria-hidden="true" />
-              )}
-            </button>
-          </div>
-        </nav>
-        
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-[#0F172A]/95 backdrop-blur-lg rounded-lg mt-2 border border-primary/10 shadow-md overflow-hidden animate-fade-in">
-            <div className="p-1.5">
+          <button 
+            className="md:hidden block text-slate-700"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </div>
+      
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {isOpen && isMobile && (
+          <motion.div 
+            className="fixed inset-0 bg-white z-40 pt-20 px-4"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="flex flex-col space-y-6 items-center">
               {navLinks.map((link) => (
-                <a
+                <NavLink 
                   key={link.name}
-                  href={link.href}
-                  className="block px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-primary/10 hover:text-primary transition-colors duration-200"
-                  onClick={() => setMobileMenuOpen(false)}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    `font-medium text-lg ${isActive ? 'text-primary' : 'text-slate-700'}`
+                  }
+                  onClick={() => setIsOpen(false)}
                 >
                   {link.name}
-                </a>
+                </NavLink>
               ))}
               
-              {/* Resume Button for Mobile */}
-              <div className="px-1.5 py-2">
-                <ResumeButton 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full justify-center rounded-md border-gray-700 text-gray-300 text-sm" 
-                />
-              </div>
-              
-              {/* Social Media Icons for Mobile */}
-              <div className="flex items-center justify-center space-x-5 px-3 py-2 mt-1 border-t border-white/10">
-                <a href="https://linkedin.com/in/hardeepanand" target="_blank" rel="noopener noreferrer" 
-                   className="text-gray-400 hover:text-primary transition-colors" aria-label="LinkedIn">
-                  <Linkedin size={18} />
-                </a>
-                <a href="https://twitter.com/hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-gray-400 hover:text-primary transition-colors" aria-label="Twitter">
-                  <Twitter size={18} />
-                </a>
-                <a href="https://youtube.com/@hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-gray-400 hover:text-primary transition-colors" aria-label="YouTube">
-                  <Youtube size={18} />
-                </a>
-                <a href="https://open.spotify.com/user/hardeepanand" target="_blank" rel="noopener noreferrer"
-                   className="text-gray-400 hover:text-primary transition-colors" aria-label="Spotify">
-                  <Music size={18} />
-                </a>
-              </div>
+              <Button 
+                variant="outline" 
+                className="mt-4 w-full text-primary border-primary hover:bg-primary hover:text-white"
+                onClick={() => {
+                  window.open('https://www.circleso.com', '_blank', 'noopener,noreferrer');
+                  setIsOpen(false);
+                }}
+              >
+                <GraduationCap className="mr-2 h-4 w-4" />
+                Join Circle
+              </Button>
             </div>
-          </div>
+          </motion.div>
         )}
-      </div>
-    </header>
+      </AnimatePresence>
+    </nav>
   );
 };
 

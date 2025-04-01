@@ -13,12 +13,14 @@ import AdminFamilyMembers from '@/pages/AdminFamilyMembers';
 import ProfileDashboard from '@/pages/ProfileDashboard';
 import PublicationsDashboard from '@/pages/PublicationsDashboard';
 import DomainPage from '@/pages/DomainPage';
+import Gallery from '@/pages/Gallery';
 import './index.css';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Index />} />
+      <Route path="/gallery" element={<Gallery />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/terms" element={<TermsOfService />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />

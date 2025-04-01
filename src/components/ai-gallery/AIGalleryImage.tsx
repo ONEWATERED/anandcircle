@@ -1,20 +1,13 @@
 
 import React from 'react';
-import { Download } from 'lucide-react';
+import { Download, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { LucideIcon } from 'lucide-react';
+import { GalleryItem } from './gallery-data';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface AIGalleryImageProps {
-  image: {
-    id: number;
-    title: string;
-    description: string;
-    category: string;
-    url: string;
-    icon: LucideIcon;
-  };
+  image: GalleryItem;
 }
 
 const AIGalleryImage = ({ image }: AIGalleryImageProps) => {
@@ -25,7 +18,15 @@ const AIGalleryImage = ({ image }: AIGalleryImageProps) => {
     <div className="flex-[0_0_85%] sm:flex-[0_0_80%] md:flex-[0_0_45%] lg:flex-[0_0_30%] min-w-0 pl-4">
       <Card className="glass-card overflow-hidden border-0 transition-all duration-300 hover:shadow-xl h-full">
         <div className="relative aspect-square overflow-hidden bg-slate-100 flex items-center justify-center">
-          <Icon className="h-12 w-12 text-slate-400" />
+          {image.imagePath ? (
+            <img 
+              src={image.imagePath} 
+              alt={image.title}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <Icon className="h-12 w-12 text-slate-400" />
+          )}
           <div className="absolute top-2 right-2 px-2 py-1 rounded-full bg-gradient-to-r from-brand-blue/80 to-brand-purple/80 backdrop-blur-md text-white text-xs font-medium flex items-center">
             <Icon className="h-3 w-3 md:h-4 md:w-4" />
             <span className="ml-1 text-2xs md:text-xs">{image.category}</span>
@@ -48,13 +49,25 @@ const AIGalleryImage = ({ image }: AIGalleryImageProps) => {
             <Download className="mr-1 h-2.5 w-2.5 md:h-3 md:w-3" />
             Preview
           </Button>
-          <Button 
-            variant="outline" 
-            size={isMobile ? "sm" : "default"} 
-            className="text-2xs md:text-xs h-7 md:h-9 glass-button text-brand-purple hover:text-white hover:shadow-brand-purple/30"
-          >
-            View Details
-          </Button>
+          {image.url ? (
+            <Button 
+              variant="outline" 
+              size={isMobile ? "sm" : "default"} 
+              className="text-2xs md:text-xs h-7 md:h-9 glass-button text-brand-purple hover:text-white hover:shadow-brand-purple/30"
+              onClick={() => window.open(image.url, '_blank', 'noopener,noreferrer')}
+            >
+              <span>Visit</span>
+              <ExternalLink className="ml-1 h-2.5 w-2.5 md:h-3 md:w-3" />
+            </Button>
+          ) : (
+            <Button 
+              variant="outline" 
+              size={isMobile ? "sm" : "default"} 
+              className="text-2xs md:text-xs h-7 md:h-9 glass-button text-brand-purple hover:text-white hover:shadow-brand-purple/30"
+            >
+              View Details
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </div>

@@ -7,6 +7,7 @@ import InterestForm from '@/components/InterestForm';
 import TabbedContentSection from '@/components/TabbedContentSection';
 import Story from '@/components/Story';
 import ProfileShowcase from '@/components/ProfileShowcase';
+import GalleryPreview from '@/components/GalleryPreview';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
@@ -28,6 +29,11 @@ const Index = () => {
         {/* Story section */}
         <div className="w-full">
           <Story />
+        </div>
+        
+        {/* Gallery Preview section */}
+        <div className="w-full">
+          <GalleryPreview />
         </div>
         
         {/* Passion section */}
