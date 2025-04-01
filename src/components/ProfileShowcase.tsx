@@ -27,13 +27,13 @@ const ProfileShowcase = () => {
   useEffect(() => {
     const loadProfileData = async () => {
       try {
-        // Pre-validate the default image to ensure it exists
+        // Verify the default image exists before proceeding
         try {
-          const defaultImageTest = await fetch(defaultImage, { method: 'HEAD' });
-          if (!defaultImageTest.ok) {
+          const defaultImageResponse = await fetch(defaultImage, { method: 'HEAD' });
+          if (!defaultImageResponse.ok) {
             console.error("Default image is not accessible:", defaultImage);
           } else {
-            console.log("Default image is accessible");
+            console.log("Default image is accessible and valid");
           }
         } catch (imgErr) {
           console.error("Error checking default image:", imgErr);
@@ -47,9 +47,10 @@ const ProfileShowcase = () => {
           // Always ensure we have a valid image URL
           let photoUrl = data.photoUrl || defaultImage;
           
-          if (photoUrl !== defaultImage) {
+          // Don't validate external URLs to prevent CORS issues
+          if (photoUrl !== defaultImage && photoUrl.startsWith('/')) {
             try {
-              // Quick validation of the image URL
+              // Quick validation of the image URL for local images
               const imageCheck = await fetch(photoUrl, { method: 'HEAD' });
               if (!imageCheck.ok) {
                 console.warn("Retrieved photo URL is not accessible, using default:", photoUrl);
@@ -75,10 +76,20 @@ const ProfileShowcase = () => {
           });
         } else {
           console.warn("No profile data retrieved, using defaults");
+          // Make sure to set profileData explicitly with the default image if no data
+          setProfileData(prevData => ({
+            ...prevData,
+            profileImageUrl: defaultImage
+          }));
         }
       } catch (error) {
         console.error("Error loading profile data:", error);
         toast.error("There was an issue loading your profile data");
+        // Explicitly set default image on error
+        setProfileData(prevData => ({
+          ...prevData,
+          profileImageUrl: defaultImage
+        }));
       } finally {
         setIsLoading(false);
       }
@@ -97,7 +108,7 @@ const ProfileShowcase = () => {
     >
       <ProfileBackground profileImageUrl={profileData.profileImageUrl} />
       
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
+      <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center py-20 md:py-24">
           <ProfileHeader />
           <SocialFooter 
