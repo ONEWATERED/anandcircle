@@ -67,7 +67,7 @@ const ProfileHeader: React.FC = () => {
         <Button 
           size={isMobile ? "default" : "lg"} 
           variant="default"
-          onClick={() => document.getElementById('digital-avatar')?.scrollIntoView({ behavior: 'smooth' })}
+          onClick={() => window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer')}
           className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white font-medium shadow-neon-purple rounded-xl px-6 hover:shadow-lg hover:scale-105 transition-all duration-300"
         >
           <MessageCircle className="mr-2 h-5 w-5" />
@@ -80,4 +80,3 @@ const ProfileHeader: React.FC = () => {
 };
 
 export default ProfileHeader;
-

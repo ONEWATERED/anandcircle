@@ -3,15 +3,10 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { MessageCircle, Phone } from 'lucide-react';
-import AvatarDialog from '@/components/profile/AvatarDialog';
+import { MessageCircle, ArrowRight } from 'lucide-react';
 import { domains } from '@/data/domainData';
 
 const DigitalCloneConnect = () => {
-  const [showAvatarHint, setShowAvatarHint] = useState(false);
-  const [showAvatarDialog, setShowAvatarDialog] = useState(false);
-  const [isAvatarPulsing, setIsAvatarPulsing] = useState(true);
-  
   // Reordering the domains according to the specified order
   const orderedDomains = [
     domains.find(d => d.id === 'water'),     // 1. One Water
@@ -21,16 +16,6 @@ const DigitalCloneConnect = () => {
     domains.find(d => d.id === 'family'),    // 5. Nuclear Family
     domains.find(d => d.id === 'health'),    // 6. Health
   ].filter(Boolean); // Filter out any undefined values
-  
-  const handleAvatarHover = () => {
-    setShowAvatarHint(true);
-    setIsAvatarPulsing(false);
-  };
-  
-  const handleAvatarLeave = () => {
-    setShowAvatarHint(false);
-    setIsAvatarPulsing(true);
-  };
   
   return (
     <section id="digital-avatar" className="py-16 md:py-24 bg-tech-dark border-t border-[#0EA5E9]/10 relative overflow-hidden">
@@ -58,28 +43,19 @@ const DigitalCloneConnect = () => {
           </h2>
           
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Connect with me directly or chat with my AI avatar. My AI can answer questions about my work, 
-            ideas, and experiences instantly, or we can schedule a personal conversation.
+            Connect with my digital clone on Delphi.ai where you can choose to have a text chat or a voice 
+            conversation. My AI can answer questions about my work, ideas, and experiences instantly.
           </p>
         </motion.div>
         
         <div className="flex justify-center">
-          <AvatarDialog 
-            showAvatarHint={showAvatarHint}
-            showAvatarDialog={showAvatarDialog}
-            setShowAvatarDialog={setShowAvatarDialog}
-            handleAvatarHover={handleAvatarHover}
-            handleAvatarLeave={handleAvatarLeave}
-            isAvatarPulsing={isAvatarPulsing}
-          />
-          
           <motion.div 
             className="relative cursor-pointer"
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 100, damping: 15 }}
-            onClick={() => setShowAvatarDialog(true)}
+            onClick={() => window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer')}
           >
             <div className="bg-white p-1 rounded-full">
               <Avatar className="h-24 w-24 bg-primary/10">
@@ -95,9 +71,9 @@ const DigitalCloneConnect = () => {
           </motion.div>
         </div>
         
-        {/* Updated buttons to clarify interaction options */}
+        {/* Single button that directs to Delphi.ai */}
         <motion.div 
-          className="text-center mt-8 flex flex-col md:flex-row gap-4 justify-center"
+          className="text-center mt-8 flex justify-center"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -106,21 +82,12 @@ const DigitalCloneConnect = () => {
           <Button 
             size="lg" 
             variant="default"
-            onClick={() => setShowAvatarDialog(true)}
+            onClick={() => window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer')}
             className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white shadow-neon-purple hover:shadow-neon-cyan hover:opacity-90 cursor-pointer transition-all duration-300"
           >
             <MessageCircle className="mr-2 h-5 w-5" />
-            Chat with My AI Avatar Now
-          </Button>
-          
-          <Button 
-            size="lg"
-            variant="outline"
-            onClick={() => window.open('mailto:hardeepanand@email.com', '_blank')}
-            className="border-[#0EA5E9] text-[#0EA5E9] hover:bg-[#0EA5E9]/10 transition-all duration-300"
-          >
-            <Phone className="mr-2 h-5 w-5" />
-            Schedule a Direct Conversation
+            Chat or Talk with My Digital Clone
+            <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </motion.div>
 
@@ -158,7 +125,7 @@ const DigitalCloneConnect = () => {
                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
                     transition: { duration: 0.2 }
                   }}
-                  onClick={() => setShowAvatarDialog(true)}
+                  onClick={() => window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer')}
                 >
                   <div 
                     className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
@@ -183,4 +150,3 @@ const DigitalCloneConnect = () => {
 };
 
 export default DigitalCloneConnect;
-
