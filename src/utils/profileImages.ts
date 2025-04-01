@@ -2,6 +2,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { getHardeepProfileImage } from "./databaseConnection";
+import { isValidImageUrl } from "./fileUtils";
 
 // Define the profile data interface
 export interface ProfileData {
@@ -21,11 +22,20 @@ export const getProfileImage = async (): Promise<string | null> => {
   try {
     console.log("Getting profile image");
     
+    // Guaranteed default that we know exists
+    const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+    
     // Try to get from Hardeep profile first
     const hardeepImageUrl = await getHardeepProfileImage();
     if (hardeepImageUrl) {
       console.log("Retrieved Hardeep profile image:", hardeepImageUrl);
-      return hardeepImageUrl;
+      
+      // Validate that the image exists and is accessible
+      if (await isValidImageUrl(hardeepImageUrl)) {
+        return hardeepImageUrl;
+      } else {
+        console.warn("Hardeep profile image is not accessible:", hardeepImageUrl);
+      }
     }
     
     // Check if user is authenticated
@@ -43,18 +53,35 @@ export const getProfileImage = async (): Promise<string | null> => {
         console.error("Error fetching profile image from Supabase:", error);
       } else if (data?.profile_image_url) {
         console.log("Retrieved profile image from profiles table:", data.profile_image_url);
-        return data.profile_image_url;
+        
+        // Validate that the image exists and is accessible
+        if (await isValidImageUrl(data.profile_image_url)) {
+          return data.profile_image_url;
+        } else {
+          console.warn("Profile image from database is not accessible:", data.profile_image_url);
+        }
       }
     }
     
     // As a final fallback, try to get from localStorage
     const localStorageImage = localStorage.getItem('profileImageUrl');
-    console.log("Retrieved profile image from localStorage:", localStorageImage);
+    if (localStorageImage) {
+      console.log("Retrieved profile image from localStorage:", localStorageImage);
+      
+      // Validate that the image exists and is accessible
+      if (await isValidImageUrl(localStorageImage)) {
+        return localStorageImage;
+      } else {
+        console.warn("localStorage profile image is not accessible:", localStorageImage);
+      }
+    }
     
-    return localStorageImage;
+    // If all else fails, return the default image
+    console.log("Using default profile image as fallback");
+    return defaultImage;
   } catch (error) {
     console.error("Error getting profile image:", error);
-    return null;
+    return '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png'; // Guaranteed fallback
   }
 };
 

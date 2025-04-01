@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { getUserProfileData } from '@/utils/profileImages';
 import { ensureHttpProtocol } from '@/utils/databaseConnection';
@@ -5,10 +6,14 @@ import ProfileBackground from './profile/ProfileBackground';
 import ProfileHeader from './profile/ProfileHeader';
 import SocialFooter from './profile/SocialFooter';
 import ScrollPrompt from './profile/ScrollPrompt';
+import { toast } from 'sonner';
 
 const ProfileShowcase = () => {
+  // Guaranteed default image that we know exists
+  const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+  
   const [profileData, setProfileData] = useState({
-    profileImageUrl: '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png', // Set default initially
+    profileImageUrl: defaultImage,
     socialLinks: {
       linkedIn: 'https://linkedin.com/in/hardeepanand',
       twitter: 'https://twitter.com/hardeepanand',
@@ -22,11 +27,41 @@ const ProfileShowcase = () => {
   useEffect(() => {
     const loadProfileData = async () => {
       try {
+        // Pre-validate the default image to ensure it exists
+        try {
+          const defaultImageTest = await fetch(defaultImage, { method: 'HEAD' });
+          if (!defaultImageTest.ok) {
+            console.error("Default image is not accessible:", defaultImage);
+          } else {
+            console.log("Default image is accessible");
+          }
+        } catch (imgErr) {
+          console.error("Error checking default image:", imgErr);
+        }
+        
+        // Get user profile data
         const data = await getUserProfileData();
+        console.log("Raw profile data received:", data);
+        
         if (data) {
-          // Always keep the default image if nothing is returned
-          const photoUrl = data.photoUrl || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
-          console.log("Received photo URL from getUserProfileData:", photoUrl);
+          // Always ensure we have a valid image URL
+          let photoUrl = data.photoUrl || defaultImage;
+          
+          if (photoUrl !== defaultImage) {
+            try {
+              // Quick validation of the image URL
+              const imageCheck = await fetch(photoUrl, { method: 'HEAD' });
+              if (!imageCheck.ok) {
+                console.warn("Retrieved photo URL is not accessible, using default:", photoUrl);
+                photoUrl = defaultImage;
+              }
+            } catch (imgErr) {
+              console.warn("Error validating photo URL, using default:", imgErr);
+              photoUrl = defaultImage;
+            }
+          }
+          
+          console.log("Final photo URL to be used:", photoUrl);
           
           setProfileData({
             profileImageUrl: photoUrl,
@@ -38,10 +73,12 @@ const ProfileShowcase = () => {
               anandCircle: data.socialLinks?.anandCircle || profileData.socialLinks.anandCircle
             }
           });
+        } else {
+          console.warn("No profile data retrieved, using defaults");
         }
       } catch (error) {
         console.error("Error loading profile data:", error);
-        // Keep default image if there's an error
+        toast.error("There was an issue loading your profile data");
       } finally {
         setIsLoading(false);
       }
@@ -50,7 +87,7 @@ const ProfileShowcase = () => {
     loadProfileData();
   }, []);
 
-  console.log("ProfileShowcase - Final profile image URL:", profileData.profileImageUrl); // Debug log
+  console.log("ProfileShowcase rendering with image:", profileData.profileImageUrl);
 
   return (
     <section 

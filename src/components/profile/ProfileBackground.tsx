@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 interface ProfileBackgroundProps {
   profileImageUrl: string | null;
@@ -7,6 +7,14 @@ interface ProfileBackgroundProps {
 
 const ProfileBackground: React.FC<ProfileBackgroundProps> = ({ profileImageUrl }) => {
   const particlesRef = useRef<HTMLCanvasElement>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  // Guaranteed default image that we know exists
+  const fallbackImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+  
+  // Try the provided image first, fallback if not provided
+  const imageUrl = profileImageUrl || fallbackImage;
 
   useEffect(() => {
     if (!particlesRef.current) return;
@@ -79,11 +87,12 @@ const ProfileBackground: React.FC<ProfileBackgroundProps> = ({ profileImageUrl }
     createParticles();
   }, [particlesRef]);
 
-  // Make sure we have a default image
-  const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
-  const imageUrl = profileImageUrl || defaultImage;
-  
-  console.log("Background using image:", imageUrl); // Debug log
+  // Reset error state when image URL changes
+  useEffect(() => {
+    setImageError(false);
+  }, [profileImageUrl]);
+
+  console.log("ProfileBackground rendering with image:", imageUrl, "Error:", imageError);
 
   return (
     <>
@@ -98,15 +107,35 @@ const ProfileBackground: React.FC<ProfileBackgroundProps> = ({ profileImageUrl }
       
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/30 via-tech-dark/30 to-tech-dark/50 z-10"></div>
+        
+        {/* Only show the fallback image if we have an error with the main image */}
+        {imageError && (
+          <img 
+            src={fallbackImage} 
+            alt="Fallback Profile Background" 
+            className="w-full h-full object-cover object-center opacity-90"
+          />
+        )}
+        
+        {/* Main image with error handling */}
         <img 
           src={imageUrl} 
           alt="Profile Background" 
-          className="w-full h-full object-cover object-center opacity-80"
+          className={`w-full h-full object-cover object-center opacity-80 ${imageError ? 'hidden' : 'block'}`}
+          onLoad={() => {
+            console.log("Image loaded successfully:", imageUrl);
+            setImageLoaded(true);
+            setImageError(false);
+          }}
           onError={(e) => {
-            console.error("Failed to load image:", imageUrl);
-            // Fallback to default image if loading fails
-            const target = e.target as HTMLImageElement;
-            target.src = defaultImage;
+            console.error("Image failed to load:", imageUrl);
+            setImageError(true);
+            
+            // If the current URL is not the fallback but the fallback fails too, we're in trouble
+            if (imageUrl !== fallbackImage) {
+              const target = e.target as HTMLImageElement;
+              target.src = fallbackImage;
+            }
           }}
         />
       </div>
