@@ -1,3 +1,4 @@
+
 // Module for profile image management
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";

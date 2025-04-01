@@ -1,89 +1,68 @@
 
-// Module for handling connection (family/people) images
 import { supabase } from "@/integrations/supabase/client";
+import { isValidImageUrl } from "./fileUtils";
 
-/**
- * Retrieves a connection image from Supabase or localStorage
- * @param personId The ID of the person whose image we're fetching
- * @returns URL of the image or null if not found
- */
+// Get connection image from Supabase
 export const getConnectionImage = async (personId: string): Promise<string | null> => {
   try {
-    console.log(`Getting connection image for person: ${personId}`);
-    
-    // Try to get from Supabase connection_images first
-    const { data, error } = await supabase
-      .rpc('get_connection_image', { p_person_id: personId });
+    // Call the function to get the image path
+    const { data, error } = await supabase.rpc('get_connection_image', {
+      p_person_id: personId
+    });
     
     if (error) {
-      console.error("Error fetching connection image from Supabase:", error);
-      // If Supabase fails, try localStorage
-      const localImage = localStorage.getItem(`connection_image_${personId}`);
-      console.log(`Retrieved image from localStorage for ${personId}:`, localImage ? "Found" : "Not found");
-      return localImage;
-    }
-    
-    // Check if we got a valid image path from Supabase
-    if (data && data.length > 0 && data[0].image_path) {
-      const imagePath = data[0].image_path;
-      console.log(`Retrieved connection image from Supabase for ${personId}:`, imagePath);
-      
-      // Update localStorage for offline access
-      localStorage.setItem(`connection_image_${personId}`, imagePath);
-      
-      return imagePath;
-    }
-    
-    // If not in Supabase, try localStorage
-    const localImage = localStorage.getItem(`connection_image_${personId}`);
-    console.log(`Fallback to localStorage for ${personId}:`, localImage ? "Found" : "Not found");
-    
-    return localImage;
-  } catch (error) {
-    console.error(`Error getting connection image for ${personId}:`, error);
-    
-    // Final fallback to localStorage
-    try {
-      const localImage = localStorage.getItem(`connection_image_${personId}`);
-      return localImage;
-    } catch (e) {
+      console.error("Error getting connection image:", error);
       return null;
     }
+    
+    // Check if data is valid and contains an image path
+    if (data && data.length > 0 && data[0].image_path) {
+      const imagePath = data[0].image_path;
+      
+      // Validate that the image exists and is accessible
+      if (await isValidImageUrl(imagePath)) {
+        return imagePath;
+      } else {
+        console.warn("Connection image is not accessible:", imagePath);
+      }
+    }
+    
+    // Check if there's a path in localStorage
+    const localStorageKey = `connection_image_${personId}`;
+    const localStorageImage = localStorage.getItem(localStorageKey);
+    
+    if (localStorageImage && await isValidImageUrl(localStorageImage)) {
+      return localStorageImage;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error("Error getting connection image:", error);
+    return null;
   }
 };
 
-/**
- * Saves a connection image URL to Supabase and localStorage
- * @param personId The ID of the person whose image we're saving
- * @param url The image URL to save
- */
-export const saveConnectionImage = async (personId: string, url: string): Promise<void> => {
+// Save connection image to Supabase and localStorage
+export const saveConnectionImage = async (personId: string, imageUrl: string): Promise<boolean> => {
   try {
-    console.log(`Saving connection image for ${personId}:`, url);
+    // Save to localStorage as fallback
+    const localStorageKey = `connection_image_${personId}`;
+    localStorage.setItem(localStorageKey, imageUrl);
     
-    // Save to Supabase
-    const { error } = await supabase
-      .rpc('store_connection_image', { 
-        p_person_id: personId,
-        p_image_path: url
-      });
+    // Call the store_connection_image function
+    const { error } = await supabase.rpc('store_connection_image', {
+      p_person_id: personId,
+      p_image_path: imageUrl
+    });
     
     if (error) {
-      console.error(`Error saving connection image to Supabase for ${personId}:`, error);
-    } else {
-      console.log(`Connection image saved to Supabase for ${personId}`);
+      console.error("Error saving connection image to database:", error);
+      return false;
     }
     
-    // Always save to localStorage as fallback
-    localStorage.setItem(`connection_image_${personId}`, url);
+    return true;
   } catch (error) {
-    console.error(`Error saving connection image for ${personId}:`, error);
-    
-    // Try localStorage as final fallback
-    try {
-      localStorage.setItem(`connection_image_${personId}`, url);
-    } catch (e) {
-      console.error("Failed to save to localStorage:", e);
-    }
+    console.error("Error saving connection image:", error);
+    return false;
   }
 };
