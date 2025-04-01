@@ -197,10 +197,7 @@ const ProfileShowcase = () => {
               <ResumeButton 
                 size={isMobile ? "default" : "lg"}
                 className="bg-gradient-magenta-gold text-white font-medium rounded-xl shadow-neon-magenta hover:shadow-lg hover:scale-105 transition-all duration-300"
-              >
-                <FileText className="mr-2 h-5 w-5" />
-                Resume
-              </ResumeButton>
+              />
             </motion.div>
             
             <motion.div
