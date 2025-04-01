@@ -22,6 +22,7 @@ export interface GalleryItem {
   imagePath?: string;
 }
 
+// This data is now just for fallback purposes since we're getting data from Supabase
 export const imageData: GalleryItem[] = [
   {
     id: 1,
