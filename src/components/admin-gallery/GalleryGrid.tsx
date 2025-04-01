@@ -8,9 +8,10 @@ interface GalleryGridProps {
   images: GalleryItem[];
   isLoading: boolean;
   onDeleteImage: (id: string) => Promise<void>;
+  onEditImage: (image: GalleryItem) => void;
 }
 
-const GalleryGrid: React.FC<GalleryGridProps> = ({ images, isLoading, onDeleteImage }) => {
+const GalleryGrid: React.FC<GalleryGridProps> = ({ images, isLoading, onDeleteImage, onEditImage }) => {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
@@ -37,7 +38,8 @@ const GalleryGrid: React.FC<GalleryGridProps> = ({ images, isLoading, onDeleteIm
         <ImageCard 
           key={image.id} 
           image={image} 
-          onDelete={onDeleteImage} 
+          onDelete={onDeleteImage}
+          onEdit={onEditImage}
         />
       ))}
     </div>

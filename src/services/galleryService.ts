@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { GalleryItem } from "@/components/ai-gallery/gallery-data";
 import { toast } from "sonner";
@@ -109,6 +108,77 @@ export const uploadGalleryImage = async ({file, title, description, category, ic
   } catch (error) {
     console.error("Error in uploadGalleryImage:", error);
     toast.error("Failed to upload gallery item");
+    return false;
+  }
+};
+
+// Update an existing gallery image
+export const updateGalleryImage = async ({id, file, title, description, category, icon_name, url}: {
+  id: string;
+  file: File | null;
+  title: string;
+  description: string;
+  category: string;
+  icon_name: string;
+  url?: string;
+}): Promise<boolean> => {
+  try {
+    let imagePath = null;
+    
+    // Only upload a new image if a file is provided
+    if (file) {
+      // Upload the image to storage
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
+      
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('gallery-images')
+        .upload(filePath, file);
+        
+      if (uploadError) {
+        console.error("Error uploading image:", uploadError);
+        toast.error("Failed to upload new image");
+        return false;
+      }
+      
+      // Get the public URL
+      const { data: publicUrlData } = supabase.storage
+        .from('gallery-images')
+        .getPublicUrl(filePath);
+        
+      imagePath = publicUrlData.publicUrl;
+    }
+    
+    // Update data object based on whether a new image was uploaded
+    const updateData: any = {
+      title,
+      description,
+      category,
+      url: url || null,
+      icon_name: icon_name || 'Brain', // Store icon name as string
+    };
+    
+    // Only include image_path if a new image was uploaded
+    if (imagePath) {
+      updateData.image_path = imagePath;
+    }
+    
+    // Update the gallery item in the database
+    const { error: updateError } = await (supabase.from('gallery_images') as any).update(updateData)
+      .eq('id', id);
+    
+    if (updateError) {
+      console.error("Error updating gallery item:", updateError);
+      toast.error("Failed to update gallery item");
+      return false;
+    }
+    
+    toast.success("Gallery item updated successfully!");
+    return true;
+  } catch (error) {
+    console.error("Error in updateGalleryImage:", error);
+    toast.error("Failed to update gallery item");
     return false;
   }
 };
