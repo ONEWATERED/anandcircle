@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, Rocket, MessageCircle } from 'lucide-react';
+import { ArrowRight, BookOpen, MessageCircle } from 'lucide-react';
 import ResumeButton from '@/components/ResumeButton';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -50,18 +50,6 @@ const ProfileHeader: React.FC = () => {
         >
           <BookOpen className="mr-2 h-5 w-5" />
           My Story
-        </Button>
-        
-        <Button 
-          size={isMobile ? "default" : "lg"} 
-          variant="default"
-          className="bg-gradient-purple-magenta text-white font-medium rounded-xl shadow-neon-purple hover:shadow-lg hover:scale-105 transition-all duration-300"
-          onClick={() => {
-            document.getElementById('passions')?.scrollIntoView({ behavior: 'smooth' });
-          }}
-        >
-          <Rocket className="mr-2 h-5 w-5" />
-          Areas of Interest
         </Button>
         
         <ResumeButton 
