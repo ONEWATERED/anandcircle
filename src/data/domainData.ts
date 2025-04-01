@@ -46,7 +46,7 @@ export const domains: DomainData[] = [
     title: 'Mentoring',
     icon: GraduationCap,
     color: 'rgb(168, 85, 247)', // purple-500
-    description: 'I'm passionate about helping others discover their potential through guidance and sharing what I've learned along my journey.',
+    description: 'I\'m passionate about helping others discover their potential through guidance and sharing what I\'ve learned along my journey.',
     initialAngle: 216, // 216 degrees clockwise (about 7:30 position)
     link: 'https://www.circleso.com'
   },
