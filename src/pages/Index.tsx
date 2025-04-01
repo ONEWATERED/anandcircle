@@ -21,17 +21,17 @@ const Index = () => {
         </div>
         
         {/* Story section */}
-        <div className="w-full bg-tech-dark border-t border-[#0EA5E9]/10">
+        <div className="w-full">
           <Story />
         </div>
         
         {/* Gallery Preview section */}
-        <div className="w-full bg-tech-dark border-t border-[#0EA5E9]/10">
+        <div className="w-full">
           <GalleryPreview />
         </div>
         
         {/* Passion section */}
-        <div className="w-full bg-tech-dark border-t border-[#0EA5E9]/10">
+        <div className="w-full">
           <PassionSection />
         </div>
         

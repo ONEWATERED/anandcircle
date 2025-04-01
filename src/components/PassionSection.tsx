@@ -30,7 +30,7 @@ const PassionSection = () => {
   };
   
   return (
-    <section id="passions" className="py-16 md:py-24 bg-gradient-to-b from-white to-gray-50">
+    <section id="passions" className="py-16 md:py-24 bg-tech-dark border-t border-[#0EA5E9]/10">
       <motion.div 
         className="container mx-auto px-4 sm:px-6 lg:px-8"
         variants={containerVariants}
@@ -42,9 +42,9 @@ const PassionSection = () => {
           className="text-center mb-10 md:mb-16"
           variants={itemVariants}
         >
-          <h2 className="text-3xl md:text-4xl font-semibold text-slate-900 mb-4">My Areas of Interest</h2>
-          <div className="h-1 w-20 bg-gradient-to-r from-primary/70 to-secondary/70 mx-auto mb-6"></div>
-          <p className="max-w-2xl mx-auto px-4 text-lg text-slate-700">
+          <h2 className="text-3xl md:text-4xl font-semibold text-white mb-4 text-gradient-tech">My Areas of Interest</h2>
+          <div className="h-1 w-20 bg-gradient-tech mx-auto mb-6"></div>
+          <p className="max-w-2xl mx-auto px-4 text-lg text-gray-300">
             These domains are interconnected, creating a holistic approach to innovation and impact.
           </p>
         </motion.div>
@@ -59,15 +59,19 @@ const PassionSection = () => {
 
         <motion.div
           variants={itemVariants}
-          className="max-w-3xl mx-auto text-center mt-16 bg-white p-8 rounded-xl shadow-md border border-gray-100"
+          className="max-w-3xl mx-auto text-center mt-16 glass-panel p-8 rounded-xl border border-[#0EA5E9]/30 shadow-neon-cyan"
         >
-          <h3 className="text-2xl font-semibold text-slate-900 mb-4">Join My One Water Circle</h3>
-          <p className="text-slate-700 mb-8">
+          <h3 className="text-2xl font-semibold text-white mb-4">Join My One Water Circle</h3>
+          <p className="text-gray-300 mb-8">
             Join my circle to explore more about these interconnected domains and how they create meaningful change.
             Connect with like-minded individuals and be part of the solution.
           </p>
           <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer" className="inline-block">
-            <Button className="bg-slate-900 hover:bg-slate-800 shadow-md hover:shadow-lg transition-all duration-300 rounded-lg text-white">
+            <Button 
+              variant="tech"
+              glow="cyan"
+              className="shadow-md hover:shadow-lg transition-all duration-300 rounded-lg text-white"
+            >
               <Users className="mr-2" size={18} />
               Join One Water Circle
               <ExternalLink className="ml-2" size={16} />
