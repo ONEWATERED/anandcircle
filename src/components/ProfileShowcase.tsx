@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { getUserProfileData } from '@/utils/profileImages';
 import { ensureHttpProtocol } from '@/utils/databaseConnection';
@@ -25,8 +24,12 @@ const ProfileShowcase = () => {
       try {
         const data = await getUserProfileData();
         if (data) {
+          // Always keep the default image if nothing is returned
+          const photoUrl = data.photoUrl || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+          console.log("Received photo URL from getUserProfileData:", photoUrl);
+          
           setProfileData({
-            profileImageUrl: data.photoUrl || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png',
+            profileImageUrl: photoUrl,
             socialLinks: {
               linkedIn: ensureHttpProtocol(data.socialLinks?.linkedIn || profileData.socialLinks.linkedIn),
               twitter: ensureHttpProtocol(data.socialLinks?.twitter || profileData.socialLinks.twitter),
@@ -38,7 +41,7 @@ const ProfileShowcase = () => {
         }
       } catch (error) {
         console.error("Error loading profile data:", error);
-        // Use default image if there's an error
+        // Keep default image if there's an error
       } finally {
         setIsLoading(false);
       }
@@ -47,12 +50,13 @@ const ProfileShowcase = () => {
     loadProfileData();
   }, []);
 
-  console.log("Profile image URL:", profileData.profileImageUrl); // Debug log
+  console.log("ProfileShowcase - Final profile image URL:", profileData.profileImageUrl); // Debug log
 
   return (
     <section 
       id="home" 
       className="relative w-full min-h-screen overflow-hidden bg-tech-dark"
+      style={{ position: 'relative' }}
     >
       <ProfileBackground profileImageUrl={profileData.profileImageUrl} />
       

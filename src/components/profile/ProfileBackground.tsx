@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect } from 'react';
 
 interface ProfileBackgroundProps {
@@ -78,6 +79,12 @@ const ProfileBackground: React.FC<ProfileBackgroundProps> = ({ profileImageUrl }
     createParticles();
   }, [particlesRef]);
 
+  // Make sure we have a default image
+  const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+  const imageUrl = profileImageUrl || defaultImage;
+  
+  console.log("Background using image:", imageUrl); // Debug log
+
   return (
     <>
       <canvas 
@@ -92,13 +99,14 @@ const ProfileBackground: React.FC<ProfileBackgroundProps> = ({ profileImageUrl }
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/30 via-tech-dark/30 to-tech-dark/50 z-10"></div>
         <img 
-          src={profileImageUrl || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png'} 
+          src={imageUrl} 
           alt="Profile Background" 
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-center opacity-80"
           onError={(e) => {
+            console.error("Failed to load image:", imageUrl);
             // Fallback to default image if loading fails
             const target = e.target as HTMLImageElement;
-            target.src = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+            target.src = defaultImage;
           }}
         />
       </div>
