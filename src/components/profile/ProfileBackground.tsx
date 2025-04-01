@@ -9,19 +9,31 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
+    if (!profileImageUrl) return;
+    
+    // Preload image to ensure it's ready before displaying
     const img = new Image();
-    img.onload = () => setImageLoaded(true);
+    img.onload = () => {
+      console.log("Background image loaded successfully:", profileImageUrl);
+      setImageLoaded(true);
+    };
+    img.onerror = (e) => {
+      console.error("Failed to load background image:", profileImageUrl, e);
+    };
     img.src = profileImageUrl;
     
     return () => {
       img.onload = null;
+      img.onerror = null;
     };
   }, [profileImageUrl]);
 
+  console.log("ProfileBackground rendering with image:", profileImageUrl, "Loaded:", imageLoaded);
+
   return (
     <>
-      {/* Dark gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-70 z-10" />
+      {/* Dark gradient overlay - reduced opacity to make image more visible */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60 z-10" />
       
       {/* Background image with adjusted positioning */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -30,8 +42,8 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
             className="w-full h-full bg-cover bg-center transition-opacity duration-1000"
             style={{ 
               backgroundImage: `url(${profileImageUrl})`,
-              backgroundPosition: 'center 20%', // Adjusted this value to show more of the top of the image
-              opacity: imageLoaded ? 1 : 0, // Increased opacity from 0.7 to 1
+              backgroundPosition: 'center 15%', // Move image up to show head better
+              opacity: imageLoaded ? 1 : 0, 
             }}
           />
         )}
