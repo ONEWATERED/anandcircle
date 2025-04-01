@@ -32,26 +32,26 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
 
   return (
     <>
-      {/* No gradient overlay to ensure full image visibility */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-30 z-10" />
+      {/* Very light gradient overlay to ensure text readability while maximizing image visibility */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-20 z-10" />
       
       {/* Background image with larger size and position adjusted to show top of head */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         {profileImageUrl && (
           <div 
-            className="w-full h-full bg-cover bg-center transition-opacity duration-300"
+            className="w-full h-full bg-cover bg-center transition-opacity duration-500"
             style={{ 
               backgroundImage: `url(${profileImageUrl})`,
-              backgroundPosition: 'center 40%', // Position adjusted to show more of the top
+              backgroundPosition: 'center 25%', // Position adjusted to show more of the face
               opacity: imageLoaded ? 1 : 0,
-              transform: 'scale(1.1)', // Slightly enlarge the image
+              transform: 'scale(1.2)', // Enlarge the image more
             }}
           />
         )}
       </div>
       
       {/* Fallback background color */}
-      <div className="absolute inset-0 bg-black" />
+      <div className="absolute inset-0 bg-black/50" />
 
       {/* Debug information during development */}
       {!imageLoaded && profileImageUrl && (

@@ -34,11 +34,10 @@ const ProfileShowcase = () => {
         const isDefaultImageValid = await isValidImageUrl(defaultImage);
         if (!isDefaultImageValid) {
           console.error("Default image is inaccessible:", defaultImage);
-          // Try using an alternative default image
-          const alternativeDefault = 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7';
+          // Use an alternative default image from Unsplash that we know works
           setProfileData(prev => ({
             ...prev,
-            profileImageUrl: alternativeDefault
+            profileImageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7'
           }));
         }
         
@@ -46,9 +45,9 @@ const ProfileShowcase = () => {
         const data = await getUserProfileData();
         console.log("Raw profile data received:", data);
         
-        if (data) {
+        if (data && data.photoUrl) {
           // Always ensure we have a valid image URL
-          let photoUrl = data.photoUrl || defaultImage;
+          let photoUrl = data.photoUrl;
           
           // Log the URL we're about to use
           console.log("Using photo URL:", photoUrl);
@@ -58,23 +57,41 @@ const ProfileShowcase = () => {
             photoUrl = '/' + photoUrl;
           }
           
-          setProfileData({
-            profileImageUrl: photoUrl,
-            socialLinks: {
-              linkedIn: ensureHttpProtocol(data.socialLinks?.linkedIn || profileData.socialLinks.linkedIn),
-              twitter: ensureHttpProtocol(data.socialLinks?.twitter || profileData.socialLinks.twitter),
-              youtube: ensureHttpProtocol(data.socialLinks?.youtube || profileData.socialLinks.youtube),
-              spotify: ensureHttpProtocol(data.socialLinks?.spotify || profileData.socialLinks.spotify),
-              anandCircle: data.socialLinks?.anandCircle || profileData.socialLinks.anandCircle
-            }
-          });
+          // Validate the image URL
+          const isPhotoValid = await isValidImageUrl(photoUrl);
+          if (isPhotoValid) {
+            console.log("Profile photo is valid and accessible:", photoUrl);
+            setProfileData(prev => ({
+              ...prev,
+              profileImageUrl: photoUrl
+            }));
+          } else {
+            console.error("Profile photo is not accessible, using fallback:", photoUrl);
+            // Use Unsplash fallback
+            setProfileData(prev => ({
+              ...prev,
+              profileImageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7'
+            }));
+          }
+          
+          // Update social links if available
+          if (data.socialLinks) {
+            setProfileData(prev => ({
+              ...prev,
+              socialLinks: {
+                linkedIn: ensureHttpProtocol(data.socialLinks?.linkedIn || prev.socialLinks.linkedIn),
+                twitter: ensureHttpProtocol(data.socialLinks?.twitter || prev.socialLinks.twitter),
+                youtube: ensureHttpProtocol(data.socialLinks?.youtube || prev.socialLinks.youtube),
+                spotify: ensureHttpProtocol(data.socialLinks?.spotify || prev.socialLinks.spotify),
+                anandCircle: data.socialLinks?.anandCircle || prev.socialLinks.anandCircle
+              }
+            }));
+          }
         } else {
-          console.warn("No profile data retrieved, using defaults");
-          // Try using Unsplash placeholder as a test
-          const placeholderImage = 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7';
+          console.warn("No profile data retrieved or missing photo URL, using Unsplash placeholder");
           setProfileData(prev => ({
             ...prev,
-            profileImageUrl: placeholderImage
+            profileImageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7'
           }));
         }
       } catch (error) {
