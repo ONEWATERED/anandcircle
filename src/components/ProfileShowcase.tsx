@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import SocialMediaLinks from './profile/SocialMediaLinks';
@@ -165,8 +164,8 @@ const ProfileShowcase = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white text-gradient-tech">
-              Innovating at the Intersection
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-white text-gradient-tech">
+              Hardeep Anand
             </h1>
             
             <h2 className="text-xl md:text-3xl font-medium tracking-tight text-gray-300">
@@ -190,10 +189,10 @@ const ProfileShowcase = () => {
                 glow="cyan"
                 className="text-white hover:text-white shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base rounded-lg"
                 onClick={() => {
-                  document.getElementById('profile-section')?.scrollIntoView({ behavior: 'smooth' });
+                  document.getElementById('story')?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                Meet Hardeep
+                My Story
                 <ArrowRight className="ml-1 h-3 w-3 md:h-4 md:w-4" />
               </Button>
               <Button 
@@ -214,66 +213,44 @@ const ProfileShowcase = () => {
 
           {/* Profile content with enhanced visibility - removed smaller profile image */}
           <motion.div 
-            className="flex flex-col items-center gap-10 glass-panel p-8 rounded-xl border border-[#0EA5E9]/30 shadow-neon-cyan w-full max-w-5xl mx-auto"
+            className="flex-1 space-y-6 text-center text-white max-w-5xl mx-auto mt-16"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.7 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
             viewport={{ once: true }}
-            id="profile-section"
           >
-            {/* Text content */}
-            <motion.div 
-              className="flex-1 space-y-6 text-center text-white"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <div className="relative inline-block mb-4">
-                <h2 className="text-3xl md:text-5xl font-semibold text-gradient-tech">
-                  Hardeep Anand
-                </h2>
-                <div className="absolute -bottom-2 left-0 w-full h-px bg-gradient-tech"></div>
+            <div className="h-1 w-20 md:w-32 bg-gradient-tech mx-auto my-6 rounded-full"></div>
+            
+            <p className="text-gray-100 text-lg max-w-2xl mx-auto">
+              Connect with me on social platforms to explore collaborations and stay updated on my latest initiatives.
+            </p>
+            
+            <div className="pt-6 flex flex-wrap gap-4 justify-center">
+              <a 
+                href="#story" 
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-tech text-white rounded-lg transition-colors duration-300 shadow-neon-cyan hover-float"
+              >
+                <span>Explore My Story</span>
+                <ArrowRight className="h-4 w-4" />
+              </a>
+              <a 
+                href="#passions" 
+                className="inline-flex items-center gap-2 px-6 py-3 glass-tech text-white border border-white/10 hover:bg-white/10 rounded-lg transition-colors duration-300 shadow-sm hover:shadow-md"
+              >
+                <span>My Areas of Interest</span>
+              </a>
+            </div>
+            
+            {/* Social Media Links */}
+            {!isLoading && (
+              <div className="pt-6">
+                <SocialMediaLinks 
+                  links={profileData.socialLinks} 
+                  iconColor="text-white" 
+                  hoverColor="hover:text-[#0EA5E9]" 
+                />
               </div>
-              
-              <p className="text-xl md:text-2xl font-light text-gray-200 mb-4">
-                Executive • Innovator • Mentor
-              </p>
-              
-              <div className="h-1 w-20 md:w-32 bg-gradient-tech mx-auto my-6 rounded-full"></div>
-              
-              <p className="text-gray-100 text-lg max-w-2xl mx-auto">
-                Bringing data-driven solutions to public service, health challenges, and community needs.
-                Connect with me on social platforms to explore collaborations and stay updated on my latest initiatives.
-              </p>
-              
-              <div className="pt-6 flex flex-wrap gap-4 justify-center">
-                <a 
-                  href="#story" 
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-tech text-white rounded-lg transition-colors duration-300 shadow-neon-cyan hover-float"
-                >
-                  <span>Explore My Story</span>
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-                <a 
-                  href="#passions" 
-                  className="inline-flex items-center gap-2 px-6 py-3 glass-tech text-white border border-white/10 hover:bg-white/10 rounded-lg transition-colors duration-300 shadow-sm hover:shadow-md"
-                >
-                  <span>My Areas of Interest</span>
-                </a>
-              </div>
-              
-              {/* Social Media Links */}
-              {!isLoading && (
-                <div className="pt-6">
-                  <SocialMediaLinks 
-                    links={profileData.socialLinks} 
-                    iconColor="text-white" 
-                    hoverColor="hover:text-[#0EA5E9]" 
-                  />
-                </div>
-              )}
-            </motion.div>
+            )}
           </motion.div>
         </div>
       </div>
