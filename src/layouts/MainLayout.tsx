@@ -1,15 +1,18 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AdminLink from '@/components/AdminLink';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
+import SideNavMenu from '@/components/SideNavMenu';
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
   // Load fonts for better typography
   useEffect(() => {
     // Add Pinyon Script font for signature
@@ -48,7 +51,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     <div 
       className="min-h-screen flex flex-col bg-tech-dark text-white overflow-hidden" 
     >
-      <Navbar />
+      <Navbar onMenuToggle={() => setIsMenuOpen(!isMenuOpen)} />
       <main className="flex-grow w-full">
         {children}
       </main>
@@ -57,6 +60,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       </div>
       <Footer />
       <ScrollToTopButton />
+      <SideNavMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
     </div>
   );
 };
