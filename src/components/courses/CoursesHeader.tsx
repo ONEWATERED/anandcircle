@@ -13,7 +13,7 @@ const CoursesHeader = () => {
       </div>
       
       <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6">
-        Learn With Me in the <span className="text-gradient-primary">One Water Circle</span>
+        Learn With Me in the <span className="text-gradient-cyan-purple">One Water Circle</span>
       </h2>
       
       <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
