@@ -8,9 +8,11 @@ import SocialFooter from './profile/SocialFooter';
 import ScrollPrompt from './profile/ScrollPrompt';
 
 const ProfileShowcase = () => {
-  // Remove specific profile image reference
+  // Use the uploaded profile image
+  const profileImage = '/lovable-uploads/42f1226e-8674-4a17-879d-89336890e8c1.png';
+  
   const [profileData, setProfileData] = useState({
-    profileImageUrl: '',
+    profileImageUrl: profileImage,
     socialLinks: {
       linkedIn: 'https://linkedin.com/in/hardeepanand',
       twitter: 'https://twitter.com/hardeepanand',
@@ -25,6 +27,7 @@ const ProfileShowcase = () => {
     const loadProfileData = async () => {
       try {
         console.log("ProfileShowcase: Loading user profile data");
+        console.log("Using profile image:", profileImage);
         
         // Get user profile data for social links only
         const data = await getUserProfileData();
@@ -58,7 +61,7 @@ const ProfileShowcase = () => {
       id="home" 
       className="relative w-full min-h-screen overflow-hidden bg-tech-dark" 
     >
-      <ProfileBackground profileImageUrl="" />
+      <ProfileBackground profileImageUrl={profileImage} />
       
       <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center py-20 md:py-24">
