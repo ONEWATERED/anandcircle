@@ -12,8 +12,8 @@ import { updatePersonalProfilePhoto } from '@/utils/profileUtils';
 import { supabase } from '@/integrations/supabase/client';
 
 const ProfileShowcase = () => {
-  // Set the new profile image as the default
-  const newProfileImage = '/lovable-uploads/06d1abbd-f2e3-4aa4-b1c8-695498518158.png';
+  // Use a different image that we know exists in the public folder
+  const newProfileImage = '/placeholder.svg';
   
   const [profileData, setProfileData] = useState({
     profileImageUrl: newProfileImage,
@@ -74,7 +74,7 @@ const ProfileShowcase = () => {
   return (
     <section 
       id="home" 
-      className="relative w-full min-h-screen overflow-hidden bg-gray-900" // Darker background to make image stand out
+      className="relative w-full min-h-screen overflow-hidden bg-slate-700" // Medium-dark background for better contrast
     >
       <ProfileBackground profileImageUrl={profileData.profileImageUrl} />
       
