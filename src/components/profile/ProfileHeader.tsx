@@ -71,7 +71,7 @@ const ProfileHeader: React.FC = () => {
           className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white font-medium shadow-neon-purple rounded-xl px-6 hover:shadow-lg hover:scale-105 transition-all duration-300"
         >
           <MessageCircle className="mr-2 h-5 w-5" />
-          <span>Let's Have a Conversation</span>
+          <span>Connect With Me</span>
           <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </Button>
       </motion.div>
@@ -80,3 +80,4 @@ const ProfileHeader: React.FC = () => {
 };
 
 export default ProfileHeader;
+

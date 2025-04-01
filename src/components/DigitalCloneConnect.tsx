@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, Phone } from 'lucide-react';
 import AvatarDialog from '@/components/profile/AvatarDialog';
 import { domains } from '@/data/domainData';
 
@@ -50,7 +50,7 @@ const DigitalCloneConnect = () => {
         >
           <div className="inline-flex items-center justify-center px-4 py-1.5 mb-3 rounded-full bg-[#0EA5E9]/10 text-[#0EA5E9] font-medium border border-[#0EA5E9]/20">
             <MessageCircle className="mr-2 h-4 w-4" />
-            <span>Let's Chat</span>
+            <span>Let's Connect</span>
           </div>
           
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
@@ -58,8 +58,8 @@ const DigitalCloneConnect = () => {
           </h2>
           
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Let's chat! My AI assistant is ready to answer your questions about my work, 
-            ideas, and experiences. Feel free to ask me anything you're curious about.
+            Connect with me directly or chat with my AI avatar. My AI can answer questions about my work, 
+            ideas, and experiences instantly, or we can schedule a personal conversation.
           </p>
         </motion.div>
         
@@ -95,8 +95,9 @@ const DigitalCloneConnect = () => {
           </motion.div>
         </div>
         
+        {/* Updated buttons to clarify interaction options */}
         <motion.div 
-          className="text-center mt-8"
+          className="text-center mt-8 flex flex-col md:flex-row gap-4 justify-center"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -108,7 +109,18 @@ const DigitalCloneConnect = () => {
             onClick={() => setShowAvatarDialog(true)}
             className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white shadow-neon-purple hover:shadow-neon-cyan hover:opacity-90 cursor-pointer transition-all duration-300"
           >
-            Chat With Me Now
+            <MessageCircle className="mr-2 h-5 w-5" />
+            Chat with My AI Avatar Now
+          </Button>
+          
+          <Button 
+            size="lg"
+            variant="outline"
+            onClick={() => window.open('mailto:hardeepanand@email.com', '_blank')}
+            className="border-[#0EA5E9] text-[#0EA5E9] hover:bg-[#0EA5E9]/10 transition-all duration-300"
+          >
+            <Phone className="mr-2 h-5 w-5" />
+            Schedule a Direct Conversation
           </Button>
         </motion.div>
 
@@ -171,3 +183,4 @@ const DigitalCloneConnect = () => {
 };
 
 export default DigitalCloneConnect;
+
