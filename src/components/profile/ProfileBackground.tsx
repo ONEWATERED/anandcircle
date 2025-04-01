@@ -32,33 +32,34 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
 
   return (
     <>
-      {/* Very light gradient overlay to ensure text readability while maximizing image visibility */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-20 z-10" />
+      {/* Very light gradient overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-10 z-10" />
       
-      {/* Background image with larger size and position adjusted to show top of head */}
+      {/* Background image container */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         {profileImageUrl && (
           <div 
-            className="w-full h-full bg-cover bg-center transition-opacity duration-500"
+            className="w-full h-full transition-opacity duration-500"
             style={{ 
-              backgroundImage: `url(${profileImageUrl})`,
-              backgroundPosition: 'center 25%', // Position adjusted to show more of the face
               opacity: imageLoaded ? 1 : 0,
-              transform: 'scale(1.2)', // Enlarge the image more
             }}
-          />
+          >
+            {/* This div contains the full-size image */}
+            <div 
+              className="absolute inset-0 w-full h-full"
+              style={{
+                backgroundImage: `url(${profileImageUrl})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            />
+          </div>
         )}
       </div>
       
-      {/* Fallback background color */}
-      <div className="absolute inset-0 bg-black/50" />
-
-      {/* Debug information during development */}
-      {!imageLoaded && profileImageUrl && (
-        <div className="absolute bottom-4 right-4 bg-red-500 text-white px-2 py-1 text-xs rounded z-50">
-          Loading image: {profileImageUrl.substring(0, 30)}...
-        </div>
-      )}
+      {/* Dark background base */}
+      <div className="absolute inset-0 bg-black/70" />
     </>
   );
 };
