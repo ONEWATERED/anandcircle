@@ -9,8 +9,8 @@ import ScrollPrompt from './profile/ScrollPrompt';
 import { updatePersonalProfilePhoto } from '@/utils/profile';
 
 const ProfileShowcase = () => {
-  // Use a direct path to a public image that definitely exists
-  const profileImage = '/placeholder.svg';
+  // Use the uploaded profile image
+  const profileImage = '/lovable-uploads/ec1e9051-5d60-4193-8ed2-401ee4998f6c.png';
   
   const [profileData, setProfileData] = useState({
     profileImageUrl: profileImage,
@@ -29,7 +29,7 @@ const ProfileShowcase = () => {
       try {
         console.log("ProfileShowcase: Loading user profile data");
         
-        // Always use the hardcoded image path which we know works
+        // Save the full-length profile image to the database
         await updatePersonalProfilePhoto(profileImage);
         
         // Get user profile data for social links only

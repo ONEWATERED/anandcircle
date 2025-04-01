@@ -32,27 +32,27 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
 
   return (
     <>
-      {/* Dark background layer to match the site's color scheme */}
+      {/* Dark background layer to maintain site's color scheme */}
       <div className="absolute inset-0 bg-tech-dark" />
       
-      {/* Background image container */}
+      {/* Full-length profile image container */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         {profileImageUrl && (
           <div 
             className="w-full h-full transition-opacity duration-500"
             style={{ 
-              opacity: imageLoaded ? 0.3 : 0, // Lower opacity for a more subtle background
+              opacity: imageLoaded ? 0.15 : 0, // Very subtle opacity for background presence
             }}
           >
-            {/* This div contains the full-size image with enhanced visibility */}
+            {/* This div contains the full-length image styled for visibility */}
             <div 
               className="absolute inset-0 w-full h-full"
               style={{
                 backgroundImage: `url(${profileImageUrl})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                backgroundSize: 'contain', // Changed to 'contain' to show full-length
+                backgroundPosition: 'right center', // Position to right side for better visibility
                 backgroundRepeat: 'no-repeat',
-                filter: 'brightness(0.7) contrast(1.2)'  // Darker filter to match site's dark theme
+                filter: 'brightness(0.6) contrast(1.1)'  // Subtle filter for dark theme
               }}
             />
           </div>
@@ -60,7 +60,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
       </div>
       
       {/* Dark gradient overlay for better text readability and to match site theme */}
-      <div className="absolute inset-0 bg-gradient-to-b from-tech-dark/80 via-tech-dark/70 to-tech-dark/60 z-10" />
+      <div className="absolute inset-0 bg-gradient-to-r from-tech-dark via-tech-dark/95 to-tech-dark/80 z-10" />
     </>
   );
 };
