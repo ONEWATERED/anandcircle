@@ -26,7 +26,7 @@ const ProfileShowcase = () => {
         const data = await getUserProfileData();
         if (data) {
           setProfileData({
-            profileImageUrl: data.photoUrl || null,
+            profileImageUrl: data.photoUrl || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png',
             socialLinks: {
               linkedIn: ensureHttpProtocol(data.socialLinks?.linkedIn || profileData.socialLinks.linkedIn),
               twitter: ensureHttpProtocol(data.socialLinks?.twitter || profileData.socialLinks.twitter),
@@ -38,6 +38,11 @@ const ProfileShowcase = () => {
         }
       } catch (error) {
         console.error("Error loading profile data:", error);
+        // Use default image if there's an error
+        setProfileData(prev => ({
+          ...prev,
+          profileImageUrl: '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png'
+        }));
       } finally {
         setIsLoading(false);
       }
