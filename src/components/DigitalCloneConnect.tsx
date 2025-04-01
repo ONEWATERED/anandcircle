@@ -3,10 +3,20 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { MessageCircle, ArrowRight } from 'lucide-react';
+import { MessageCircle, ArrowRight, Mic } from 'lucide-react';
 import { domains } from '@/data/domainData';
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 const DigitalCloneConnect = () => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  
   // Reordering the domains according to the specified order
   const orderedDomains = [
     domains.find(d => d.id === 'water'),     // 1. One Water
@@ -16,6 +26,11 @@ const DigitalCloneConnect = () => {
     domains.find(d => d.id === 'family'),    // 5. Nuclear Family
     domains.find(d => d.id === 'health'),    // 6. Health
   ].filter(Boolean); // Filter out any undefined values
+  
+  const handleOpenDelphi = () => {
+    window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer');
+    setDialogOpen(false);
+  };
   
   return (
     <section id="digital-avatar" className="py-16 md:py-24 bg-tech-dark border-t border-[#0EA5E9]/10 relative overflow-hidden">
@@ -55,7 +70,7 @@ const DigitalCloneConnect = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2, type: "spring", stiffness: 100, damping: 15 }}
-            onClick={() => window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer')}
+            onClick={() => setDialogOpen(true)}
           >
             <div className="bg-white p-1 rounded-full">
               <Avatar className="h-24 w-24 bg-primary/10">
@@ -71,7 +86,52 @@ const DigitalCloneConnect = () => {
           </motion.div>
         </div>
         
-        {/* Single button that directs to Delphi.ai */}
+        {/* Dialog that opens instead of navigating away */}
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogContent className="sm:max-w-md bg-gradient-to-br from-[#0EA5E9] to-[#9333EA] text-white border-none">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-bold text-white">Connect with My Digital Clone</DialogTitle>
+              <DialogDescription className="text-white/90">
+                Choose how you'd like to interact with my AI assistant
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="flex flex-col items-center gap-4 py-4">
+              <div className="bg-white/20 p-3 rounded-full">
+                <Avatar className="h-24 w-24">
+                  <AvatarFallback className="bg-white/30 text-white text-2xl font-bold">
+                    HA
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              
+              <p className="text-center text-white px-4 text-lg">
+                You can have a text chat or voice conversation with my digital clone on Delphi.ai
+              </p>
+              
+              <div className="grid grid-cols-2 gap-3 w-full mt-2">
+                <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-all" onClick={handleOpenDelphi}>
+                  <MessageCircle className="h-6 w-6 mx-auto mb-2" />
+                  <p className="text-sm">Text Chat</p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/20 transition-all" onClick={handleOpenDelphi}>
+                  <Mic className="h-6 w-6 mx-auto mb-2" />
+                  <p className="text-sm">Voice Conversation</p>
+                </div>
+              </div>
+              
+              <Button 
+                className="w-full mt-4 bg-white text-primary hover:bg-white/90 flex items-center justify-center"
+                onClick={handleOpenDelphi}
+              >
+                Connect Now
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+        
+        {/* Single button that opens the dialog */}
         <motion.div 
           className="text-center mt-8 flex justify-center"
           initial={{ opacity: 0, y: 10 }}
@@ -82,7 +142,7 @@ const DigitalCloneConnect = () => {
           <Button 
             size="lg" 
             variant="default"
-            onClick={() => window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer')}
+            onClick={() => setDialogOpen(true)}
             className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white shadow-neon-purple hover:shadow-neon-cyan hover:opacity-90 cursor-pointer transition-all duration-300"
           >
             <MessageCircle className="mr-2 h-5 w-5" />
@@ -125,7 +185,7 @@ const DigitalCloneConnect = () => {
                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
                     transition: { duration: 0.2 }
                   }}
-                  onClick={() => window.open('https://www.delphi.ai/hardeepanand', '_blank', 'noopener,noreferrer')}
+                  onClick={() => setDialogOpen(true)}
                 >
                   <div 
                     className="w-12 h-12 rounded-full flex items-center justify-center mb-3"
