@@ -20,13 +20,13 @@ const ProfileHeader: React.FC = () => {
         Hardeep Anand
       </h1>
       
-      <h2 className="text-xl md:text-3xl font-medium tracking-tight text-gray-300">
-        <span className="text-[#0EA5E9]">One Water</span> • 
-        <span className="text-[#9333EA]">AI</span> • 
-        <span className="text-[#06B6D4]">Data</span> • 
-        <span className="text-[#10B981]">Blockchain</span> • 
-        <span className="text-[#DB2777]">Community</span> • 
-        <span className="text-[#F59E0B]">Health</span>
+      <h2 className="text-sm md:text-lg font-medium tracking-tight text-gray-300 flex flex-wrap justify-center gap-2">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs md:text-sm font-medium bg-[#0EA5E9]/10 text-[#0EA5E9]">One Water</span>
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs md:text-sm font-medium bg-[#9333EA]/10 text-[#9333EA]">AI</span>
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs md:text-sm font-medium bg-[#06B6D4]/10 text-[#06B6D4]">Data</span>
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs md:text-sm font-medium bg-[#10B981]/10 text-[#10B981]">Blockchain</span>
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs md:text-sm font-medium bg-[#DB2777]/10 text-[#DB2777]">Community</span>
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs md:text-sm font-medium bg-[#F59E0B]/10 text-[#F59E0B]">Wellness</span>
       </h2>
       
       <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto">
