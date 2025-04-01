@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 
 const ScrollPrompt: React.FC = () => {
   return (
@@ -17,7 +17,7 @@ const ScrollPrompt: React.FC = () => {
       >
         <span className="text-xs md:text-sm font-medium mb-2 tracking-wider">EXPLORE</span>
         <div className="w-10 h-10 rounded-full border border-[#0EA5E9]/30 flex items-center justify-center animate-bounce bg-[#0EA5E9]/20 shadow-neon-cyan">
-          <ArrowRight className="h-5 w-5 rotate-90" />
+          <ArrowDown className="h-5 w-5" />
         </div>
       </a>
     </motion.div>
