@@ -44,7 +44,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <NavLink to="/" className="flex items-center">
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">HARDEEP</span>
+            {/* Removed the HARDEEP text from here */}
           </NavLink>
           
           <div className="hidden md:flex space-x-8">
