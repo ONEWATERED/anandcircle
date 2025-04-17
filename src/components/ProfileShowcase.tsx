@@ -8,8 +8,8 @@ import SocialFooter from './profile/SocialFooter';
 import ScrollPrompt from './profile/ScrollPrompt';
 
 const ProfileShowcase = () => {
-  // Use an absolute path to ensure the image loads correctly
-  const profileImage = '/lovable-uploads/42f1226e-8674-4a17-879d-89336890e8c1.png';
+  // Use the new uploaded profile image
+  const profileImage = '/lovable-uploads/05183678-e904-418e-9248-ee8b96cc5fc1.png';
   
   const [profileData, setProfileData] = useState({
     profileImageUrl: profileImage,
@@ -61,7 +61,7 @@ const ProfileShowcase = () => {
       id="home" 
       className="relative w-full min-h-screen overflow-hidden bg-black" 
     >
-      {/* Make sure the profile image path is valid and pass it to the background component */}
+      {/* Use the new profile image for the background */}
       <ProfileBackground profileImageUrl={profileImage} />
       
       <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">

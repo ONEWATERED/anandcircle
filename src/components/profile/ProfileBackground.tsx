@@ -56,7 +56,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
           <div 
             className="w-full h-full transition-opacity duration-500"
             style={{ 
-              opacity: imageLoaded ? 0.4 : 0,
+              opacity: imageLoaded ? 0.8 : 0, // Increased opacity for better visibility
             }}
           >
             <div 
@@ -66,8 +66,8 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center center',
                 backgroundRepeat: 'no-repeat',
-                filter: 'grayscale(100%) brightness(1.3)',
-                mixBlendMode: 'screen'
+                filter: 'brightness(0.85)', // Reduced grayscale and increased brightness
+                mixBlendMode: 'normal' // Changed blend mode to normal for better visibility
               }}
             />
           </div>
@@ -81,8 +81,8 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
         </div>
       )}
       
-      {/* Very subtle gradient for text readability without a solid background */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-transparent via-transparent to-transparent" />
+      {/* Overlay gradient for text readability */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-b from-black/40 via-black/60 to-black/80" />
     </>
   );
 };
