@@ -47,8 +47,8 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
 
   return (
     <>
-      {/* White background base */}
-      <div className="absolute inset-0 z-0 bg-white" />
+      {/* Black background base */}
+      <div className="absolute inset-0 z-0 bg-black" />
       
       {/* Profile image background - positioned with transparency */}
       {profileImageUrl && !hasError && (
@@ -66,7 +66,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center center',
                 backgroundRepeat: 'no-repeat',
-                filter: 'brightness(1.1)', // Slightly brighter
+                filter: 'grayscale(100%) brightness(0.8)', // Black & white with reduced brightness
                 mixBlendMode: 'normal'
               }}
             />
@@ -87,6 +87,9 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
               src={profileImageUrl} 
               alt="Profile" 
               className="w-full h-full object-cover"
+              style={{
+                filter: 'grayscale(100%) contrast(1.1)' // Black & white with slightly increased contrast
+              }}
             />
           </div>
         </div>
@@ -95,12 +98,12 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
       {/* Fallback background when image fails to load */}
       {hasError && (
         <div className="absolute inset-0 z-5 w-full h-full overflow-hidden">
-          <div className="w-full h-full bg-white opacity-30"></div>
+          <div className="w-full h-full bg-black opacity-30"></div>
         </div>
       )}
       
       {/* Very subtle gradient for text readability */}
-      <div className="absolute inset-0 z-15 bg-gradient-to-b from-white/10 via-white/20 to-white/30" />
+      <div className="absolute inset-0 z-15 bg-gradient-to-b from-black/10 via-black/20 to-black/30" />
     </>
   );
 };
