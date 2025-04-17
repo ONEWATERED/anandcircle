@@ -8,7 +8,7 @@ import SocialFooter from './profile/SocialFooter';
 import ScrollPrompt from './profile/ScrollPrompt';
 
 const ProfileShowcase = () => {
-  const profileImage = '/lovable-uploads/05183678-e904-418e-9248-ee8b96cc5fc1.png';
+  const profileImage = '/lovable-uploads/1f2c23f2-c00c-42dd-9f76-d8562ba0550c.png';
   
   const [profileData, setProfileData] = useState({
     profileImageUrl: profileImage,
@@ -59,7 +59,7 @@ const ProfileShowcase = () => {
       id="home" 
       className="relative w-full min-h-screen overflow-hidden bg-black" 
     >
-      <ProfileBackground />
+      <ProfileBackground profileImageUrl={profileImage} />
       
       <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-7xl mx-auto flex flex-row items-center justify-center gap-8 py-20 md:py-24">
@@ -69,9 +69,12 @@ const ProfileShowcase = () => {
               src={profileImage}
               alt="Hardeep Anand"
               className="w-full h-full object-cover"
+              style={{
+                filter: 'grayscale(100%) contrast(1.2)'
+              }}
               onError={(e) => {
                 console.error("Image failed to load:", e);
-                e.currentTarget.src = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png'; // Fallback image
+                e.currentTarget.src = '/lovable-uploads/ba77db19-a5a2-49c5-87cf-85f690643d20.png'; // Fallback image
               }}
             />
           </div>
