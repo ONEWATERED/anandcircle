@@ -56,7 +56,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
           <div 
             className="w-full h-full transition-opacity duration-500"
             style={{ 
-              opacity: imageLoaded ? 0.2 : 0, // Reduced opacity for subtlety
+              opacity: imageLoaded ? 0.25 : 0, // Increased opacity for better visibility
             }}
           >
             <div 
@@ -66,7 +66,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center center',
                 backgroundRepeat: 'no-repeat',
-                filter: 'brightness(1)', // Normal brightness
+                filter: 'brightness(1.1)', // Slightly brighter
                 mixBlendMode: 'normal'
               }}
             />
@@ -80,7 +80,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
           <div 
             className="w-3/4 md:w-1/2 max-w-lg h-auto aspect-square transition-opacity duration-500 rounded-full overflow-hidden"
             style={{ 
-              opacity: imageLoaded ? 0.15 : 0,
+              opacity: imageLoaded ? 0.4 : 0, // Increased opacity for better visibility
             }}
           >
             <img 
