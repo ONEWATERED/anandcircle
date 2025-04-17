@@ -67,27 +67,6 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
         </div>
       )}
       
-      {/* Centered profile image above background but behind text */}
-      {profileImageUrl && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden">
-          <div 
-            className="w-3/4 md:w-1/2 max-w-lg h-auto aspect-square transition-opacity duration-500 rounded-full overflow-hidden"
-            style={{ 
-              opacity: 0.4,
-            }}
-          >
-            <img 
-              src={profileImageUrl} 
-              alt="Profile" 
-              className="w-full h-full object-cover"
-              style={{
-                filter: 'grayscale(100%) contrast(1.1)'
-              }}
-            />
-          </div>
-        </div>
-      )}
-      
       {/* Very subtle gradient for text readability */}
       <div className="absolute inset-0 z-15 bg-gradient-to-b from-black/10 via-black/20 to-black/30" />
     </>
@@ -95,3 +74,4 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
 };
 
 export default ProfileBackground;
+
