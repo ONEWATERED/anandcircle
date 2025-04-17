@@ -1,4 +1,3 @@
-
 // Module for profile image management
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -11,7 +10,7 @@ export const getProfileImage = async (): Promise<string | null> => {
     console.log("Getting profile image");
     
     // Guaranteed default that we know exists
-    const defaultImage = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png';
+    const defaultImage = '/lovable-uploads/profile_pic.png';
     
     // Try to get from Hardeep profile first
     const hardeepImageUrl = await getHardeepProfileImage();
@@ -69,7 +68,7 @@ export const getProfileImage = async (): Promise<string | null> => {
     return defaultImage;
   } catch (error) {
     console.error("Error getting profile image:", error);
-    return '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png'; // Guaranteed fallback
+    return '/lovable-uploads/profile_pic.png'; // Guaranteed fallback
   }
 };
 

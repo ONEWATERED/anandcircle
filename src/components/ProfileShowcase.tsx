@@ -8,7 +8,7 @@ import SocialFooter from './profile/SocialFooter';
 import ScrollPrompt from './profile/ScrollPrompt';
 
 const ProfileShowcase = () => {
-  const profileImage = '/lovable-uploads/1f2c23f2-c00c-42dd-9f76-d8562ba0550c.png';
+  const profileImage = '/lovable-uploads/profile_pic.png';
   
   const [profileData, setProfileData] = useState({
     profileImageUrl: profileImage,

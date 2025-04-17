@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { getProfileImage, getUserProfileData, checkDatabaseConnection } from '@/utils/imageLoader';
 import { SocialLinksFormValues } from '@/components/dashboard/social/SocialLinksForm';
@@ -14,7 +13,7 @@ export interface DashboardData {
 
 export const useDashboardData = () => {
   const [data, setData] = useState<DashboardData>({
-    profileImageUrl: '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png',
+    profileImageUrl: '/lovable-uploads/profile_pic.png',
     resumeUrl: '',
     socialLinks: {
       linkedInUrl: 'https://linkedin.com/in/hardeepanand',
