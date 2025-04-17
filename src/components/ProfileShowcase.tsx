@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { getUserProfileData } from '@/utils/profile';
 import { ensureHttpProtocol } from '@/utils/database';
@@ -59,7 +58,7 @@ const ProfileShowcase = () => {
   return (
     <section 
       id="home" 
-      className="relative w-full min-h-screen overflow-hidden bg-black" 
+      className="relative w-full min-h-screen overflow-hidden bg-white" 
     >
       {/* Use the new profile image for the background */}
       <ProfileBackground profileImageUrl={profileImage} />
