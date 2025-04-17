@@ -7,9 +7,14 @@ interface ProfileBackgroundProps {
 
 const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     if (!profileImageUrl) return;
+    
+    // Reset states when image URL changes
+    setImageLoaded(false);
+    setHasError(false);
     
     // Preload image to ensure it's ready before displaying
     const img = new Image();
@@ -19,9 +24,17 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
     };
     img.onerror = (e) => {
       console.error("Failed to load background image:", e);
+      setHasError(true);
+      // Still set imageLoaded to true so we can show a fallback
       setImageLoaded(true);
     };
-    img.src = profileImageUrl;
+    
+    // Ensure the image URL has a leading slash if it's a relative path
+    const imageSrc = profileImageUrl.startsWith('http') || profileImageUrl.startsWith('/') 
+      ? profileImageUrl 
+      : `/${profileImageUrl}`;
+      
+    img.src = imageSrc;
     
     return () => {
       img.onload = null;
@@ -38,7 +51,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
       <div className="absolute inset-0 z-0 bg-transparent" />
       
       {/* Profile image background - positioned with transparency */}
-      {profileImageUrl && (
+      {profileImageUrl && !hasError && (
         <div className="absolute inset-0 z-5 w-full h-full overflow-hidden">
           <div 
             className="w-full h-full transition-opacity duration-500"
@@ -58,6 +71,13 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
               }}
             />
           </div>
+        </div>
+      )}
+      
+      {/* Fallback background when image fails to load */}
+      {hasError && (
+        <div className="absolute inset-0 z-5 w-full h-full overflow-hidden">
+          <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 opacity-30"></div>
         </div>
       )}
       
