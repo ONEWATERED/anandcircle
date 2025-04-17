@@ -12,14 +12,11 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
   useEffect(() => {
     if (!profileImageUrl) return;
     
-    // Reset states when image URL changes
     setImageLoaded(false);
     setHasError(false);
     
-    // Preload image to ensure it's ready before displaying
     const img = new Image();
     img.onload = () => {
-      console.log("Background image loaded successfully:", profileImageUrl);
       setImageLoaded(true);
     };
     img.onerror = (e) => {
@@ -35,9 +32,6 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
     };
   }, [profileImageUrl]);
 
-  // Log the image URL to debug
-  console.log("Rendering background with image URL:", profileImageUrl);
-
   return (
     <>
       {/* Black background base */}
@@ -49,7 +43,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
           <div 
             className="w-full h-full transition-opacity duration-500"
             style={{ 
-              opacity: 0.25,
+              opacity: 0.4,
             }}
           >
             <div 
@@ -61,27 +55,6 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
                 backgroundRepeat: 'no-repeat',
                 filter: 'grayscale(100%) brightness(0.8)',
                 mixBlendMode: 'normal'
-              }}
-            />
-          </div>
-        </div>
-      )}
-      
-      {/* Centered profile image above background but behind text */}
-      {profileImageUrl && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden">
-          <div 
-            className="w-3/4 md:w-1/2 max-w-lg h-auto aspect-square transition-opacity duration-500 rounded-full overflow-hidden"
-            style={{ 
-              opacity: 0.4,
-            }}
-          >
-            <img 
-              src={profileImageUrl} 
-              alt="Profile" 
-              className="w-full h-full object-cover"
-              style={{
-                filter: 'grayscale(100%) contrast(1.1)'
               }}
             />
           </div>
