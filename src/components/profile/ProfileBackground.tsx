@@ -34,16 +34,16 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
 
   return (
     <>
-      {/* Layering structure for background elements */}
-      <div className="absolute inset-0 z-0 bg-black" /> {/* Base black background */}
+      {/* Completely transparent background */}
+      <div className="absolute inset-0 z-0 bg-transparent" />
       
-      {/* Profile image background - positioned above the black base */}
+      {/* Profile image background - positioned with transparency */}
       {profileImageUrl && (
         <div className="absolute inset-0 z-5 w-full h-full overflow-hidden">
           <div 
             className="w-full h-full transition-opacity duration-500"
             style={{ 
-              opacity: imageLoaded ? 0.4 : 0, // Increased opacity to 40% for better visibility
+              opacity: imageLoaded ? 0.4 : 0,
             }}
           >
             <div 
@@ -53,16 +53,16 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center center',
                 backgroundRepeat: 'no-repeat',
-                filter: 'grayscale(100%) brightness(1.3)', // Increased brightness slightly
-                mixBlendMode: 'screen' // Changed blend mode to help visibility
+                filter: 'grayscale(100%) brightness(1.3)',
+                mixBlendMode: 'screen'
               }}
             />
           </div>
         </div>
       )}
       
-      {/* Gentle gradient overlay for text readability */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-black/50 via-black/30 to-black/20" />
+      {/* Very subtle gradient for text readability without a solid background */}
+      <div className="absolute inset-0 z-10 bg-gradient-to-r from-transparent via-transparent to-transparent" />
     </>
   );
 };
