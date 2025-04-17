@@ -8,7 +8,6 @@ import SocialFooter from './profile/SocialFooter';
 import ScrollPrompt from './profile/ScrollPrompt';
 
 const ProfileShowcase = () => {
-  // Use the new uploaded profile image
   const profileImage = '/lovable-uploads/05183678-e904-418e-9248-ee8b96cc5fc1.png';
   
   const [profileData, setProfileData] = useState({
@@ -22,7 +21,6 @@ const ProfileShowcase = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  // Add debug logging
   console.log("ProfileShowcase: Using profile image:", profileImage);
 
   useEffect(() => {
@@ -61,16 +59,26 @@ const ProfileShowcase = () => {
       id="home" 
       className="relative w-full min-h-screen overflow-hidden bg-black" 
     >
-      {/* Use the new profile image for the background */}
-      <ProfileBackground profileImageUrl={profileImage} />
+      <ProfileBackground />
       
       <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
-        <div className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center py-20 md:py-24">
-          <ProfileHeader />
-          <SocialFooter 
-            socialLinks={profileData.socialLinks} 
-            isLoading={isLoading} 
-          />
+        <div className="w-full max-w-7xl mx-auto flex flex-row items-center justify-center gap-8 py-20 md:py-24">
+          {/* Circular Profile Image */}
+          <div className="hidden md:block w-64 h-64 rounded-full overflow-hidden border-4 border-white/20 shadow-neon-cyan">
+            <img 
+              src={profileImage}
+              alt="Hardeep Anand"
+              className="w-full h-full object-cover"
+            />
+          </div>
+          
+          <div className="flex flex-col items-start">
+            <ProfileHeader />
+            <SocialFooter 
+              socialLinks={profileData.socialLinks} 
+              isLoading={isLoading} 
+            />
+          </div>
         </div>
       </div>
       
