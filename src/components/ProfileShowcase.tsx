@@ -64,11 +64,15 @@ const ProfileShowcase = () => {
       <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
         <div className="w-full max-w-7xl mx-auto flex flex-row items-center justify-center gap-8 py-20 md:py-24">
           {/* Circular Profile Image */}
-          <div className="hidden md:block w-64 h-64 rounded-full overflow-hidden border-4 border-white/20 shadow-neon-cyan">
+          <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white/20 shadow-neon-cyan">
             <img 
               src={profileImage}
               alt="Hardeep Anand"
               className="w-full h-full object-cover"
+              onError={(e) => {
+                console.error("Image failed to load:", e);
+                e.currentTarget.src = '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png'; // Fallback image
+              }}
             />
           </div>
           
