@@ -74,3 +74,4 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
 };
 
 export default ProfileBackground;
+
