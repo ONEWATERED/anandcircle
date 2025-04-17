@@ -29,7 +29,6 @@ const ProfileShowcase = () => {
     const loadProfileData = async () => {
       try {
         console.log("ProfileShowcase: Loading user profile data");
-        console.log("Using profile image:", profileImage);
         
         // Get user profile data for social links only
         const data = await getUserProfileData();
@@ -62,7 +61,7 @@ const ProfileShowcase = () => {
       id="home" 
       className="relative w-full min-h-screen overflow-hidden bg-black" 
     >
-      {/* Pass the profile image directly to ensure it's being used */}
+      {/* Pass the profile image to the background component */}
       <ProfileBackground profileImageUrl={profileImage} />
       
       <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-screen">
