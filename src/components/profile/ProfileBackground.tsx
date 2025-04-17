@@ -47,8 +47,8 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
 
   return (
     <>
-      {/* Completely transparent background */}
-      <div className="absolute inset-0 z-0 bg-transparent" />
+      {/* White background base */}
+      <div className="absolute inset-0 z-0 bg-white" />
       
       {/* Profile image background - positioned with transparency */}
       {profileImageUrl && !hasError && (
@@ -74,6 +74,24 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
         </div>
       )}
       
+      {/* Centered profile image above background but behind text */}
+      {profileImageUrl && !hasError && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden">
+          <div 
+            className="w-3/4 md:w-1/2 max-w-lg h-auto aspect-square transition-opacity duration-500 rounded-full overflow-hidden"
+            style={{ 
+              opacity: imageLoaded ? 0.15 : 0,
+            }}
+          >
+            <img 
+              src={profileImageUrl} 
+              alt="Profile" 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      )}
+      
       {/* Fallback background when image fails to load */}
       {hasError && (
         <div className="absolute inset-0 z-5 w-full h-full overflow-hidden">
@@ -82,7 +100,7 @@ const ProfileBackground = ({ profileImageUrl }: ProfileBackgroundProps) => {
       )}
       
       {/* Very subtle gradient for text readability */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-b from-white/10 via-white/20 to-white/30" />
+      <div className="absolute inset-0 z-15 bg-gradient-to-b from-white/10 via-white/20 to-white/30" />
     </>
   );
 };
