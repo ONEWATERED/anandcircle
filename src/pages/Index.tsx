@@ -3,7 +3,6 @@ import React from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import Story from '@/components/Story';
 import ProfileShowcase from '@/components/ProfileShowcase';
-import GalleryPreview from '@/components/GalleryPreview';
 import DigitalCloneConnect from '@/components/DigitalCloneConnect';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -26,11 +25,6 @@ const Index = () => {
         {/* Digital Twin section */}
         <div className="w-full">
           <DigitalCloneConnect />
-        </div>
-        
-        {/* Gallery Preview section */}
-        <div className="w-full">
-          <GalleryPreview />
         </div>
       </div>
     </MainLayout>
