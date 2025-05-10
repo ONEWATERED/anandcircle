@@ -1,6 +1,5 @@
 
 import React from 'react';
-import OneWaterPromo from './OneWaterPromo';
 import ResumeButton from './ResumeButton';
 import { ExternalLink } from 'lucide-react';
 import NewsletterSubscription from './NewsletterSubscription';
@@ -12,8 +11,6 @@ const Footer = () => {
   
   return (
     <footer id="connect" className="relative overflow-hidden bg-[#0F172A]">
-      <OneWaterPromo />
-      
       {/* Main Footer Content */}
       <div className="pt-12 pb-8 border-t border-primary/20">
         <div className="section-container">
