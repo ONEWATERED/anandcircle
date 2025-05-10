@@ -11,12 +11,12 @@ const AIGalleryHeader = () => {
       </div>
       
       <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-6 text-white">
-        Peek Into <span className="text-gradient-cyan-purple">My Gallery</span>
+        My <span className="text-gradient-cyan-purple">Gallery</span>
       </h2>
       
       <p className="text-muted-foreground max-w-2xl mx-auto">
-        I've collected these visuals throughout my journey in water conservation, 
-        health data, and climate action. Feel free to browse and get inspired!
+        A collection of visuals from my work in water conservation, 
+        health data, and climate action projects.
       </p>
     </div>
   );
