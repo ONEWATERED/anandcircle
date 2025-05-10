@@ -23,7 +23,11 @@ const Footer = () => {
               </p>
               
               {/* Resume Button */}
-              <ResumeButton variant="outline" className="border-primary/20 hover:border-primary/40" />
+              <ResumeButton 
+                variant="tech" 
+                className="border-primary/30 hover:border-primary/60 text-white" 
+                glow="cyan"
+              />
             </div>
             
             {/* Quick Links */}
