@@ -25,8 +25,7 @@ const Footer = () => {
               {/* Resume Button */}
               <ResumeButton 
                 variant="default" 
-                className="border-primary/30 hover:border-primary/60 text-white" 
-                glow="cyan"
+                className="border-primary/30 hover:border-primary/60 text-white bg-primary/10 hover:bg-primary/20" 
               />
             </div>
             
