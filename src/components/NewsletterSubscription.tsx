@@ -29,15 +29,32 @@ const NewsletterSubscription = () => {
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     try {
-      // Here you would typically call your newsletter subscription API
-      // For now, we'll just simulate a successful subscription
-      await new Promise(resolve => setTimeout(resolve, 800));
+      // Ghost Members API endpoint
+      const ghostApiUrl = 'https://lens.hardeepanand.com/members/api/send-magic-link';
       
-      toast.success("Thank you for subscribing to our newsletter!");
-      form.reset();
-      setIsOpen(false);
+      // Send the subscription request to Ghost
+      const response = await fetch(ghostApiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.email,
+          emailType: 'subscribe'
+        }),
+      });
+      
+      if (response.ok) {
+        toast.success("Thank you for subscribing to our newsletter!");
+        form.reset();
+        setIsOpen(false);
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to subscribe');
+      }
     } catch (error) {
-      toast.error("Failed to subscribe. Please try again.");
+      toast.error(`Failed to subscribe: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error("Subscription error:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -54,7 +71,7 @@ const NewsletterSubscription = () => {
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-center">Join Our Newsletter</h3>
           <p className="text-sm text-muted-foreground text-center">
-            Stay updated with the latest news and insights.
+            Stay updated with the latest news and insights from Hardeep Anand.
           </p>
           
           <Form {...form}>
