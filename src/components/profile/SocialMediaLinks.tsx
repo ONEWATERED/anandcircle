@@ -1,25 +1,26 @@
 
 import React from 'react';
-import { Twitter, Linkedin, Youtube, ExternalLink } from 'lucide-react';
+import { Linkedin, ExternalLink } from 'lucide-react';
 
 interface SocialMediaLinksProps {
   links: {
     linkedIn: string;
-    twitter: string;
-    youtube: string;
     anandCircle: string;
   };
   className?: string;
   iconColor?: string;
   hoverColor?: string;
+  linkedInSize?: number;
 }
 
 const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({ 
   links, 
   className = '',
   iconColor = 'text-slate-700',
-  hoverColor = 'hover:text-primary'
+  hoverColor = 'hover:text-primary',
+  linkedInSize = 5
 }) => {
+  const linkedInClasses = `w-${linkedInSize} h-${linkedInSize} ${iconColor} ${hoverColor} transition-colors`;
   const iconClasses = `w-5 h-5 ${iconColor} ${hoverColor} transition-colors`;
   
   return (
@@ -32,31 +33,7 @@ const SocialMediaLinks: React.FC<SocialMediaLinksProps> = ({
           aria-label="LinkedIn"
           className="hover:scale-110 transition-transform"
         >
-          <Linkedin className={iconClasses} />
-        </a>
-      )}
-      
-      {links.twitter && (
-        <a 
-          href={links.twitter} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          aria-label="Twitter"
-          className="hover:scale-110 transition-transform"
-        >
-          <Twitter className={iconClasses} />
-        </a>
-      )}
-      
-      {links.youtube && (
-        <a 
-          href={links.youtube} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          aria-label="YouTube"
-          className="hover:scale-110 transition-transform"
-        >
-          <Youtube className={iconClasses} />
+          <Linkedin className={linkedInClasses} />
         </a>
       )}
       

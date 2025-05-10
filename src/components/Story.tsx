@@ -77,6 +77,7 @@ const Story = () => {
               links={socialLinks} 
               iconColor="text-white" 
               hoverColor="hover:text-[#0EA5E9]"
+              linkedInSize={10}
             />
           </div>
         </div>

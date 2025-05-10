@@ -3,17 +3,15 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { Save, Check, Users, Linkedin, Twitter, Youtube } from 'lucide-react';
+import { Save, Check, Users, Linkedin } from 'lucide-react';
 import { toast } from 'sonner';
 import { saveSocialLinks, validateUrl, SocialLinksData } from './socialLinksService';
 import SocialLinkField from './SocialLinkField';
 
 export interface SocialLinksFormValues {
   linkedInUrl: string;
-  twitterUrl: string;
-  youtubeUrl: string;
-  spotifyUrl: string; // Keep for backward compatibility
   anandCircleUrl: string;
+  spotifyUrl: string; // Keep for backward compatibility
 }
 
 interface SocialLinksFormProps {
@@ -31,16 +29,12 @@ const SocialLinksForm: React.FC<SocialLinksFormProps> = ({ initialValues }) => {
     const data = socialLinksForm.getValues();
     
     // Validate URLs before auto-saving
-    if (!validateUrl(data.linkedInUrl) || 
-        !validateUrl(data.twitterUrl) || 
-        !validateUrl(data.youtubeUrl)) {
+    if (!validateUrl(data.linkedInUrl)) {
       return;
     }
     
     await saveSocialLinks({
       linkedIn: data.linkedInUrl,
-      twitter: data.twitterUrl,
-      youtube: data.youtubeUrl,
       spotify: data.spotifyUrl, // Keep for backward compatibility
       anandCircle: data.anandCircleUrl
     });
@@ -48,9 +42,7 @@ const SocialLinksForm: React.FC<SocialLinksFormProps> = ({ initialValues }) => {
 
   const onSocialLinksSubmit = async (data: SocialLinksFormValues) => {
     // Validate all URLs
-    if (!validateUrl(data.linkedInUrl) || 
-        !validateUrl(data.twitterUrl) || 
-        !validateUrl(data.youtubeUrl)) {
+    if (!validateUrl(data.linkedInUrl)) {
       toast.error('Please correct invalid URLs');
       return;
     }
@@ -60,8 +52,6 @@ const SocialLinksForm: React.FC<SocialLinksFormProps> = ({ initialValues }) => {
     try {
       const result = await saveSocialLinks({
         linkedIn: data.linkedInUrl,
-        twitter: data.twitterUrl,
-        youtube: data.youtubeUrl,
         spotify: data.spotifyUrl, // Keep for backward compatibility
         anandCircle: data.anandCircleUrl
       });
@@ -89,24 +79,6 @@ const SocialLinksForm: React.FC<SocialLinksFormProps> = ({ initialValues }) => {
           placeholder="https://linkedin.com/in/yourprofile"
           icon={Linkedin}
         />
-        
-        <SocialLinkField
-          control={socialLinksForm.control}
-          name="twitterUrl"
-          label="Twitter URL"
-          placeholder="https://twitter.com/yourhandle"
-          icon={Twitter}
-        />
-        
-        <SocialLinkField
-          control={socialLinksForm.control}
-          name="youtubeUrl"
-          label="YouTube URL"
-          placeholder="https://youtube.com/@youraccount"
-          icon={Youtube}
-        />
-        
-        {/* Removed Spotify field */}
         
         <SocialLinkField
           control={socialLinksForm.control}

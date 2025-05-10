@@ -14,8 +14,6 @@ const ProfileShowcase = () => {
     profileImageUrl: profileImage,
     socialLinks: {
       linkedIn: 'https://linkedin.com/in/hardeepanand',
-      twitter: 'https://x.com/HardeepAnandd',
-      youtube: 'https://youtube.com/@hardeepanand',
       anandCircle: '#anand-circle'
     }
   });
@@ -36,8 +34,6 @@ const ProfileShowcase = () => {
             ...prev,
             socialLinks: {
               linkedIn: ensureHttpProtocol(data.socialLinks?.linkedIn || prev.socialLinks.linkedIn),
-              twitter: ensureHttpProtocol(data.socialLinks?.twitter || prev.socialLinks.twitter),
-              youtube: ensureHttpProtocol(data.socialLinks?.youtube || prev.socialLinks.youtube),
               anandCircle: data.socialLinks?.anandCircle || prev.socialLinks.anandCircle
             }
           }));
