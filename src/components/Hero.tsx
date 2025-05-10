@@ -1,13 +1,8 @@
-import React, { useRef, useEffect } from 'react';
-import { ArrowRight, ChevronDown, Sparkles } from 'lucide-react';
-import ResumeButton from './ResumeButton';
-import { Button } from '@/components/ui/button';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { motion } from 'framer-motion';
 
-// This component is now a placeholder as we've merged functionality into ProfileShowcase
+import React from 'react';
+
+// This component is now completely removed as requested
 const Hero = () => {
-  // Return null as this component is now integrated into ProfileShowcase
   return null;
 };
 

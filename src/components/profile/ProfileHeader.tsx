@@ -40,7 +40,6 @@ const ProfileHeader: React.FC = () => {
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#06B6D4]/10 text-[#06B6D4]">Data</span>
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#10B981]/10 text-[#10B981]">Blockchain</span>
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#DB2777]/10 text-[#DB2777]">Community</span>
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#F59E0B]/10 text-[#F59E0B]">Wellness</span>
       </h2>
       
       <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto">
