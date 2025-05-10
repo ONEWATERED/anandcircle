@@ -17,7 +17,7 @@ const Footer = () => {
       {/* Main Footer Content */}
       <div className="pt-12 pb-8 border-t border-primary/20">
         <div className="section-container">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {/* About */}
             <div className="px-4">
               <h4 className="text-lg font-display font-semibold mb-4 text-white">HARDEEP ANAND</h4>
@@ -55,31 +55,6 @@ const Footer = () => {
                   <a href="#interest-form" className="text-gray-400 hover:text-primary transition-colors flex items-center">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary/40 mr-2"></span>
                     Create Your Own
-                  </a>
-                </li>
-              </ul>
-            </div>
-            
-            {/* One Water Initiatives */}
-            <div className="px-4">
-              <h4 className="text-lg font-display font-semibold mb-4 text-white">One Water Initiatives</h4>
-              <ul className="space-y-2">
-                <li>
-                  <a href="https://www.onewater.foundation" target="_blank" rel="noopener noreferrer" 
-                     className="flex items-center text-gray-400 hover:text-primary transition-colors group">
-                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#131c32] group-hover:bg-[#1A2235] mr-2 transition-colors">
-                      <ExternalLink className="h-3 w-3" />
-                    </span>
-                    One Water Foundation
-                  </a>
-                </li>
-                <li>
-                  <a href="https://www.onewater.ai" target="_blank" rel="noopener noreferrer" 
-                     className="flex items-center text-gray-400 hover:text-primary transition-colors group">
-                    <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#131c32] group-hover:bg-[#1A2235] mr-2 transition-colors">
-                      <ExternalLink className="h-3 w-3" />
-                    </span>
-                    One Water AI
                   </a>
                 </li>
               </ul>
