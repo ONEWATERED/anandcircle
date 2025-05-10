@@ -12,8 +12,6 @@ const ProfileImage = () => {
   
   const [socialLinks, setSocialLinks] = useState({
     linkedIn: 'https://linkedin.com/in/hardeepanand',
-    twitter: 'https://x.com/HardeepAnandd',
-    youtube: 'https://youtube.com/@hardeepanand',
     anandCircle: 'https://www.circleso.com'
   });
 
@@ -40,8 +38,6 @@ const ProfileImage = () => {
             socialLinksData.forEach(link => {
               const platform = link.platform.toLowerCase();
               if (platform === 'linkedin') links.linkedIn = ensureHttpProtocol(link.url);
-              if (platform === 'twitter') links.twitter = ensureHttpProtocol(link.url);
-              if (platform === 'youtube') links.youtube = ensureHttpProtocol(link.url);
               if (platform === 'anandcircle') links.anandCircle = link.url;
             });
             

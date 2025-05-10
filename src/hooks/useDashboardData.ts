@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { getProfileImage, getUserProfileData, checkDatabaseConnection } from '@/utils/imageLoader';
 import { SocialLinksFormValues } from '@/components/dashboard/social/SocialLinksForm';
@@ -17,10 +18,8 @@ export const useDashboardData = () => {
     resumeUrl: '',
     socialLinks: {
       linkedInUrl: 'https://linkedin.com/in/hardeepanand',
-      twitterUrl: 'https://x.com/HardeepAnandd',
-      youtubeUrl: 'https://youtube.com/@hardeepanand',
-      spotifyUrl: '', // Keep this for backward compatibility with the form
       anandCircleUrl: '#anand-circle',
+      spotifyUrl: '', // Keep this for backward compatibility with the form
     },
     isDatabaseConnected: false,
     isLoading: true
@@ -45,11 +44,9 @@ export const useDashboardData = () => {
           profileImageUrl: savedImage || '/lovable-uploads/f6b9e5ff-0741-4bfd-9448-b144fa7ac479.png',
           resumeUrl: savedResumeUrl,
           socialLinks: userData?.socialLinks ? {
-            linkedInUrl: userData.socialLinks.linkedIn,
-            twitterUrl: userData.socialLinks.twitter,
-            youtubeUrl: userData.socialLinks.youtube,
+            linkedInUrl: userData.socialLinks.linkedIn || '',
+            anandCircleUrl: userData.socialLinks.anandCircle || '',
             spotifyUrl: '', // Keep this for backward compatibility with the form
-            anandCircleUrl: userData.socialLinks.anandCircle,
           } : data.socialLinks,
           isDatabaseConnected: isConnected,
           isLoading: false

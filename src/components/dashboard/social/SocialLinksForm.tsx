@@ -11,7 +11,7 @@ import SocialLinkField from './SocialLinkField';
 export interface SocialLinksFormValues {
   linkedInUrl: string;
   anandCircleUrl: string;
-  spotifyUrl: string; // Keep for backward compatibility
+  spotifyUrl?: string; // Keep for backward compatibility but make it optional
 }
 
 interface SocialLinksFormProps {
@@ -35,7 +35,7 @@ const SocialLinksForm: React.FC<SocialLinksFormProps> = ({ initialValues }) => {
     
     await saveSocialLinks({
       linkedIn: data.linkedInUrl,
-      spotify: data.spotifyUrl, // Keep for backward compatibility
+      spotify: data.spotifyUrl || '', // Keep for backward compatibility
       anandCircle: data.anandCircleUrl
     });
   };
@@ -52,7 +52,7 @@ const SocialLinksForm: React.FC<SocialLinksFormProps> = ({ initialValues }) => {
     try {
       const result = await saveSocialLinks({
         linkedIn: data.linkedInUrl,
-        spotify: data.spotifyUrl, // Keep for backward compatibility
+        spotify: data.spotifyUrl || '', // Keep for backward compatibility
         anandCircle: data.anandCircleUrl
       });
       
