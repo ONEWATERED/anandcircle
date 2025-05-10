@@ -2,7 +2,7 @@
 import React from 'react';
 import OneWaterPromo from './OneWaterPromo';
 import ResumeButton from './ResumeButton';
-import { FileText, ExternalLink, Heart } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import NewsletterSubscription from './NewsletterSubscription';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -91,14 +91,6 @@ const Footer = () => {
               <p className="text-gray-400 mb-4">
                 Join our community for deeper insights and connections.
               </p>
-              <a
-                href="https://www.circleso.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center h-10 px-4 font-medium tracking-wide text-white transition duration-200 rounded-full bg-gradient-to-r from-primary to-accent hover:opacity-90 w-full mb-3"
-              >
-                Join the One Water Circle
-              </a>
               <NewsletterSubscription />
             </div>
           </div>

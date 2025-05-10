@@ -3,7 +3,7 @@ import React from 'react';
 import InterconnectedDomainsGraphic from './InterconnectedDomainsGraphic';
 import { motion } from 'framer-motion';
 import { Button } from './ui/button';
-import { Users, ExternalLink } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 
 const PassionSection = () => {
   const containerVariants = {
@@ -61,22 +61,11 @@ const PassionSection = () => {
           variants={itemVariants}
           className="max-w-3xl mx-auto text-center mt-16 glass-panel p-8 rounded-xl border border-[#0EA5E9]/30 shadow-neon-cyan"
         >
-          <h3 className="text-2xl font-semibold text-white mb-4">Join My One Water Circle</h3>
+          <h3 className="text-2xl font-semibold text-white mb-4">Connect With Me</h3>
           <p className="text-gray-300 mb-8">
-            Join my circle to explore more about these interconnected domains and how they create meaningful change.
+            Join me to explore more about these interconnected domains and how they create meaningful change.
             Connect with like-minded individuals and be part of the solution.
           </p>
-          <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer" className="inline-block">
-            <Button 
-              variant="tech"
-              glow="cyan"
-              className="shadow-md hover:shadow-lg transition-all duration-300 rounded-lg text-white"
-            >
-              <Users className="mr-2" size={18} />
-              Join One Water Circle
-              <ExternalLink className="ml-2" size={16} />
-            </Button>
-          </a>
         </motion.div>
       </motion.div>
     </section>

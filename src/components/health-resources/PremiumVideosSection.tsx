@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Lock, Users } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const PremiumVideosSection = () => {
@@ -12,13 +12,6 @@ const PremiumVideosSection = () => {
         <p className="text-muted-foreground mb-6">
           I've created in-depth videos, workshops, and expert interviews on health topics that I'm excited to share with our community members.
         </p>
-        <Button 
-          className="bg-gradient-to-r from-[#0EA5E9] to-[#9333EA] text-white hover:opacity-90 transition-all duration-300 shadow-sm"
-          onClick={() => window.open('https://www.circleso.com', '_blank', 'noopener,noreferrer')}
-        >
-          <Users className="mr-2 h-4 w-4" />
-          Join One Water Circle for Free
-        </Button>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { domains } from '@/data/domainData';
 import MainLayout from '@/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Users } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 const DomainPage = () => {
   const { domainId } = useParams<{ domainId: string }>();
@@ -60,13 +60,6 @@ const DomainPage = () => {
                 By integrating {domain.title.toLowerCase()} with other areas of expertise, we can drive innovation and deliver measurable impact.
               </p>
             </div>
-            
-            <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
-              <Button className="bg-gray-800 hover:bg-gray-700">
-                <Users className="mr-2" size={16} />
-                Join One Water Circle
-              </Button>
-            </a>
           </div>
           
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -109,18 +102,12 @@ const DomainPage = () => {
         </div>
         
         <div className="mt-16 pt-8 border-t border-gray-200">
-          <h2 className="text-2xl font-bold mb-6 text-center">Join Our Community</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">Connect With Me</h2>
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-gray-600 mb-8">
               Connect with experts and enthusiasts in {domain.title} and other interconnected domains. 
               Share insights, collaborate on projects, and drive innovation together.
             </p>
-            <a href="https://www.circleso.com" target="_blank" rel="noopener noreferrer">
-              <Button size="lg" className="bg-gray-800 hover:bg-gray-700">
-                <Users className="mr-2" size={16} />
-                Join One Water Circle
-              </Button>
-            </a>
           </div>
         </div>
       </div>
