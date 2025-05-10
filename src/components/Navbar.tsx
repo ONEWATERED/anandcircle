@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { GraduationCap, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -66,7 +66,7 @@ const Navbar = ({ onMenuToggle }: NavbarProps) => {
         </div>
       </div>
       
-      {/* Mobile menu */}
+      {/* Mobile menu - simplified to only show Home */}
       <AnimatePresence>
         {isOpen && isMobile && (
           <motion.div 
@@ -86,44 +86,6 @@ const Navbar = ({ onMenuToggle }: NavbarProps) => {
               >
                 Home
               </NavLink>
-              
-              <NavLink 
-                to="/gallery"
-                className={({ isActive }) =>
-                  `font-medium text-lg ${isActive ? 'text-primary' : 'text-slate-700'}`
-                }
-                onClick={() => setIsOpen(false)}
-              >
-                Gallery
-              </NavLink>
-              
-              <NavLink 
-                to="/#passions"
-                className="font-medium text-lg text-slate-700"
-                onClick={() => setIsOpen(false)}
-              >
-                Domains
-              </NavLink>
-              
-              <NavLink 
-                to="/#courses"
-                className="font-medium text-lg text-slate-700"
-                onClick={() => setIsOpen(false)}
-              >
-                Courses
-              </NavLink>
-              
-              <Button 
-                variant="outline" 
-                className="mt-4 w-full text-primary border-primary hover:bg-primary hover:text-white"
-                onClick={() => {
-                  window.open('https://www.circleso.com', '_blank', 'noopener,noreferrer');
-                  setIsOpen(false);
-                }}
-              >
-                <GraduationCap className="mr-2 h-4 w-4" />
-                Join Circle
-              </Button>
             </div>
           </motion.div>
         )}

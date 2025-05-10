@@ -1,13 +1,8 @@
-
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Home, 
-  Image, 
-  Briefcase, 
-  BookOpen, 
-  GraduationCap, 
   X 
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,31 +19,12 @@ interface SideNavMenuProps {
 }
 
 const SideNavMenu: React.FC<SideNavMenuProps> = ({ isOpen, onClose }) => {
+  // Simplified navigation links - only Home
   const navLinks = [
     { 
       name: 'Home', 
       path: '/', 
       icon: <Home className="h-6 w-6 text-[#8B5CF6]" /> 
-    },
-    { 
-      name: 'Gallery', 
-      path: '/gallery', 
-      icon: <Image className="h-6 w-6 text-[#0EA5E9]" /> 
-    },
-    { 
-      name: 'Domains', 
-      path: '/#passions', 
-      icon: <Briefcase className="h-6 w-6 text-[#F59E0B]" /> 
-    },
-    { 
-      name: 'Publications', 
-      path: '/#publications', 
-      icon: <BookOpen className="h-6 w-6 text-[#EC4899]" /> 
-    },
-    { 
-      name: 'Courses', 
-      path: '/#courses', 
-      icon: <GraduationCap className="h-6 w-6 text-[#10B981]" /> 
     }
   ];
 
@@ -118,7 +94,6 @@ const SideNavMenu: React.FC<SideNavMenuProps> = ({ isOpen, onClose }) => {
                     onClose();
                   }}
                 >
-                  <GraduationCap className="mr-2 h-5 w-5" />
                   Join Circle
                 </Button>
               </div>
